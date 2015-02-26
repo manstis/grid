@@ -8,7 +8,7 @@ import com.ait.lienzo.client.core.animation.TimedAnimation;
 import com.ait.lienzo.client.core.shape.Layer;
 import com.ait.lienzo.client.core.shape.Viewport;
 import com.ait.lienzo.client.core.types.Transform;
-import org.anstis.client.grid.widget.GridWidget;
+import org.anstis.client.grid.widget.IGridWidget;
 
 public class GridSwapperViewPortTransformation implements IGridSwapper {
 
@@ -25,8 +25,8 @@ public class GridSwapperViewPortTransformation implements IGridSwapper {
     }
 
     @Override
-    public void swap( final GridWidget gridWidget1,
-                      final GridWidget gridWidget2 ) {
+    public void swap( final IGridWidget gridWidget1,
+                      final IGridWidget gridWidget2 ) {
         final AbstractAnimation fadeInAnimation = getFadeInAnimation( gridWidget2 );
         final AbstractAnimation fadeOutAnimation = getFadeOutAnimation( gridWidget1,
                                                                         gridWidget2,
@@ -34,8 +34,8 @@ public class GridSwapperViewPortTransformation implements IGridSwapper {
         fadeOutAnimation.run();
     }
 
-    private AbstractAnimation getFadeOutAnimation( final GridWidget gridWidget1,
-                                                   final GridWidget gridWidget2,
+    private AbstractAnimation getFadeOutAnimation( final IGridWidget gridWidget1,
+                                                   final IGridWidget gridWidget2,
                                                    final AbstractAnimation fadeInAnimation ) {
         final Viewport vp = layer.getViewport();
         final TimedAnimation a = new TimedAnimation( 250,
@@ -79,7 +79,7 @@ public class GridSwapperViewPortTransformation implements IGridSwapper {
         return a;
     }
 
-    private AbstractAnimation getFadeInAnimation( final GridWidget gridWidget2 ) {
+    private AbstractAnimation getFadeInAnimation( final IGridWidget gridWidget2 ) {
         final Viewport vp = layer.getViewport();
         final TimedAnimation a = new TimedAnimation( 250,
                                                      new IAnimationCallback() {

@@ -11,7 +11,9 @@ import com.google.gwt.user.client.ui.ScrollPanel;
 import org.anstis.client.grid.model.Grid;
 import org.anstis.client.grid.model.GridColumn;
 import org.anstis.client.grid.widget.GridLayer;
-import org.anstis.client.grid.widget.GridWidget;
+import org.anstis.client.grid.widget.GridWidget1;
+import org.anstis.client.grid.widget.GridWidget2;
+import org.anstis.client.grid.widget.IGridWidget;
 
 public class GridShowcase implements EntryPoint {
 
@@ -21,9 +23,9 @@ public class GridShowcase implements EntryPoint {
     public static final int SP_WIDTH = 1200;
     public static final int SP_HEIGHT = 800;
 
-    private static final int GRID1_ROWS = 200;
-    private static final int GRID2_ROWS = 200;
-    private static final int GRID3_ROWS = 10;
+    private static final int GRID1_ROWS = 500;
+    private static final int GRID2_ROWS = 250;
+    private static final int GRID3_ROWS = 100;
 
     public void onModuleLoad() {
         //Lienzo stuff - Container
@@ -78,7 +80,7 @@ public class GridShowcase implements EntryPoint {
         grid3.setData( GRID3_ROWS );
 
         //Widgets
-        final GridWidget gridWidget1 = new GridWidget( grid1 );
+        final IGridWidget gridWidget1 = new GridWidget2( grid1 );
         layer.add( gridWidget1 );
 
         final ScrollPanel sp = new ScrollPanel();

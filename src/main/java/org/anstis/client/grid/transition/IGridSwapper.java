@@ -1,10 +1,10 @@
 package org.anstis.client.grid.transition;
 
-import org.anstis.client.grid.widget.GridWidget;
+import org.anstis.client.grid.widget.IGridWidget;
 
 public interface IGridSwapper {
 
-    public void swap( final GridWidget gridWidget1,
-                      final GridWidget gridWidget2 );
+    public void swap( final IGridWidget gridWidget1,
+                      final IGridWidget gridWidget2 );
 
 }

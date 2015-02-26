@@ -18,14 +18,14 @@ import org.anstis.client.grid.model.GridColumn;
 import org.anstis.client.grid.transition.GridSwapperViewPortTransformation;
 import org.anstis.client.grid.transition.IGridSwapper;
 
-public class GridWidget extends Group {
+public class GridWidget1 extends Group implements IGridWidget<Group> {
 
     private static final int ROW_HEIGHT = 20;
     private List<GridColumn> columns = new ArrayList<>();
     private double width = 0;
     private double height = 0;
 
-    public GridWidget( final Grid model ) {
+    public GridWidget1( final Grid model ) {
         setColumns( model.getColumns() );
         setData( model.getData() );
     }
@@ -57,6 +57,7 @@ public class GridWidget extends Group {
         }
     }
 
+    @Override
     public double getWidth() {
         return width;
     }
@@ -87,7 +88,7 @@ public class GridWidget extends Group {
         private Rectangle r;
         private Text t;
 
-        public GridHeaderWidget( final GridWidget gridWidget,
+        public GridHeaderWidget( final IGridWidget gridWidget,
                                  final GridColumn column ) {
             final double width = column.getWidth();
             final String title = column.getTitle();
@@ -109,7 +110,7 @@ public class GridWidget extends Group {
                     @Override
                     public void onNodeMouseClick( final NodeMouseClickEvent event ) {
                         final Grid link = column.getLink();
-                        final GridWidget linkWidget = new GridWidget( link );
+                        final IGridWidget linkWidget = new GridWidget1( link );
                         //final IGridSwapper swapper = new GridSwapperGroupScale( gridWidget.getLayer() );
                         final IGridSwapper swapper = new GridSwapperViewPortTransformation( GridShowcase.LP_WIDTH,
                                                                                             GridShowcase.LP_HEIGHT,

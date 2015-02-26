@@ -5,7 +5,7 @@ import com.ait.lienzo.client.core.animation.IAnimation;
 import com.ait.lienzo.client.core.animation.IAnimationHandle;
 import com.ait.lienzo.client.core.animation.TimedAnimation;
 import com.ait.lienzo.client.core.shape.Layer;
-import org.anstis.client.grid.widget.GridWidget;
+import org.anstis.client.grid.widget.IGridWidget;
 
 public class GridSwapperGroupScale implements IGridSwapper {
 
@@ -16,8 +16,8 @@ public class GridSwapperGroupScale implements IGridSwapper {
     }
 
     @Override
-    public void swap( final GridWidget gridWidget1,
-                      final GridWidget gridWidget2 ) {
+    public void swap( final IGridWidget gridWidget1,
+                      final IGridWidget gridWidget2 ) {
         final TimedAnimation a = new TimedAnimation( 250,
                                                      new AnimationCallback() {
 
