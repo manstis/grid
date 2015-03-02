@@ -3,6 +3,7 @@ package org.anstis.client.grid.widget;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ait.lienzo.client.core.event.NodeMouseMoveEvent;
 import com.ait.lienzo.client.core.mediator.MousePanMediator;
 import com.ait.lienzo.client.core.shape.Layer;
 import com.ait.lienzo.client.core.shape.Rectangle;
@@ -12,6 +13,7 @@ import com.ait.lienzo.shared.core.types.ColorName;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
@@ -19,6 +21,7 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import org.anstis.client.grid.model.Grid;
 import org.anstis.client.grid.model.GridColumn;
+import org.gwtbootstrap3.client.ui.Label;
 import org.gwtbootstrap3.extras.slider.client.ui.Slider;
 
 public class GridShowcaseWidget extends Composite {
@@ -32,6 +35,8 @@ public class GridShowcaseWidget extends Composite {
 
     public static final int ROW_HEIGHT = 20;
 
+    private static final NumberFormat format = NumberFormat.getFormat( "#.00" );
+
     interface GridShowcaseWidgetUiBinder extends UiBinder<Widget, GridShowcaseWidget> {
 
     }
@@ -39,10 +44,15 @@ public class GridShowcaseWidget extends Composite {
     private static GridShowcaseWidgetUiBinder uiBinder = GWT.create( GridShowcaseWidgetUiBinder.class );
 
     @UiField
+    Label debug;
+
+    @UiField
     SimplePanel table;
 
     @UiField
     Slider slider;
+
+    private LienzoPanel lienzoPanel;
 
     public GridShowcaseWidget() {
         initWidget( uiBinder.createAndBindUi( this ) );
@@ -51,12 +61,18 @@ public class GridShowcaseWidget extends Composite {
 
     private void setup() {
         //Lienzo stuff - Container
-        final LienzoPanel lienzoPanel = new LienzoPanel( VP_WIDTH,
-                                                         VP_HEIGHT );
+        lienzoPanel = new LienzoPanel( VP_WIDTH,
+                                       VP_HEIGHT );
         lienzoPanel.getViewport().setPixelSize( VP_WIDTH,
                                                 VP_HEIGHT );
 
-        final MousePanMediator mediator1 = new MousePanMediator();
+        final MousePanMediator mediator1 = new MousePanMediator() {
+            @Override
+            protected void onMouseMove( final NodeMouseMoveEvent event ) {
+                super.onMouseMove( event );
+                setDebugTranslation();
+            }
+        };
         lienzoPanel.getViewport().getMediators().push( mediator1 );
 
         final Layer layer = new GridLayer();
@@ -136,16 +152,25 @@ public class GridShowcaseWidget extends Composite {
                 }
                 m_currentZoom = pct;
 
-                Transform transform = new Transform();
-                transform.scaleAboutPoint( m_currentZoom / 100,
-                                           VP_WIDTH / 2,
-                                           VP_HEIGHT / 2 );
+                final Transform transform = new Transform();
+                final double tx = lienzoPanel.getViewport().getTransform().getTranslateX();
+                final double ty = lienzoPanel.getViewport().getTransform().getTranslateY();
+                transform.translate( tx, ty );
+                transform.scale( m_currentZoom / 100 );
 
                 lienzoPanel.getViewport().setTransform( transform );
                 lienzoPanel.getViewport().draw();
+
+                setDebugTranslation();
             }
 
         } );
+    }
+
+    private void setDebugTranslation() {
+        final double tx = lienzoPanel.getViewport().getTransform().getTranslateX();
+        final double ty = lienzoPanel.getViewport().getTransform().getTranslateY();
+        debug.setText( "Translation: (" + format.format( tx ) + ", " + format.format( ty ) + ")" );
     }
 
 }

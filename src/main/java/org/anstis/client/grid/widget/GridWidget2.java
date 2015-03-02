@@ -16,6 +16,7 @@ import com.ait.lienzo.shared.core.types.TextBaseLine;
 import org.anstis.client.grid.model.Grid;
 import org.anstis.client.grid.model.GridColumn;
 import org.anstis.client.grid.transition.GridSwapperGroupScale;
+import org.anstis.client.grid.transition.GridSwapperViewPortTransformation;
 import org.anstis.client.grid.transition.IGridSwapper;
 
 public class GridWidget2 extends Group implements IGridWidget<Group> {
