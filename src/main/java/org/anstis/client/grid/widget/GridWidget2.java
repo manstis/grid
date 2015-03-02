@@ -13,15 +13,13 @@ import com.ait.lienzo.client.core.types.Point2D;
 import com.ait.lienzo.shared.core.types.ColorName;
 import com.ait.lienzo.shared.core.types.TextAlign;
 import com.ait.lienzo.shared.core.types.TextBaseLine;
-import org.anstis.client.GridShowcase;
 import org.anstis.client.grid.model.Grid;
 import org.anstis.client.grid.model.GridColumn;
-import org.anstis.client.grid.transition.GridSwapperViewPortTransformation;
+import org.anstis.client.grid.transition.GridSwapperGroupScale;
 import org.anstis.client.grid.transition.IGridSwapper;
 
 public class GridWidget2 extends Group implements IGridWidget<Group> {
 
-    private static final int ROW_HEIGHT = 20;
     private List<GridColumn> columns = new ArrayList<>();
     private double width = 0;
     private double height = 0;
@@ -45,10 +43,11 @@ public class GridWidget2 extends Group implements IGridWidget<Group> {
     }
 
     private void setData( final int rows ) {
-        height = ROW_HEIGHT * rows;
+        height = GridShowcaseWidget.ROW_HEIGHT * rows;
         final Group r = makeCell( columns,
                                   rows );
-        r.setLocation( new Point2D( 0, ROW_HEIGHT ) );
+        r.setLocation( new Point2D( 0,
+                                    GridShowcaseWidget.ROW_HEIGHT ) );
         add( r );
     }
 
@@ -80,7 +79,7 @@ public class GridWidget2 extends Group implements IGridWidget<Group> {
                                  final List<GridColumn> columns ) {
             final double width = gridWidget.getWidth();
             r = new Rectangle( width,
-                               ROW_HEIGHT );
+                               GridShowcaseWidget.ROW_HEIGHT );
             r.setStrokeColor( ColorName.SLATEGRAY );
             r.setStrokeWidth( 0.5 );
 
@@ -97,7 +96,8 @@ public class GridWidget2 extends Group implements IGridWidget<Group> {
             int x = 0;
             for ( GridColumn column : columns ) {
                 final int w = column.getWidth();
-                pl.M( x, 0 ).L( x, ROW_HEIGHT );
+                pl.M( x, 0 ).L( x,
+                                GridShowcaseWidget.ROW_HEIGHT );
                 x = x + w;
             }
             add( pl );
@@ -108,7 +108,7 @@ public class GridWidget2 extends Group implements IGridWidget<Group> {
                 final int w = column.getWidth();
                 if ( column.isLinked() ) {
                     final Rectangle lr = new Rectangle( w,
-                                                        ROW_HEIGHT );
+                                                        GridShowcaseWidget.ROW_HEIGHT );
                     lr.setFillColor( ColorName.BROWN );
                     lr.setStrokeColor( ColorName.SLATEGRAY );
                     lr.setStrokeWidth( 0.5 );
@@ -120,10 +120,10 @@ public class GridWidget2 extends Group implements IGridWidget<Group> {
                         @Override
                         public void onNodeMouseClick( final NodeMouseClickEvent event ) {
                             final GridWidget2 linkWidget = new GridWidget2( link );
-                            //final IGridSwapper swapper = new GridSwapperGroupScale( gridWidget.getLayer() );
-                            final IGridSwapper swapper = new GridSwapperViewPortTransformation( GridShowcase.LP_WIDTH,
-                                                                                                GridShowcase.LP_HEIGHT,
-                                                                                                gridWidget.getLayer() );
+                            final IGridSwapper swapper = new GridSwapperGroupScale( gridWidget.getLayer() );
+//                            final IGridSwapper swapper = new GridSwapperViewPortTransformation( GridShowcase.LP_WIDTH,
+//                                                                                                GridShowcase.LP_HEIGHT,
+//                                                                                                gridWidget.getLayer() );
                             swapper.swap( gridWidget,
                                           linkWidget );
                         }
@@ -136,7 +136,7 @@ public class GridWidget2 extends Group implements IGridWidget<Group> {
             x = 0;
             for ( GridColumn column : columns ) {
                 final int w = column.getWidth();
-                final Text t = new Text( column.getTitle() ).setFillColor( ColorName.DEEPPINK ).setX( x + w / 2 ).setY( ROW_HEIGHT / 2 ).setFontSize( 12 );
+                final Text t = new Text( column.getTitle() ).setFillColor( ColorName.DEEPPINK ).setX( x + w / 2 ).setY( GridShowcaseWidget.ROW_HEIGHT / 2 ).setFontSize( 12 );
                 t.setTextBaseLine( TextBaseLine.MIDDLE );
                 t.setTextAlign( TextAlign.CENTER );
                 add( t );
@@ -157,11 +157,18 @@ public class GridWidget2 extends Group implements IGridWidget<Group> {
                                final int rows ) {
             final double width = gridWidget.getWidth();
             r = new Rectangle( width,
-                               ROW_HEIGHT * rows );
+                               GridShowcaseWidget.ROW_HEIGHT * rows );
             r.setFillColor( ColorName.ANTIQUEWHITE );
             r.setStrokeColor( ColorName.SLATEGRAY );
             r.setStrokeWidth( 0.5 );
             add( r );
+
+            //Show last row in a different colour so we can check scrolling
+            final Rectangle endRowMarker = new Rectangle( width,
+                                                          GridShowcaseWidget.ROW_HEIGHT );
+            endRowMarker.setFillColor( ColorName.RED );
+            endRowMarker.setY( ( rows - 1 ) * GridShowcaseWidget.ROW_HEIGHT );
+            add( endRowMarker );
 
             //Grid lines
             final MultiPath pl = new MultiPath();
@@ -169,11 +176,14 @@ public class GridWidget2 extends Group implements IGridWidget<Group> {
             pl.setStrokeWidth( 0.5 );
             int x = 0;
             for ( GridColumn column : columns ) {
-                pl.M( x, 0 ).L( x, ROW_HEIGHT * rows );
+                pl.M( x, 0 ).L( x,
+                                GridShowcaseWidget.ROW_HEIGHT * rows );
                 x = x + column.getWidth();
             }
             for ( int idx = 0; idx < rows; idx++ ) {
-                pl.M( 0, ROW_HEIGHT * idx ).L( gridWidget.getWidth(), ROW_HEIGHT * idx );
+                pl.M( 0,
+                      GridShowcaseWidget.ROW_HEIGHT * idx ).L( gridWidget.getWidth(),
+                                                               GridShowcaseWidget.ROW_HEIGHT * idx );
             }
             add( pl );
 

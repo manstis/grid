@@ -4,6 +4,10 @@
   <inherits name='com.google.gwt.user.User' />
   <inherits name='com.ait.lienzo.Lienzo' />
 
+  <!-- GWT Bootstrap 3 -->
+  <inherits name="org.gwtbootstrap3.GwtBootstrap3"/>
+  <inherits name="org.gwtbootstrap3.extras.slider.Slider"/>
+
   <!-- Specify the app entry point class.                         -->
   <entry-point class='org.anstis.client.GridShowcase' />
 

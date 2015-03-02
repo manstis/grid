@@ -24,6 +24,9 @@ public class GridSwapperGroupScale implements IGridSwapper {
                                                          @Override
                                                          public void onStart( final IAnimation animation,
                                                                               final IAnimationHandle handle ) {
+                                                             layer.setListening( false );
+                                                             layer.batch();
+
                                                              gridWidget1.setAlpha( 1.0 );
                                                              gridWidget1.setScale( 1.0, 1.0 );
                                                              gridWidget1.setOffset( gridWidget1.getWidth() / 2, 0.0 );
@@ -47,6 +50,9 @@ public class GridSwapperGroupScale implements IGridSwapper {
                                                          @Override
                                                          public void onClose( final IAnimation animation,
                                                                               final IAnimationHandle handle ) {
+                                                             layer.setListening( true );
+                                                             layer.batch();
+
                                                              gridWidget1.setAlpha( 0.0 );
                                                              gridWidget2.setAlpha( 1.0 );
                                                              gridWidget2.setScale( 1.0, 1.0 );

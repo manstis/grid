@@ -1,0 +1,42 @@
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:bs3="urn:import:org.gwtbootstrap3.extras.slider.client.ui">
+
+  <ui:style field="css">
+
+    .container {
+      overflow: hidden;
+      box-shadow: 10px 10px 10px #888888;
+      border: 1px solid #a0a0a0;
+      border-radius: 15px;
+      margin: 20px 20px 20px 20px;
+      background-color: #fefefe;
+    }
+
+    .table {
+      overflow: hidden;
+      width: 1202px;
+      height: 602px;
+      border: 1px solid #f0f0f0;
+      margin: 20px 20px 20px 20px;
+    }
+
+    .slider {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+  </ui:style>
+
+  <g:HTMLPanel>
+    <g:VerticalPanel styleName="{css.container}">
+      <g:HorizontalPanel>
+        <g:SimplePanel ui:field="table" styleName="{css.table}"/>
+      </g:HorizontalPanel>
+      <g:SimplePanel styleName="{css.slider}">
+        <bs3:Slider ui:field="slider" min="10" max="100" step="10" orientation="HORIZONTAL"/>
+      </g:SimplePanel>
+    </g:VerticalPanel>
+  </g:HTMLPanel>
+
+</ui:UiBinder>

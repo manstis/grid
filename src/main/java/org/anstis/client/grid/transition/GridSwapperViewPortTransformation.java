@@ -43,6 +43,9 @@ public class GridSwapperViewPortTransformation implements IGridSwapper {
                                                          @Override
                                                          public void onStart( final IAnimation animation,
                                                                               final IAnimationHandle handle ) {
+                                                             layer.setListening( false );
+                                                             layer.batch();
+
                                                              vp.setTransform( Transform.createViewportTransform( 0,
                                                                                                                  0,
                                                                                                                  width,
@@ -70,6 +73,9 @@ public class GridSwapperViewPortTransformation implements IGridSwapper {
                                                          @Override
                                                          public void onClose( final IAnimation animation,
                                                                               final IAnimationHandle handle ) {
+                                                             layer.setListening( true );
+                                                             layer.batch();
+
                                                              layer.remove( gridWidget1 );
                                                              layer.add( gridWidget2 );
                                                              layer.draw();
@@ -86,6 +92,9 @@ public class GridSwapperViewPortTransformation implements IGridSwapper {
                                                          @Override
                                                          public void onStart( final IAnimation animation,
                                                                               final IAnimationHandle handle ) {
+                                                             layer.setListening( false );
+                                                             layer.batch();
+
                                                              vp.setTransform( Transform.createViewportTransform( 0,
                                                                                                                  0,
                                                                                                                  width,
@@ -113,6 +122,8 @@ public class GridSwapperViewPortTransformation implements IGridSwapper {
                                                          @Override
                                                          public void onClose( final IAnimation animation,
                                                                               final IAnimationHandle handle ) {
+                                                             layer.setListening( true );
+                                                             layer.batch();
                                                          }
                                                      } );
         return a;
