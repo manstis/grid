@@ -3,13 +3,14 @@ package org.anstis.client.grid.widget;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ait.lienzo.client.core.event.NodeMouseClickEvent;
+import com.ait.lienzo.client.core.event.NodeMouseClickHandler;
 import com.ait.lienzo.client.core.event.NodeMouseMoveEvent;
 import com.ait.lienzo.client.core.mediator.MousePanMediator;
 import com.ait.lienzo.client.core.shape.Layer;
-import com.ait.lienzo.client.core.shape.Rectangle;
+import com.ait.lienzo.client.core.types.Point2D;
 import com.ait.lienzo.client.core.types.Transform;
 import com.ait.lienzo.client.widget.LienzoPanel;
-import com.ait.lienzo.shared.core.types.ColorName;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
@@ -24,7 +25,7 @@ import org.anstis.client.grid.model.GridColumn;
 import org.gwtbootstrap3.client.ui.Label;
 import org.gwtbootstrap3.extras.slider.client.ui.Slider;
 
-public class GridShowcaseWidget extends Composite {
+public class GridShowcaseWidget extends Composite implements ISelectionManager {
 
     public static final int VP_WIDTH = 1200;
     public static final int VP_HEIGHT = 600;
@@ -52,7 +53,9 @@ public class GridShowcaseWidget extends Composite {
     @UiField
     Slider slider;
 
-    private LienzoPanel lienzoPanel;
+    private GridLayer gridLayer = new GridLayer();
+    private LienzoPanel gridPanel = new LienzoPanel( VP_WIDTH,
+                                                     VP_HEIGHT );
 
     public GridShowcaseWidget() {
         initWidget( uiBinder.createAndBindUi( this ) );
@@ -60,12 +63,11 @@ public class GridShowcaseWidget extends Composite {
     }
 
     private void setup() {
-        //Lienzo stuff - Container
-        lienzoPanel = new LienzoPanel( VP_WIDTH,
-                                       VP_HEIGHT );
-        lienzoPanel.getViewport().setPixelSize( VP_WIDTH,
-                                                VP_HEIGHT );
+        //Lienzo stuff - Set default scale to 50%
+        final Transform transform = new Transform().scale( 0.5 );
+        gridPanel.getViewport().setTransform( transform );
 
+        //Lienzo stuff - Add mouse pan support
         final MousePanMediator mediator1 = new MousePanMediator() {
             @Override
             protected void onMouseMove( final NodeMouseMoveEvent event ) {
@@ -73,19 +75,11 @@ public class GridShowcaseWidget extends Composite {
                 setDebugTranslation();
             }
         };
-        lienzoPanel.getViewport().getMediators().push( mediator1 );
+        gridPanel.getViewport().getMediators().push( mediator1 );
 
-        final Layer layer = new GridLayer();
-        lienzoPanel.add( layer );
-
-        final Rectangle bounds = new Rectangle( 200000,
-                                                200000,
-                                                20 );
-        bounds.setX( -100000 );
-        bounds.setY( -100000 );
-        bounds.setStrokeWidth( 10.0 );
-        bounds.setStrokeColor( ColorName.MEDIUMSEAGREEN );
-        layer.add( bounds );
+        //Wire-up widgets
+        gridPanel.add( gridLayer );
+        table.setWidget( gridPanel );
 
         //Model
         final Grid grid1 = new Grid();
@@ -133,11 +127,21 @@ public class GridShowcaseWidget extends Composite {
         grid3.setData( GRID3_ROWS );
 
         //Widgets
-        final IGridWidget gridWidget1 = new GridWidget2( grid1 );
-        layer.add( gridWidget1 );
+        addGrid( grid1,
+                 gridLayer,
+                 new Point2D( -1100,
+                              0 ) );
+        addGrid( grid2,
+                 gridLayer,
+                 new Point2D( 0,
+                              0 ) );
+        addGrid( grid3,
+                 gridLayer,
+                 new Point2D( 850,
+                              0 ) );
 
-        table.setWidget( lienzoPanel );
-        slider.setValue( 100.0 );
+        //Slider
+        slider.setValue( 50.0 );
         slider.addValueChangeHandler( new ValueChangeHandler<Double>() {
 
             private double m_currentZoom = 1.0;
@@ -153,13 +157,13 @@ public class GridShowcaseWidget extends Composite {
                 m_currentZoom = pct;
 
                 final Transform transform = new Transform();
-                final double tx = lienzoPanel.getViewport().getTransform().getTranslateX();
-                final double ty = lienzoPanel.getViewport().getTransform().getTranslateY();
+                final double tx = gridPanel.getViewport().getTransform().getTranslateX();
+                final double ty = gridPanel.getViewport().getTransform().getTranslateY();
                 transform.translate( tx, ty );
                 transform.scale( m_currentZoom / 100 );
 
-                lienzoPanel.getViewport().setTransform( transform );
-                lienzoPanel.getViewport().draw();
+                gridPanel.getViewport().setTransform( transform );
+                gridPanel.getViewport().draw();
 
                 setDebugTranslation();
             }
@@ -167,9 +171,30 @@ public class GridShowcaseWidget extends Composite {
         } );
     }
 
+    public void addGrid( final Grid grid,
+                         final Layer layer,
+                         final Point2D location ) {
+        final GridWidget2 gridWidget = new GridWidget2( grid );
+        gridWidget.setLocation( location );
+        gridWidget.addNodeMouseClickHandler( new NodeMouseClickHandler() {
+
+            @Override
+            public void onNodeMouseClick( final NodeMouseClickEvent event ) {
+                GridShowcaseWidget.this.select( gridWidget );
+            }
+
+        } );
+        layer.add( gridWidget );
+    }
+
+    @Override
+    public void select( final ISelectable selectable ) {
+        gridLayer.select( selectable );
+    }
+
     private void setDebugTranslation() {
-        final double tx = lienzoPanel.getViewport().getTransform().getTranslateX();
-        final double ty = lienzoPanel.getViewport().getTransform().getTranslateY();
+        final double tx = gridPanel.getViewport().getTransform().getTranslateX();
+        final double ty = gridPanel.getViewport().getTransform().getTranslateY();
         debug.setText( "Translation: (" + format.format( tx ) + ", " + format.format( ty ) + ")" );
     }
 

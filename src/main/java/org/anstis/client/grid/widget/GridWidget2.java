@@ -16,11 +16,14 @@ import com.ait.lienzo.shared.core.types.TextBaseLine;
 import org.anstis.client.grid.model.Grid;
 import org.anstis.client.grid.model.GridColumn;
 import org.anstis.client.grid.transition.GridSwapperGroupScale;
-import org.anstis.client.grid.transition.GridSwapperViewPortTransformation;
 import org.anstis.client.grid.transition.IGridSwapper;
 
 public class GridWidget2 extends Group implements IGridWidget<Group> {
 
+    private Rectangle selection = new Rectangle( 0, 0 )
+            .setStrokeWidth( 2.0 )
+            .setStrokeColor( ColorName.RED )
+            .setListening( false );
     private List<GridColumn> columns = new ArrayList<>();
     private double width = 0;
     private double height = 0;
@@ -28,6 +31,8 @@ public class GridWidget2 extends Group implements IGridWidget<Group> {
     public GridWidget2( final Grid model ) {
         setColumns( model.getColumns() );
         setData( model.getData() );
+        selection.setWidth( width );
+        selection.setHeight( height );
     }
 
     private void setColumns( final List<GridColumn> columns ) {
@@ -57,6 +62,16 @@ public class GridWidget2 extends Group implements IGridWidget<Group> {
         return width;
     }
 
+    @Override
+    public void select() {
+        add( selection );
+    }
+
+    @Override
+    public void deselect() {
+        remove( selection );
+    }
+
     private Group makeHeader( final List<GridColumn> columns ) {
         final GridHeaderWidget r = new GridHeaderWidget( this,
                                                          columns );
@@ -80,20 +95,19 @@ public class GridWidget2 extends Group implements IGridWidget<Group> {
                                  final List<GridColumn> columns ) {
             final double width = gridWidget.getWidth();
             r = new Rectangle( width,
-                               GridShowcaseWidget.ROW_HEIGHT );
-            r.setStrokeColor( ColorName.SLATEGRAY );
-            r.setStrokeWidth( 0.5 );
+                               GridShowcaseWidget.ROW_HEIGHT )
+                    .setFillColor( ColorName.BISQUE )
+                    .setStrokeColor( ColorName.SLATEGRAY )
+                    .setStrokeWidth( 0.5 );
 
             //TODO {manstis} Draw column text
-            r.setFillColor( ColorName.BISQUE );
-            r.setStrokeColor( ColorName.SLATEGRAY );
-            r.setStrokeWidth( 0.5 );
             add( r );
 
             //Grid lines
-            final MultiPath pl = new MultiPath();
-            pl.setStrokeColor( ColorName.SLATEGRAY );
-            pl.setStrokeWidth( 0.5 );
+            final MultiPath pl = new MultiPath()
+                    .setStrokeColor( ColorName.SLATEGRAY )
+                    .setStrokeWidth( 0.5 )
+                    .setListening( false );
             int x = 0;
             for ( GridColumn column : columns ) {
                 final int w = column.getWidth();
@@ -109,11 +123,11 @@ public class GridWidget2 extends Group implements IGridWidget<Group> {
                 final int w = column.getWidth();
                 if ( column.isLinked() ) {
                     final Rectangle lr = new Rectangle( w,
-                                                        GridShowcaseWidget.ROW_HEIGHT );
-                    lr.setFillColor( ColorName.BROWN );
-                    lr.setStrokeColor( ColorName.SLATEGRAY );
-                    lr.setStrokeWidth( 0.5 );
-                    lr.setX( x );
+                                                        GridShowcaseWidget.ROW_HEIGHT )
+                            .setFillColor( ColorName.BROWN )
+                            .setStrokeColor( ColorName.SLATEGRAY )
+                            .setStrokeWidth( 0.5 )
+                            .setX( x );
                     add( lr );
 
                     final Grid link = column.getLink();
@@ -137,9 +151,14 @@ public class GridWidget2 extends Group implements IGridWidget<Group> {
             x = 0;
             for ( GridColumn column : columns ) {
                 final int w = column.getWidth();
-                final Text t = new Text( column.getTitle() ).setFillColor( ColorName.DEEPPINK ).setX( x + w / 2 ).setY( GridShowcaseWidget.ROW_HEIGHT / 2 ).setFontSize( 12 );
-                t.setTextBaseLine( TextBaseLine.MIDDLE );
-                t.setTextAlign( TextAlign.CENTER );
+                final Text t = new Text( column.getTitle() )
+                        .setFillColor( ColorName.DEEPPINK )
+                        .setX( x + w / 2 )
+                        .setY( GridShowcaseWidget.ROW_HEIGHT / 2 )
+                        .setFontSize( 12 )
+                        .setListening( false )
+                        .setTextBaseLine( TextBaseLine.MIDDLE )
+                        .setTextAlign( TextAlign.CENTER );
                 add( t );
                 x = x + w;
             }
@@ -151,30 +170,29 @@ public class GridWidget2 extends Group implements IGridWidget<Group> {
 
         private Rectangle r;
 
-        private boolean isSelected = false;
-
         public GridCellWidget( final IGridWidget gridWidget,
                                final List<GridColumn> columns,
                                final int rows ) {
             final double width = gridWidget.getWidth();
             r = new Rectangle( width,
-                               GridShowcaseWidget.ROW_HEIGHT * rows );
-            r.setFillColor( ColorName.ANTIQUEWHITE );
-            r.setStrokeColor( ColorName.SLATEGRAY );
-            r.setStrokeWidth( 0.5 );
+                               GridShowcaseWidget.ROW_HEIGHT * rows )
+                    .setFillColor( ColorName.ANTIQUEWHITE )
+                    .setStrokeColor( ColorName.SLATEGRAY )
+                    .setStrokeWidth( 0.5 );
             add( r );
 
             //Show last row in a different colour so we can check scrolling
             final Rectangle endRowMarker = new Rectangle( width,
-                                                          GridShowcaseWidget.ROW_HEIGHT );
-            endRowMarker.setFillColor( ColorName.RED );
-            endRowMarker.setY( ( rows - 1 ) * GridShowcaseWidget.ROW_HEIGHT );
+                                                          GridShowcaseWidget.ROW_HEIGHT )
+                    .setFillColor( ColorName.RED )
+                    .setY( ( rows - 1 ) * GridShowcaseWidget.ROW_HEIGHT );
             add( endRowMarker );
 
             //Grid lines
-            final MultiPath pl = new MultiPath();
-            pl.setStrokeColor( ColorName.SLATEGRAY );
-            pl.setStrokeWidth( 0.5 );
+            final MultiPath pl = new MultiPath()
+                    .setStrokeColor( ColorName.SLATEGRAY )
+                    .setStrokeWidth( 0.5 )
+                    .setListening( false );
             int x = 0;
             for ( GridColumn column : columns ) {
                 pl.M( x, 0 ).L( x,
@@ -198,22 +216,6 @@ public class GridWidget2 extends Group implements IGridWidget<Group> {
 //                    }
 //                }
 //            } );
-        }
-
-        public boolean isSelected() {
-            return isSelected;
-        }
-
-        public void select() {
-            r.setFillColor( ColorName.CHARTREUSE );
-            getLayer().draw();
-            isSelected = true;
-        }
-
-        public void deselect() {
-            r.setFillColor( ColorName.ANTIQUEWHITE );
-            getLayer().draw();
-            isSelected = false;
         }
 
     }

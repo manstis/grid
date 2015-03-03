@@ -19,6 +19,10 @@ import org.anstis.client.grid.transition.IGridSwapper;
 
 public class GridWidget1 extends Group implements IGridWidget<Group> {
 
+    private Rectangle selection = new Rectangle( 0, 0 )
+            .setStrokeWidth( 2.0 )
+            .setStrokeColor( ColorName.RED )
+            .setListening( false );
     private List<GridColumn> columns = new ArrayList<>();
     private double width = 0;
     private double height = 0;
@@ -26,6 +30,8 @@ public class GridWidget1 extends Group implements IGridWidget<Group> {
     public GridWidget1( final Grid model ) {
         setColumns( model.getColumns() );
         setData( model.getData() );
+        selection.setWidth( width );
+        selection.setHeight( height );
     }
 
     private void setColumns( final List<GridColumn> columns ) {
@@ -60,6 +66,16 @@ public class GridWidget1 extends Group implements IGridWidget<Group> {
     @Override
     public double getWidth() {
         return width;
+    }
+
+    @Override
+    public void select() {
+        add( selection );
+    }
+
+    @Override
+    public void deselect() {
+        remove( selection );
     }
 
     private Group makeHeader( final GridColumn column ) {
