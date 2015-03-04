@@ -8,4 +8,6 @@ public interface IGridWidget<T extends Node<T>> extends ISelectable,
 
     public double getWidth();
 
+    public double getHeight();
+
 }

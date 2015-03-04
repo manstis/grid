@@ -19,6 +19,8 @@ import org.anstis.client.grid.transition.IGridSwapper;
 
 public class GridWidget1 extends Group implements IGridWidget<Group> {
 
+    public static final int ROW_HEIGHT = 20;
+
     private Rectangle selection = new Rectangle( 0, 0 )
             .setStrokeWidth( 2.0 )
             .setStrokeColor( ColorName.RED )
@@ -50,13 +52,13 @@ public class GridWidget1 extends Group implements IGridWidget<Group> {
     private void setData( final int rows ) {
         int x = 0;
         for ( GridColumn column : columns ) {
-            int y = GridShowcaseWidget.ROW_HEIGHT;
+            int y = ROW_HEIGHT;
             for ( int row = 0; row < rows; row++ ) {
                 final Group r = makeCell( column );
                 r.setLocation( new Point2D( x,
                                             y ) );
                 add( r );
-                y = y + GridShowcaseWidget.ROW_HEIGHT;
+                y = y + ROW_HEIGHT;
                 height = y;
             }
             x = x + column.getWidth();
@@ -66,6 +68,11 @@ public class GridWidget1 extends Group implements IGridWidget<Group> {
     @Override
     public double getWidth() {
         return width;
+    }
+
+    @Override
+    public double getHeight() {
+        return height;
     }
 
     @Override
@@ -110,13 +117,13 @@ public class GridWidget1 extends Group implements IGridWidget<Group> {
             final String title = column.getTitle();
 
             r = new Rectangle( width,
-                               GridShowcaseWidget.ROW_HEIGHT );
+                               ROW_HEIGHT );
             r.setFillColor( column.isLinked() ? ColorName.BROWN : ColorName.BISQUE );
             r.setStrokeColor( ColorName.SLATEGRAY );
             r.setStrokeWidth( 0.5 );
             add( r );
 
-            t = new Text( title ).setFillColor( ColorName.DEEPPINK ).setX( width / 2 ).setY( GridShowcaseWidget.ROW_HEIGHT / 2 ).setFontSize( 12 );
+            t = new Text( title ).setFillColor( ColorName.DEEPPINK ).setX( width / 2 ).setY( ROW_HEIGHT / 2 ).setFontSize( 12 );
             t.setTextBaseLine( TextBaseLine.MIDDLE );
             t.setTextAlign( TextAlign.CENTER );
             add( t );
@@ -151,7 +158,7 @@ public class GridWidget1 extends Group implements IGridWidget<Group> {
             final String title = column.getTitle();
 
             r = new Rectangle( width,
-                               GridShowcaseWidget.ROW_HEIGHT );
+                               ROW_HEIGHT );
             r.setFillColor( ColorName.ANTIQUEWHITE );
             r.setStrokeColor( ColorName.SLATEGRAY );
             r.setStrokeWidth( 0.5 );

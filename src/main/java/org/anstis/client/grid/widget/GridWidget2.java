@@ -10,6 +10,7 @@ import com.ait.lienzo.client.core.shape.MultiPath;
 import com.ait.lienzo.client.core.shape.Rectangle;
 import com.ait.lienzo.client.core.shape.Text;
 import com.ait.lienzo.client.core.types.Point2D;
+import com.ait.lienzo.client.core.types.Transform;
 import com.ait.lienzo.shared.core.types.ColorName;
 import com.ait.lienzo.shared.core.types.TextAlign;
 import com.ait.lienzo.shared.core.types.TextBaseLine;
@@ -20,6 +21,11 @@ import org.anstis.client.grid.transition.IGridSwapper;
 
 public class GridWidget2 extends Group implements IGridWidget<Group> {
 
+    public static final int ROW_HEIGHT = 20;
+
+    private Grid model;
+    private ISelectionManager selectionManager;
+
     private Rectangle selection = new Rectangle( 0, 0 )
             .setStrokeWidth( 2.0 )
             .setStrokeColor( ColorName.RED )
@@ -28,11 +34,17 @@ public class GridWidget2 extends Group implements IGridWidget<Group> {
     private double width = 0;
     private double height = 0;
 
-    public GridWidget2( final Grid model ) {
+    public GridWidget2( final Grid model,
+                        final ISelectionManager selectionManager ) {
         setColumns( model.getColumns() );
         setData( model.getData() );
+
+        this.model = model;
+        this.selectionManager = selectionManager;
         selection.setWidth( width );
         selection.setHeight( height );
+
+        addNodeMouseClickHandler( new GridWidgetNodeClickHandler() );
     }
 
     private void setColumns( final List<GridColumn> columns ) {
@@ -49,11 +61,11 @@ public class GridWidget2 extends Group implements IGridWidget<Group> {
     }
 
     private void setData( final int rows ) {
-        height = GridShowcaseWidget.ROW_HEIGHT * rows;
+        height = ROW_HEIGHT * rows;
         final Group r = makeCell( columns,
                                   rows );
         r.setLocation( new Point2D( 0,
-                                    GridShowcaseWidget.ROW_HEIGHT ) );
+                                    ROW_HEIGHT ) );
         add( r );
     }
 
@@ -63,8 +75,14 @@ public class GridWidget2 extends Group implements IGridWidget<Group> {
     }
 
     @Override
+    public double getHeight() {
+        return height;
+    }
+
+    @Override
     public void select() {
         add( selection );
+        moveToTop();
     }
 
     @Override
@@ -74,7 +92,8 @@ public class GridWidget2 extends Group implements IGridWidget<Group> {
 
     private Group makeHeader( final List<GridColumn> columns ) {
         final GridHeaderWidget r = new GridHeaderWidget( this,
-                                                         columns );
+                                                         columns,
+                                                         selectionManager );
         return r;
     }
 
@@ -92,10 +111,11 @@ public class GridWidget2 extends Group implements IGridWidget<Group> {
         private Text t;
 
         public GridHeaderWidget( final IGridWidget gridWidget,
-                                 final List<GridColumn> columns ) {
+                                 final List<GridColumn> columns,
+                                 final ISelectionManager selectionManager ) {
             final double width = gridWidget.getWidth();
             r = new Rectangle( width,
-                               GridShowcaseWidget.ROW_HEIGHT )
+                               ROW_HEIGHT )
                     .setFillColor( ColorName.BISQUE )
                     .setStrokeColor( ColorName.SLATEGRAY )
                     .setStrokeWidth( 0.5 );
@@ -112,7 +132,7 @@ public class GridWidget2 extends Group implements IGridWidget<Group> {
             for ( GridColumn column : columns ) {
                 final int w = column.getWidth();
                 pl.M( x, 0 ).L( x,
-                                GridShowcaseWidget.ROW_HEIGHT );
+                                ROW_HEIGHT );
                 x = x + w;
             }
             add( pl );
@@ -123,26 +143,12 @@ public class GridWidget2 extends Group implements IGridWidget<Group> {
                 final int w = column.getWidth();
                 if ( column.isLinked() ) {
                     final Rectangle lr = new Rectangle( w,
-                                                        GridShowcaseWidget.ROW_HEIGHT )
+                                                        ROW_HEIGHT )
                             .setFillColor( ColorName.BROWN )
                             .setStrokeColor( ColorName.SLATEGRAY )
                             .setStrokeWidth( 0.5 )
                             .setX( x );
                     add( lr );
-
-                    final Grid link = column.getLink();
-                    lr.addNodeMouseClickHandler( new NodeMouseClickHandler() {
-                        @Override
-                        public void onNodeMouseClick( final NodeMouseClickEvent event ) {
-                            final GridWidget2 linkWidget = new GridWidget2( link );
-                            final IGridSwapper swapper = new GridSwapperGroupScale( gridWidget.getLayer() );
-//                            final IGridSwapper swapper = new GridSwapperViewPortTransformation( GridShowcase.LP_WIDTH,
-//                                                                                                GridShowcase.LP_HEIGHT,
-//                                                                                                gridWidget.getLayer() );
-                            swapper.swap( gridWidget,
-                                          linkWidget );
-                        }
-                    } );
                 }
                 x = x + w;
             }
@@ -154,7 +160,7 @@ public class GridWidget2 extends Group implements IGridWidget<Group> {
                 final Text t = new Text( column.getTitle() )
                         .setFillColor( ColorName.DEEPPINK )
                         .setX( x + w / 2 )
-                        .setY( GridShowcaseWidget.ROW_HEIGHT / 2 )
+                        .setY( ROW_HEIGHT / 2 )
                         .setFontSize( 12 )
                         .setListening( false )
                         .setTextBaseLine( TextBaseLine.MIDDLE )
@@ -175,7 +181,7 @@ public class GridWidget2 extends Group implements IGridWidget<Group> {
                                final int rows ) {
             final double width = gridWidget.getWidth();
             r = new Rectangle( width,
-                               GridShowcaseWidget.ROW_HEIGHT * rows )
+                               ROW_HEIGHT * rows )
                     .setFillColor( ColorName.ANTIQUEWHITE )
                     .setStrokeColor( ColorName.SLATEGRAY )
                     .setStrokeWidth( 0.5 );
@@ -183,9 +189,9 @@ public class GridWidget2 extends Group implements IGridWidget<Group> {
 
             //Show last row in a different colour so we can check scrolling
             final Rectangle endRowMarker = new Rectangle( width,
-                                                          GridShowcaseWidget.ROW_HEIGHT )
+                                                          ROW_HEIGHT )
                     .setFillColor( ColorName.RED )
-                    .setY( ( rows - 1 ) * GridShowcaseWidget.ROW_HEIGHT );
+                    .setY( ( rows - 1 ) * ROW_HEIGHT );
             add( endRowMarker );
 
             //Grid lines
@@ -196,26 +202,93 @@ public class GridWidget2 extends Group implements IGridWidget<Group> {
             int x = 0;
             for ( GridColumn column : columns ) {
                 pl.M( x, 0 ).L( x,
-                                GridShowcaseWidget.ROW_HEIGHT * rows );
+                                ROW_HEIGHT * rows );
                 x = x + column.getWidth();
             }
             for ( int idx = 0; idx < rows; idx++ ) {
                 pl.M( 0,
-                      GridShowcaseWidget.ROW_HEIGHT * idx ).L( gridWidget.getWidth(),
-                                                               GridShowcaseWidget.ROW_HEIGHT * idx );
+                      ROW_HEIGHT * idx ).L( gridWidget.getWidth(),
+                                            ROW_HEIGHT * idx );
             }
             add( pl );
+        }
 
-//            r.addNodeMouseClickHandler( new NodeMouseClickHandler() {
-//                @Override
-//                public void onNodeMouseClick( final NodeMouseClickEvent event ) {
-//                    if ( r.isSelected() ) {
-//                        r.deselect();
-//                    } else {
-//                        r.select();
-//                    }
-//                }
-//            } );
+    }
+
+    private class GridWidgetNodeClickHandler implements NodeMouseClickHandler {
+
+        @Override
+        public void onNodeMouseClick( final NodeMouseClickEvent event ) {
+            selectionManager.select( GridWidget2.this );
+            handleHeaderCellClick( event );
+            handleBodyCellClick( event );
+        }
+
+        private double getX( final NodeMouseClickEvent event ) {
+            final Transform t = GridWidget2.this.getViewport().getTransform().copy().getInverse();
+            final Point2D p = new Point2D( event.getX(),
+                                           event.getY() );
+            t.transform( p,
+                         p );
+            return p.add( GridWidget2.this.getLocation().mul( -1.0 ) ).getX();
+        }
+
+        private double getY( final NodeMouseClickEvent event ) {
+            final Transform t = GridWidget2.this.getViewport().getTransform().copy().getInverse();
+            final Point2D p = new Point2D( event.getX(),
+                                           event.getY() ).add( GridWidget2.this.getLocation() );
+            t.transform( p,
+                         p );
+            return p.add( GridWidget2.this.getLocation().mul( -1.0 ) ).getY();
+        }
+
+        private void handleHeaderCellClick( final NodeMouseClickEvent event ) {
+            final double x = getX( event );
+            final double y = getY( event );
+            if ( x < 0 || x > GridWidget2.this.getWidth() ) {
+                return;
+            }
+            if ( y < 0 || y > ROW_HEIGHT ) {
+                return;
+            }
+
+            //Refactor to utility method to get a GridColumn
+            if ( GridWidget2.this.model.getColumns() == null || GridWidget2.this.model.getColumns().isEmpty() ) {
+                return;
+            }
+            double extentX = 0;
+            GridColumn extentColumn = null;
+            for ( GridColumn column : GridWidget2.this.model.getColumns() ) {
+                if ( x > extentX && x < extentX + column.getWidth() ) {
+                    extentColumn = column;
+                    break;
+                }
+                extentX = extentX + column.getWidth();
+            }
+            if ( extentColumn == null ) {
+                return;
+            }
+
+            if ( extentColumn.isLinked() ) {
+                final Grid link = extentColumn.getLink();
+                final GridWidget2 linkWidget = new GridWidget2( link,
+                                                                selectionManager );
+                final IGridSwapper swapper = new GridSwapperGroupScale( GridWidget2.this.getLayer() );
+                swapper.swap( GridWidget2.this,
+                              linkWidget );
+            }
+        }
+
+        private void handleBodyCellClick( final NodeMouseClickEvent event ) {
+            final double x = getX( event );
+            final double y = getY( event );
+            if ( x < 0 || x > GridWidget2.this.getWidth() ) {
+                return;
+            }
+            if ( y < ROW_HEIGHT || y > GridWidget2.this.getHeight() ) {
+                return;
+            }
+            //Nothing to do at the moment
         }
 
     }

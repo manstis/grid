@@ -3,8 +3,6 @@ package org.anstis.client.grid.widget;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ait.lienzo.client.core.event.NodeMouseClickEvent;
-import com.ait.lienzo.client.core.event.NodeMouseClickHandler;
 import com.ait.lienzo.client.core.event.NodeMouseMoveEvent;
 import com.ait.lienzo.client.core.mediator.MousePanMediator;
 import com.ait.lienzo.client.core.shape.Layer;
@@ -33,8 +31,6 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
     private static final int GRID1_ROWS = 1000;
     private static final int GRID2_ROWS = 100;
     private static final int GRID3_ROWS = 25;
-
-    public static final int ROW_HEIGHT = 20;
 
     private static final NumberFormat format = NumberFormat.getFormat( "#.00" );
 
@@ -174,16 +170,9 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
     public void addGrid( final Grid grid,
                          final Layer layer,
                          final Point2D location ) {
-        final GridWidget2 gridWidget = new GridWidget2( grid );
+        final GridWidget2 gridWidget = new GridWidget2( grid,
+                                                        this );
         gridWidget.setLocation( location );
-        gridWidget.addNodeMouseClickHandler( new NodeMouseClickHandler() {
-
-            @Override
-            public void onNodeMouseClick( final NodeMouseClickEvent event ) {
-                GridShowcaseWidget.this.select( gridWidget );
-            }
-
-        } );
         layer.add( gridWidget );
     }
 
