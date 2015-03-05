@@ -20,13 +20,14 @@ import org.anstis.client.grid.model.GridColumn;
 public class GridWidget extends Group implements IGridWidget<Group> {
 
     public static final int ROW_HEIGHT = 20;
+    public static final int HEADER_HEIGHT = 30;
 
     private Grid model;
     private ISelectionManager selectionManager;
 
     private Rectangle selection = new Rectangle( 0, 0 )
             .setStrokeWidth( 2.0 )
-            .setStrokeColor( ColorName.RED )
+            .setStrokeColor( ColorName.GREEN )
             .setListening( false );
     private List<GridColumn> columns = new ArrayList<>();
     private double width = 0;
@@ -59,11 +60,11 @@ public class GridWidget extends Group implements IGridWidget<Group> {
     }
 
     private void setData( final int rows ) {
-        height = ROW_HEIGHT * rows;
+        height = HEADER_HEIGHT + ROW_HEIGHT * rows;
         final Group r = makeCell( columns,
                                   rows );
         r.setLocation( new Point2D( 0,
-                                    ROW_HEIGHT ) );
+                                    HEADER_HEIGHT ) );
         add( r );
     }
 
@@ -95,8 +96,7 @@ public class GridWidget extends Group implements IGridWidget<Group> {
 
     private Group makeHeader( final List<GridColumn> columns ) {
         final GridHeaderWidget r = new GridHeaderWidget( this,
-                                                         columns,
-                                                         selectionManager );
+                                                         columns );
         return r;
     }
 
@@ -111,14 +111,12 @@ public class GridWidget extends Group implements IGridWidget<Group> {
     private static class GridHeaderWidget extends Group {
 
         private Rectangle r;
-        private Text t;
 
         public GridHeaderWidget( final IGridWidget gridWidget,
-                                 final List<GridColumn> columns,
-                                 final ISelectionManager selectionManager ) {
+                                 final List<GridColumn> columns ) {
             final double width = gridWidget.getWidth();
             r = new Rectangle( width,
-                               ROW_HEIGHT )
+                               HEADER_HEIGHT )
                     .setFillColor( ColorName.BISQUE )
                     .setStrokeColor( ColorName.SLATEGRAY )
                     .setStrokeWidth( 0.5 );
@@ -135,7 +133,7 @@ public class GridWidget extends Group implements IGridWidget<Group> {
             for ( GridColumn column : columns ) {
                 final int w = column.getWidth();
                 pl.M( x, 0 ).L( x,
-                                ROW_HEIGHT );
+                                HEADER_HEIGHT );
                 x = x + w;
             }
             add( pl );
@@ -146,7 +144,7 @@ public class GridWidget extends Group implements IGridWidget<Group> {
                 final int w = column.getWidth();
                 if ( column.isLinked() ) {
                     final Rectangle lr = new Rectangle( w,
-                                                        ROW_HEIGHT )
+                                                        HEADER_HEIGHT )
                             .setFillColor( ColorName.BROWN )
                             .setStrokeColor( ColorName.SLATEGRAY )
                             .setStrokeWidth( 0.5 )
@@ -163,7 +161,7 @@ public class GridWidget extends Group implements IGridWidget<Group> {
                 final Text t = new Text( column.getTitle() )
                         .setFillColor( ColorName.DEEPPINK )
                         .setX( x + w / 2 )
-                        .setY( ROW_HEIGHT / 2 )
+                        .setY( HEADER_HEIGHT / 2 )
                         .setFontSize( 12 )
                         .setListening( false )
                         .setTextBaseLine( TextBaseLine.MIDDLE )
@@ -251,7 +249,7 @@ public class GridWidget extends Group implements IGridWidget<Group> {
             if ( x < 0 || x > GridWidget.this.getWidth() ) {
                 return;
             }
-            if ( y < 0 || y > ROW_HEIGHT ) {
+            if ( y < 0 || y > HEADER_HEIGHT ) {
                 return;
             }
 
@@ -284,7 +282,7 @@ public class GridWidget extends Group implements IGridWidget<Group> {
             if ( x < 0 || x > GridWidget.this.getWidth() ) {
                 return;
             }
-            if ( y < ROW_HEIGHT || y > GridWidget.this.getHeight() ) {
+            if ( y < HEADER_HEIGHT || y > GridWidget.this.getHeight() ) {
                 return;
             }
             //Nothing to do at the moment

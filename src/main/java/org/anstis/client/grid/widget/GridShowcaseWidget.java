@@ -3,7 +3,6 @@ package org.anstis.client.grid.widget;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ait.lienzo.client.core.event.NodeMouseMoveEvent;
 import com.ait.lienzo.client.core.mediator.MousePanMediator;
 import com.ait.lienzo.client.core.shape.Layer;
 import com.ait.lienzo.client.core.types.Point2D;
@@ -12,7 +11,6 @@ import com.ait.lienzo.client.widget.LienzoPanel;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
@@ -20,7 +18,6 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import org.anstis.client.grid.model.Grid;
 import org.anstis.client.grid.model.GridColumn;
-import org.gwtbootstrap3.client.ui.Label;
 import org.gwtbootstrap3.extras.slider.client.ui.Slider;
 
 public class GridShowcaseWidget extends Composite implements ISelectionManager {
@@ -32,16 +29,11 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
     private static final int GRID2_ROWS = 100;
     private static final int GRID3_ROWS = 25;
 
-    private static final NumberFormat format = NumberFormat.getFormat( "#.00" );
-
     interface GridShowcaseWidgetUiBinder extends UiBinder<Widget, GridShowcaseWidget> {
 
     }
 
     private static GridShowcaseWidgetUiBinder uiBinder = GWT.create( GridShowcaseWidgetUiBinder.class );
-
-    @UiField
-    Label debug;
 
     @UiField
     SimplePanel table;
@@ -64,13 +56,7 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
         gridPanel.getViewport().setTransform( transform );
 
         //Lienzo stuff - Add mouse pan support
-        final MousePanMediator mediator1 = new MousePanMediator() {
-            @Override
-            protected void onMouseMove( final NodeMouseMoveEvent event ) {
-                super.onMouseMove( event );
-                setDebugTranslation();
-            }
-        };
+        final MousePanMediator mediator1 = new MousePanMediator();
         gridPanel.getViewport().getMediators().push( mediator1 );
 
         //Wire-up widgets
@@ -160,8 +146,6 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
 
                 gridPanel.getViewport().setTransform( transform );
                 gridPanel.getViewport().draw();
-
-                setDebugTranslation();
             }
 
         } );
@@ -184,12 +168,6 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
     @Override
     public void scrollIntoView( final Grid selectable ) {
         gridLayer.scrollIntoView( selectable );
-    }
-
-    private void setDebugTranslation() {
-        final double tx = gridPanel.getViewport().getTransform().getTranslateX();
-        final double ty = gridPanel.getViewport().getTransform().getTranslateY();
-        debug.setText( "Translation: (" + format.format( tx ) + ", " + format.format( ty ) + ")" );
     }
 
 }
