@@ -16,10 +16,8 @@ import com.ait.lienzo.shared.core.types.TextAlign;
 import com.ait.lienzo.shared.core.types.TextBaseLine;
 import org.anstis.client.grid.model.Grid;
 import org.anstis.client.grid.model.GridColumn;
-import org.anstis.client.grid.transition.GridSwapperGroupScale;
-import org.anstis.client.grid.transition.IGridSwapper;
 
-public class GridWidget2 extends Group implements IGridWidget<Group> {
+public class GridWidget extends Group implements IGridWidget<Group> {
 
     public static final int ROW_HEIGHT = 20;
 
@@ -34,8 +32,8 @@ public class GridWidget2 extends Group implements IGridWidget<Group> {
     private double width = 0;
     private double height = 0;
 
-    public GridWidget2( final Grid model,
-                        final ISelectionManager selectionManager ) {
+    public GridWidget( final Grid model,
+                       final ISelectionManager selectionManager ) {
         setColumns( model.getColumns() );
         setData( model.getData() );
 
@@ -67,6 +65,11 @@ public class GridWidget2 extends Group implements IGridWidget<Group> {
         r.setLocation( new Point2D( 0,
                                     ROW_HEIGHT ) );
         add( r );
+    }
+
+    @Override
+    public Grid getModel() {
+        return model;
     }
 
     @Override
@@ -219,33 +222,33 @@ public class GridWidget2 extends Group implements IGridWidget<Group> {
 
         @Override
         public void onNodeMouseClick( final NodeMouseClickEvent event ) {
-            selectionManager.select( GridWidget2.this );
+            selectionManager.select( GridWidget.this.model );
             handleHeaderCellClick( event );
             handleBodyCellClick( event );
         }
 
         private double getX( final NodeMouseClickEvent event ) {
-            final Transform t = GridWidget2.this.getViewport().getTransform().copy().getInverse();
+            final Transform t = GridWidget.this.getViewport().getTransform().copy().getInverse();
             final Point2D p = new Point2D( event.getX(),
                                            event.getY() );
             t.transform( p,
                          p );
-            return p.add( GridWidget2.this.getLocation().mul( -1.0 ) ).getX();
+            return p.add( GridWidget.this.getLocation().mul( -1.0 ) ).getX();
         }
 
         private double getY( final NodeMouseClickEvent event ) {
-            final Transform t = GridWidget2.this.getViewport().getTransform().copy().getInverse();
+            final Transform t = GridWidget.this.getViewport().getTransform().copy().getInverse();
             final Point2D p = new Point2D( event.getX(),
-                                           event.getY() ).add( GridWidget2.this.getLocation() );
+                                           event.getY() );
             t.transform( p,
                          p );
-            return p.add( GridWidget2.this.getLocation().mul( -1.0 ) ).getY();
+            return p.add( GridWidget.this.getLocation().mul( -1.0 ) ).getY();
         }
 
         private void handleHeaderCellClick( final NodeMouseClickEvent event ) {
             final double x = getX( event );
             final double y = getY( event );
-            if ( x < 0 || x > GridWidget2.this.getWidth() ) {
+            if ( x < 0 || x > GridWidget.this.getWidth() ) {
                 return;
             }
             if ( y < 0 || y > ROW_HEIGHT ) {
@@ -253,12 +256,12 @@ public class GridWidget2 extends Group implements IGridWidget<Group> {
             }
 
             //Refactor to utility method to get a GridColumn
-            if ( GridWidget2.this.model.getColumns() == null || GridWidget2.this.model.getColumns().isEmpty() ) {
+            if ( GridWidget.this.model.getColumns() == null || GridWidget.this.model.getColumns().isEmpty() ) {
                 return;
             }
             double extentX = 0;
             GridColumn extentColumn = null;
-            for ( GridColumn column : GridWidget2.this.model.getColumns() ) {
+            for ( GridColumn column : GridWidget.this.model.getColumns() ) {
                 if ( x > extentX && x < extentX + column.getWidth() ) {
                     extentColumn = column;
                     break;
@@ -271,21 +274,17 @@ public class GridWidget2 extends Group implements IGridWidget<Group> {
 
             if ( extentColumn.isLinked() ) {
                 final Grid link = extentColumn.getLink();
-                final GridWidget2 linkWidget = new GridWidget2( link,
-                                                                selectionManager );
-                final IGridSwapper swapper = new GridSwapperGroupScale( GridWidget2.this.getLayer() );
-                swapper.swap( GridWidget2.this,
-                              linkWidget );
+                selectionManager.scrollIntoView( link );
             }
         }
 
         private void handleBodyCellClick( final NodeMouseClickEvent event ) {
             final double x = getX( event );
             final double y = getY( event );
-            if ( x < 0 || x > GridWidget2.this.getWidth() ) {
+            if ( x < 0 || x > GridWidget.this.getWidth() ) {
                 return;
             }
-            if ( y < ROW_HEIGHT || y > GridWidget2.this.getHeight() ) {
+            if ( y < ROW_HEIGHT || y > GridWidget.this.getHeight() ) {
                 return;
             }
             //Nothing to do at the moment

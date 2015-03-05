@@ -130,7 +130,7 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
         addGrid( grid2,
                  gridLayer,
                  new Point2D( 0,
-                              0 ) );
+                              1000 ) );
         addGrid( grid3,
                  gridLayer,
                  new Point2D( 850,
@@ -170,15 +170,20 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
     public void addGrid( final Grid grid,
                          final Layer layer,
                          final Point2D location ) {
-        final GridWidget2 gridWidget = new GridWidget2( grid,
-                                                        this );
+        final GridWidget gridWidget = new GridWidget( grid,
+                                                      this );
         gridWidget.setLocation( location );
         layer.add( gridWidget );
     }
 
     @Override
-    public void select( final ISelectable selectable ) {
+    public void select( final Grid selectable ) {
         gridLayer.select( selectable );
+    }
+
+    @Override
+    public void scrollIntoView( final Grid selectable ) {
+        gridLayer.scrollIntoView( selectable );
     }
 
     private void setDebugTranslation() {
