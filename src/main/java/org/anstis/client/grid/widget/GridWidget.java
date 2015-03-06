@@ -18,7 +18,7 @@ import com.ait.lienzo.shared.core.types.TextBaseLine;
 import org.anstis.client.grid.model.Grid;
 import org.anstis.client.grid.model.GridColumn;
 
-public class GridWidget extends com.ait.lienzo.client.core.shape.grid.Grid {
+public class GridWidget extends Group {
 
     public static final int ROW_HEIGHT = 20;
     public static final int HEADER_HEIGHT = 30;
@@ -56,7 +56,7 @@ public class GridWidget extends com.ait.lienzo.client.core.shape.grid.Grid {
         width = x;
         final Group h = makeHeader( columns );
         h.setLocation( new Point2D( 0, 0 ) );
-        getProxy().add( h );
+        add( h );
 
     }
 
@@ -66,7 +66,7 @@ public class GridWidget extends com.ait.lienzo.client.core.shape.grid.Grid {
                                   data );
         r.setLocation( new Point2D( 0,
                                     HEADER_HEIGHT ) );
-        getProxy().add( r );
+        add( r );
     }
 
     public Grid getModel() {
@@ -82,11 +82,11 @@ public class GridWidget extends com.ait.lienzo.client.core.shape.grid.Grid {
     }
 
     public void select() {
-        getProxy().add( selection );
+        add( selection );
     }
 
     public void deselect() {
-        getProxy().remove( selection );
+        remove( selection );
     }
 
     private Group makeHeader( final List<GridColumn> columns ) {
