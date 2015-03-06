@@ -15,6 +15,7 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import org.anstis.client.grid.model.Grid;
 import org.anstis.client.grid.model.GridColumn;
+import org.anstis.client.grid.util.GridDataFactory;
 import org.gwtbootstrap3.extras.slider.client.ui.Slider;
 
 public class GridShowcaseWidget extends Composite implements ISelectionManager {
@@ -22,9 +23,9 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
     public static final int VP_WIDTH = 1200;
     public static final int VP_HEIGHT = 600;
 
-    private static final int GRID1_ROWS = 50;
-    private static final int GRID2_ROWS = 50;
-    private static final int GRID3_ROWS = 50;
+    private static final int GRID1_ROWS = 500;
+    private static final int GRID2_ROWS = 100;
+    private static final int GRID3_ROWS = 500;
 
     interface GridShowcaseWidgetUiBinder extends UiBinder<Widget, GridShowcaseWidget> {
 
@@ -67,7 +68,8 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
                                                       100 );
             grid1.getColumns().add( column );
         }
-        grid1.setData( GRID1_ROWS );
+        grid1.getData().addAll( GridDataFactory.makeData( grid1.getColumns().size(),
+                                                          GRID1_ROWS ) );
 
         //Grid 2
         final Grid grid2 = new Grid();
@@ -76,7 +78,8 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
                                                       150 );
             grid2.getColumns().add( column );
         }
-        grid2.setData( GRID2_ROWS );
+        grid2.getData().addAll( GridDataFactory.makeData( grid2.getColumns().size(),
+                                                          GRID2_ROWS ) );
 
         //Grid 3
         final Grid grid3 = new Grid();
@@ -85,7 +88,8 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
                                                       200 );
             grid3.getColumns().add( column );
         }
-        grid3.setData( GRID3_ROWS );
+        grid3.getData().addAll( GridDataFactory.makeData( grid3.getColumns().size(),
+                                                          GRID3_ROWS ) );
 
         //Link grids
         grid1.getColumns().get( 9 ).setLink( grid2.getColumns().get( 0 ) );

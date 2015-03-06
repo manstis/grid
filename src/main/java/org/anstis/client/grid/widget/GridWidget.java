@@ -2,18 +2,25 @@ package org.anstis.client.grid.widget;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import com.ait.lienzo.client.core.Context2D;
 import com.ait.lienzo.client.core.event.NodeMouseClickEvent;
 import com.ait.lienzo.client.core.event.NodeMouseClickHandler;
+import com.ait.lienzo.client.core.shape.Attributes;
 import com.ait.lienzo.client.core.shape.Group;
+import com.ait.lienzo.client.core.shape.IPrimitive;
 import com.ait.lienzo.client.core.shape.MultiPath;
+import com.ait.lienzo.client.core.shape.Node;
 import com.ait.lienzo.client.core.shape.Rectangle;
 import com.ait.lienzo.client.core.shape.Text;
 import com.ait.lienzo.client.core.types.Point2D;
 import com.ait.lienzo.client.core.types.Transform;
 import com.ait.lienzo.shared.core.types.ColorName;
+import com.ait.lienzo.shared.core.types.IColor;
 import com.ait.lienzo.shared.core.types.TextAlign;
 import com.ait.lienzo.shared.core.types.TextBaseLine;
+import com.google.gwt.core.client.GWT;
 import org.anstis.client.grid.model.Grid;
 import org.anstis.client.grid.model.GridColumn;
 
@@ -59,10 +66,10 @@ public class GridWidget extends Group implements IGridWidget<Group> {
 
     }
 
-    private void setData( final int rows ) {
-        height = HEADER_HEIGHT + ROW_HEIGHT * rows;
+    private void setData( final List<Map<Integer, String>> data ) {
+        height = HEADER_HEIGHT + ROW_HEIGHT * data.size();
         final Group r = makeCell( columns,
-                                  rows );
+                                  data );
         r.setLocation( new Point2D( 0,
                                     HEADER_HEIGHT ) );
         add( r );
@@ -100,10 +107,10 @@ public class GridWidget extends Group implements IGridWidget<Group> {
     }
 
     private Group makeCell( final List<GridColumn> columns,
-                            final int rows ) {
+                            final List<Map<Integer, String>> data ) {
         final GridCellWidget r = new GridCellWidget( this,
                                                      columns,
-                                                     rows );
+                                                     data );
         return r;
     }
 
@@ -119,8 +126,6 @@ public class GridWidget extends Group implements IGridWidget<Group> {
                     .setFillColor( ColorName.BISQUE )
                     .setStrokeColor( ColorName.SLATEGRAY )
                     .setStrokeWidth( 0.5 );
-
-            //TODO {manstis} Draw column text
             add( r );
 
             //Grid lines
@@ -178,7 +183,8 @@ public class GridWidget extends Group implements IGridWidget<Group> {
 
         public GridCellWidget( final IGridWidget gridWidget,
                                final List<GridColumn> columns,
-                               final int rows ) {
+                               final List<Map<Integer, String>> data ) {
+            final int rows = data.size();
             final double width = gridWidget.getWidth();
             r = new Rectangle( width,
                                ROW_HEIGHT * rows )
@@ -199,7 +205,7 @@ public class GridWidget extends Group implements IGridWidget<Group> {
                     .setStrokeColor( ColorName.SLATEGRAY )
                     .setStrokeWidth( 0.5 )
                     .setListening( false );
-            int x = 0;
+            double x = 0;
             for ( GridColumn column : columns ) {
                 pl.M( x, 0 ).L( x,
                                 ROW_HEIGHT * rows );
@@ -211,6 +217,30 @@ public class GridWidget extends Group implements IGridWidget<Group> {
                                             ROW_HEIGHT * idx );
             }
             add( pl );
+
+            //Cell content
+            final List<Double> columnPositions = new ArrayList<>();
+            x = 0;
+            for ( GridColumn column : columns ) {
+                columnPositions.add( x );
+                x = x + column.getWidth();
+            }
+
+            double cellY = 0;
+            for ( Map<Integer, String> row : data ) {
+                for ( Map.Entry<Integer, String> e : row.entrySet() ) {
+                    final int columnIndex = e.getKey();
+                    final int columnWidth = columns.get( columnIndex ).getWidth();
+                    final double cellX = columnPositions.get( columnIndex );
+                    final Rectangle r = new Rectangle( columnWidth,
+                                                       ROW_HEIGHT )
+                            .setLocation( new Point2D( cellX,
+                                                       cellY ) )
+                            .setFillColor( ColorName.THISTLE );
+                    add( r );
+                }
+                cellY = cellY + ROW_HEIGHT;
+            }
         }
 
     }

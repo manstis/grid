@@ -2,22 +2,19 @@ package org.anstis.client.grid.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class Grid {
 
     private List<GridColumn> columns = new ArrayList<>();
-    private int rows;
+    private List<Map<Integer, String>> data = new ArrayList<>();
 
     public List<GridColumn> getColumns() {
         return columns;
     }
 
-    public int getData() {
-        return rows;
-    }
-
-    public void setData( final int rows ) {
-        this.rows = rows;
+    public List<Map<Integer, String>> getData() {
+        return data;
     }
 
     @Override
@@ -31,7 +28,7 @@ public class Grid {
 
         Grid grid = (Grid) o;
 
-        if ( rows != grid.rows ) {
+        if ( data != grid.data ) {
             return false;
         }
         if ( !columns.equals( grid.columns ) ) {
@@ -44,9 +41,7 @@ public class Grid {
     @Override
     public int hashCode() {
         int result = columns.hashCode();
-        result = ~~result;
-        result = 31 * result + rows;
-        result = ~~result;
+        result = 31 * result + data.hashCode();
         return result;
     }
 }
