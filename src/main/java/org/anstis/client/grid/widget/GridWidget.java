@@ -86,7 +86,6 @@ public class GridWidget extends Group implements IGridWidget<Group> {
     @Override
     public void select() {
         add( selection );
-        moveToTop();
     }
 
     @Override
@@ -271,7 +270,7 @@ public class GridWidget extends Group implements IGridWidget<Group> {
             }
 
             if ( extentColumn.isLinked() ) {
-                final Grid link = extentColumn.getLink();
+                final GridColumn link = extentColumn.getLink();
                 selectionManager.scrollIntoView( link );
             }
         }

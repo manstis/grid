@@ -1,8 +1,5 @@
 package org.anstis.client.grid.widget;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.ait.lienzo.client.core.mediator.MousePanMediator;
 import com.ait.lienzo.client.core.shape.Layer;
 import com.ait.lienzo.client.core.types.Point2D;
@@ -25,9 +22,9 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
     public static final int VP_WIDTH = 1200;
     public static final int VP_HEIGHT = 600;
 
-    private static final int GRID1_ROWS = 1000;
-    private static final int GRID2_ROWS = 100;
-    private static final int GRID3_ROWS = 25;
+    private static final int GRID1_ROWS = 50;
+    private static final int GRID2_ROWS = 50;
+    private static final int GRID3_ROWS = 50;
 
     interface GridShowcaseWidgetUiBinder extends UiBinder<Widget, GridShowcaseWidget> {
 
@@ -63,63 +60,50 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
         gridPanel.add( gridLayer );
         table.setWidget( gridPanel );
 
-        //Model
-        final Grid grid1 = new Grid();
-        final Grid grid2 = new Grid();
-        final Grid grid3 = new Grid();
-
         //Grid 1
-        final List<GridColumn> columnsGrid1 = new ArrayList<>();
+        final Grid grid1 = new Grid();
         for ( int idx = 0; idx < 10; idx++ ) {
-            final GridColumn column = new GridColumn( "Col: " + idx,
+            final GridColumn column = new GridColumn( "G1-Col: " + idx,
                                                       100 );
-            columnsGrid1.add( column );
-            if ( idx == 9 ) {
-                column.setLink( grid2 );
-            }
+            grid1.getColumns().add( column );
         }
+        grid1.setData( GRID1_ROWS );
 
         //Grid 2
-        final List<GridColumn> columnsGrid2 = new ArrayList<>();
+        final Grid grid2 = new Grid();
         for ( int idx = 0; idx < 5; idx++ ) {
-            final GridColumn column = new GridColumn( "Col: " + idx,
+            final GridColumn column = new GridColumn( "G2-Col: " + idx,
                                                       150 );
-            columnsGrid2.add( column );
-            if ( idx == 3 ) {
-                column.setLink( grid3 );
-            }
+            grid2.getColumns().add( column );
         }
+        grid2.setData( GRID2_ROWS );
 
         //Grid 3
-        final List<GridColumn> columnsGrid3 = new ArrayList<>();
+        final Grid grid3 = new Grid();
         for ( int idx = 0; idx < 5; idx++ ) {
-            final GridColumn column = new GridColumn( "Col: " + idx,
+            final GridColumn column = new GridColumn( "G3-Col: " + idx,
                                                       200 );
-            columnsGrid3.add( column );
-            if ( idx == 0 ) {
-                column.setLink( grid1 );
-            }
+            grid3.getColumns().add( column );
         }
-
-        grid1.getColumns().addAll( columnsGrid1 );
-        grid2.getColumns().addAll( columnsGrid2 );
-        grid3.getColumns().addAll( columnsGrid3 );
-        grid1.setData( GRID1_ROWS );
-        grid2.setData( GRID2_ROWS );
         grid3.setData( GRID3_ROWS );
+
+        //Link grids
+        grid1.getColumns().get( 9 ).setLink( grid2.getColumns().get( 0 ) );
+        grid2.getColumns().get( 3 ).setLink( grid3.getColumns().get( 0 ) );
+        grid3.getColumns().get( 0 ).setLink( grid1.getColumns().get( 0 ) );
 
         //Widgets
         addGrid( grid1,
                  gridLayer,
-                 new Point2D( -1100,
+                 new Point2D( -1300,
                               0 ) );
         addGrid( grid2,
                  gridLayer,
                  new Point2D( 0,
-                              1000 ) );
+                              750 ) );
         addGrid( grid3,
                  gridLayer,
-                 new Point2D( 850,
+                 new Point2D( 1050,
                               0 ) );
 
         //Slider
@@ -166,8 +150,8 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
     }
 
     @Override
-    public void scrollIntoView( final Grid selectable ) {
-        gridLayer.scrollIntoView( selectable );
+    public void scrollIntoView( final GridColumn link ) {
+        gridLayer.scrollIntoView( link );
     }
 
 }

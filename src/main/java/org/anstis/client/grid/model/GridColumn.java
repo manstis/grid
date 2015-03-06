@@ -4,7 +4,7 @@ public class GridColumn {
 
     private String title;
     private int width;
-    private Grid link;
+    private GridColumn link;
 
     public GridColumn( final String title,
                        final int width ) {
@@ -24,11 +24,11 @@ public class GridColumn {
         return link != null;
     }
 
-    public Grid getLink() {
+    public GridColumn getLink() {
         return link;
     }
 
-    public void setLink( final Grid link ) {
+    public void setLink( final GridColumn link ) {
         this.link = link;
     }
 
