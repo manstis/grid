@@ -27,7 +27,7 @@ import org.anstis.client.grid.model.GridColumn;
 
 public class GridLayer extends Layer implements ISelectionManager {
 
-    private Map<Grid, IGridWidget<?>> selectables = new HashMap<>();
+    private Map<Grid, GridWidget> selectables = new HashMap<>();
     private Map<Connector, IPrimitive<?>> connectors = new HashMap<>();
 
     @Override
@@ -52,8 +52,8 @@ public class GridLayer extends Layer implements ISelectionManager {
         all.add( child );
         all.addAll( Arrays.asList( children ) );
         for ( IPrimitive<?> c : all ) {
-            if ( c instanceof IGridWidget<?> ) {
-                final IGridWidget<?> gridWidget = (IGridWidget<?>) c;
+            if ( c instanceof GridWidget ) {
+                final GridWidget gridWidget = (GridWidget) c;
                 selectables.put( gridWidget.getModel(),
                                  gridWidget );
                 addConnectors();
@@ -62,10 +62,10 @@ public class GridLayer extends Layer implements ISelectionManager {
     }
 
     private void addConnectors() {
-        for ( Map.Entry<Grid, IGridWidget<?>> e1 : selectables.entrySet() ) {
+        for ( Map.Entry<Grid, GridWidget> e1 : selectables.entrySet() ) {
             for ( GridColumn c : e1.getKey().getColumns() ) {
                 if ( c.isLinked() ) {
-                    final IGridWidget<?> linkWidget = getLinkedGrid( c.getLink() );
+                    final GridWidget linkWidget = getLinkedGrid( c.getLink() );
                     if ( linkWidget != null ) {
                         final Connector connector = new Connector( c,
                                                                    c.getLink() );
@@ -109,9 +109,9 @@ public class GridLayer extends Layer implements ISelectionManager {
         }
     }
 
-    private IGridWidget<?> getLinkedGrid( final GridColumn link ) {
-        IGridWidget<?> gridWidget = null;
-        for ( Map.Entry<Grid, IGridWidget<?>> e : selectables.entrySet() ) {
+    private GridWidget getLinkedGrid( final GridColumn link ) {
+        GridWidget gridWidget = null;
+        for ( Map.Entry<Grid, GridWidget> e : selectables.entrySet() ) {
             if ( e.getKey().getColumns().contains( link ) ) {
                 gridWidget = e.getValue();
                 break;
@@ -141,8 +141,8 @@ public class GridLayer extends Layer implements ISelectionManager {
         all.add( child );
         all.addAll( Arrays.asList( children ) );
         for ( IPrimitive<?> c : all ) {
-            if ( c instanceof IGridWidget<?> ) {
-                final IGridWidget<?> gridWidget = (IGridWidget<?>) c;
+            if ( c instanceof GridWidget ) {
+                final GridWidget gridWidget = (GridWidget) c;
                 selectables.remove( gridWidget.getModel() );
                 removeConnectors( gridWidget.getModel() );
             }
@@ -171,7 +171,7 @@ public class GridLayer extends Layer implements ISelectionManager {
 
     @Override
     public void select( final Grid selectable ) {
-        for ( Map.Entry<Grid, IGridWidget<?>> e : selectables.entrySet() ) {
+        for ( Map.Entry<Grid, GridWidget> e : selectables.entrySet() ) {
             e.getValue().deselect();
         }
         if ( selectables.containsKey( selectable ) ) {
@@ -182,7 +182,7 @@ public class GridLayer extends Layer implements ISelectionManager {
 
     @Override
     public void scrollIntoView( final GridColumn link ) {
-        final IGridWidget<?> gridWidget = getLinkedGrid( link );
+        final GridWidget gridWidget = getLinkedGrid( link );
         if ( gridWidget == null ) {
             return;
         }
@@ -191,7 +191,7 @@ public class GridLayer extends Layer implements ISelectionManager {
         a.run();
     }
 
-    private AbstractAnimation getScrollIntoViewAnimation( final IGridWidget<?> gridWidget ) {
+    private AbstractAnimation getScrollIntoViewAnimation( final GridWidget gridWidget ) {
         final Viewport vp = getViewport();
         final TimedAnimation a = new TimedAnimation( 500,
                                                      new IAnimationCallback() {

@@ -4,27 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import com.ait.lienzo.client.core.Context2D;
 import com.ait.lienzo.client.core.event.NodeMouseClickEvent;
 import com.ait.lienzo.client.core.event.NodeMouseClickHandler;
-import com.ait.lienzo.client.core.shape.Attributes;
 import com.ait.lienzo.client.core.shape.Group;
-import com.ait.lienzo.client.core.shape.IPrimitive;
 import com.ait.lienzo.client.core.shape.MultiPath;
-import com.ait.lienzo.client.core.shape.Node;
 import com.ait.lienzo.client.core.shape.Rectangle;
 import com.ait.lienzo.client.core.shape.Text;
 import com.ait.lienzo.client.core.types.Point2D;
 import com.ait.lienzo.client.core.types.Transform;
 import com.ait.lienzo.shared.core.types.ColorName;
-import com.ait.lienzo.shared.core.types.IColor;
 import com.ait.lienzo.shared.core.types.TextAlign;
 import com.ait.lienzo.shared.core.types.TextBaseLine;
-import com.google.gwt.core.client.GWT;
 import org.anstis.client.grid.model.Grid;
 import org.anstis.client.grid.model.GridColumn;
 
-public class GridWidget extends Group implements IGridWidget<Group> {
+public class GridWidget extends com.ait.lienzo.client.core.shape.grid.Grid {
 
     public static final int ROW_HEIGHT = 20;
     public static final int HEADER_HEIGHT = 30;
@@ -62,7 +56,7 @@ public class GridWidget extends Group implements IGridWidget<Group> {
         width = x;
         final Group h = makeHeader( columns );
         h.setLocation( new Point2D( 0, 0 ) );
-        add( h );
+        getProxy().add( h );
 
     }
 
@@ -72,32 +66,27 @@ public class GridWidget extends Group implements IGridWidget<Group> {
                                   data );
         r.setLocation( new Point2D( 0,
                                     HEADER_HEIGHT ) );
-        add( r );
+        getProxy().add( r );
     }
 
-    @Override
     public Grid getModel() {
         return model;
     }
 
-    @Override
     public double getWidth() {
         return width;
     }
 
-    @Override
     public double getHeight() {
         return height;
     }
 
-    @Override
     public void select() {
-        add( selection );
+        getProxy().add( selection );
     }
 
-    @Override
     public void deselect() {
-        remove( selection );
+        getProxy().remove( selection );
     }
 
     private Group makeHeader( final List<GridColumn> columns ) {
@@ -118,7 +107,7 @@ public class GridWidget extends Group implements IGridWidget<Group> {
 
         private Rectangle r;
 
-        public GridHeaderWidget( final IGridWidget gridWidget,
+        public GridHeaderWidget( final GridWidget gridWidget,
                                  final List<GridColumn> columns ) {
             final double width = gridWidget.getWidth();
             r = new Rectangle( width,
@@ -181,7 +170,7 @@ public class GridWidget extends Group implements IGridWidget<Group> {
 
         private Rectangle r;
 
-        public GridCellWidget( final IGridWidget gridWidget,
+        public GridCellWidget( final GridWidget gridWidget,
                                final List<GridColumn> columns,
                                final List<Map<Integer, String>> data ) {
             final int rows = data.size();
