@@ -19,8 +19,9 @@ public class GridDataFactory {
     public static Map<Integer, String> makeRow( final int cols ) {
         final Map<Integer, String> row = new HashMap<>();
         for ( int i = 0; i < cols; i++ ) {
-            if ( Math.random() < 0.25 ) {
-                row.put( i, "A" );
+            if ( Math.random() < 1 ) {
+                row.put( i,
+                         "A" );
             }
         }
         return row;

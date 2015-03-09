@@ -1,17 +1,19 @@
 package org.anstis.client.grid.widget;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.ait.lienzo.client.core.Context2D;
 import com.ait.lienzo.client.core.event.NodeMouseClickEvent;
 import com.ait.lienzo.client.core.event.NodeMouseClickHandler;
-import com.ait.lienzo.client.core.shape.Attributes;
 import com.ait.lienzo.client.core.shape.Group;
+import com.ait.lienzo.client.core.shape.IPrimitive;
 import com.ait.lienzo.client.core.shape.MultiPath;
 import com.ait.lienzo.client.core.shape.Rectangle;
 import com.ait.lienzo.client.core.shape.Text;
+import com.ait.lienzo.client.core.types.NFastArrayList;
 import com.ait.lienzo.client.core.types.Point2D;
 import com.ait.lienzo.client.core.types.Transform;
 import com.ait.lienzo.shared.core.types.ColorName;
@@ -24,6 +26,8 @@ public class GridWidget extends Group {
 
     public static final int ROW_HEIGHT = 20;
     public static final int HEADER_HEIGHT = 30;
+
+    private List<Map<Integer, IPrimitive<?>>> rowsCells = new ArrayList<>();
 
     private Grid model;
     private ISelectionManager selectionManager;
@@ -84,6 +88,81 @@ public class GridWidget extends Group {
 
     public void deselect() {
         remove( selection );
+    }
+
+    @Override
+    protected void drawWithoutTransforms( Context2D context,
+                                          double alpha ) {
+        if ( ( context.isSelection() ) && ( false == isListening() ) ) {
+            return;
+        }
+        alpha = alpha * getAttributes().getAlpha();
+
+        if ( alpha <= 0 ) {
+            return;
+        }
+
+        final NFastArrayList<IPrimitive<?>> toRender = new NFastArrayList<>();
+        final NFastArrayList<IPrimitive<?>> childNodes = getChildNodes();
+        for ( int i = 0; i < childNodes.size(); i++ ) {
+            toRender.add( childNodes.get( i ) );
+        }
+
+        //Get viewable area dimensions
+        final GridLayer gridLayer = ( (GridLayer) getLayer() );
+        final Rectangle bounds = gridLayer.getVisibleBounds();
+        final double vpX = bounds.getX();
+        final double vpY = bounds.getY();
+        final double vpHeight = bounds.getHeight();
+        final double vpWidth = bounds.getWidth();
+
+        //Determine which columns are within visible area
+        double x = 0;
+        int minCol = -1;
+        int maxCol = -1;
+        for ( int i = 0; i < columns.size(); i++ ) {
+            final GridColumn column = columns.get( i );
+            if ( getX() + x + column.getWidth() > vpX ) {
+                minCol = i;
+                break;
+            }
+            x = x + column.getWidth();
+        }
+        x = 0;
+        for ( int i = 0; i < columns.size(); i++ ) {
+            final GridColumn column = columns.get( i );
+            if ( getX() + x < vpX + vpWidth ) {
+                maxCol = i;
+            }
+            x = x + column.getWidth();
+        }
+
+        //Determine which rows are within visible area
+        int minRow = (int) ( vpY - getY() - HEADER_HEIGHT ) / ROW_HEIGHT;
+        if ( minRow < 0 ) {
+            minRow = 0;
+        }
+        int maxRow = ( (int) ( vpHeight + HEADER_HEIGHT ) / ROW_HEIGHT ) + minRow;
+        if ( maxRow > rowsCells.size() ) {
+            maxRow = rowsCells.size();
+        }
+
+        if ( minCol >= 0 && maxCol <= columns.size() && minRow >= 0 && maxRow <= rowsCells.size() ) {
+            for ( int i = minRow; i < maxRow; i++ ) {
+                final Map<Integer, IPrimitive<?>> rowCells = rowsCells.get( i );
+                for ( Map.Entry<Integer, IPrimitive<?>> e : rowCells.entrySet() ) {
+                    final int columnIndex = e.getKey();
+                    final IPrimitive<?> child = e.getValue();
+                    if ( columnIndex >= minCol && columnIndex <= maxCol ) {
+                        toRender.add( child );
+                    }
+                }
+            }
+        }
+        for ( int i = 0; i < toRender.size(); i++ ) {
+            toRender.get( i ).drawWithTransforms( context,
+                                                  alpha );
+        }
     }
 
     private void makeGridHeaderWidget() {
@@ -182,66 +261,22 @@ public class GridWidget extends Group {
 
         double offsetY = HEADER_HEIGHT;
         for ( Map<Integer, String> row : data ) {
+            final Map<Integer, IPrimitive<?>> rowCells = new HashMap<>();
             for ( Map.Entry<Integer, String> e : row.entrySet() ) {
                 final int columnIndex = e.getKey();
                 final int columnWidth = columns.get( columnIndex ).getWidth();
-                final double _offsetY = offsetY;
-                final double _offsetX = columnPositions.get( columnIndex );
+                final double offsetX = columnPositions.get( columnIndex );
                 final Rectangle cr = new Rectangle( columnWidth,
-                                                    ROW_HEIGHT ) {
-
-                    private boolean isCellVisible = false;
-
-                    @Override
-                    protected void drawWithoutTransforms( final Context2D context,
-                                                          final double alpha ) {
-                        isCellVisible = isCellVisible( _offsetX,
-                                                       _offsetY,
-                                                       columnWidth );
-                        if ( !isCellVisible ) {
-                            return;
-                        }
-                        super.drawWithoutTransforms( context,
-                                                     alpha );
-                    }
-
-                    @Override
-                    protected boolean prepare( final Context2D context,
-                                               final Attributes attr,
-                                               final double alpha ) {
-                        if ( !isCellVisible ) {
-                            return false;
-                        }
-                        return super.prepare( context,
-                                              attr,
-                                              alpha );
-                    }
-
-                }
-                        .setLocation( new Point2D( _offsetX,
-                                                   _offsetY ) )
+                                                    ROW_HEIGHT )
+                        .setLocation( new Point2D( offsetX,
+                                                   offsetY ) )
                         .setFillColor( ColorName.THISTLE );
-                add( cr );
+                rowCells.put( e.getKey(),
+                              cr );
             }
             offsetY = offsetY + ROW_HEIGHT;
+            rowsCells.add( rowCells );
         }
-    }
-
-    private boolean isCellVisible( final double offsetX,
-                                   final double offsetY,
-                                   final double columnWidth ) {
-        final GridLayer gridLayer = ( (GridLayer) getLayer() );
-        final Rectangle bounds = gridLayer.getVisibleBounds();
-        if ( getX() + offsetX + columnWidth < bounds.getX() ) {
-            return false;
-        } else if ( getX() + offsetX > bounds.getX() + bounds.getWidth() ) {
-            return false;
-        } else if ( getY() + offsetY + ROW_HEIGHT < bounds.getY() ) {
-            return false;
-        } else if ( getY() + offsetY > bounds.getY() + bounds.getHeight() ) {
-            return false;
-        }
-        return true;
     }
 
     private class GridWidgetNodeClickHandler implements NodeMouseClickHandler {

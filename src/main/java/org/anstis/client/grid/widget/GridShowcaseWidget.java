@@ -23,9 +23,9 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
     public static final int VP_WIDTH = 1200;
     public static final int VP_HEIGHT = 600;
 
-    private static final int GRID1_ROWS = 200;
-    private static final int GRID2_ROWS = 200;
-    private static final int GRID3_ROWS = 200;
+    private static final int GRID1_ROWS = 2000;
+    private static final int GRID2_ROWS = 2000;
+    private static final int GRID3_ROWS = 2000;
 
     interface GridShowcaseWidgetUiBinder extends UiBinder<Widget, GridShowcaseWidget> {
 
