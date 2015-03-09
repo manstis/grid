@@ -15,6 +15,7 @@ import com.ait.lienzo.client.core.animation.TimedAnimation;
 import com.ait.lienzo.client.core.shape.Arrow;
 import com.ait.lienzo.client.core.shape.IPrimitive;
 import com.ait.lienzo.client.core.shape.Layer;
+import com.ait.lienzo.client.core.shape.Rectangle;
 import com.ait.lienzo.client.core.shape.Viewport;
 import com.ait.lienzo.client.core.types.Point2D;
 import com.ait.lienzo.client.core.types.Transform;
@@ -30,12 +31,37 @@ public class GridLayer extends Layer implements ISelectionManager {
     private Map<Grid, GridWidget> selectables = new HashMap<>();
     private Map<Connector, IPrimitive<?>> connectors = new HashMap<>();
 
+    private Rectangle bounds = new Rectangle( 0, 0 );
+
+    public GridLayer() {
+        add( bounds );
+    }
+
     @Override
     public void draw() {
         Scheduler.get().scheduleFinally( new Command() {
+
+            private static final int PADDING = 100;
+
             @Override
             public void execute() {
+                updateBounds();
                 GridLayer.super.draw();
+            }
+
+            private void updateBounds() {
+                final Viewport viewport = GridLayer.this.getViewport();
+                Transform transform = viewport.getTransform();
+                if ( transform == null ) {
+                    viewport.setTransform( transform = new Transform() );
+                }
+                final double x = ( PADDING - transform.getTranslateX() ) / transform.getScaleX();
+                final double y = ( PADDING - transform.getTranslateY() ) / transform.getScaleY();
+                bounds.setLocation( new Point2D( x,
+                                                 y ) );
+                bounds.setHeight( ( viewport.getHeight() - PADDING * 2 ) / transform.getScaleX() );
+                bounds.setWidth( ( viewport.getWidth() - PADDING * 2 ) / transform.getScaleY() );
+                bounds.setStrokeWidth( 1.0 / transform.getScaleX() );
             }
         } );
     }
@@ -81,13 +107,6 @@ public class GridLayer extends Layer implements ISelectionManager {
                                 sp.setX( sp.getX() - e1.getValue().getWidth() / 2 );
                                 ep.setX( ep.getX() + linkWidget.getWidth() / 2 );
                             }
-//                            if ( sp.getY() < ep.getY() ) {
-//                                sp.setY( sp.getY() + e1.getValue().getHeight() / 2 );
-//                                ep.setY( ep.getY() - linkWidget.getHeight() / 2 );
-//                            } else {
-//                                sp.setY( sp.getY() - e1.getValue().getHeight() / 2 );
-//                                ep.setY( ep.getY() + linkWidget.getHeight() / 2 );
-//                            }
                             final Arrow arrow = new Arrow( sp,
                                                            ep,
                                                            10.0,
@@ -189,6 +208,10 @@ public class GridLayer extends Layer implements ISelectionManager {
 
         final AbstractAnimation a = getScrollIntoViewAnimation( gridWidget );
         a.run();
+    }
+
+    public Rectangle getVisibleBounds() {
+        return bounds;
     }
 
     private AbstractAnimation getScrollIntoViewAnimation( final GridWidget gridWidget ) {

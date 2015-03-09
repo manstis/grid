@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.ait.lienzo.client.core.Context2D;
 import com.ait.lienzo.client.core.event.NodeMouseClickEvent;
 import com.ait.lienzo.client.core.event.NodeMouseClickHandler;
+import com.ait.lienzo.client.core.shape.Attributes;
 import com.ait.lienzo.client.core.shape.Group;
 import com.ait.lienzo.client.core.shape.MultiPath;
 import com.ait.lienzo.client.core.shape.Rectangle;
@@ -31,6 +33,7 @@ public class GridWidget extends Group {
             .setStrokeColor( ColorName.GREEN )
             .setListening( false );
     private List<GridColumn> columns = new ArrayList<>();
+    private List<Map<Integer, String>> data = new ArrayList<>();
     private double width = 0;
     private double height = 0;
 
@@ -54,19 +57,13 @@ public class GridWidget extends Group {
             x = x + column.getWidth();
         }
         width = x;
-        final Group h = makeHeader( columns );
-        h.setLocation( new Point2D( 0, 0 ) );
-        add( h );
-
+        makeGridHeaderWidget();
     }
 
     private void setData( final List<Map<Integer, String>> data ) {
+        this.data.addAll( data );
         height = HEADER_HEIGHT + ROW_HEIGHT * data.size();
-        final Group r = makeCell( columns,
-                                  data );
-        r.setLocation( new Point2D( 0,
-                                    HEADER_HEIGHT ) );
-        add( r );
+        makeGridCellWidget();
     }
 
     public Grid getModel() {
@@ -89,149 +86,162 @@ public class GridWidget extends Group {
         remove( selection );
     }
 
-    private Group makeHeader( final List<GridColumn> columns ) {
-        final GridHeaderWidget r = new GridHeaderWidget( this,
-                                                         columns );
-        return r;
-    }
+    private void makeGridHeaderWidget() {
+        final double width = getWidth();
+        final Rectangle r = new Rectangle( width,
+                                           HEADER_HEIGHT )
+                .setFillColor( ColorName.BISQUE )
+                .setStrokeColor( ColorName.SLATEGRAY )
+                .setStrokeWidth( 0.5 );
+        add( r );
 
-    private Group makeCell( final List<GridColumn> columns,
-                            final List<Map<Integer, String>> data ) {
-        final GridCellWidget r = new GridCellWidget( this,
-                                                     columns,
-                                                     data );
-        return r;
-    }
+        //Grid lines
+        final MultiPath pl = new MultiPath()
+                .setStrokeColor( ColorName.SLATEGRAY )
+                .setStrokeWidth( 0.5 )
+                .setListening( false );
+        int x = 0;
+        for ( GridColumn column : columns ) {
+            final int w = column.getWidth();
+            pl.M( x, 0 ).L( x,
+                            HEADER_HEIGHT );
+            x = x + w;
+        }
+        add( pl );
 
-    private static class GridHeaderWidget extends Group {
-
-        private Rectangle r;
-
-        public GridHeaderWidget( final GridWidget gridWidget,
-                                 final List<GridColumn> columns ) {
-            final double width = gridWidget.getWidth();
-            r = new Rectangle( width,
-                               HEADER_HEIGHT )
-                    .setFillColor( ColorName.BISQUE )
-                    .setStrokeColor( ColorName.SLATEGRAY )
-                    .setStrokeWidth( 0.5 );
-            add( r );
-
-            //Grid lines
-            final MultiPath pl = new MultiPath()
-                    .setStrokeColor( ColorName.SLATEGRAY )
-                    .setStrokeWidth( 0.5 )
-                    .setListening( false );
-            int x = 0;
-            for ( GridColumn column : columns ) {
-                final int w = column.getWidth();
-                pl.M( x, 0 ).L( x,
-                                HEADER_HEIGHT );
-                x = x + w;
+        //Linked columns
+        x = 0;
+        for ( GridColumn column : columns ) {
+            final int w = column.getWidth();
+            if ( column.isLinked() ) {
+                final Rectangle lr = new Rectangle( w,
+                                                    HEADER_HEIGHT )
+                        .setFillColor( ColorName.BROWN )
+                        .setStrokeColor( ColorName.SLATEGRAY )
+                        .setStrokeWidth( 0.5 )
+                        .setX( x );
+                add( lr );
             }
-            add( pl );
-
-            //Linked columns
-            x = 0;
-            for ( GridColumn column : columns ) {
-                final int w = column.getWidth();
-                if ( column.isLinked() ) {
-                    final Rectangle lr = new Rectangle( w,
-                                                        HEADER_HEIGHT )
-                            .setFillColor( ColorName.BROWN )
-                            .setStrokeColor( ColorName.SLATEGRAY )
-                            .setStrokeWidth( 0.5 )
-                            .setX( x );
-                    add( lr );
-                }
-                x = x + w;
-            }
-
-            //Column text
-            x = 0;
-            for ( GridColumn column : columns ) {
-                final int w = column.getWidth();
-                final Text t = new Text( column.getTitle() )
-                        .setFillColor( ColorName.DEEPPINK )
-                        .setX( x + w / 2 )
-                        .setY( HEADER_HEIGHT / 2 )
-                        .setFontSize( 12 )
-                        .setListening( false )
-                        .setTextBaseLine( TextBaseLine.MIDDLE )
-                        .setTextAlign( TextAlign.CENTER );
-                add( t );
-                x = x + w;
-            }
+            x = x + w;
         }
 
+        //Column text
+        x = 0;
+        for ( GridColumn column : columns ) {
+            final int w = column.getWidth();
+            final Text t = new Text( column.getTitle() )
+                    .setFillColor( ColorName.DEEPPINK )
+                    .setX( x + w / 2 )
+                    .setY( HEADER_HEIGHT / 2 )
+                    .setFontSize( 12 )
+                    .setListening( false )
+                    .setTextBaseLine( TextBaseLine.MIDDLE )
+                    .setTextAlign( TextAlign.CENTER );
+            add( t );
+            x = x + w;
+        }
     }
 
-    private static class GridCellWidget extends Group {
+    private void makeGridCellWidget() {
+        final int rows = data.size();
+        final double width = getWidth();
+        final Rectangle r = new Rectangle( width,
+                                           ROW_HEIGHT * rows )
+                .setFillColor( ColorName.ANTIQUEWHITE )
+                .setStrokeColor( ColorName.SLATEGRAY )
+                .setStrokeWidth( 0.5 )
+                .setY( HEADER_HEIGHT );
+        add( r );
 
-        private Rectangle r;
+        //Grid lines
+        final MultiPath pl = new MultiPath()
+                .setStrokeColor( ColorName.SLATEGRAY )
+                .setStrokeWidth( 0.5 )
+                .setListening( false )
+                .setY( HEADER_HEIGHT );
+        double x = 0;
+        for ( GridColumn column : columns ) {
+            pl.M( x, 0 ).L( x,
+                            ROW_HEIGHT * rows );
+            x = x + column.getWidth();
+        }
+        for ( int idx = 0; idx < rows; idx++ ) {
+            pl.M( 0,
+                  ROW_HEIGHT * idx ).L( width,
+                                        ROW_HEIGHT * idx );
+        }
+        add( pl );
 
-        public GridCellWidget( final GridWidget gridWidget,
-                               final List<GridColumn> columns,
-                               final List<Map<Integer, String>> data ) {
-            final int rows = data.size();
-            final double width = gridWidget.getWidth();
-            r = new Rectangle( width,
-                               ROW_HEIGHT * rows )
-                    .setFillColor( ColorName.ANTIQUEWHITE )
-                    .setStrokeColor( ColorName.SLATEGRAY )
-                    .setStrokeWidth( 0.5 );
-            add( r );
-
-            //Show last row in a different colour so we can check scrolling
-            final Rectangle endRowMarker = new Rectangle( width,
-                                                          ROW_HEIGHT )
-                    .setFillColor( ColorName.RED )
-                    .setY( ( rows - 1 ) * ROW_HEIGHT );
-            add( endRowMarker );
-
-            //Grid lines
-            final MultiPath pl = new MultiPath()
-                    .setStrokeColor( ColorName.SLATEGRAY )
-                    .setStrokeWidth( 0.5 )
-                    .setListening( false );
-            double x = 0;
-            for ( GridColumn column : columns ) {
-                pl.M( x, 0 ).L( x,
-                                ROW_HEIGHT * rows );
-                x = x + column.getWidth();
-            }
-            for ( int idx = 0; idx < rows; idx++ ) {
-                pl.M( 0,
-                      ROW_HEIGHT * idx ).L( gridWidget.getWidth(),
-                                            ROW_HEIGHT * idx );
-            }
-            add( pl );
-
-            //Cell content
-            final List<Double> columnPositions = new ArrayList<>();
-            x = 0;
-            for ( GridColumn column : columns ) {
-                columnPositions.add( x );
-                x = x + column.getWidth();
-            }
-
-            double cellY = 0;
-            for ( Map<Integer, String> row : data ) {
-                for ( Map.Entry<Integer, String> e : row.entrySet() ) {
-                    final int columnIndex = e.getKey();
-                    final int columnWidth = columns.get( columnIndex ).getWidth();
-                    final double cellX = columnPositions.get( columnIndex );
-                    final Rectangle r = new Rectangle( columnWidth,
-                                                       ROW_HEIGHT )
-                            .setLocation( new Point2D( cellX,
-                                                       cellY ) )
-                            .setFillColor( ColorName.THISTLE );
-                    add( r );
-                }
-                cellY = cellY + ROW_HEIGHT;
-            }
+        //Cell content
+        final List<Double> columnPositions = new ArrayList<>();
+        x = 0;
+        for ( GridColumn column : columns ) {
+            columnPositions.add( x );
+            x = x + column.getWidth();
         }
 
+        double offsetY = HEADER_HEIGHT;
+        for ( Map<Integer, String> row : data ) {
+            for ( Map.Entry<Integer, String> e : row.entrySet() ) {
+                final int columnIndex = e.getKey();
+                final int columnWidth = columns.get( columnIndex ).getWidth();
+                final double _offsetY = offsetY;
+                final double _offsetX = columnPositions.get( columnIndex );
+                final Rectangle cr = new Rectangle( columnWidth,
+                                                    ROW_HEIGHT ) {
+
+                    private boolean isCellVisible = false;
+
+                    @Override
+                    protected void drawWithoutTransforms( final Context2D context,
+                                                          final double alpha ) {
+                        isCellVisible = isCellVisible( _offsetX,
+                                                       _offsetY,
+                                                       columnWidth );
+                        if ( !isCellVisible ) {
+                            return;
+                        }
+                        super.drawWithoutTransforms( context,
+                                                     alpha );
+                    }
+
+                    @Override
+                    protected boolean prepare( final Context2D context,
+                                               final Attributes attr,
+                                               final double alpha ) {
+                        if ( !isCellVisible ) {
+                            return false;
+                        }
+                        return super.prepare( context,
+                                              attr,
+                                              alpha );
+                    }
+
+                }
+                        .setLocation( new Point2D( _offsetX,
+                                                   _offsetY ) )
+                        .setFillColor( ColorName.THISTLE );
+                add( cr );
+            }
+            offsetY = offsetY + ROW_HEIGHT;
+        }
+    }
+
+    private boolean isCellVisible( final double offsetX,
+                                   final double offsetY,
+                                   final double columnWidth ) {
+        final GridLayer gridLayer = ( (GridLayer) getLayer() );
+        final Rectangle bounds = gridLayer.getVisibleBounds();
+        if ( getX() + offsetX + columnWidth < bounds.getX() ) {
+            return false;
+        } else if ( getX() + offsetX > bounds.getX() + bounds.getWidth() ) {
+            return false;
+        } else if ( getY() + offsetY + ROW_HEIGHT < bounds.getY() ) {
+            return false;
+        } else if ( getY() + offsetY > bounds.getY() + bounds.getHeight() ) {
+            return false;
+        }
+        return true;
     }
 
     private class GridWidgetNodeClickHandler implements NodeMouseClickHandler {
