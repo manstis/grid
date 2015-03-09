@@ -7,6 +7,8 @@ import java.util.Map;
 
 public class GridDataFactory {
 
+    private static double FILL_FACTOR = 1.0;
+
     public static List<Map<Integer, String>> makeData( final int cols,
                                                        final int rows ) {
         final List<Map<Integer, String>> data = new ArrayList<>();
@@ -19,9 +21,9 @@ public class GridDataFactory {
     public static Map<Integer, String> makeRow( final int cols ) {
         final Map<Integer, String> row = new HashMap<>();
         for ( int i = 0; i < cols; i++ ) {
-            if ( Math.random() < 1 ) {
+            if ( Math.random() < FILL_FACTOR ) {
                 row.put( i,
-                         "A" );
+                         "A" + (int) ( Math.random() * 10 ) );
             }
         }
         return row;

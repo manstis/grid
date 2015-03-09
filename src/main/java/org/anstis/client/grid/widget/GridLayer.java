@@ -31,9 +31,11 @@ public class GridLayer extends Layer implements ISelectionManager {
     private Map<Grid, GridWidget> selectables = new HashMap<>();
     private Map<Connector, IPrimitive<?>> connectors = new HashMap<>();
 
-    private Rectangle bounds = new Rectangle( 0, 0 );
+    private Rectangle bounds;
 
     public GridLayer() {
+        bounds = new Rectangle( 0, 0 )
+                .setVisible( true );
         add( bounds );
     }
 
@@ -41,7 +43,7 @@ public class GridLayer extends Layer implements ISelectionManager {
     public void draw() {
         Scheduler.get().scheduleFinally( new Command() {
 
-            private static final int PADDING = 100;
+            private static final int PADDING = 50;
 
             @Override
             public void execute() {

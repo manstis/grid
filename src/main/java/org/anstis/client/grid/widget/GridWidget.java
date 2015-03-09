@@ -102,6 +102,7 @@ public class GridWidget extends Group {
             return;
         }
 
+        //Add decorations into render queue
         final NFastArrayList<IPrimitive<?>> toRender = new NFastArrayList<>();
         final NFastArrayList<IPrimitive<?>> childNodes = getChildNodes();
         for ( int i = 0; i < childNodes.size(); i++ ) {
@@ -142,11 +143,12 @@ public class GridWidget extends Group {
         if ( minRow < 0 ) {
             minRow = 0;
         }
-        int maxRow = ( (int) ( vpHeight + HEADER_HEIGHT ) / ROW_HEIGHT ) + minRow;
+        int maxRow = ( (int) ( vpY - getY() - HEADER_HEIGHT + vpHeight + ROW_HEIGHT ) / ROW_HEIGHT );
         if ( maxRow > rowsCells.size() ) {
             maxRow = rowsCells.size();
         }
 
+        //Add cells within visible area to render queue
         if ( minCol >= 0 && maxCol <= columns.size() && minRow >= 0 && maxRow <= rowsCells.size() ) {
             for ( int i = minRow; i < maxRow; i++ ) {
                 final Map<Integer, IPrimitive<?>> rowCells = rowsCells.get( i );
@@ -159,6 +161,8 @@ public class GridWidget extends Group {
                 }
             }
         }
+
+        //Render visible content
         for ( int i = 0; i < toRender.size(); i++ ) {
             toRender.get( i ).drawWithTransforms( context,
                                                   alpha );
@@ -266,13 +270,16 @@ public class GridWidget extends Group {
                 final int columnIndex = e.getKey();
                 final int columnWidth = columns.get( columnIndex ).getWidth();
                 final double offsetX = columnPositions.get( columnIndex );
-                final Rectangle cr = new Rectangle( columnWidth,
-                                                    ROW_HEIGHT )
-                        .setLocation( new Point2D( offsetX,
-                                                   offsetY ) )
-                        .setFillColor( ColorName.THISTLE );
+                final Text t = new Text( e.getValue() )
+                        .setFillColor( ColorName.DEEPPINK )
+                        .setX( offsetX + columnWidth / 2 )
+                        .setY( offsetY + ROW_HEIGHT / 2 )
+                        .setFontSize( 12 )
+                        .setListening( false )
+                        .setTextBaseLine( TextBaseLine.MIDDLE )
+                        .setTextAlign( TextAlign.CENTER );
                 rowCells.put( e.getKey(),
-                              cr );
+                              t );
             }
             offsetY = offsetY + ROW_HEIGHT;
             rowsCells.add( rowCells );
