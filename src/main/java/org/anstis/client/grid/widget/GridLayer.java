@@ -12,6 +12,13 @@ import com.ait.lienzo.client.core.animation.IAnimation;
 import com.ait.lienzo.client.core.animation.IAnimationCallback;
 import com.ait.lienzo.client.core.animation.IAnimationHandle;
 import com.ait.lienzo.client.core.animation.TimedAnimation;
+import com.ait.lienzo.client.core.event.NodeMouseDownEvent;
+import com.ait.lienzo.client.core.event.NodeMouseDownHandler;
+import com.ait.lienzo.client.core.event.NodeMouseMoveEvent;
+import com.ait.lienzo.client.core.event.NodeMouseMoveHandler;
+import com.ait.lienzo.client.core.event.NodeMouseUpEvent;
+import com.ait.lienzo.client.core.event.NodeMouseUpHandler;
+import com.ait.lienzo.client.core.mediator.IMediator;
 import com.ait.lienzo.client.core.shape.Arrow;
 import com.ait.lienzo.client.core.shape.IPrimitive;
 import com.ait.lienzo.client.core.shape.Layer;
@@ -22,14 +29,16 @@ import com.ait.lienzo.client.core.types.Transform;
 import com.ait.lienzo.shared.core.types.ArrowType;
 import com.ait.lienzo.shared.core.types.ColorName;
 import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.dom.client.Style;
 import com.google.gwt.user.client.Command;
 import org.anstis.client.grid.model.Grid;
 import org.anstis.client.grid.model.GridColumn;
+import org.anstis.client.grid.util.GridCoordinateUtils;
 
 public class GridLayer extends Layer implements ISelectionManager {
 
     private Map<Grid, GridWidget> selectables = new HashMap<>();
-    private Map<Connector, IPrimitive<?>> connectors = new HashMap<>();
+    private Map<Connector, Arrow> connectors = new HashMap<>();
 
     private Rectangle bounds;
 
@@ -37,6 +46,12 @@ public class GridLayer extends Layer implements ISelectionManager {
         bounds = new Rectangle( 0, 0 )
                 .setVisible( false );
         add( bounds );
+
+        //Column DnD handlers
+        final GridWidgetMouseState state = new GridWidgetMouseState();
+        addNodeMouseDownHandler( new GridWidgetMouseDownHandler( state ) );
+        addNodeMouseMoveHandler( new GridWidgetMouseMoveHandler( state ) );
+        addNodeMouseUpHandler( new GridWidgetMouseUpHandler( state ) );
     }
 
     @Override
@@ -48,6 +63,7 @@ public class GridLayer extends Layer implements ISelectionManager {
             @Override
             public void execute() {
                 updateBounds();
+                updateConnectors();
                 GridLayer.super.draw();
             }
 
@@ -64,6 +80,25 @@ public class GridLayer extends Layer implements ISelectionManager {
                 bounds.setHeight( ( viewport.getHeight() - PADDING * 2 ) / transform.getScaleX() );
                 bounds.setWidth( ( viewport.getWidth() - PADDING * 2 ) / transform.getScaleY() );
                 bounds.setStrokeWidth( 1.0 / transform.getScaleX() );
+            }
+
+            private void updateConnectors() {
+                for ( Map.Entry<Connector, Arrow> e : connectors.entrySet() ) {
+                    final Connector connector = e.getKey();
+                    final Arrow arrow = e.getValue();
+                    final GridColumn sourceColumn = connector.getSourceColumn();
+                    final GridColumn targetColumn = connector.getTargetColumn();
+                    final GridWidget sourceGrid = getLinkedGrid( sourceColumn );
+                    final GridWidget targetGrid = getLinkedGrid( targetColumn );
+                    if ( connector.getDirection() == Connector.Direction.EAST_WEST ) {
+                        arrow.setStart( new Point2D( sourceGrid.getX() + sourceGrid.getWidth() / 2,
+                                                     arrow.getStart().getY() ) );
+                    } else {
+                        arrow.setEnd( new Point2D( targetGrid.getX() + targetGrid.getWidth(),
+                                                   arrow.getEnd().getY() ) );
+                    }
+                }
+
             }
         } );
     }
@@ -95,20 +130,26 @@ public class GridLayer extends Layer implements ISelectionManager {
                 if ( c.isLinked() ) {
                     final GridWidget linkWidget = getLinkedGrid( c.getLink() );
                     if ( linkWidget != null ) {
+                        Connector.Direction direction;
+                        final Point2D sp = new Point2D( e1.getValue().getX() + e1.getValue().getWidth() / 2,
+                                                        e1.getValue().getY() + e1.getValue().getHeight() / 2 );
+                        final Point2D ep = new Point2D( linkWidget.getX() + linkWidget.getWidth() / 2,
+                                                        linkWidget.getY() + linkWidget.getHeight() / 2 );
+                        if ( sp.getX() < ep.getX() ) {
+                            direction = Connector.Direction.EAST_WEST;
+                            sp.setX( sp.getX() + e1.getValue().getWidth() / 2 );
+                            ep.setX( ep.getX() - linkWidget.getWidth() / 2 );
+                        } else {
+                            direction = Connector.Direction.WEST_EAST;
+                            sp.setX( sp.getX() - e1.getValue().getWidth() / 2 );
+                            ep.setX( ep.getX() + linkWidget.getWidth() / 2 );
+                        }
+
                         final Connector connector = new Connector( c,
-                                                                   c.getLink() );
+                                                                   c.getLink(),
+                                                                   direction );
+
                         if ( !connectors.containsKey( connector ) ) {
-                            final Point2D sp = new Point2D( e1.getValue().getX() + e1.getValue().getWidth() / 2,
-                                                            e1.getValue().getY() + e1.getValue().getHeight() / 2 );
-                            final Point2D ep = new Point2D( linkWidget.getX() + linkWidget.getWidth() / 2,
-                                                            linkWidget.getY() + linkWidget.getHeight() / 2 );
-                            if ( sp.getX() < ep.getX() ) {
-                                sp.setX( sp.getX() + e1.getValue().getWidth() / 2 );
-                                ep.setX( ep.getX() - linkWidget.getWidth() / 2 );
-                            } else {
-                                sp.setX( sp.getX() - e1.getValue().getWidth() / 2 );
-                                ep.setX( ep.getX() + linkWidget.getWidth() / 2 );
-                            }
                             final Arrow arrow = new Arrow( sp,
                                                            ep,
                                                            10.0,
@@ -172,7 +213,7 @@ public class GridLayer extends Layer implements ISelectionManager {
 
     private void removeConnectors( final Grid model ) {
         final List<Connector> removedConnectors = new ArrayList<>();
-        for ( Map.Entry<Connector, IPrimitive<?>> e : connectors.entrySet() ) {
+        for ( Map.Entry<Connector, Arrow> e : connectors.entrySet() ) {
             if ( model.getColumns().contains( e.getKey().getSourceColumn() ) || model.getColumns().contains( e.getKey().getTargetColumn() ) ) {
                 remove( e.getValue() );
                 removedConnectors.add( e.getKey() );
@@ -294,11 +335,19 @@ public class GridLayer extends Layer implements ISelectionManager {
 
         private GridColumn sourceColumn;
         private GridColumn targetColumn;
+        private Direction direction;
+
+        enum Direction {
+            EAST_WEST,
+            WEST_EAST
+        }
 
         private Connector( final GridColumn sourceColumn,
-                           final GridColumn targetColumn ) {
+                           final GridColumn targetColumn,
+                           final Direction direction ) {
             this.sourceColumn = sourceColumn;
             this.targetColumn = targetColumn;
+            this.direction = direction;
         }
 
         private GridColumn getSourceColumn() {
@@ -307,6 +356,10 @@ public class GridLayer extends Layer implements ISelectionManager {
 
         private GridColumn getTargetColumn() {
             return targetColumn;
+        }
+
+        private Direction getDirection() {
+            return direction;
         }
 
         @Override
@@ -326,6 +379,9 @@ public class GridLayer extends Layer implements ISelectionManager {
             if ( !targetColumn.equals( connector.targetColumn ) ) {
                 return false;
             }
+            if ( !direction.equals( connector.direction ) ) {
+                return false;
+            }
 
             return true;
         }
@@ -336,7 +392,130 @@ public class GridLayer extends Layer implements ISelectionManager {
             result = ~~result;
             result = 31 * result + targetColumn.hashCode();
             result = ~~result;
+            result = 31 * result + direction.hashCode();
+            result = ~~result;
             return result;
+        }
+    }
+
+    private class GridWidgetMouseState {
+
+        private Grid proposedGridOwningResizeHandle = null;
+        private GridColumn proposedGridColumnOwningResizeHandle = null;
+        private Grid actualGridOwningResizeHandle = null;
+        private GridColumn actualGridColumnOwningResizeHandle = null;
+        private double resizeXStart = 0;
+        private double resizeColumnWidthStart = 0;
+
+    }
+
+    private class GridWidgetMouseDownHandler implements NodeMouseDownHandler {
+
+        private final GridWidgetMouseState state;
+
+        private GridWidgetMouseDownHandler( final GridWidgetMouseState state ) {
+            this.state = state;
+        }
+
+        @Override
+        public void onNodeMouseDown( final NodeMouseDownEvent event ) {
+            if ( state.proposedGridOwningResizeHandle != null && state.proposedGridColumnOwningResizeHandle != null ) {
+                final GridWidget gridWidget = selectables.get( state.proposedGridOwningResizeHandle );
+                final Point2D ap = GridCoordinateUtils.mapToGridWidgetAbsolutePoint( gridWidget,
+                                                                                     new Point2D( event.getX(),
+                                                                                                  event.getY() ) );
+                state.actualGridOwningResizeHandle = state.proposedGridOwningResizeHandle;
+                state.actualGridColumnOwningResizeHandle = state.proposedGridColumnOwningResizeHandle;
+                state.proposedGridOwningResizeHandle = null;
+                state.proposedGridColumnOwningResizeHandle = null;
+                state.resizeXStart = ap.getX();
+                state.resizeColumnWidthStart = state.actualGridColumnOwningResizeHandle.getWidth();
+            }
+        }
+    }
+
+    private class GridWidgetMouseMoveHandler implements NodeMouseMoveHandler {
+
+        private static final int COLUMN_RESIZE_HANDLE_SENSITIVITY = 5;
+        private static final double COLUMN_MIN_WIDTH = 100;
+
+        private final GridWidgetMouseState state;
+
+        private GridWidgetMouseMoveHandler( final GridWidgetMouseState state ) {
+            this.state = state;
+        }
+
+        @Override
+        public void onNodeMouseMove( final NodeMouseMoveEvent event ) {
+            //If we're currently resizing a column we don't need to find a column to resize
+            if ( state.actualGridOwningResizeHandle != null && state.actualGridColumnOwningResizeHandle != null ) {
+                final GridWidget gridWidget = selectables.get( state.actualGridOwningResizeHandle );
+                final Point2D ap = GridCoordinateUtils.mapToGridWidgetAbsolutePoint( gridWidget,
+                                                                                     new Point2D( event.getX(),
+                                                                                                  event.getY() ) );
+                final double deltaX = ap.getX() - state.resizeXStart;
+                double columnNewWidth = state.resizeColumnWidthStart + deltaX;
+                if ( columnNewWidth < COLUMN_MIN_WIDTH ) {
+                    columnNewWidth = COLUMN_MIN_WIDTH;
+                }
+                state.actualGridColumnOwningResizeHandle.setWidth( (int) ( columnNewWidth ) );
+                GridLayer.this.draw();
+                return;
+            }
+
+            //Otherwise try to find a Grid and GridColumn to be re-sized
+            state.proposedGridOwningResizeHandle = null;
+            state.proposedGridColumnOwningResizeHandle = null;
+            for ( Map.Entry<Grid, GridWidget> e : selectables.entrySet() ) {
+                final Grid grid = e.getKey();
+                final GridWidget gridWidget = e.getValue();
+                final Point2D ap = GridCoordinateUtils.mapToGridWidgetAbsolutePoint( gridWidget,
+                                                                                     new Point2D( event.getX(),
+                                                                                                  event.getY() ) );
+
+                final double ax = ap.getX();
+                final double ay = ap.getY();
+                if ( ax < 0 || ax > gridWidget.getWidth() ) {
+                    continue;
+                }
+                if ( ay < GridWidget.HEADER_HEIGHT || ay > gridWidget.getHeight() ) {
+                    continue;
+                }
+
+                double offsetX = 0;
+                for ( GridColumn gc : grid.getColumns() ) {
+                    final double columnWidth = gc.getWidth();
+                    if ( ax > columnWidth + offsetX - COLUMN_RESIZE_HANDLE_SENSITIVITY && ax < columnWidth + offsetX + COLUMN_RESIZE_HANDLE_SENSITIVITY ) {
+                        state.proposedGridOwningResizeHandle = grid;
+                        state.proposedGridColumnOwningResizeHandle = gc;
+                        break;
+                    }
+                    offsetX = offsetX + columnWidth;
+                }
+            }
+
+            GridLayer.this.getViewport().getElement().getStyle().setCursor( state.proposedGridOwningResizeHandle != null ? Style.Cursor.COL_RESIZE : Style.Cursor.DEFAULT );
+            for ( IMediator mediator : GridLayer.this.getViewport().getMediators() ) {
+                mediator.setEnabled( state.proposedGridOwningResizeHandle == null );
+            }
+
+        }
+    }
+
+    private class GridWidgetMouseUpHandler implements NodeMouseUpHandler {
+
+        private final GridWidgetMouseState state;
+
+        private GridWidgetMouseUpHandler( final GridWidgetMouseState state ) {
+            this.state = state;
+        }
+
+        @Override
+        public void onNodeMouseUp( final NodeMouseUpEvent event ) {
+            state.proposedGridOwningResizeHandle = null;
+            state.proposedGridColumnOwningResizeHandle = null;
+            state.actualGridOwningResizeHandle = null;
+            state.actualGridColumnOwningResizeHandle = null;
         }
     }
 

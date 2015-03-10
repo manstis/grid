@@ -20,6 +20,10 @@ public class GridColumn {
         return width;
     }
 
+    public void setWidth( final int width ) {
+        this.width = width;
+    }
+
     public boolean isLinked() {
         return link != null;
     }
@@ -43,9 +47,6 @@ public class GridColumn {
 
         GridColumn column = (GridColumn) o;
 
-        if ( width != column.width ) {
-            return false;
-        }
         if ( title != null ? !title.equals( column.title ) : column.title != null ) {
             return false;
         }
@@ -56,8 +57,6 @@ public class GridColumn {
     @Override
     public int hashCode() {
         int result = title != null ? title.hashCode() : 0;
-        result = ~~result;
-        result = 31 * result + width;
         result = ~~result;
         return result;
     }

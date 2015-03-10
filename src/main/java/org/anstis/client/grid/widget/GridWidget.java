@@ -1,7 +1,6 @@
 package org.anstis.client.grid.widget;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -9,37 +8,33 @@ import com.ait.lienzo.client.core.Context2D;
 import com.ait.lienzo.client.core.event.NodeMouseClickEvent;
 import com.ait.lienzo.client.core.event.NodeMouseClickHandler;
 import com.ait.lienzo.client.core.shape.Group;
-import com.ait.lienzo.client.core.shape.IPrimitive;
 import com.ait.lienzo.client.core.shape.MultiPath;
 import com.ait.lienzo.client.core.shape.Rectangle;
 import com.ait.lienzo.client.core.shape.Text;
-import com.ait.lienzo.client.core.types.NFastArrayList;
 import com.ait.lienzo.client.core.types.Point2D;
-import com.ait.lienzo.client.core.types.Transform;
 import com.ait.lienzo.shared.core.types.ColorName;
 import com.ait.lienzo.shared.core.types.TextAlign;
 import com.ait.lienzo.shared.core.types.TextBaseLine;
 import org.anstis.client.grid.model.Grid;
 import org.anstis.client.grid.model.GridColumn;
+import org.anstis.client.grid.util.GridCoordinateUtils;
 
 public class GridWidget extends Group {
 
     public static final int ROW_HEIGHT = 20;
     public static final int HEADER_HEIGHT = 30;
 
-    private List<Map<Integer, IPrimitive<?>>> rowsCells = new ArrayList<>();
-
-    private Grid model;
-    private ISelectionManager selectionManager;
-
+    private boolean isSelected = false;
     private Rectangle selection = new Rectangle( 0, 0 )
             .setStrokeWidth( 2.0 )
             .setStrokeColor( ColorName.GREEN )
             .setListening( false );
+
+    private Grid model;
     private List<GridColumn> columns = new ArrayList<>();
     private List<Map<Integer, String>> data = new ArrayList<>();
-    private double width = 0;
-    private double height = 0;
+
+    private ISelectionManager selectionManager;
 
     public GridWidget( final Grid model,
                        final ISelectionManager selectionManager ) {
@@ -48,26 +43,19 @@ public class GridWidget extends Group {
 
         this.model = model;
         this.selectionManager = selectionManager;
-        selection.setWidth( width );
-        selection.setHeight( height );
+        selection.setWidth( getWidth() );
+        selection.setHeight( getHeight() );
 
-        addNodeMouseClickHandler( new GridWidgetNodeClickHandler() );
+        //Click handler
+        addNodeMouseClickHandler( new GridWidgetMouseClickHandler() );
     }
 
     private void setColumns( final List<GridColumn> columns ) {
         this.columns.addAll( columns );
-        int x = 0;
-        for ( GridColumn column : columns ) {
-            x = x + column.getWidth();
-        }
-        width = x;
-        makeGridHeaderWidget();
     }
 
     private void setData( final List<Map<Integer, String>> data ) {
         this.data.addAll( data );
-        height = HEADER_HEIGHT + ROW_HEIGHT * data.size();
-        makeGridCellWidget();
     }
 
     public Grid getModel() {
@@ -75,18 +63,43 @@ public class GridWidget extends Group {
     }
 
     public double getWidth() {
+        double width = 0;
+        for ( GridColumn column : columns ) {
+            width = width + column.getWidth();
+        }
         return width;
     }
 
+    private double getWidth( final int startColumnIndex,
+                             final int endColumnIndex ) {
+        double width = 0;
+        for ( int i = startColumnIndex; i <= endColumnIndex; i++ ) {
+            final GridColumn column = columns.get( i );
+            width = width + column.getWidth();
+        }
+        return width;
+    }
+
+    private double getColumnOffset( final int columnIndex ) {
+        double columnOffset = 0;
+        for ( int i = 0; i < columnIndex; i++ ) {
+            final GridColumn column = columns.get( i );
+            columnOffset = columnOffset + column.getWidth();
+        }
+        return columnOffset;
+    }
+
     public double getHeight() {
-        return height;
+        return data.size() * ROW_HEIGHT + HEADER_HEIGHT;
     }
 
     public void select() {
+        isSelected = true;
         add( selection );
     }
 
     public void deselect() {
+        isSelected = false;
         remove( selection );
     }
 
@@ -102,12 +115,11 @@ public class GridWidget extends Group {
             return;
         }
 
-        //Add decorations into render queue
-        final NFastArrayList<IPrimitive<?>> toRender = new NFastArrayList<>();
-        final NFastArrayList<IPrimitive<?>> childNodes = getChildNodes();
-        for ( int i = 0; i < childNodes.size(); i++ ) {
-            toRender.add( childNodes.get( i ) );
+        if ( columns.isEmpty() ) {
+            return;
         }
+
+        this.removeAll();
 
         //Get viewable area dimensions
         final GridLayer gridLayer = ( (GridLayer) getLayer() );
@@ -144,35 +156,44 @@ public class GridWidget extends Group {
             minRow = 0;
         }
         int maxRow = ( (int) ( vpY - getY() - HEADER_HEIGHT + vpHeight + ROW_HEIGHT ) / ROW_HEIGHT );
-        if ( maxRow > rowsCells.size() ) {
-            maxRow = rowsCells.size();
+        if ( maxRow > data.size() ) {
+            maxRow = data.size();
         }
 
-        //Add cells within visible area to render queue
-        if ( minCol >= 0 && maxCol <= columns.size() && minRow >= 0 && maxRow <= rowsCells.size() ) {
-            for ( int i = minRow; i < maxRow; i++ ) {
-                final Map<Integer, IPrimitive<?>> rowCells = rowsCells.get( i );
-                for ( Map.Entry<Integer, IPrimitive<?>> e : rowCells.entrySet() ) {
-                    final int columnIndex = e.getKey();
-                    final IPrimitive<?> child = e.getValue();
-                    if ( columnIndex >= minCol && columnIndex <= maxCol ) {
-                        toRender.add( child );
-                    }
-                }
-            }
+        if ( minCol < 0 || maxCol < 0 || maxRow < minRow ) {
+            return;
         }
 
-        //Render visible content
-        for ( int i = 0; i < toRender.size(); i++ ) {
-            toRender.get( i ).drawWithTransforms( context,
-                                                  alpha );
+        //Draw header if required
+        if ( vpY - getY() < HEADER_HEIGHT && getY() < vpY + vpHeight ) {
+            makeGridHeaderWidget( minCol,
+                                  maxCol );
         }
+
+        //Draw body if required
+        makeGridBodyWidget( minCol,
+                            maxCol,
+                            minRow,
+                            maxRow );
+
+        //Include selection indicator if required
+        if ( isSelected ) {
+            selection.setWidth( getWidth() );
+            add( selection );
+        }
+
+        //Then render to the canvas
+        super.drawWithoutTransforms( context,
+                                     alpha );
     }
 
-    private void makeGridHeaderWidget() {
-        final double width = getWidth();
+    private void makeGridHeaderWidget( final int startColumnIndex,
+                                       final int endColumnIndex ) {
+        final double width = getWidth( startColumnIndex,
+                                       endColumnIndex );
         final Rectangle r = new Rectangle( width,
                                            HEADER_HEIGHT )
+                .setX( getColumnOffset( startColumnIndex ) )
                 .setFillColor( ColorName.BISQUE )
                 .setStrokeColor( ColorName.SLATEGRAY )
                 .setStrokeWidth( 0.5 );
@@ -183,18 +204,19 @@ public class GridWidget extends Group {
                 .setStrokeColor( ColorName.SLATEGRAY )
                 .setStrokeWidth( 0.5 )
                 .setListening( false );
-        int x = 0;
-        for ( GridColumn column : columns ) {
-            final int w = column.getWidth();
+        double x = getColumnOffset( startColumnIndex );
+        for ( int i = startColumnIndex; i <= endColumnIndex; i++ ) {
+            final GridColumn column = columns.get( i );
             pl.M( x, 0 ).L( x,
                             HEADER_HEIGHT );
-            x = x + w;
+            x = x + column.getWidth();
         }
         add( pl );
 
         //Linked columns
-        x = 0;
-        for ( GridColumn column : columns ) {
+        x = getColumnOffset( startColumnIndex );
+        for ( int i = startColumnIndex; i <= endColumnIndex; i++ ) {
+            final GridColumn column = columns.get( i );
             final int w = column.getWidth();
             if ( column.isLinked() ) {
                 final Rectangle lr = new Rectangle( w,
@@ -209,8 +231,9 @@ public class GridWidget extends Group {
         }
 
         //Column text
-        x = 0;
-        for ( GridColumn column : columns ) {
+        x = getColumnOffset( startColumnIndex );
+        for ( int i = startColumnIndex; i <= endColumnIndex; i++ ) {
+            final GridColumn column = columns.get( i );
             final int w = column.getWidth();
             final Text t = new Text( column.getTitle() )
                     .setFillColor( ColorName.DEEPPINK )
@@ -225,15 +248,20 @@ public class GridWidget extends Group {
         }
     }
 
-    private void makeGridCellWidget() {
-        final int rows = data.size();
-        final double width = getWidth();
+    private void makeGridBodyWidget( final int startColumnIndex,
+                                     final int endColumnIndex,
+                                     final int startRowIndex,
+                                     final int endRowIndex ) {
+        final int rows = endRowIndex - startRowIndex;
+        final double width = getWidth( startColumnIndex,
+                                       endColumnIndex );
         final Rectangle r = new Rectangle( width,
                                            ROW_HEIGHT * rows )
+                .setX( getColumnOffset( startColumnIndex ) )
+                .setY( HEADER_HEIGHT + startRowIndex * ROW_HEIGHT )
                 .setFillColor( ColorName.ANTIQUEWHITE )
                 .setStrokeColor( ColorName.SLATEGRAY )
-                .setStrokeWidth( 0.5 )
-                .setY( HEADER_HEIGHT );
+                .setStrokeWidth( 0.5 );
         add( r );
 
         //Grid lines
@@ -242,15 +270,20 @@ public class GridWidget extends Group {
                 .setStrokeWidth( 0.5 )
                 .setListening( false )
                 .setY( HEADER_HEIGHT );
-        double x = 0;
-        for ( GridColumn column : columns ) {
-            pl.M( x, 0 ).L( x,
-                            ROW_HEIGHT * rows );
+        final double minX = getColumnOffset( startColumnIndex );
+        final double maxX = getColumnOffset( endColumnIndex ) + model.getColumns().get( endColumnIndex ).getWidth();
+        final double minY = startRowIndex * ROW_HEIGHT;
+        final double maxY = endRowIndex * ROW_HEIGHT;
+        double x = getColumnOffset( startColumnIndex );
+        for ( int i = startColumnIndex; i <= endColumnIndex; i++ ) {
+            final GridColumn column = columns.get( i );
+            pl.M( x, minY ).L( x,
+                               maxY );
             x = x + column.getWidth();
         }
-        for ( int idx = 0; idx < rows; idx++ ) {
-            pl.M( 0,
-                  ROW_HEIGHT * idx ).L( width,
+        for ( int idx = startRowIndex; idx < endRowIndex; idx++ ) {
+            pl.M( minX,
+                  ROW_HEIGHT * idx ).L( maxX,
                                         ROW_HEIGHT * idx );
         }
         add( pl );
@@ -263,30 +296,29 @@ public class GridWidget extends Group {
             x = x + column.getWidth();
         }
 
-        double offsetY = HEADER_HEIGHT;
-        for ( Map<Integer, String> row : data ) {
-            final Map<Integer, IPrimitive<?>> rowCells = new HashMap<>();
+        for ( int rowIndex = startRowIndex; rowIndex < endRowIndex; rowIndex++ ) {
+            final double offsetY = HEADER_HEIGHT + rowIndex * ROW_HEIGHT;
+            final Map<Integer, String> row = data.get( rowIndex );
             for ( Map.Entry<Integer, String> e : row.entrySet() ) {
                 final int columnIndex = e.getKey();
-                final int columnWidth = columns.get( columnIndex ).getWidth();
-                final double offsetX = columnPositions.get( columnIndex );
-                final Text t = new Text( e.getValue() )
-                        .setFillColor( ColorName.DEEPPINK )
-                        .setX( offsetX + columnWidth / 2 )
-                        .setY( offsetY + ROW_HEIGHT / 2 )
-                        .setFontSize( 12 )
-                        .setListening( false )
-                        .setTextBaseLine( TextBaseLine.MIDDLE )
-                        .setTextAlign( TextAlign.CENTER );
-                rowCells.put( e.getKey(),
-                              t );
+                if ( columnIndex >= startColumnIndex && columnIndex <= endColumnIndex ) {
+                    final int columnWidth = columns.get( columnIndex ).getWidth();
+                    final double offsetX = columnPositions.get( columnIndex );
+                    final Text t = new Text( e.getValue() )
+                            .setFillColor( ColorName.DEEPPINK )
+                            .setX( offsetX + columnWidth / 2 )
+                            .setY( offsetY + ROW_HEIGHT / 2 )
+                            .setFontSize( 12 )
+                            .setListening( false )
+                            .setTextBaseLine( TextBaseLine.MIDDLE )
+                            .setTextAlign( TextAlign.CENTER );
+                    add( t );
+                }
             }
-            offsetY = offsetY + ROW_HEIGHT;
-            rowsCells.add( rowCells );
         }
     }
 
-    private class GridWidgetNodeClickHandler implements NodeMouseClickHandler {
+    private class GridWidgetMouseClickHandler implements NodeMouseClickHandler {
 
         @Override
         public void onNodeMouseClick( final NodeMouseClickEvent event ) {
@@ -295,27 +327,12 @@ public class GridWidget extends Group {
             handleBodyCellClick( event );
         }
 
-        private double getX( final NodeMouseClickEvent event ) {
-            final Transform t = GridWidget.this.getViewport().getTransform().copy().getInverse();
-            final Point2D p = new Point2D( event.getX(),
-                                           event.getY() );
-            t.transform( p,
-                         p );
-            return p.add( GridWidget.this.getLocation().mul( -1.0 ) ).getX();
-        }
-
-        private double getY( final NodeMouseClickEvent event ) {
-            final Transform t = GridWidget.this.getViewport().getTransform().copy().getInverse();
-            final Point2D p = new Point2D( event.getX(),
-                                           event.getY() );
-            t.transform( p,
-                         p );
-            return p.add( GridWidget.this.getLocation().mul( -1.0 ) ).getY();
-        }
-
         private void handleHeaderCellClick( final NodeMouseClickEvent event ) {
-            final double x = getX( event );
-            final double y = getY( event );
+            final Point2D ap = GridCoordinateUtils.mapToGridWidgetAbsolutePoint( GridWidget.this,
+                                                                                 new Point2D( event.getX(),
+                                                                                              event.getY() ) );
+            final double x = ap.getX();
+            final double y = ap.getY();
             if ( x < 0 || x > GridWidget.this.getWidth() ) {
                 return;
             }
@@ -347,8 +364,11 @@ public class GridWidget extends Group {
         }
 
         private void handleBodyCellClick( final NodeMouseClickEvent event ) {
-            final double x = getX( event );
-            final double y = getY( event );
+            final Point2D ap = GridCoordinateUtils.mapToGridWidgetAbsolutePoint( GridWidget.this,
+                                                                                 new Point2D( event.getX(),
+                                                                                              event.getY() ) );
+            final double x = ap.getX();
+            final double y = ap.getY();
             if ( x < 0 || x > GridWidget.this.getWidth() ) {
                 return;
             }
