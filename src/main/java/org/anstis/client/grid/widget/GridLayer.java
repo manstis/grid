@@ -35,7 +35,7 @@ public class GridLayer extends Layer implements ISelectionManager {
 
     public GridLayer() {
         bounds = new Rectangle( 0, 0 )
-                .setVisible( true );
+                .setVisible( false );
         add( bounds );
     }
 
@@ -43,7 +43,7 @@ public class GridLayer extends Layer implements ISelectionManager {
     public void draw() {
         Scheduler.get().scheduleFinally( new Command() {
 
-            private static final int PADDING = 50;
+            private static final int PADDING = 0;
 
             @Override
             public void execute() {

@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class GridDataFactory {
 
-    private static double FILL_FACTOR = 1.0;
+    private static double FILL_FACTOR = 0.75;
 
     public static List<Map<Integer, String>> makeData( final int cols,
                                                        final int rows ) {
