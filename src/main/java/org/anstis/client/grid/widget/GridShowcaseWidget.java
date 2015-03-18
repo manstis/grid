@@ -66,7 +66,7 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
         for ( int idx = 0; idx < 10; idx++ ) {
             final GridColumn column = new GridColumn( "G1-Col: " + idx,
                                                       100 );
-            grid1.getColumns().add( column );
+            grid1.addColumn( column );
         }
         grid1.getData().addAll( GridDataFactory.makeData( grid1.getColumns().size(),
                                                           GRID1_ROWS ) );
@@ -76,7 +76,7 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
         for ( int idx = 0; idx < 5; idx++ ) {
             final GridColumn column = new GridColumn( "G2-Col: " + idx,
                                                       150 );
-            grid2.getColumns().add( column );
+            grid2.addColumn( column );
         }
         grid2.getData().addAll( GridDataFactory.makeData( grid2.getColumns().size(),
                                                           GRID2_ROWS ) );
@@ -86,7 +86,7 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
         for ( int idx = 0; idx < 5; idx++ ) {
             final GridColumn column = new GridColumn( "G3-Col: " + idx,
                                                       200 );
-            grid3.getColumns().add( column );
+            grid3.addColumn( column );
         }
         grid3.getData().addAll( GridDataFactory.makeData( grid3.getColumns().size(),
                                                           GRID3_ROWS ) );

@@ -31,16 +31,11 @@ public class GridWidget extends Group {
             .setListening( false );
 
     private Grid model;
-    private List<GridColumn> columns = new ArrayList<>();
-    private List<Map<Integer, String>> data = new ArrayList<>();
 
     private ISelectionManager selectionManager;
 
     public GridWidget( final Grid model,
                        final ISelectionManager selectionManager ) {
-        setColumns( model.getColumns() );
-        setData( model.getData() );
-
         this.model = model;
         this.selectionManager = selectionManager;
         selection.setWidth( getWidth() );
@@ -50,21 +45,13 @@ public class GridWidget extends Group {
         addNodeMouseClickHandler( new GridWidgetMouseClickHandler() );
     }
 
-    private void setColumns( final List<GridColumn> columns ) {
-        this.columns.addAll( columns );
-    }
-
-    private void setData( final List<Map<Integer, String>> data ) {
-        this.data.addAll( data );
-    }
-
     public Grid getModel() {
         return model;
     }
 
     public double getWidth() {
         double width = 0;
-        for ( GridColumn column : columns ) {
+        for ( GridColumn column : model.getColumns() ) {
             width = width + column.getWidth();
         }
         return width;
@@ -73,6 +60,7 @@ public class GridWidget extends Group {
     private double getWidth( final int startColumnIndex,
                              final int endColumnIndex ) {
         double width = 0;
+        final List<GridColumn> columns = model.getColumns();
         for ( int i = startColumnIndex; i <= endColumnIndex; i++ ) {
             final GridColumn column = columns.get( i );
             width = width + column.getWidth();
@@ -80,17 +68,8 @@ public class GridWidget extends Group {
         return width;
     }
 
-    private double getColumnOffset( final int columnIndex ) {
-        double columnOffset = 0;
-        for ( int i = 0; i < columnIndex; i++ ) {
-            final GridColumn column = columns.get( i );
-            columnOffset = columnOffset + column.getWidth();
-        }
-        return columnOffset;
-    }
-
     public double getHeight() {
-        return data.size() * ROW_HEIGHT + HEADER_HEIGHT;
+        return model.getData().size() * ROW_HEIGHT + HEADER_HEIGHT;
     }
 
     public void select() {
@@ -115,7 +94,7 @@ public class GridWidget extends Group {
             return;
         }
 
-        if ( columns.isEmpty() ) {
+        if ( model.getColumns().isEmpty() ) {
             return;
         }
 
@@ -128,6 +107,9 @@ public class GridWidget extends Group {
         final double vpY = bounds.getY();
         final double vpHeight = bounds.getHeight();
         final double vpWidth = bounds.getWidth();
+
+        final List<GridColumn> columns = model.getColumns();
+        final List<Map<Integer, String>> data = model.getData();
 
         //Determine which columns are within visible area
         double x = 0;
@@ -193,18 +175,20 @@ public class GridWidget extends Group {
                                        endColumnIndex );
         final Rectangle r = new Rectangle( width,
                                            HEADER_HEIGHT )
-                .setX( getColumnOffset( startColumnIndex ) )
+                .setX( model.getColumnOffset( startColumnIndex ) )
                 .setFillColor( ColorName.BISQUE )
                 .setStrokeColor( ColorName.SLATEGRAY )
                 .setStrokeWidth( 0.5 );
         add( r );
+
+        final List<GridColumn> columns = model.getColumns();
 
         //Grid lines
         final MultiPath pl = new MultiPath()
                 .setStrokeColor( ColorName.SLATEGRAY )
                 .setStrokeWidth( 0.5 )
                 .setListening( false );
-        double x = getColumnOffset( startColumnIndex );
+        double x = model.getColumnOffset( startColumnIndex );
         for ( int i = startColumnIndex; i <= endColumnIndex; i++ ) {
             final GridColumn column = columns.get( i );
             pl.M( x, 0 ).L( x,
@@ -214,7 +198,7 @@ public class GridWidget extends Group {
         add( pl );
 
         //Linked columns
-        x = getColumnOffset( startColumnIndex );
+        x = model.getColumnOffset( startColumnIndex );
         for ( int i = startColumnIndex; i <= endColumnIndex; i++ ) {
             final GridColumn column = columns.get( i );
             final int w = column.getWidth();
@@ -231,7 +215,7 @@ public class GridWidget extends Group {
         }
 
         //Column text
-        x = getColumnOffset( startColumnIndex );
+        x = model.getColumnOffset( startColumnIndex );
         for ( int i = startColumnIndex; i <= endColumnIndex; i++ ) {
             final GridColumn column = columns.get( i );
             final int w = column.getWidth();
@@ -257,12 +241,15 @@ public class GridWidget extends Group {
                                        endColumnIndex );
         final Rectangle r = new Rectangle( width,
                                            ROW_HEIGHT * rows )
-                .setX( getColumnOffset( startColumnIndex ) )
+                .setX( model.getColumnOffset( startColumnIndex ) )
                 .setY( HEADER_HEIGHT + startRowIndex * ROW_HEIGHT )
                 .setFillColor( ColorName.ANTIQUEWHITE )
                 .setStrokeColor( ColorName.SLATEGRAY )
                 .setStrokeWidth( 0.5 );
         add( r );
+
+        final List<GridColumn> columns = model.getColumns();
+        final List<Map<Integer, String>> data = model.getData();
 
         //Grid lines
         final MultiPath pl = new MultiPath()
@@ -270,11 +257,11 @@ public class GridWidget extends Group {
                 .setStrokeWidth( 0.5 )
                 .setListening( false )
                 .setY( HEADER_HEIGHT );
-        final double minX = getColumnOffset( startColumnIndex );
-        final double maxX = getColumnOffset( endColumnIndex ) + model.getColumns().get( endColumnIndex ).getWidth();
+        final double minX = model.getColumnOffset( startColumnIndex );
+        final double maxX = model.getColumnOffset( endColumnIndex ) + columns.get( endColumnIndex ).getWidth();
         final double minY = startRowIndex * ROW_HEIGHT;
         final double maxY = endRowIndex * ROW_HEIGHT;
-        double x = getColumnOffset( startColumnIndex );
+        double x = model.getColumnOffset( startColumnIndex );
         for ( int i = startColumnIndex; i <= endColumnIndex; i++ ) {
             final GridColumn column = columns.get( i );
             pl.M( x, minY ).L( x,
@@ -300,10 +287,11 @@ public class GridWidget extends Group {
             final double offsetY = HEADER_HEIGHT + rowIndex * ROW_HEIGHT;
             final Map<Integer, String> row = data.get( rowIndex );
             for ( Map.Entry<Integer, String> e : row.entrySet() ) {
-                final int columnIndex = e.getKey();
-                if ( columnIndex >= startColumnIndex && columnIndex <= endColumnIndex ) {
-                    final int columnWidth = columns.get( columnIndex ).getWidth();
-                    final double offsetX = columnPositions.get( columnIndex );
+                final int absoluteColumnIndex = e.getKey();
+                final int relativeColumnIndex = model.mapToRelativeIndex( absoluteColumnIndex );
+                if ( relativeColumnIndex >= startColumnIndex && relativeColumnIndex <= endColumnIndex ) {
+                    final int columnWidth = columns.get( relativeColumnIndex ).getWidth();
+                    final double offsetX = columnPositions.get( relativeColumnIndex );
                     final Text t = new Text( e.getValue() )
                             .setFillColor( ColorName.DEEPPINK )
                             .setX( offsetX + columnWidth / 2 )
@@ -340,7 +328,6 @@ public class GridWidget extends Group {
                 return;
             }
 
-            //Refactor to utility method to get a GridColumn
             if ( GridWidget.this.model.getColumns() == null || GridWidget.this.model.getColumns().isEmpty() ) {
                 return;
             }
