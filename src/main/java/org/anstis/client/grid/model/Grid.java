@@ -94,17 +94,12 @@ public class Grid {
 
         if ( index == indexColumnToRemove ) {
             return;
-
-        } else if ( index < indexColumnToRemove ) {
-            this.indexRelativeToAbsolute.remove( indexColumnToRemove );
-            this.indexRelativeToAbsolute.add( index,
-                                              indexColumn );
-
-        } else if ( index > indexColumnToRemove ) {
-            this.indexRelativeToAbsolute.add( index,
-                                              indexColumn );
-            this.indexRelativeToAbsolute.remove( indexColumnToRemove );
         }
+
+        this.indexRelativeToAbsolute.remove( indexColumnToRemove );
+        this.indexRelativeToAbsolute.add( index,
+                                          indexColumn );
+
         final Integer[] reverse = new Integer[ columns.size() ];
         for ( int i = 0; i < indexRelativeToAbsolute.size(); i++ ) {
             reverse[ indexRelativeToAbsolute.get( i ) ] = i;

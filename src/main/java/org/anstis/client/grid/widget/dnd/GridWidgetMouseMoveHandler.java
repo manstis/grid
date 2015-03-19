@@ -1,5 +1,6 @@
 package org.anstis.client.grid.widget.dnd;
 
+import java.util.List;
 import java.util.Map;
 
 import com.ait.lienzo.client.core.event.NodeMouseMoveEvent;
@@ -71,6 +72,7 @@ public class GridWidgetMouseMoveHandler implements NodeMouseMoveHandler {
                                 state.setGridColumn( gc );
                                 state.setOperation( GridWidgetHandlersState.GridWidgetHandlersOperation.COLUMN_MOVE_PENDING );
                                 cursor = Style.Cursor.MOVE;
+                                break;
                             }
                             offsetX = offsetX + columnWidth;
                         }
@@ -122,18 +124,23 @@ public class GridWidgetMouseMoveHandler implements NodeMouseMoveHandler {
         final double ax = ap.getX();
 
         double offsetX = 0;
-        for ( GridColumn gc : state.getGrid().getColumns() ) {
-            //Check for column moving
+        final List<GridColumn> columns = state.getGrid().getColumns();
+        for ( int index = 0; index < columns.size(); index++ ) {
+            final GridColumn gc = columns.get( index );
             final double columnWidth = gc.getWidth();
-            if ( ax > offsetX + COLUMN_RESIZE_HANDLE_SENSITIVITY && ax < columnWidth + offsetX - COLUMN_RESIZE_HANDLE_SENSITIVITY ) {
-                if ( state.getEventColumnHighlight().getX() != gridWidget.getX() + offsetX ) {
-                    state.getEventColumnHighlight().setX( gridWidget.getX() + offsetX );
-                    layer.draw();
-                }
+            final double columnMovedWidth = state.getGridColumn().getWidth();
+            final double minColX = Math.max( offsetX, offsetX + ( columnWidth - columnMovedWidth ) / 2 );
+            final double maxColX = Math.min( offsetX + columnWidth, offsetX + ( columnWidth + columnMovedWidth ) / 2 );
+            if ( ax > minColX && ax < maxColX ) {
+                state.getGrid().moveColumnTo( index,
+                                              state.getGridColumn() );
+                state.getEventColumnHighlight().setX( gridWidget.getX() + gridWidget.getModel().getColumnOffset( state.getGridColumn() ) );
+                layer.draw();
                 break;
             }
             offsetX = offsetX + columnWidth;
         }
+
     }
 
 }
