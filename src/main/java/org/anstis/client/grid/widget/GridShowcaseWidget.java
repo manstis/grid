@@ -1,3 +1,18 @@
+/*
+ * Copyright 2015 JBoss Inc
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.anstis.client.grid.widget;
 
 import com.ait.lienzo.client.core.mediator.MousePanMediator;
@@ -6,6 +21,8 @@ import com.ait.lienzo.client.core.types.Point2D;
 import com.ait.lienzo.client.core.types.Transform;
 import com.ait.lienzo.client.widget.LienzoPanel;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -16,6 +33,9 @@ import com.google.gwt.user.client.ui.Widget;
 import org.anstis.client.grid.model.Grid;
 import org.anstis.client.grid.model.GridColumn;
 import org.anstis.client.grid.util.GridDataFactory;
+import org.anstis.client.grid.widget.renderers.GridRendererRegistry;
+import org.anstis.client.grid.widget.renderers.IGridRenderer;
+import org.gwtbootstrap3.client.ui.ListBox;
 import org.gwtbootstrap3.extras.slider.client.ui.Slider;
 
 public class GridShowcaseWidget extends Composite implements ISelectionManager {
@@ -38,6 +58,9 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
 
     @UiField
     Slider slider;
+
+    @UiField
+    ListBox rendererSelector;
 
     private GridLayer gridLayer = new GridLayer();
     private LienzoPanel gridPanel = new LienzoPanel( VP_WIDTH,
@@ -136,6 +159,21 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
                 gridPanel.getViewport().draw();
             }
 
+        } );
+
+        //Style selector
+        for ( IGridRenderer renderer : GridRendererRegistry.getRenderers() ) {
+            rendererSelector.addItem( renderer.getName() );
+            if ( renderer.equals( GridRendererRegistry.getActiveRenderer() ) ) {
+                rendererSelector.setSelectedIndex( rendererSelector.getItemCount() - 1 );
+            }
+        }
+        rendererSelector.addChangeHandler( new ChangeHandler() {
+            @Override
+            public void onChange( final ChangeEvent event ) {
+                GridRendererRegistry.setActiveStyleName( rendererSelector.getItemText( rendererSelector.getSelectedIndex() ) );
+                gridLayer.draw();
+            }
         } );
     }
 

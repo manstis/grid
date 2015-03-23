@@ -1,5 +1,21 @@
+<!--
+  ~ Copyright 2015 JBoss Inc
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~       http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:bs3="urn:import:org.gwtbootstrap3.client.ui"
              xmlns:bs3slider="urn:import:org.gwtbootstrap3.extras.slider.client.ui">
 
   <ui:style field="css">
@@ -26,6 +42,11 @@
       text-align: center;
     }
 
+    .rendererSelector {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
   </ui:style>
 
   <g:HTMLPanel>
@@ -35,6 +56,9 @@
       </g:HorizontalPanel>
       <g:SimplePanel styleName="{css.slider}">
         <bs3slider:Slider ui:field="slider" min="10" max="100" step="10" orientation="HORIZONTAL"/>
+      </g:SimplePanel>
+      <g:SimplePanel styleName="{css.rendererSelector}">
+        <bs3:ListBox ui:field="rendererSelector"/>
       </g:SimplePanel>
     </g:VerticalPanel>
   </g:HTMLPanel>
