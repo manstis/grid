@@ -160,9 +160,6 @@ public class Grid {
 
         Grid grid = (Grid) o;
 
-        if ( data != grid.data ) {
-            return false;
-        }
         if ( !columns.equals( grid.columns ) ) {
             return false;
         }
@@ -173,8 +170,6 @@ public class Grid {
     @Override
     public int hashCode() {
         int result = columns.hashCode();
-        result = ~~result;
-        result = 31 * result + data.hashCode();
         result = ~~result;
         return result;
     }

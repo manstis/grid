@@ -20,6 +20,7 @@ import com.ait.lienzo.client.core.shape.Layer;
 import com.ait.lienzo.client.core.types.Point2D;
 import com.ait.lienzo.client.core.types.Transform;
 import com.ait.lienzo.client.widget.LienzoPanel;
+import com.google.gwt.core.client.Callback;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
@@ -33,12 +34,14 @@ import com.google.gwt.user.client.ui.Widget;
 import org.anstis.client.grid.model.Grid;
 import org.anstis.client.grid.model.GridColumn;
 import org.anstis.client.grid.util.GridDataFactory;
+import org.anstis.client.grid.widget.edit.EditorPopup;
 import org.anstis.client.grid.widget.renderers.GridRendererRegistry;
 import org.anstis.client.grid.widget.renderers.IGridRenderer;
 import org.gwtbootstrap3.client.ui.ListBox;
 import org.gwtbootstrap3.extras.slider.client.ui.Slider;
 
-public class GridShowcaseWidget extends Composite implements ISelectionManager {
+public class GridShowcaseWidget extends Composite implements IEditManager,
+                                                             ISelectionManager {
 
     public static final int VP_WIDTH = 1200;
     public static final int VP_HEIGHT = 600;
@@ -61,6 +64,8 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
 
     @UiField
     ListBox rendererSelector;
+
+    private final EditorPopup editor = new EditorPopup();
 
     private GridLayer gridLayer = new GridLayer();
     private LienzoPanel gridPanel = new LienzoPanel( VP_WIDTH,
@@ -181,9 +186,17 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
                          final Layer layer,
                          final Point2D location ) {
         final GridWidget gridWidget = new GridWidget( grid,
+                                                      this,
                                                       this );
         gridWidget.setLocation( location );
         layer.add( gridWidget );
+    }
+
+    @Override
+    public void edit( final String value,
+                      final Callback<String, String> callback ) {
+        editor.edit( value,
+                     callback );
     }
 
     @Override

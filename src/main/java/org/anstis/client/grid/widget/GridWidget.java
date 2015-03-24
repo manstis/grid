@@ -21,9 +21,12 @@ import java.util.Map;
 import com.ait.lienzo.client.core.Context2D;
 import com.ait.lienzo.client.core.event.NodeMouseClickEvent;
 import com.ait.lienzo.client.core.event.NodeMouseClickHandler;
+import com.ait.lienzo.client.core.event.NodeMouseDoubleClickEvent;
+import com.ait.lienzo.client.core.event.NodeMouseDoubleClickHandler;
 import com.ait.lienzo.client.core.shape.Group;
 import com.ait.lienzo.client.core.shape.Rectangle;
 import com.ait.lienzo.client.core.types.Point2D;
+import com.google.gwt.core.client.Callback;
 import org.anstis.client.grid.model.Grid;
 import org.anstis.client.grid.model.GridColumn;
 import org.anstis.client.grid.util.GridCoordinateUtils;
@@ -36,15 +39,21 @@ public class GridWidget extends Group {
 
     private Grid model;
 
+    private IEditManager editManager;
     private ISelectionManager selectionManager;
 
     public GridWidget( final Grid model,
+                       final IEditManager editManager,
                        final ISelectionManager selectionManager ) {
         this.model = model;
+        this.editManager = editManager;
         this.selectionManager = selectionManager;
 
         //Click handler
         addNodeMouseClickHandler( new GridWidgetMouseClickHandler() );
+
+        //Double-click handler
+        addNodeMouseDoubleClickHandler( new GridWidgetMouseDoubleClickHandler() );
     }
 
     public Grid getModel() {
@@ -210,7 +219,6 @@ public class GridWidget extends Group {
         public void onNodeMouseClick( final NodeMouseClickEvent event ) {
             selectionManager.select( GridWidget.this.model );
             handleHeaderCellClick( event );
-            handleBodyCellClick( event );
         }
 
         private void handleHeaderCellClick( final NodeMouseClickEvent event ) {
@@ -248,7 +256,16 @@ public class GridWidget extends Group {
             }
         }
 
-        private void handleBodyCellClick( final NodeMouseClickEvent event ) {
+    }
+
+    private class GridWidgetMouseDoubleClickHandler implements NodeMouseDoubleClickHandler {
+
+        @Override
+        public void onNodeMouseDoubleClick( final NodeMouseDoubleClickEvent event ) {
+            handleBodyCellClick( event );
+        }
+
+        private void handleBodyCellClick( final NodeMouseDoubleClickEvent event ) {
             final Point2D ap = GridCoordinateUtils.mapToGridWidgetAbsolutePoint( GridWidget.this,
                                                                                  new Point2D( event.getX(),
                                                                                               event.getY() ) );
@@ -260,7 +277,41 @@ public class GridWidget extends Group {
             if ( y < GridRendererRegistry.getHeaderHeight() || y > GridWidget.this.getHeight() ) {
                 return;
             }
-            //Nothing to do at the moment
+            int _columnIndex = -1;
+            final int rowIndex = (int) ( ( y - GridRendererRegistry.getHeaderHeight() ) / GridRendererRegistry.getRowHeight() );
+            final List<GridColumn> columns = getModel().getColumns();
+            double offsetX = 0;
+            for ( int idx = 0; idx < columns.size(); idx++ ) {
+                final GridColumn gridColumn = columns.get( idx );
+                final double width = gridColumn.getWidth();
+                if ( x > offsetX && x < offsetX + width ) {
+                    _columnIndex = idx;
+                    break;
+                }
+                offsetX = offsetX + width;
+            }
+            if ( _columnIndex < 0 || _columnIndex > columns.size() - 1 ) {
+                return;
+            }
+            if ( rowIndex < 0 || rowIndex > getModel().getData().size() - 1 ) {
+                return;
+            }
+            final int columnIndex = getModel().mapToAbsoluteIndex( _columnIndex );
+
+            editManager.edit( getModel().getData().get( rowIndex ).get( columnIndex ),
+                              new Callback<String, String>() {
+                                  @Override
+                                  public void onFailure( final String value ) {
+                                      //Do nothing
+                                  }
+
+                                  @Override
+                                  public void onSuccess( final String value ) {
+                                      getModel().getData().get( rowIndex ).put( columnIndex,
+                                                                                value );
+                                      GridWidget.this.getLayer().draw();
+                                  }
+                              } );
         }
 
     }
