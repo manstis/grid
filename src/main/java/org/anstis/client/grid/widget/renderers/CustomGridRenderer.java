@@ -27,10 +27,13 @@ import com.ait.lienzo.client.core.types.Shadow;
 import com.ait.lienzo.shared.core.types.ColorName;
 import com.ait.lienzo.shared.core.types.TextAlign;
 import com.ait.lienzo.shared.core.types.TextBaseLine;
-import org.anstis.client.grid.model.Grid;
-import org.anstis.client.grid.model.GridColumn;
+import org.anstis.client.grid.model.basic.GridColumn;
+import org.anstis.client.grid.model.mergable.MergableGrid;
+import org.anstis.client.grid.model.mergable.MergableGridCell;
+import org.anstis.client.grid.model.mergable.MergableGridData;
+import org.anstis.client.grid.model.mergable.MergableGridRow;
 
-public class CustomGridRenderer implements IGridRenderer {
+public class CustomGridRenderer implements IGridRenderer<MergableGrid> {
 
     private static final int HEADER_HEIGHT = 34;
     private static final int ROW_HEIGHT = 20;
@@ -65,7 +68,7 @@ public class CustomGridRenderer implements IGridRenderer {
     }
 
     @Override
-    public Group renderHeader( final Grid model,
+    public Group renderHeader( final MergableGrid model,
                                final int startColumnIndex,
                                final int endColumnIndex,
                                final double width ) {
@@ -144,7 +147,7 @@ public class CustomGridRenderer implements IGridRenderer {
     }
 
     @Override
-    public Group renderBody( final Grid model,
+    public Group renderBody( final MergableGrid model,
                              final int startColumnIndex,
                              final int endColumnIndex,
                              final int startRowIndex,
@@ -162,28 +165,46 @@ public class CustomGridRenderer implements IGridRenderer {
         g.add( body );
 
         final List<GridColumn> columns = model.getColumns();
-        final List<Map<Integer, String>> data = model.getData();
+        final MergableGridData data = model.getData();
 
         //Grid lines
-        final double minX = 0;
-        final double minY = 0;
-        final double maxX = model.getColumnOffset( endColumnIndex ) - model.getColumnOffset( startColumnIndex ) + columns.get( endColumnIndex ).getWidth();
-        final double maxY = ( endRowIndex - startRowIndex ) * ROW_HEIGHT;
         final MultiPath bodyGrid = new MultiPath()
                 .setStrokeColor( ColorName.DARKGRAY )
                 .setStrokeWidth( 0.5 )
                 .setListening( false );
+        final double maxX = model.getColumnOffset( endColumnIndex ) - model.getColumnOffset( startColumnIndex ) + columns.get( endColumnIndex ).getWidth();
+        final double maxY = ( endRowIndex - startRowIndex ) * getRowHeight();
         double x = 0;
         for ( int i = startColumnIndex; i <= endColumnIndex; i++ ) {
             final GridColumn column = columns.get( i );
-            bodyGrid.M( x, minY ).L( x,
-                                     maxY );
+            bodyGrid.M( x,
+                        0 ).L( x,
+                               maxY );
             x = x + column.getWidth();
         }
         for ( int rowIndex = startRowIndex; rowIndex < endRowIndex; rowIndex++ ) {
-            bodyGrid.M( minX,
-                        ( rowIndex - startRowIndex ) * ROW_HEIGHT ).L( maxX,
-                                                                       ( rowIndex - startRowIndex ) * ROW_HEIGHT );
+            final double y = ( rowIndex - startRowIndex ) * getRowHeight();
+            x = 0;
+            if ( data.getRow( rowIndex ).hasMergedCells() ) {
+                for ( int columnIndex = startColumnIndex; columnIndex <= endColumnIndex; columnIndex++ ) {
+                    final GridColumn column = columns.get( columnIndex );
+
+                    final int absoluteColumnIndex = model.mapToAbsoluteIndex( columnIndex );
+                    final MergableGridCell cell = data.getRow( rowIndex ).getCells().get( absoluteColumnIndex );
+
+                    if ( cell == null || !cell.isMerged() ) {
+                        bodyGrid.M( x,
+                                    y ).L( x + column.getWidth(),
+                                           y );
+                    }
+                    x = x + column.getWidth();
+                }
+            } else {
+                bodyGrid.M( x,
+                            y ).L( maxX,
+                                   y );
+
+            }
         }
         g.add( bodyGrid );
 
@@ -197,23 +218,26 @@ public class CustomGridRenderer implements IGridRenderer {
 
         for ( int rowIndex = startRowIndex; rowIndex < endRowIndex; rowIndex++ ) {
             final double offsetY = ( rowIndex - startRowIndex ) * ROW_HEIGHT;
-            final Map<Integer, String> row = data.get( rowIndex );
-            for ( Map.Entry<Integer, String> e : row.entrySet() ) {
+            final MergableGridRow row = data.getRow( rowIndex );
+            for ( Map.Entry<Integer, MergableGridCell> e : row.getCells().entrySet() ) {
                 final int absoluteColumnIndex = e.getKey();
                 final int relativeColumnIndex = model.mapToRelativeIndex( absoluteColumnIndex );
                 if ( relativeColumnIndex >= startColumnIndex && relativeColumnIndex <= endColumnIndex ) {
                     final int columnWidth = columns.get( relativeColumnIndex ).getWidth();
                     final double offsetX = columnPositions.get( relativeColumnIndex );
-                    final Text t = new Text( e.getValue() )
-                            .setFillColor( ColorName.GREY )
-                            .setX( offsetX + columnWidth / 2 )
-                            .setY( offsetY + ROW_HEIGHT / 2 )
-                            .setFontSize( 12 )
-                            .setFontFamily( "serif" )
-                            .setListening( false )
-                            .setTextBaseLine( TextBaseLine.MIDDLE )
-                            .setTextAlign( TextAlign.CENTER );
-                    g.add( t );
+                    final MergableGridCell cell = e.getValue();
+                    if ( !cell.isMerged() ) {
+                        final Text t = new Text( cell.getValue() )
+                                .setFillColor( ColorName.GREY )
+                                .setX( offsetX + columnWidth / 2 )
+                                .setY( offsetY + ( cell.getMergedCellCount() * ROW_HEIGHT / 2 ) )
+                                .setFontSize( 12 )
+                                .setFontFamily( "serif" )
+                                .setListening( false )
+                                .setTextBaseLine( TextBaseLine.MIDDLE )
+                                .setTextAlign( TextAlign.CENTER );
+                        g.add( t );
+                    }
                 }
             }
         }

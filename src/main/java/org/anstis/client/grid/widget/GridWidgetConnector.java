@@ -15,7 +15,7 @@
  */
 package org.anstis.client.grid.widget;
 
-import org.anstis.client.grid.model.GridColumn;
+import org.anstis.client.grid.model.basic.GridColumn;
 
 public class GridWidgetConnector {
 

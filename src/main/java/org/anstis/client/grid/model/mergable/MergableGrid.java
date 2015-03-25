@@ -13,21 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.anstis.client.grid.model;
+package org.anstis.client.grid.model.mergable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
-public class Grid {
+import org.anstis.client.grid.model.basic.GridColumn;
+import org.anstis.client.grid.model.basic.IGrid;
+
+public class MergableGrid implements IGrid<MergableGridData> {
 
     private List<Integer> indexRelativeToAbsolute = new ArrayList<>();
     private List<Integer> indexAbsoluteToRelative = new ArrayList<>();
 
     private List<GridColumn> columns = new ArrayList<>();
-    private List<Map<Integer, String>> data = new ArrayList<>();
+    private MergableGridData data = new MergableGridData();
 
     public List<GridColumn> getColumns() {
         final List<GridColumn> indexedColumns = new ArrayList<>( columns.size() );
@@ -122,8 +124,12 @@ public class Grid {
         this.indexAbsoluteToRelative = Arrays.asList( reverse );
     }
 
-    public List<Map<Integer, String>> getData() {
+    public MergableGridData getData() {
         return data;
+    }
+
+    public void setData( final MergableGridData data ) {
+        this.data = data;
     }
 
     public int mapToAbsoluteIndex( final int relativeIndex ) {
@@ -154,11 +160,11 @@ public class Grid {
         if ( this == o ) {
             return true;
         }
-        if ( !( o instanceof Grid ) ) {
+        if ( !( o instanceof MergableGrid ) ) {
             return false;
         }
 
-        Grid grid = (Grid) o;
+        MergableGrid grid = (MergableGrid) o;
 
         if ( !columns.equals( grid.columns ) ) {
             return false;

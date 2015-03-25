@@ -13,15 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.anstis.client.grid.widget;
+package org.anstis.client.grid.model.basic;
 
-import org.anstis.client.grid.model.basic.GridColumn;
-import org.anstis.client.grid.model.basic.IGrid;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
-public interface ISelectionManager {
+public class GridRow implements IGridRow<GridCell> {
 
-    void select( final IGrid<?> selectable );
+    private Map<Integer, GridCell> cells = new HashMap<>();
 
-    void scrollIntoView( final GridColumn link );
+    @Override
+    public Map<Integer, GridCell> getCells() {
+        return Collections.unmodifiableMap( cells );
+    }
+
+    void setCell( final int columnIndex,
+                  final GridCell cell ) {
+        cells.put( columnIndex,
+                   cell );
+    }
 
 }

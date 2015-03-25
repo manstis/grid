@@ -25,10 +25,13 @@ import com.ait.lienzo.client.core.shape.Rectangle;
 import com.ait.lienzo.client.core.shape.Text;
 import com.ait.lienzo.shared.core.types.TextAlign;
 import com.ait.lienzo.shared.core.types.TextBaseLine;
-import org.anstis.client.grid.model.Grid;
-import org.anstis.client.grid.model.GridColumn;
+import org.anstis.client.grid.model.basic.GridColumn;
+import org.anstis.client.grid.model.basic.IGrid;
+import org.anstis.client.grid.model.basic.IGridCell;
+import org.anstis.client.grid.model.basic.IGridData;
+import org.anstis.client.grid.model.basic.IGridRow;
 
-public abstract class AbstractClippingGridRenderer implements IGridRenderer {
+public abstract class AbstractClippingGridRenderer implements IGridRenderer<IGrid<?>> {
 
     @Override
     public Group renderSelector( final double width,
@@ -45,7 +48,7 @@ public abstract class AbstractClippingGridRenderer implements IGridRenderer {
     public abstract Rectangle getSelector();
 
     @Override
-    public Group renderHeader( final Grid model,
+    public Group renderHeader( final IGrid<?> model,
                                final int startColumnIndex,
                                final int endColumnIndex,
                                final double width ) {
@@ -112,7 +115,7 @@ public abstract class AbstractClippingGridRenderer implements IGridRenderer {
     public abstract Text getHeaderText();
 
     @Override
-    public Group renderBody( final Grid model,
+    public Group renderBody( final IGrid<?> model,
                              final int startColumnIndex,
                              final int endColumnIndex,
                              final int startRowIndex,
@@ -125,7 +128,7 @@ public abstract class AbstractClippingGridRenderer implements IGridRenderer {
         g.add( body );
 
         final List<GridColumn> columns = model.getColumns();
-        final List<Map<Integer, String>> data = model.getData();
+        final IGridData<?,?> data = model.getData();
 
         //Grid lines
         final double minX = 0;
@@ -157,8 +160,8 @@ public abstract class AbstractClippingGridRenderer implements IGridRenderer {
 
         for ( int rowIndex = startRowIndex; rowIndex < endRowIndex; rowIndex++ ) {
             final double offsetY = ( rowIndex - startRowIndex ) * getRowHeight();
-            final Map<Integer, String> row = data.get( rowIndex );
-            for ( Map.Entry<Integer, String> e : row.entrySet() ) {
+            final IGridRow<?> row = data.getRow( rowIndex );
+            for ( Map.Entry<Integer, ? extends IGridCell> e : row.getCells().entrySet() ) {
                 final int absoluteColumnIndex = e.getKey();
                 final int relativeColumnIndex = model.mapToRelativeIndex( absoluteColumnIndex );
                 if ( relativeColumnIndex >= startColumnIndex && relativeColumnIndex <= endColumnIndex ) {
@@ -169,7 +172,7 @@ public abstract class AbstractClippingGridRenderer implements IGridRenderer {
                             .setY( offsetY + getRowHeight() / 2 )
                             .setTextBaseLine( TextBaseLine.MIDDLE )
                             .setTextAlign( TextAlign.CENTER )
-                            .setText( e.getValue() );
+                            .setText( e.getValue().getValue() );
                     g.add( t );
                 }
             }

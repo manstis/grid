@@ -20,12 +20,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.ait.lienzo.client.core.shape.Group;
-import org.anstis.client.grid.model.Grid;
+import org.anstis.client.grid.model.basic.IGrid;
 
 public class GridRendererRegistry {
 
     private static IGridRenderer activeRenderer = null;
-    private static Map<String, IGridRenderer> renderers = new HashMap<>();
+    private static Map<String, IGridRenderer<?>> renderers = new HashMap<>();
 
     public static double getHeaderHeight() {
         return activeRenderer.getHeaderHeight();
@@ -41,7 +41,7 @@ public class GridRendererRegistry {
                                               height );
     }
 
-    public static Group renderHeader( final Grid model,
+    public static Group renderHeader( final IGrid<?> model,
                                       final int startColumnIndex,
                                       final int endColumnIndex,
                                       final double width ) {
@@ -51,7 +51,7 @@ public class GridRendererRegistry {
                                             width );
     }
 
-    public static Group renderBody( final Grid model,
+    public static Group renderBody( final IGrid<?> model,
                                     final int startColumnIndex,
                                     final int endColumnIndex,
                                     final int startRowIndex,
@@ -65,12 +65,12 @@ public class GridRendererRegistry {
                                           width );
     }
 
-    public static void addRenderer( final IGridRenderer renderer ) {
+    public static void addRenderer( final IGridRenderer<?> renderer ) {
         renderers.put( renderer.getName(),
                        renderer );
     }
 
-    public static Collection<IGridRenderer> getRenderers() {
+    public static Collection<IGridRenderer<?>> getRenderers() {
         return renderers.values();
     }
 

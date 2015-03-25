@@ -16,34 +16,32 @@
 package org.anstis.client.grid.util;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
+import org.anstis.client.grid.model.mergable.MergableGridCell;
+import org.anstis.client.grid.model.mergable.MergableGridData;
+import org.anstis.client.grid.model.mergable.MergableGridRow;
 
 public class GridDataFactory {
 
     private static double FILL_FACTOR = 0.75;
 
-    public static List<Map<Integer, String>> makeData( final int columnCount,
-                                                       final int rowCount ) {
-        final List<Map<Integer, String>> data = new ArrayList<>();
-        for ( int i = 0; i < rowCount; i++ ) {
-            data.add( makeRow( columnCount,
-                               i ) );
-        }
-        return data;
-    }
-
-    public static Map<Integer, String> makeRow( final int columnCount,
-                                                final int rowIndex ) {
-        final Map<Integer, String> row = new HashMap<>();
-        for ( int i = 0; i < columnCount; i++ ) {
-            if ( Math.random() < FILL_FACTOR ) {
-                row.put( i,
-                         "(" + i + ", " + rowIndex + ")" );
+    public static MergableGridData makeData( final int columnCount,
+                                             final int rowCount ) {
+        final MergableGridData data = new MergableGridData();
+        final List<MergableGridRow> rows = new ArrayList<>();
+        data.setRows( rows );
+        for ( int rowIndex = 0; rowIndex < rowCount; rowIndex++ ) {
+            rows.add( new MergableGridRow() );
+            for ( int columnIndex = 0; columnIndex < columnCount; columnIndex++ ) {
+                if ( Math.random() < FILL_FACTOR ) {
+                    data.setCell( rowIndex,
+                                  columnIndex,
+                                  new MergableGridCell( "(" + columnIndex + ", " + rowIndex + ")" ) );
+                }
             }
         }
-        return row;
+        return data;
     }
 
 }

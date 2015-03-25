@@ -21,8 +21,8 @@ import com.ait.lienzo.client.core.event.NodeMouseDownEvent;
 import com.ait.lienzo.client.core.event.NodeMouseDownHandler;
 import com.ait.lienzo.client.core.shape.Rectangle;
 import com.ait.lienzo.client.core.types.Point2D;
-import org.anstis.client.grid.model.Grid;
-import org.anstis.client.grid.model.GridColumn;
+import org.anstis.client.grid.model.basic.GridColumn;
+import org.anstis.client.grid.model.basic.IGrid;
 import org.anstis.client.grid.util.GridCoordinateUtils;
 import org.anstis.client.grid.widget.GridLayer;
 import org.anstis.client.grid.widget.GridWidget;
@@ -31,11 +31,11 @@ public class GridWidgetMouseDownHandler implements NodeMouseDownHandler {
 
     private final GridLayer layer;
     private final GridWidgetHandlersState state;
-    private final Map<Grid, GridWidget> selectables;
+    private final Map<IGrid<?>, GridWidget> selectables;
 
     public GridWidgetMouseDownHandler( final GridLayer layer,
                                        final GridWidgetHandlersState state,
-                                       final Map<Grid, GridWidget> selectables ) {
+                                       final Map<IGrid<?>, GridWidget> selectables ) {
         this.layer = layer;
         this.state = state;
         this.selectables = selectables;
@@ -67,7 +67,7 @@ public class GridWidgetMouseDownHandler implements NodeMouseDownHandler {
         }
     }
 
-    private void showColumnHighlight( final Grid grid,
+    private void showColumnHighlight( final IGrid<?> grid,
                                       final GridColumn gridColumn ) {
         final GridWidget gridWidget = selectables.get( state.getGrid() );
         final double highlightOffsetX = grid.getColumnOffset( gridColumn );

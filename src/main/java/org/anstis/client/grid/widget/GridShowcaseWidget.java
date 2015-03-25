@@ -31,8 +31,9 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
-import org.anstis.client.grid.model.Grid;
-import org.anstis.client.grid.model.GridColumn;
+import org.anstis.client.grid.model.basic.GridColumn;
+import org.anstis.client.grid.model.basic.IGrid;
+import org.anstis.client.grid.model.mergable.MergableGrid;
 import org.anstis.client.grid.util.GridDataFactory;
 import org.anstis.client.grid.widget.edit.EditorPopup;
 import org.anstis.client.grid.widget.renderers.GridRendererRegistry;
@@ -45,6 +46,8 @@ public class GridShowcaseWidget extends Composite implements IEditManager,
 
     public static final int VP_WIDTH = 1200;
     public static final int VP_HEIGHT = 600;
+
+    private static final double VP_SCALE = 1.0;
 
     private static final int GRID1_ROWS = 100;
     private static final int GRID2_ROWS = 100;
@@ -77,8 +80,8 @@ public class GridShowcaseWidget extends Composite implements IEditManager,
     }
 
     private void setup() {
-        //Lienzo stuff - Set default scale to 50%
-        final Transform transform = new Transform().scale( 0.5 );
+        //Lienzo stuff - Set default scale
+        final Transform transform = new Transform().scale( VP_SCALE );
         gridPanel.getViewport().setTransform( transform );
 
         //Lienzo stuff - Add mouse pan support
@@ -90,34 +93,34 @@ public class GridShowcaseWidget extends Composite implements IEditManager,
         table.setWidget( gridPanel );
 
         //Grid 1
-        final Grid grid1 = new Grid();
+        final MergableGrid grid1 = new MergableGrid();
         for ( int idx = 0; idx < 10; idx++ ) {
             final GridColumn column = new GridColumn( "G1-Col: " + idx,
                                                       100 );
             grid1.addColumn( column );
         }
-        grid1.getData().addAll( GridDataFactory.makeData( grid1.getColumns().size(),
-                                                          GRID1_ROWS ) );
+        grid1.setData( GridDataFactory.makeData( grid1.getColumns().size(),
+                                                 GRID1_ROWS ) );
 
         //Grid 2
-        final Grid grid2 = new Grid();
+        final MergableGrid grid2 = new MergableGrid();
         for ( int idx = 0; idx < 5; idx++ ) {
             final GridColumn column = new GridColumn( "G2-Col: " + idx,
                                                       150 );
             grid2.addColumn( column );
         }
-        grid2.getData().addAll( GridDataFactory.makeData( grid2.getColumns().size(),
-                                                          GRID2_ROWS ) );
+        grid2.setData( GridDataFactory.makeData( grid2.getColumns().size(),
+                                                 GRID2_ROWS ) );
 
         //Grid 3
-        final Grid grid3 = new Grid();
+        final MergableGrid grid3 = new MergableGrid();
         for ( int idx = 0; idx < 5; idx++ ) {
             final GridColumn column = new GridColumn( "G3-Col: " + idx,
                                                       200 );
             grid3.addColumn( column );
         }
-        grid3.getData().addAll( GridDataFactory.makeData( grid3.getColumns().size(),
-                                                          GRID3_ROWS ) );
+        grid3.setData( GridDataFactory.makeData( grid3.getColumns().size(),
+                                                 GRID3_ROWS ) );
 
         //Link grids
         grid1.getColumns().get( 9 ).setLink( grid2.getColumns().get( 0 ) );
@@ -139,7 +142,7 @@ public class GridShowcaseWidget extends Composite implements IEditManager,
                               0 ) );
 
         //Slider
-        slider.setValue( 50.0 );
+        slider.setValue( VP_SCALE * 100 );
         slider.addValueChangeHandler( new ValueChangeHandler<Double>() {
 
             private double m_currentZoom = 1.0;
@@ -182,7 +185,7 @@ public class GridShowcaseWidget extends Composite implements IEditManager,
         } );
     }
 
-    public void addGrid( final Grid grid,
+    public void addGrid( final IGrid<?> grid,
                          final Layer layer,
                          final Point2D location ) {
         final GridWidget gridWidget = new GridWidget( grid,
@@ -200,7 +203,7 @@ public class GridShowcaseWidget extends Composite implements IEditManager,
     }
 
     @Override
-    public void select( final Grid selectable ) {
+    public void select( final IGrid<?> selectable ) {
         gridLayer.select( selectable );
     }
 

@@ -23,8 +23,8 @@ import com.ait.lienzo.client.core.event.NodeMouseMoveHandler;
 import com.ait.lienzo.client.core.mediator.IMediator;
 import com.ait.lienzo.client.core.types.Point2D;
 import com.google.gwt.dom.client.Style;
-import org.anstis.client.grid.model.Grid;
-import org.anstis.client.grid.model.GridColumn;
+import org.anstis.client.grid.model.basic.GridColumn;
+import org.anstis.client.grid.model.basic.IGrid;
 import org.anstis.client.grid.util.GridCoordinateUtils;
 import org.anstis.client.grid.widget.GridLayer;
 import org.anstis.client.grid.widget.GridWidget;
@@ -36,11 +36,11 @@ public class GridWidgetMouseMoveHandler implements NodeMouseMoveHandler {
 
     private final GridLayer layer;
     private final GridWidgetHandlersState state;
-    private final Map<Grid, GridWidget> selectables;
+    private final Map<IGrid<?>, GridWidget> selectables;
 
     public GridWidgetMouseMoveHandler( final GridLayer layer,
                                        final GridWidgetHandlersState state,
-                                       final Map<Grid, GridWidget> selectables ) {
+                                       final Map<IGrid<?>, GridWidget> selectables ) {
         this.layer = layer;
         this.state = state;
         this.selectables = selectables;
@@ -64,8 +64,8 @@ public class GridWidgetMouseMoveHandler implements NodeMouseMoveHandler {
                 state.setOperation( GridWidgetHandlersState.GridWidgetHandlersOperation.NONE );
                 Style.Cursor cursor = Style.Cursor.DEFAULT;
 
-                for ( Map.Entry<Grid, GridWidget> e : selectables.entrySet() ) {
-                    final Grid grid = e.getKey();
+                for ( Map.Entry<IGrid<?>, GridWidget> e : selectables.entrySet() ) {
+                    final IGrid<?> grid = e.getKey();
                     final GridWidget gridWidget = e.getValue();
                     final Point2D ap = GridCoordinateUtils.mapToGridWidgetAbsolutePoint( gridWidget,
                                                                                          new Point2D( event.getX(),

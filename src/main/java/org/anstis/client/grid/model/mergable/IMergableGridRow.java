@@ -13,15 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.anstis.client.grid.widget;
+package org.anstis.client.grid.model.mergable;
 
-import org.anstis.client.grid.model.basic.GridColumn;
-import org.anstis.client.grid.model.basic.IGrid;
+import org.anstis.client.grid.model.basic.IGridCell;
+import org.anstis.client.grid.model.basic.IGridRow;
 
-public interface ISelectionManager {
+public interface IMergableGridRow<C extends IGridCell> extends IGridRow<C> {
 
-    void select( final IGrid<?> selectable );
-
-    void scrollIntoView( final GridColumn link );
+    boolean hasMergedCells();
 
 }

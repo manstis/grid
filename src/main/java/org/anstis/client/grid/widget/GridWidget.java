@@ -16,7 +16,6 @@
 package org.anstis.client.grid.widget;
 
 import java.util.List;
-import java.util.Map;
 
 import com.ait.lienzo.client.core.Context2D;
 import com.ait.lienzo.client.core.event.NodeMouseClickEvent;
@@ -27,8 +26,10 @@ import com.ait.lienzo.client.core.shape.Group;
 import com.ait.lienzo.client.core.shape.Rectangle;
 import com.ait.lienzo.client.core.types.Point2D;
 import com.google.gwt.core.client.Callback;
-import org.anstis.client.grid.model.Grid;
-import org.anstis.client.grid.model.GridColumn;
+import org.anstis.client.grid.model.basic.GridColumn;
+import org.anstis.client.grid.model.basic.IGrid;
+import org.anstis.client.grid.model.basic.IGridCell;
+import org.anstis.client.grid.model.basic.IGridData;
 import org.anstis.client.grid.util.GridCoordinateUtils;
 import org.anstis.client.grid.widget.renderers.GridRendererRegistry;
 
@@ -37,12 +38,12 @@ public class GridWidget extends Group {
     private boolean isSelected = false;
     private Group selection = null;
 
-    private Grid model;
+    private IGrid<?> model;
 
     private IEditManager editManager;
     private ISelectionManager selectionManager;
 
-    public GridWidget( final Grid model,
+    public GridWidget( final IGrid<?> model,
                        final IEditManager editManager,
                        final ISelectionManager selectionManager ) {
         this.model = model;
@@ -56,7 +57,7 @@ public class GridWidget extends Group {
         addNodeMouseDoubleClickHandler( new GridWidgetMouseDoubleClickHandler() );
     }
 
-    public Grid getModel() {
+    public IGrid getModel() {
         return model;
     }
 
@@ -80,7 +81,7 @@ public class GridWidget extends Group {
     }
 
     public double getHeight() {
-        return model.getData().size() * GridRendererRegistry.getRowHeight() + GridRendererRegistry.getHeaderHeight();
+        return model.getData().getRowCount() * GridRendererRegistry.getRowHeight() + GridRendererRegistry.getHeaderHeight();
     }
 
     public void select() {
@@ -127,7 +128,7 @@ public class GridWidget extends Group {
         final double vpWidth = bounds.getWidth();
 
         final List<GridColumn> columns = model.getColumns();
-        final List<Map<Integer, String>> data = model.getData();
+        final IGridData<?, ?> data = model.getData();
 
         //Determine which columns are within visible area
         double x = 0;
@@ -156,8 +157,8 @@ public class GridWidget extends Group {
             minRow = 0;
         }
         int maxRow = ( (int) ( ( vpY - getY() - GridRendererRegistry.getHeaderHeight() + vpHeight + GridRendererRegistry.getRowHeight() ) / GridRendererRegistry.getRowHeight() ) );
-        if ( maxRow > data.size() ) {
-            maxRow = data.size();
+        if ( maxRow > data.getRowCount() ) {
+            maxRow = data.getRowCount();
         }
 
         if ( minCol < 0 || maxCol < 0 || maxRow < minRow ) {
@@ -293,12 +294,14 @@ public class GridWidget extends Group {
             if ( _columnIndex < 0 || _columnIndex > columns.size() - 1 ) {
                 return;
             }
-            if ( rowIndex < 0 || rowIndex > getModel().getData().size() - 1 ) {
+            if ( rowIndex < 0 || rowIndex > getModel().getData().getRowCount() - 1 ) {
                 return;
             }
             final int columnIndex = getModel().mapToAbsoluteIndex( _columnIndex );
 
-            editManager.edit( getModel().getData().get( rowIndex ).get( columnIndex ),
+            final IGridCell cell = getModel().getData().getCell( rowIndex,
+                                                                 columnIndex );
+            editManager.edit( cell == null ? "" : cell.getValue(),
                               new Callback<String, String>() {
                                   @Override
                                   public void onFailure( final String value ) {
@@ -307,8 +310,9 @@ public class GridWidget extends Group {
 
                                   @Override
                                   public void onSuccess( final String value ) {
-                                      getModel().getData().get( rowIndex ).put( columnIndex,
-                                                                                value );
+                                      getModel().getData().setCell( rowIndex,
+                                                                    columnIndex,
+                                                                    getModel().getData().newCell( value ) );
                                       GridWidget.this.getLayer().draw();
                                   }
                               } );

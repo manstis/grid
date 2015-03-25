@@ -13,15 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.anstis.client.grid.widget;
+package org.anstis.client.grid.model.basic;
 
-import org.anstis.client.grid.model.basic.GridColumn;
-import org.anstis.client.grid.model.basic.IGrid;
+public class GridCell implements IGridCell {
 
-public interface ISelectionManager {
+    private String value;
 
-    void select( final IGrid<?> selectable );
+    public GridCell( final String value ) {
+        this.value = value;
+    }
 
-    void scrollIntoView( final GridColumn link );
+    @Override
+    public String getValue() {
+        return value;
+    }
 
 }

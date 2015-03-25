@@ -32,8 +32,8 @@ import com.ait.lienzo.shared.core.types.ArrowType;
 import com.ait.lienzo.shared.core.types.ColorName;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.user.client.Command;
-import org.anstis.client.grid.model.Grid;
-import org.anstis.client.grid.model.GridColumn;
+import org.anstis.client.grid.model.basic.GridColumn;
+import org.anstis.client.grid.model.basic.IGrid;
 import org.anstis.client.grid.widget.animation.GridWidgetScrollIntoViewAnimation;
 import org.anstis.client.grid.widget.dnd.GridWidgetHandlersState;
 import org.anstis.client.grid.widget.dnd.GridWidgetMouseDownHandler;
@@ -42,7 +42,7 @@ import org.anstis.client.grid.widget.dnd.GridWidgetMouseUpHandler;
 
 public class GridLayer extends Layer implements ISelectionManager {
 
-    private Map<Grid, GridWidget> selectables = new HashMap<>();
+    private Map<IGrid<?>, GridWidget> selectables = new HashMap<>();
     private Map<GridWidgetConnector, Arrow> connectors = new HashMap<>();
 
     private Rectangle bounds;
@@ -142,7 +142,7 @@ public class GridLayer extends Layer implements ISelectionManager {
     }
 
     private void addConnectors() {
-        for ( Map.Entry<Grid, GridWidget> e1 : selectables.entrySet() ) {
+        for ( Map.Entry<IGrid<?>, GridWidget> e1 : selectables.entrySet() ) {
             for ( GridColumn c : e1.getKey().getColumns() ) {
                 if ( c.isLinked() ) {
                     final GridWidget linkWidget = getLinkedGrid( c.getLink() );
@@ -190,7 +190,7 @@ public class GridLayer extends Layer implements ISelectionManager {
 
     private GridWidget getLinkedGrid( final GridColumn link ) {
         GridWidget gridWidget = null;
-        for ( Map.Entry<Grid, GridWidget> e : selectables.entrySet() ) {
+        for ( Map.Entry<IGrid<?>, GridWidget> e : selectables.entrySet() ) {
             if ( e.getKey().getColumns().contains( link ) ) {
                 gridWidget = e.getValue();
                 break;
@@ -228,7 +228,7 @@ public class GridLayer extends Layer implements ISelectionManager {
         }
     }
 
-    private void removeConnectors( final Grid model ) {
+    private void removeConnectors( final IGrid<?> model ) {
         final List<GridWidgetConnector> removedConnectors = new ArrayList<>();
         for ( Map.Entry<GridWidgetConnector, Arrow> e : connectors.entrySet() ) {
             if ( model.getColumns().contains( e.getKey().getSourceColumn() ) || model.getColumns().contains( e.getKey().getTargetColumn() ) ) {
@@ -249,8 +249,8 @@ public class GridLayer extends Layer implements ISelectionManager {
     }
 
     @Override
-    public void select( final Grid selectable ) {
-        for ( Map.Entry<Grid, GridWidget> e : selectables.entrySet() ) {
+    public void select( final IGrid<?> selectable ) {
+        for ( Map.Entry<IGrid<?>, GridWidget> e : selectables.entrySet() ) {
             e.getValue().deselect();
         }
         if ( selectables.containsKey( selectable ) ) {

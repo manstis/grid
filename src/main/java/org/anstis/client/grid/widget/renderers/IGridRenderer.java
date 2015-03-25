@@ -16,9 +16,9 @@
 package org.anstis.client.grid.widget.renderers;
 
 import com.ait.lienzo.client.core.shape.Group;
-import org.anstis.client.grid.model.Grid;
+import org.anstis.client.grid.model.basic.IGrid;
 
-public interface IGridRenderer {
+public interface IGridRenderer<G extends IGrid<?>> {
 
     String getName();
 
@@ -29,12 +29,12 @@ public interface IGridRenderer {
     Group renderSelector( final double width,
                           final double height );
 
-    Group renderHeader( final Grid model,
+    Group renderHeader( final G model,
                         final int startColumnIndex,
                         final int endColumnIndex,
                         final double width );
 
-    Group renderBody( final Grid model,
+    Group renderBody( final G model,
                       final int startColumnIndex,
                       final int endColumnIndex,
                       final int startRowIndex,

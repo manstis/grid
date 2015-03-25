@@ -13,15 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.anstis.client.grid.widget;
+package org.anstis.client.grid.model.basic;
 
-import org.anstis.client.grid.model.basic.GridColumn;
-import org.anstis.client.grid.model.basic.IGrid;
+import java.util.List;
 
-public interface ISelectionManager {
+public interface IGridData<R extends IGridRow<C>, C extends IGridCell> {
 
-    void select( final IGrid<?> selectable );
+    void setRows( final List<R> rows );
 
-    void scrollIntoView( final GridColumn link );
+    R getRow( final int index );
+
+    int getRowCount();
+
+    C newCell( final String value );
+
+    C getCell( final int rowIndex,
+               final int columnIndex );
+
+    void setCell( final int rowIndex,
+                  final int columnIndex,
+                  final C cell );
 
 }
