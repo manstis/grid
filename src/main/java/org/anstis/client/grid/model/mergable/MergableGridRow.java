@@ -15,29 +15,21 @@
  */
 package org.anstis.client.grid.model.mergable;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import org.anstis.client.grid.model.BaseGridRow;
 
-public class MergableGridRow implements IMergableGridRow<MergableGridCell> {
+public class MergableGridRow extends BaseGridRow<MergableGridCell> implements IMergableGridRow<MergableGridCell> {
 
-    private Map<Integer, MergableGridCell> cells = new HashMap<>();
     private boolean hasMergedCells = false;
 
     @Override
-    public Map<Integer, MergableGridCell> getCells() {
-        return Collections.unmodifiableMap( cells );
+    public boolean hasMergedCells() {
+        return hasMergedCells;
     }
 
     void setCell( final int columnIndex,
                   final MergableGridCell cell ) {
         cells.put( columnIndex,
                    cell );
-    }
-
-    @Override
-    public boolean hasMergedCells() {
-        return hasMergedCells;
     }
 
     void setHasMergedCells( final boolean hasMergedCells ) {

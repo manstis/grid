@@ -13,16 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.anstis.client.grid.model.basic;
+package org.anstis.client.grid.model;
 
-import org.anstis.client.grid.model.BaseGridRow;
+import java.util.Map;
 
-public class GridRow extends BaseGridRow<GridCell> {
+public interface IGridRow<C extends IGridCell> {
 
-    void setCell( final int columnIndex,
-                  final GridCell cell ) {
-        cells.put( columnIndex,
-                   cell );
-    }
+    Map<Integer, C> getCells();
 
 }

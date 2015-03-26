@@ -13,16 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.anstis.client.grid.model.basic;
+package org.anstis.client.grid.model;
 
-import org.anstis.client.grid.model.BaseGridRow;
+import java.util.List;
 
-public class GridRow extends BaseGridRow<GridCell> {
+public interface IGridData<R extends IGridRow<C>, C extends IGridCell> {
 
-    void setCell( final int columnIndex,
-                  final GridCell cell ) {
-        cells.put( columnIndex,
-                   cell );
-    }
+    void setRows( final List<R> rows );
+
+    R getRow( final int index );
+
+    int getRowCount();
+
+    C newCell( final String value );
+
+    C getCell( final int rowIndex,
+               final int columnIndex );
+
+    void setCell( final int rowIndex,
+                  final int columnIndex,
+                  final C cell );
 
 }

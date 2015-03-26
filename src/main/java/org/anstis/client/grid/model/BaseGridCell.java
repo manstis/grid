@@ -13,12 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.anstis.client.grid.model.basic;
+package org.anstis.client.grid.model;
 
-import java.util.Map;
+public abstract class BaseGridCell implements IGridCell {
 
-public interface IGridRow<C extends IGridCell> {
+    private String value;
 
-    Map<Integer, C> getCells();
+    public BaseGridCell( final String value ) {
+        this.value = value;
+    }
+
+    @Override
+    public String getValue() {
+        return value;
+    }
 
 }

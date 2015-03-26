@@ -15,7 +15,7 @@
  */
 package org.anstis.client.grid.model.mergable;
 
-import org.anstis.client.grid.model.basic.IGridCell;
+import org.anstis.client.grid.model.IGridCell;
 
 public interface IMergableGridCell extends IGridCell {
 

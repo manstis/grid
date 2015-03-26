@@ -26,10 +26,10 @@ import com.ait.lienzo.client.core.shape.Group;
 import com.ait.lienzo.client.core.shape.Rectangle;
 import com.ait.lienzo.client.core.types.Point2D;
 import com.google.gwt.core.client.Callback;
-import org.anstis.client.grid.model.basic.GridColumn;
-import org.anstis.client.grid.model.basic.IGrid;
-import org.anstis.client.grid.model.basic.IGridCell;
-import org.anstis.client.grid.model.basic.IGridData;
+import org.anstis.client.grid.model.GridColumn;
+import org.anstis.client.grid.model.IGrid;
+import org.anstis.client.grid.model.IGridCell;
+import org.anstis.client.grid.model.IGridData;
 import org.anstis.client.grid.util.GridCoordinateUtils;
 import org.anstis.client.grid.widget.renderers.GridRendererRegistry;
 

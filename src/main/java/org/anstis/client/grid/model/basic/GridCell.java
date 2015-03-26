@@ -15,17 +15,12 @@
  */
 package org.anstis.client.grid.model.basic;
 
-public class GridCell implements IGridCell {
+import org.anstis.client.grid.model.BaseGridCell;
 
-    private String value;
+public class GridCell extends BaseGridCell {
 
     public GridCell( final String value ) {
-        this.value = value;
-    }
-
-    @Override
-    public String getValue() {
-        return value;
+        super( value );
     }
 
 }

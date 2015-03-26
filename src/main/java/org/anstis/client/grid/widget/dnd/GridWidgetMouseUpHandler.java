@@ -20,7 +20,7 @@ import java.util.Map;
 import com.ait.lienzo.client.core.event.NodeMouseUpEvent;
 import com.ait.lienzo.client.core.event.NodeMouseUpHandler;
 import com.google.gwt.dom.client.Style;
-import org.anstis.client.grid.model.basic.IGrid;
+import org.anstis.client.grid.model.IGrid;
 import org.anstis.client.grid.widget.GridLayer;
 import org.anstis.client.grid.widget.GridWidget;
 

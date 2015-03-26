@@ -27,7 +27,7 @@ import com.ait.lienzo.client.core.types.Shadow;
 import com.ait.lienzo.shared.core.types.ColorName;
 import com.ait.lienzo.shared.core.types.TextAlign;
 import com.ait.lienzo.shared.core.types.TextBaseLine;
-import org.anstis.client.grid.model.basic.GridColumn;
+import org.anstis.client.grid.model.GridColumn;
 import org.anstis.client.grid.model.mergable.MergableGrid;
 import org.anstis.client.grid.model.mergable.MergableGridCell;
 import org.anstis.client.grid.model.mergable.MergableGridData;

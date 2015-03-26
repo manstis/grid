@@ -25,11 +25,11 @@ import com.ait.lienzo.client.core.shape.Rectangle;
 import com.ait.lienzo.client.core.shape.Text;
 import com.ait.lienzo.shared.core.types.TextAlign;
 import com.ait.lienzo.shared.core.types.TextBaseLine;
-import org.anstis.client.grid.model.basic.GridColumn;
-import org.anstis.client.grid.model.basic.IGrid;
-import org.anstis.client.grid.model.basic.IGridCell;
-import org.anstis.client.grid.model.basic.IGridData;
-import org.anstis.client.grid.model.basic.IGridRow;
+import org.anstis.client.grid.model.GridColumn;
+import org.anstis.client.grid.model.IGrid;
+import org.anstis.client.grid.model.IGridCell;
+import org.anstis.client.grid.model.IGridData;
+import org.anstis.client.grid.model.IGridRow;
 
 public abstract class AbstractClippingGridRenderer implements IGridRenderer<IGrid<?>> {
 
@@ -128,7 +128,7 @@ public abstract class AbstractClippingGridRenderer implements IGridRenderer<IGri
         g.add( body );
 
         final List<GridColumn> columns = model.getColumns();
-        final IGridData<?,?> data = model.getData();
+        final IGridData<?, ?> data = model.getData();
 
         //Grid lines
         final double minX = 0;

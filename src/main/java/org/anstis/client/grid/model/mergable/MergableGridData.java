@@ -15,42 +15,13 @@
  */
 package org.anstis.client.grid.model.mergable;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.anstis.client.grid.model.BaseGridData;
 
-import org.anstis.client.grid.model.basic.IGridData;
-
-public class MergableGridData implements IGridData<MergableGridRow, MergableGridCell> {
-
-    private List<MergableGridRow> rows = new ArrayList<>();
-
-    @Override
-    public void setRows( final List<MergableGridRow> rows ) {
-        this.rows = rows;
-    }
-
-    @Override
-    public MergableGridRow getRow( final int index ) {
-        return rows.get( index );
-    }
-
-    @Override
-    public int getRowCount() {
-        return rows.size();
-    }
+public class MergableGridData extends BaseGridData<MergableGridRow, MergableGridCell> {
 
     @Override
     public MergableGridCell newCell( final String value ) {
         return new MergableGridCell( value );
-    }
-
-    @Override
-    public MergableGridCell getCell( final int rowIndex,
-                                     final int columnIndex ) {
-        if ( rowIndex < 0 || rowIndex > rows.size() - 1 ) {
-            return null;
-        }
-        return rows.get( rowIndex ).getCells().get( columnIndex );
     }
 
     @Override

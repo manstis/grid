@@ -3,11 +3,7 @@ package org.anstis.client.grid.model.mergable;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.anstis.client.grid.model.basic.GridColumn;
-import org.anstis.client.grid.model.mergable.MergableGrid;
-import org.anstis.client.grid.model.mergable.MergableGridCell;
-import org.anstis.client.grid.model.mergable.MergableGridData;
-import org.anstis.client.grid.model.mergable.MergableGridRow;
+import org.anstis.client.grid.model.GridColumn;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

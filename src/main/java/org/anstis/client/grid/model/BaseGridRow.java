@@ -13,25 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.anstis.client.grid.model.basic;
+package org.anstis.client.grid.model;
 
-import java.util.List;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
-public interface IGridData<R extends IGridRow<C>, C extends IGridCell> {
+public abstract class BaseGridRow<C extends IGridCell> implements IGridRow<C> {
 
-    void setRows( final List<R> rows );
+    protected Map<Integer, C> cells = new HashMap<>();
 
-    R getRow( final int index );
-
-    int getRowCount();
-
-    C newCell( final String value );
-
-    C getCell( final int rowIndex,
-               final int columnIndex );
-
-    void setCell( final int rowIndex,
-                  final int columnIndex,
-                  final C cell );
+    @Override
+    public Map<Integer, C> getCells() {
+        return Collections.unmodifiableMap( cells );
+    }
 
 }

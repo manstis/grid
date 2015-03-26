@@ -15,8 +15,8 @@
  */
 package org.anstis.client.grid.widget.dnd;
 
-import org.anstis.client.grid.model.basic.GridColumn;
-import org.anstis.client.grid.model.basic.IGrid;
+import org.anstis.client.grid.model.GridColumn;
+import org.anstis.client.grid.model.IGrid;
 
 public class GridWidgetHandlersState {
 

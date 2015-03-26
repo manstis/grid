@@ -16,7 +16,7 @@
 package org.anstis.client.grid.widget.renderers;
 
 import com.ait.lienzo.client.core.shape.Group;
-import org.anstis.client.grid.model.basic.IGrid;
+import org.anstis.client.grid.model.IGrid;
 
 public interface IGridRenderer<G extends IGrid<?>> {
 

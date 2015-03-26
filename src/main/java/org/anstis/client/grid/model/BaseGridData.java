@@ -13,27 +13,37 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.anstis.client.grid.model.basic;
+package org.anstis.client.grid.model;
 
-import org.anstis.client.grid.model.BaseGridData;
+import java.util.ArrayList;
+import java.util.List;
 
-public class GridData extends BaseGridData<GridRow, GridCell> {
+public abstract class BaseGridData<R extends IGridRow<C>, C extends IGridCell> implements IGridData<R, C> {
+
+    protected List<R> rows = new ArrayList<>();
 
     @Override
-    public GridCell newCell( final String value ) {
-        return new GridCell( value );
+    public void setRows( final List<R> rows ) {
+        this.rows = rows;
     }
 
     @Override
-    public void setCell( final int rowIndex,
-                         final int columnIndex,
-                         final GridCell cell ) {
+    public R getRow( final int index ) {
+        return rows.get( index );
+    }
+
+    @Override
+    public int getRowCount() {
+        return rows.size();
+    }
+
+    @Override
+    public C getCell( final int rowIndex,
+                      final int columnIndex ) {
         if ( rowIndex < 0 || rowIndex > rows.size() - 1 ) {
-            return;
+            return null;
         }
-        final GridRow row = rows.get( rowIndex );
-        row.setCell( columnIndex,
-                     cell );
+        return rows.get( rowIndex ).getCells().get( columnIndex );
     }
 
 }

@@ -15,19 +15,15 @@
  */
 package org.anstis.client.grid.model.mergable;
 
-public class MergableGridCell implements IMergableGridCell {
+import org.anstis.client.grid.model.BaseGridCell;
 
-    private String value;
+public class MergableGridCell extends BaseGridCell implements IMergableGridCell {
+
     private boolean isMerged = false;
     private long mergedCellCount = 1;
 
     public MergableGridCell( final String value ) {
-        this.value = value;
-    }
-
-    @Override
-    public String getValue() {
-        return value;
+        super( value );
     }
 
     @Override

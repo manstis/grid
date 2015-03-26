@@ -2,8 +2,7 @@ package org.anstis.client.grid.model.basic;
 
 import java.util.List;
 
-import org.anstis.client.grid.model.basic.Grid;
-import org.anstis.client.grid.model.basic.GridColumn;
+import org.anstis.client.grid.model.GridColumn;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

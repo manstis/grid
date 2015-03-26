@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.ait.lienzo.client.core.shape.Group;
-import org.anstis.client.grid.model.basic.IGrid;
+import org.anstis.client.grid.model.IGrid;
 
 public class GridRendererRegistry {
 
