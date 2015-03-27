@@ -192,7 +192,7 @@ public class CustomGridRenderer implements IGridRenderer<MergableGrid> {
                     final int absoluteColumnIndex = model.mapToAbsoluteIndex( columnIndex );
                     final MergableGridCell cell = data.getRow( rowIndex ).getCells().get( absoluteColumnIndex );
 
-                    if ( cell == null || !cell.isMerged() ) {
+                    if ( cell == null || cell.getMergedCellCount() > 0 ) {
                         bodyGrid.M( x,
                                     y ).L( x + column.getWidth(),
                                            y );
@@ -226,7 +226,7 @@ public class CustomGridRenderer implements IGridRenderer<MergableGrid> {
                     final int columnWidth = columns.get( relativeColumnIndex ).getWidth();
                     final double offsetX = columnPositions.get( relativeColumnIndex );
                     final MergableGridCell cell = e.getValue();
-                    if ( !cell.isMerged() ) {
+                    if ( cell.getMergedCellCount() > 0 ) {
                         final Text t = new Text( cell.getValue() )
                                 .setFillColor( ColorName.GREY )
                                 .setX( offsetX + columnWidth / 2 )

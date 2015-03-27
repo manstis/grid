@@ -19,7 +19,6 @@ import org.anstis.client.grid.model.BaseGridCell;
 
 public class MergableGridCell extends BaseGridCell implements IMergableGridCell {
 
-    private boolean isMerged = false;
     private long mergedCellCount = 1;
 
     public MergableGridCell( final String value ) {
@@ -28,16 +27,12 @@ public class MergableGridCell extends BaseGridCell implements IMergableGridCell 
 
     @Override
     public boolean isMerged() {
-        return isMerged;
+        return getMergedCellCount() != 1;
     }
 
     @Override
     public long getMergedCellCount() {
         return mergedCellCount;
-    }
-
-    void setMerged( boolean isMerged ) {
-        this.isMerged = isMerged;
     }
 
     void setMergedCellCount( long mergedCellCount ) {

@@ -34,48 +34,60 @@ public class MergableGridData extends BaseGridData<MergableGridRow, MergableGrid
         final MergableGridRow row = rows.get( rowIndex );
         row.setCell( columnIndex,
                      cell );
-        assertMergeUpwards( rowIndex,
-                            columnIndex );
-        assertMergeDownwards( rowIndex,
-                              columnIndex );
-        assertMergedCellCount( rowIndex,
-                               columnIndex );
+        assertMerging( rowIndex,
+                       columnIndex );
+//        assertMergeUpwards( rowIndex,
+//                            columnIndex );
+//        assertMergeDownwards( rowIndex,
+//                              columnIndex );
+//        assertMergedCellCount( rowIndex,
+//                               columnIndex );
     }
 
-    private void assertMergeUpwards( final int rowIndex,
-                                     final int columnIndex ) {
-        if ( rowIndex <= 0 ) {
-            return;
-        }
-        final MergableGridRow currentRow = rows.get( rowIndex );
-        final MergableGridRow previousRow = rows.get( rowIndex - 1 );
+    private void assertMerging( final int rowIndex,
+                                final int columnIndex ) {
+        int minRowIndex = rowIndex;
+        int maxRowIndex = rowIndex;
+        final MergableGridRow currentRow = getRow( rowIndex );
         final MergableGridCell currentRowCell = currentRow.getCells().get( columnIndex );
-        final MergableGridCell previousRowCell = previousRow.getCells().get( columnIndex );
-        if ( currentRowCell == null ) {
-            return;
+        if ( currentRowCell != null ) {
+            currentRowCell.setMergedCellCount( 0 );
         }
-        currentRowCell.setMerged( previousRowCell == null ? false : currentRowCell.getValue().equals( previousRowCell.getValue() ) );
         assertRowMergedCells( currentRow );
-        assertMergeUpwards( rowIndex - 1,
-                            columnIndex );
-    }
 
-    private void assertMergeDownwards( final int rowIndex,
-                                       final int columnIndex ) {
-        if ( rowIndex >= rows.size() - 1 ) {
-            return;
+        while ( minRowIndex > 0 ) {
+            final MergableGridRow previousRow = getRow( minRowIndex - 1 );
+            final MergableGridCell previousRowCell = previousRow.getCells().get( columnIndex );
+            if ( previousRowCell == null ) {
+                assertRowMergedCells( previousRow );
+                break;
+            }
+            if ( !previousRowCell.equals( currentRowCell ) ) {
+                break;
+            }
+            previousRowCell.setMergedCellCount( 0 );
+            assertRowMergedCells( previousRow );
+            minRowIndex--;
         }
-        final MergableGridRow currentRow = rows.get( rowIndex );
-        final MergableGridRow nextRow = rows.get( rowIndex + 1 );
-        final MergableGridCell currentRowCell = currentRow.getCells().get( columnIndex );
-        final MergableGridCell nextRowCell = nextRow.getCells().get( columnIndex );
-        if ( nextRowCell == null ) {
-            return;
+
+        while ( maxRowIndex < getRowCount() - 1 ) {
+            final MergableGridRow nextRow = getRow( maxRowIndex + 1 );
+            final MergableGridCell nextRowCell = nextRow.getCells().get( columnIndex );
+            if ( nextRowCell == null ) {
+                assertRowMergedCells( nextRow );
+                break;
+            }
+            if ( !nextRowCell.equals( currentRowCell ) ) {
+                break;
+            }
+            nextRowCell.setMergedCellCount( 0 );
+            assertRowMergedCells( nextRow );
+            maxRowIndex++;
         }
-        nextRowCell.setMerged( currentRowCell == null ? nextRowCell.isMerged() : nextRowCell.getValue().equals( currentRowCell.getValue() ) );
-        assertRowMergedCells( currentRow );
-        assertMergeUpwards( rowIndex + 1,
-                            columnIndex );
+
+        getCell( minRowIndex,
+                 columnIndex ).setMergedCellCount( maxRowIndex - minRowIndex + 1 );
+        assertRowMergedCells( getRow( minRowIndex ) );
     }
 
     private void assertRowMergedCells( final MergableGridRow row ) {
@@ -86,43 +98,6 @@ public class MergableGridData extends BaseGridData<MergableGridRow, MergableGrid
             }
         }
         row.setHasMergedCells( false );
-    }
-
-    private void assertMergedCellCount( final int rowIndex,
-                                        final int columnIndex ) {
-        int minRowIndex = rowIndex;
-        int maxRowIndex = rowIndex;
-        MergableGridCell cell = getCell( rowIndex,
-                                         columnIndex );
-        if ( cell.isMerged() ) {
-            while ( minRowIndex > 0 && cell != null && cell.isMerged() ) {
-                minRowIndex--;
-                cell.setMergedCellCount( 0 );
-                cell = getCell( minRowIndex,
-                                columnIndex );
-            }
-            do {
-                maxRowIndex++;
-                cell.setMergedCellCount( 0 );
-            }
-            while ( maxRowIndex < getRowCount() && ( cell = getCell( maxRowIndex,
-                                                                     columnIndex ) ) != null && cell.isMerged() );
-            getCell( minRowIndex,
-                     columnIndex ).setMergedCellCount( maxRowIndex - minRowIndex );
-
-        } else {
-            if ( ( cell = getCell( maxRowIndex + 1,
-                                   columnIndex ) ) != null && cell.isMerged() ) {
-                do {
-                    maxRowIndex++;
-                    cell.setMergedCellCount( 0 );
-                }
-                while ( maxRowIndex < getRowCount() && ( cell = getCell( maxRowIndex,
-                                                                         columnIndex ) ) != null && cell.isMerged() );
-                getCell( minRowIndex,
-                         columnIndex ).setMergedCellCount( maxRowIndex - minRowIndex );
-            }
-        }
     }
 
 }
