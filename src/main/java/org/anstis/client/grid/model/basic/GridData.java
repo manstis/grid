@@ -20,20 +20,15 @@ import org.anstis.client.grid.model.BaseGridData;
 public class GridData extends BaseGridData<GridRow, GridCell> {
 
     @Override
-    public GridCell newCell( final String value ) {
-        return new GridCell( value );
-    }
-
-    @Override
     public void setCell( final int rowIndex,
                          final int columnIndex,
-                         final GridCell cell ) {
+                         final String value ) {
         if ( rowIndex < 0 || rowIndex > rows.size() - 1 ) {
             return;
         }
         final GridRow row = rows.get( rowIndex );
         row.setCell( columnIndex,
-                     cell );
+                     new GridCell( value ) );
     }
 
 }

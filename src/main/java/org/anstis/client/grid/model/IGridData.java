@@ -25,13 +25,11 @@ public interface IGridData<R extends IGridRow<C>, C extends IGridCell> {
 
     int getRowCount();
 
-    C newCell( final String value );
-
     C getCell( final int rowIndex,
                final int columnIndex );
 
     void setCell( final int rowIndex,
                   final int columnIndex,
-                  final C cell );
+                  final String value );
 
 }

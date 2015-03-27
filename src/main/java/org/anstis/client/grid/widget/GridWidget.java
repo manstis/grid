@@ -312,7 +312,7 @@ public class GridWidget extends Group {
                                   public void onSuccess( final String value ) {
                                       getModel().getData().setCell( rowIndex,
                                                                     columnIndex,
-                                                                    getModel().getData().newCell( value ) );
+                                                                    value );
                                       GridWidget.this.getLayer().draw();
                                   }
                               } );

@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
 public class GridMergingTests {
 
     @Test
-    public void testInitialSetup() {
+    public void testInitialSetup1() {
         final MergableGrid grid = new MergableGrid();
         final GridColumn gc1 = new GridColumn( "col1",
                                                100 );
@@ -32,7 +32,7 @@ public class GridMergingTests {
             for ( int columnIndex = 0; columnIndex < grid.getColumns().size(); columnIndex++ ) {
                 data.setCell( rowIndex,
                               columnIndex,
-                              new MergableGridCell( "(" + columnIndex + ", " + rowIndex + ")" ) );
+                              "(" + columnIndex + ", " + rowIndex + ")" );
             }
         }
 
@@ -46,6 +46,73 @@ public class GridMergingTests {
                               cell.getMergedCellCount() );
             }
         }
+    }
+
+    @Test
+    public void testInitialSetup2() {
+        final MergableGrid grid = new MergableGrid();
+        final GridColumn gc1 = new GridColumn( "col1",
+                                               100 );
+        final GridColumn gc2 = new GridColumn( "col2",
+                                               100 );
+        grid.addColumn( gc1 );
+        grid.addColumn( gc2 );
+
+        final MergableGridData data = new MergableGridData();
+        final List<MergableGridRow> rows = new ArrayList<>();
+        rows.add( new MergableGridRow() );
+        rows.add( new MergableGridRow() );
+        rows.add( new MergableGridRow() );
+        data.setRows( rows );
+        grid.setData( data );
+
+        for ( int rowIndex = 0; rowIndex < data.getRowCount(); rowIndex++ ) {
+            for ( int columnIndex = 0; columnIndex < grid.getColumns().size(); columnIndex++ ) {
+                data.setCell( rowIndex,
+                              columnIndex,
+                              "(" + columnIndex + ", " + ( columnIndex == 0 ? "X" : rowIndex ) + ")" );
+            }
+        }
+
+        assertTrue( data.getRow( 0 ).hasMergedCells() );
+        assertTrue( data.getRow( 1 ).hasMergedCells() );
+        assertTrue( data.getRow( 2 ).hasMergedCells() );
+
+        assertTrue( data.getCell( 0,
+                                  0 ).isMerged() );
+        assertEquals( 3,
+                      data.getCell( 0,
+                                    0 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 1,
+                                  0 ).isMerged() );
+        assertEquals( 0,
+                      data.getCell( 1,
+                                    0 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 2,
+                                  0 ).isMerged() );
+        assertEquals( 0,
+                      data.getCell( 2,
+                                    0 ).getMergedCellCount() );
+
+        assertFalse( data.getCell( 0,
+                                   1 ).isMerged() );
+        assertEquals( 1,
+                      data.getCell( 0,
+                                    1 ).getMergedCellCount() );
+
+        assertFalse( data.getCell( 1,
+                                   1 ).isMerged() );
+        assertEquals( 1,
+                      data.getCell( 1,
+                                    1 ).getMergedCellCount() );
+
+        assertFalse( data.getCell( 2,
+                                   1 ).isMerged() );
+        assertEquals( 1,
+                      data.getCell( 2,
+                                    1 ).getMergedCellCount() );
     }
 
     @Test
@@ -70,13 +137,13 @@ public class GridMergingTests {
             for ( int columnIndex = 0; columnIndex < grid.getColumns().size(); columnIndex++ ) {
                 data.setCell( rowIndex,
                               columnIndex,
-                              new MergableGridCell( "(" + columnIndex + ", " + rowIndex + ")" ) );
+                              "(" + columnIndex + ", " + rowIndex + ")" );
             }
         }
 
         data.setCell( 1,
                       0,
-                      new MergableGridCell( "(0, 0)" ) );
+                      "(0, 0)" );
 
         assertTrue( data.getRow( 0 ).hasMergedCells() );
         assertTrue( data.getCell( 0,
@@ -122,13 +189,13 @@ public class GridMergingTests {
             for ( int columnIndex = 0; columnIndex < grid.getColumns().size(); columnIndex++ ) {
                 data.setCell( rowIndex,
                               columnIndex,
-                              new MergableGridCell( "(" + columnIndex + ", " + rowIndex + ")" ) );
+                              "(" + columnIndex + ", " + rowIndex + ")" );
             }
         }
 
         data.setCell( 2,
                       0,
-                      new MergableGridCell( "(0, 1)" ) );
+                      "(0, 1)" );
 
         assertFalse( data.getRow( 0 ).hasMergedCells() );
         assertFalse( data.getCell( 0,
@@ -174,20 +241,20 @@ public class GridMergingTests {
             for ( int columnIndex = 0; columnIndex < grid.getColumns().size(); columnIndex++ ) {
                 data.setCell( rowIndex,
                               columnIndex,
-                              new MergableGridCell( "(" + columnIndex + ", " + rowIndex + ")" ) );
+                              "(" + columnIndex + ", " + rowIndex + ")" );
             }
         }
 
         data.setCell( 1,
                       0,
-                      new MergableGridCell( "(0, 0)" ) );
+                      "(0, 0)" );
         data.setCell( 2,
                       0,
-                      new MergableGridCell( "(0, 0)" ) );
+                      "(0, 0)" );
 
         assertTrue( data.getRow( 0 ).hasMergedCells() );
         assertTrue( data.getCell( 0,
-                                   0 ).isMerged() );
+                                  0 ).isMerged() );
         assertEquals( 3,
                       data.getCell( 0,
                                     0 ).getMergedCellCount() );
@@ -229,17 +296,17 @@ public class GridMergingTests {
             for ( int columnIndex = 0; columnIndex < grid.getColumns().size(); columnIndex++ ) {
                 data.setCell( rowIndex,
                               columnIndex,
-                              new MergableGridCell( "(" + columnIndex + ", " + rowIndex + ")" ) );
+                              "(" + columnIndex + ", " + rowIndex + ")" );
             }
         }
 
         data.setCell( 0,
                       0,
-                      new MergableGridCell( "(0, 1)" ) );
+                      "(0, 1)" );
 
         assertTrue( data.getRow( 0 ).hasMergedCells() );
         assertTrue( data.getCell( 0,
-                                   0 ).isMerged() );
+                                  0 ).isMerged() );
         assertEquals( 2,
                       data.getCell( 0,
                                     0 ).getMergedCellCount() );
@@ -281,13 +348,13 @@ public class GridMergingTests {
             for ( int columnIndex = 0; columnIndex < grid.getColumns().size(); columnIndex++ ) {
                 data.setCell( rowIndex,
                               columnIndex,
-                              new MergableGridCell( "(" + columnIndex + ", " + rowIndex + ")" ) );
+                              "(" + columnIndex + ", " + rowIndex + ")" );
             }
         }
 
         data.setCell( 1,
                       0,
-                      new MergableGridCell( "(0, 2)" ) );
+                      "(0, 2)" );
 
         assertFalse( data.getRow( 0 ).hasMergedCells() );
         assertFalse( data.getCell( 0,
@@ -298,7 +365,7 @@ public class GridMergingTests {
 
         assertTrue( data.getRow( 1 ).hasMergedCells() );
         assertTrue( data.getCell( 1,
-                                   0 ).isMerged() );
+                                  0 ).isMerged() );
         assertEquals( 2,
                       data.getCell( 1,
                                     0 ).getMergedCellCount() );
@@ -333,21 +400,21 @@ public class GridMergingTests {
             for ( int columnIndex = 0; columnIndex < grid.getColumns().size(); columnIndex++ ) {
                 data.setCell( rowIndex,
                               columnIndex,
-                              new MergableGridCell( "(" + columnIndex + ", " + rowIndex + ")" ) );
+                              "(" + columnIndex + ", " + rowIndex + ")" );
             }
         }
 
         data.setCell( 1,
                       0,
-                      new MergableGridCell( "(0, 2)" ) );
+                      "(0, 2)" );
 
         data.setCell( 0,
                       0,
-                      new MergableGridCell( "(0, 2)" ) );
+                      "(0, 2)" );
 
         assertTrue( data.getRow( 0 ).hasMergedCells() );
         assertTrue( data.getCell( 0,
-                                   0 ).isMerged() );
+                                  0 ).isMerged() );
         assertEquals( 3,
                       data.getCell( 0,
                                     0 ).getMergedCellCount() );
@@ -389,25 +456,25 @@ public class GridMergingTests {
             for ( int columnIndex = 0; columnIndex < grid.getColumns().size(); columnIndex++ ) {
                 data.setCell( rowIndex,
                               columnIndex,
-                              new MergableGridCell( "(" + columnIndex + ", " + rowIndex + ")" ) );
+                              "(" + columnIndex + ", " + rowIndex + ")" );
             }
         }
 
         data.setCell( 0,
                       0,
-                      new MergableGridCell( "(a, b)" ) );
+                      "(a, b)" );
 
         data.setCell( 2,
                       0,
-                      new MergableGridCell( "(a, b)" ) );
+                      "(a, b)" );
 
         data.setCell( 1,
                       0,
-                      new MergableGridCell( "(a, b)" ) );
+                      "(a, b)" );
 
         assertTrue( data.getRow( 0 ).hasMergedCells() );
         assertTrue( data.getCell( 0,
-                                   0 ).isMerged() );
+                                  0 ).isMerged() );
         assertEquals( 3,
                       data.getCell( 0,
                                     0 ).getMergedCellCount() );

@@ -18,7 +18,6 @@ package org.anstis.client.grid.util;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.anstis.client.grid.model.mergable.MergableGridCell;
 import org.anstis.client.grid.model.mergable.MergableGridData;
 import org.anstis.client.grid.model.mergable.MergableGridRow;
 
@@ -37,7 +36,7 @@ public class GridDataFactory {
                 if ( Math.random() < FILL_FACTOR ) {
                     data.setCell( rowIndex,
                                   columnIndex,
-                                  new MergableGridCell( "(" + columnIndex + ", " + rowIndex + ")" ) );
+                                  "(" + columnIndex + ", " + rowIndex + ")" );
                 }
             }
         }
