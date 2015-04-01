@@ -13,18 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.anstis.client.grid.model.basic;
+package org.anstis.client.grid.widget.renderers.mergable;
 
-import org.anstis.client.grid.model.BaseGridCell;
+import org.anstis.client.grid.model.mergable.MergableGridData;
+import org.anstis.client.grid.widget.renderers.IGridRenderer;
 
-public class GridCell extends BaseGridCell {
+public interface IMergableGridRenderer extends IGridRenderer<MergableGridData> {
 
-    public GridCell( final String value ) {
-        super( value );
-    }
-
-    void setValue( final String value ) {
-        this.value = value;
-    }
+    GroupingToggle renderGroupedCellToggle( final double containerWidth,
+                                            final double containerHeight,
+                                            final boolean isGrouped );
 
 }

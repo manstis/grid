@@ -1,8 +1,22 @@
+/*
+ * Copyright 2015 JBoss Inc
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.anstis.client.grid.model.basic;
 
 import java.util.List;
 
-import org.anstis.client.grid.model.GridColumn;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -11,7 +25,7 @@ public class GridIndexingTests {
 
     @Test
     public void testAddInitialColumns() {
-        final Grid grid = new Grid();
+        final GridData grid = new GridData();
         final GridColumn gc1 = new GridColumn( "col1",
                                                100 );
         final GridColumn gc2 = new GridColumn( "col2",
@@ -19,30 +33,14 @@ public class GridIndexingTests {
         grid.addColumn( gc1 );
         grid.addColumn( gc2 );
 
-        final List<Integer> indexAbsolute = grid.getRelativeToAbsoluteIndex();
-        assertEquals( 2,
-                      indexAbsolute.size() );
-        assertEquals( 0,
-                      (int) indexAbsolute.get( 0 ) );
-        assertEquals( 1,
-                      (int) indexAbsolute.get( 1 ) );
-
-        final List<Integer> indexRelative = grid.getAbsoluteToRelativeIndex();
-        assertEquals( 2,
-                      indexRelative.size() );
-        assertEquals( 0,
-                      (int) indexRelative.get( 0 ) );
-        assertEquals( 1,
-                      (int) indexRelative.get( 1 ) );
-
-        final List<GridColumn> definitions = grid.getColumnDefinitions();
         final List<GridColumn> columns = grid.getColumns();
 
-        assertEquals( columns.get( 0 ),
-                      definitions.get( 0 ) );
-        assertEquals( columns.get( 1 ),
-                      definitions.get( 1 ) );
-
+        assertEquals( 2,
+                      columns.size() );
+        assertEquals( 0,
+                      gc1.getIndex() );
+        assertEquals( 1,
+                      gc2.getIndex() );
         assertEquals( columns.get( 0 ),
                       gc1 );
         assertEquals( columns.get( 1 ),
@@ -51,7 +49,7 @@ public class GridIndexingTests {
 
     @Test
     public void testAddColumn() {
-        final Grid grid = new Grid();
+        final GridData grid = new GridData();
         final GridColumn gc1 = new GridColumn( "col1",
                                                100 );
         final GridColumn gc2 = new GridColumn( "col2",
@@ -63,36 +61,16 @@ public class GridIndexingTests {
         grid.addColumn( 1,
                         gc3 );
 
-        final List<Integer> indexAbsolute = grid.getRelativeToAbsoluteIndex();
-        assertEquals( 3,
-                      indexAbsolute.size() );
-        assertEquals( 0,
-                      (int) indexAbsolute.get( 0 ) );
-        assertEquals( 1,
-                      (int) indexAbsolute.get( 1 ) );
-        assertEquals( 2,
-                      (int) indexAbsolute.get( 2 ) );
-
-        final List<Integer> indexRelative = grid.getAbsoluteToRelativeIndex();
-        assertEquals( 3,
-                      indexRelative.size() );
-        assertEquals( 0,
-                      (int) indexRelative.get( 0 ) );
-        assertEquals( 1,
-                      (int) indexRelative.get( 1 ) );
-        assertEquals( 2,
-                      (int) indexRelative.get( 2 ) );
-
-        final List<GridColumn> definitions = grid.getColumnDefinitions();
         final List<GridColumn> columns = grid.getColumns();
 
-        assertEquals( columns.get( 0 ),
-                      definitions.get( 0 ) );
-        assertEquals( columns.get( 1 ),
-                      definitions.get( 1 ) );
-        assertEquals( columns.get( 2 ),
-                      definitions.get( 2 ) );
-
+        assertEquals( 3,
+                      columns.size() );
+        assertEquals( 0,
+                      gc1.getIndex() );
+        assertEquals( 1,
+                      gc2.getIndex() );
+        assertEquals( 2,
+                      gc3.getIndex() );
         assertEquals( columns.get( 0 ),
                       gc1 );
         assertEquals( columns.get( 1 ),
@@ -103,7 +81,7 @@ public class GridIndexingTests {
 
     @Test
     public void testRemoveColumn() {
-        final Grid grid = new Grid();
+        final GridData grid = new GridData();
         final GridColumn gc1 = new GridColumn( "col1",
                                                100 );
         final GridColumn gc2 = new GridColumn( "col2",
@@ -116,34 +94,16 @@ public class GridIndexingTests {
 
         grid.removeColumn( gc2 );
 
-        final List<Integer> indexAbsolute = grid.getRelativeToAbsoluteIndex();
-        assertEquals( 2,
-                      indexAbsolute.size() );
-        assertEquals( 0,
-                      (int) indexAbsolute.get( 0 ) );
-        assertEquals( 1,
-                      (int) indexAbsolute.get( 1 ) );
-
-        final List<Integer> indexRelative = grid.getAbsoluteToRelativeIndex();
-        assertEquals( 2,
-                      indexRelative.size() );
-        assertEquals( 0,
-                      (int) indexRelative.get( 0 ) );
-        assertEquals( 1,
-                      (int) indexRelative.get( 1 ) );
-
-        final List<GridColumn> definitions = grid.getColumnDefinitions();
         final List<GridColumn> columns = grid.getColumns();
 
         assertEquals( 2,
                       columns.size() );
+        assertEquals( 0,
+                      gc1.getIndex() );
+        assertEquals( 1,
+                      gc2.getIndex() );
         assertEquals( 2,
-                      definitions.size() );
-        assertEquals( columns.get( 0 ),
-                      definitions.get( 0 ) );
-        assertEquals( columns.get( 1 ),
-                      definitions.get( 1 ) );
-
+                      gc3.getIndex() );
         assertEquals( columns.get( 0 ),
                       gc1 );
         assertEquals( columns.get( 1 ),
@@ -152,7 +112,7 @@ public class GridIndexingTests {
 
     @Test
     public void testMoveColumnToLeft() {
-        final Grid grid = new Grid();
+        final GridData grid = new GridData();
         final GridColumn gc1 = new GridColumn( "col1",
                                                100 );
         final GridColumn gc2 = new GridColumn( "col2",
@@ -169,46 +129,18 @@ public class GridIndexingTests {
         grid.moveColumnTo( 1,
                            gc4 );
 
-        final List<Integer> indexAbsolute = grid.getRelativeToAbsoluteIndex();
-        assertEquals( 4,
-                      indexAbsolute.size() );
-        assertEquals( 0,
-                      (int) indexAbsolute.get( 0 ) );
-        assertEquals( 3,
-                      (int) indexAbsolute.get( 1 ) );
-        assertEquals( 1,
-                      (int) indexAbsolute.get( 2 ) );
-        assertEquals( 2,
-                      (int) indexAbsolute.get( 3 ) );
-
-        final List<Integer> indexRelative = grid.getAbsoluteToRelativeIndex();
-        assertEquals( 4,
-                      indexRelative.size() );
-        assertEquals( 0,
-                      (int) indexRelative.get( 0 ) );
-        assertEquals( 2,
-                      (int) indexRelative.get( 1 ) );
-        assertEquals( 3,
-                      (int) indexRelative.get( 2 ) );
-        assertEquals( 1,
-                      (int) indexRelative.get( 3 ) );
-
-        final List<GridColumn> definitions = grid.getColumnDefinitions();
         final List<GridColumn> columns = grid.getColumns();
 
         assertEquals( 4,
                       columns.size() );
-        assertEquals( 4,
-                      definitions.size() );
-        assertEquals( columns.get( 0 ),
-                      definitions.get( 0 ) );
-        assertEquals( columns.get( 1 ),
-                      definitions.get( 3 ) );
-        assertEquals( columns.get( 2 ),
-                      definitions.get( 1 ) );
-        assertEquals( columns.get( 3 ),
-                      definitions.get( 2 ) );
-
+        assertEquals( 0,
+                      gc1.getIndex() );
+        assertEquals( 1,
+                      gc2.getIndex() );
+        assertEquals( 2,
+                      gc3.getIndex() );
+        assertEquals( 3,
+                      gc4.getIndex() );
         assertEquals( columns.get( 0 ),
                       gc1 );
         assertEquals( columns.get( 1 ),
@@ -221,7 +153,7 @@ public class GridIndexingTests {
 
     @Test
     public void testMoveColumnToRight() {
-        final Grid grid = new Grid();
+        final GridData grid = new GridData();
         final GridColumn gc1 = new GridColumn( "col1",
                                                100 );
         final GridColumn gc2 = new GridColumn( "col2",
@@ -238,46 +170,18 @@ public class GridIndexingTests {
         grid.moveColumnTo( 3,
                            gc1 );
 
-        final List<Integer> indexAbsolute = grid.getRelativeToAbsoluteIndex();
-        assertEquals( 4,
-                      indexAbsolute.size() );
-        assertEquals( 1,
-                      (int) indexAbsolute.get( 0 ) );
-        assertEquals( 2,
-                      (int) indexAbsolute.get( 1 ) );
-        assertEquals( 3,
-                      (int) indexAbsolute.get( 2 ) );
-        assertEquals( 0,
-                      (int) indexAbsolute.get( 3 ) );
-
-        final List<Integer> indexRelative = grid.getAbsoluteToRelativeIndex();
-        assertEquals( 4,
-                      indexRelative.size() );
-        assertEquals( 3,
-                      (int) indexRelative.get( 0 ) );
-        assertEquals( 0,
-                      (int) indexRelative.get( 1 ) );
-        assertEquals( 1,
-                      (int) indexRelative.get( 2 ) );
-        assertEquals( 2,
-                      (int) indexRelative.get( 3 ) );
-
-        final List<GridColumn> definitions = grid.getColumnDefinitions();
         final List<GridColumn> columns = grid.getColumns();
 
         assertEquals( 4,
                       columns.size() );
-        assertEquals( 4,
-                      definitions.size() );
-        assertEquals( columns.get( 0 ),
-                      definitions.get( 1 ) );
-        assertEquals( columns.get( 1 ),
-                      definitions.get( 2 ) );
-        assertEquals( columns.get( 2 ),
-                      definitions.get( 3 ) );
-        assertEquals( columns.get( 3 ),
-                      definitions.get( 0 ) );
-
+        assertEquals( 0,
+                      gc1.getIndex() );
+        assertEquals( 1,
+                      gc2.getIndex() );
+        assertEquals( 2,
+                      gc3.getIndex() );
+        assertEquals( 3,
+                      gc4.getIndex() );
         assertEquals( columns.get( 0 ),
                       gc2 );
         assertEquals( columns.get( 1 ),

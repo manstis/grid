@@ -20,19 +20,19 @@ import java.util.Map;
 import com.ait.lienzo.client.core.event.NodeMouseUpEvent;
 import com.ait.lienzo.client.core.event.NodeMouseUpHandler;
 import com.google.gwt.dom.client.Style;
-import org.anstis.client.grid.model.IGrid;
+import org.anstis.client.grid.model.IGridData;
+import org.anstis.client.grid.widget.BaseGridWidget;
 import org.anstis.client.grid.widget.GridLayer;
-import org.anstis.client.grid.widget.GridWidget;
 
 public class GridWidgetMouseUpHandler implements NodeMouseUpHandler {
 
     private final GridLayer layer;
     private final GridWidgetHandlersState state;
-    private final Map<IGrid<?>, GridWidget> selectables;
+    private final Map<IGridData<?, ?, ?>, BaseGridWidget<?>> selectables;
 
     public GridWidgetMouseUpHandler( final GridLayer layer,
                                      final GridWidgetHandlersState state,
-                                     final Map<IGrid<?>, GridWidget> selectables ) {
+                                     final Map<IGridData<?, ?, ?>, BaseGridWidget<?>> selectables ) {
         this.layer = layer;
         this.state = state;
         this.selectables = selectables;

@@ -18,8 +18,10 @@ package org.anstis.client.grid.model.mergable;
 import org.anstis.client.grid.model.IGridCell;
 import org.anstis.client.grid.model.IGridRow;
 
-public interface IMergableGridRow<C extends IGridCell> extends IGridRow<C> {
+public interface IMergableGridRow<V extends IGridCell> extends IGridRow<V> {
 
     boolean hasMergedCells();
+
+    boolean isGrouped();
 
 }

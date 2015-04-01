@@ -17,8 +17,8 @@ package org.anstis.client.grid.model;
 
 import java.util.Map;
 
-public interface IGridRow<C extends IGridCell> {
+public interface IGridRow<V extends IGridCell> {
 
-    Map<Integer, C> getCells();
+    Map<Integer, V> getCells();
 
 }

@@ -15,12 +15,12 @@
  */
 package org.anstis.client.grid.widget;
 
-import org.anstis.client.grid.model.GridColumn;
+import org.anstis.client.grid.model.IGridColumn;
 
 public class GridWidgetConnector {
 
-    private GridColumn sourceColumn;
-    private GridColumn targetColumn;
+    private IGridColumn<?, ?> sourceColumn;
+    private IGridColumn<?, ?> targetColumn;
     private Direction direction;
 
     public enum Direction {
@@ -28,19 +28,19 @@ public class GridWidgetConnector {
         WEST_EAST
     }
 
-    public GridWidgetConnector( final GridColumn sourceColumn,
-                                final GridColumn targetColumn,
+    public GridWidgetConnector( final IGridColumn<?, ?> sourceColumn,
+                                final IGridColumn<?, ?> targetColumn,
                                 final Direction direction ) {
         this.sourceColumn = sourceColumn;
         this.targetColumn = targetColumn;
         this.direction = direction;
     }
 
-    public GridColumn getSourceColumn() {
+    public IGridColumn<?, ?> getSourceColumn() {
         return sourceColumn;
     }
 
-    public GridColumn getTargetColumn() {
+    public IGridColumn<?, ?> getTargetColumn() {
         return targetColumn;
     }
 

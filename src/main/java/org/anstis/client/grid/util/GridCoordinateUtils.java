@@ -18,13 +18,13 @@ package org.anstis.client.grid.util;
 import com.ait.lienzo.client.core.shape.Viewport;
 import com.ait.lienzo.client.core.types.Point2D;
 import com.ait.lienzo.client.core.types.Transform;
-import org.anstis.client.grid.widget.GridWidget;
+import org.anstis.client.grid.widget.BaseGridWidget;
 
 public class GridCoordinateUtils {
 
-    public static Point2D mapToGridWidgetAbsolutePoint( final GridWidget gridWidget,
+    public static Point2D mapToGridWidgetAbsolutePoint( final BaseGridWidget grid,
                                                         final Point2D point ) {
-        final Viewport viewport = gridWidget.getViewport();
+        final Viewport viewport = grid.getViewport();
         Transform transform = viewport.getTransform();
         if ( transform == null ) {
             viewport.setTransform( transform = new Transform() );
@@ -35,7 +35,7 @@ public class GridCoordinateUtils {
                                        point.getY() );
         transform.transform( p,
                              p );
-        return p.add( gridWidget.getLocation().mul( -1.0 ) );
+        return p.add( grid.getLocation().mul( -1.0 ) );
     }
 
 }

@@ -19,10 +19,15 @@ import org.anstis.client.grid.model.BaseGridCell;
 
 public class MergableGridCell extends BaseGridCell implements IMergableGridCell {
 
-    private long mergedCellCount = 1;
+    private int mergedCellCount = 1;
+    private boolean isGrouped = false;
 
     public MergableGridCell( final String value ) {
         super( value );
+    }
+
+    void setValue( final String value ) {
+        this.value = value;
     }
 
     @Override
@@ -31,11 +36,21 @@ public class MergableGridCell extends BaseGridCell implements IMergableGridCell 
     }
 
     @Override
-    public long getMergedCellCount() {
+    public int getMergedCellCount() {
         return mergedCellCount;
     }
 
-    void setMergedCellCount( long mergedCellCount ) {
+    @Override
+    public boolean isGrouped() {
+        return isGrouped;
+    }
+
+    @Override
+    public void setGrouped( final boolean isGrouped ) {
+        this.isGrouped = isGrouped;
+    }
+
+    void setMergedCellCount( final int mergedCellCount ) {
         this.mergedCellCount = mergedCellCount;
     }
 

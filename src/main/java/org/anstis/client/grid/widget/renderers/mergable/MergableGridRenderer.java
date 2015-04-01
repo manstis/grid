@@ -13,27 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.anstis.client.grid.widget.renderers;
+package org.anstis.client.grid.widget.renderers.mergable;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import com.ait.lienzo.client.core.shape.Group;
 import com.ait.lienzo.client.core.shape.MultiPath;
 import com.ait.lienzo.client.core.shape.Rectangle;
-import com.ait.lienzo.client.core.shape.Text;
 import com.ait.lienzo.client.core.types.Shadow;
 import com.ait.lienzo.shared.core.types.ColorName;
-import com.ait.lienzo.shared.core.types.TextAlign;
-import com.ait.lienzo.shared.core.types.TextBaseLine;
-import org.anstis.client.grid.model.GridColumn;
-import org.anstis.client.grid.model.mergable.MergableGrid;
 import org.anstis.client.grid.model.mergable.MergableGridCell;
+import org.anstis.client.grid.model.mergable.MergableGridColumn;
 import org.anstis.client.grid.model.mergable.MergableGridData;
 import org.anstis.client.grid.model.mergable.MergableGridRow;
 
-public class CustomGridRenderer implements IGridRenderer<MergableGrid> {
+public class MergableGridRenderer implements IMergableGridRenderer {
 
     private static final int HEADER_HEIGHT = 34;
     private static final int ROW_HEIGHT = 20;
@@ -68,7 +62,7 @@ public class CustomGridRenderer implements IGridRenderer<MergableGrid> {
     }
 
     @Override
-    public Group renderHeader( final MergableGrid model,
+    public Group renderHeader( final MergableGridData model,
                                final int startColumnIndex,
                                final int endColumnIndex,
                                final double width ) {
@@ -81,12 +75,12 @@ public class CustomGridRenderer implements IGridRenderer<MergableGrid> {
                 .setHeight( HEADER_HEIGHT );
         g.add( header );
 
-        final List<GridColumn> columns = model.getColumns();
+        final List<MergableGridColumn> columns = model.getColumns();
 
         //Linked columns
         double x = 0;
         for ( int i = startColumnIndex; i <= endColumnIndex; i++ ) {
-            final GridColumn column = columns.get( i );
+            final MergableGridColumn column = columns.get( i );
             final int w = column.getWidth();
             if ( column.isLinked() ) {
                 final Rectangle lr = new Rectangle( w,
@@ -107,7 +101,7 @@ public class CustomGridRenderer implements IGridRenderer<MergableGrid> {
                 .setStrokeWidth( 0.5 )
                 .setListening( false );
         for ( int i = startColumnIndex; i <= endColumnIndex; i++ ) {
-            final GridColumn column = columns.get( i );
+            final MergableGridColumn column = columns.get( i );
             headerGrid.M( x, 0 ).L( x,
                                     HEADER_HEIGHT );
             x = x + column.getWidth();
@@ -127,19 +121,13 @@ public class CustomGridRenderer implements IGridRenderer<MergableGrid> {
         //Column text
         x = 0;
         for ( int i = startColumnIndex; i <= endColumnIndex; i++ ) {
-            final GridColumn column = columns.get( i );
+            final MergableGridColumn column = columns.get( i );
+            final Group hc = column.renderHeader();
             final int w = column.getWidth();
-            final Text t = new Text( column.getTitle() )
-                    .setFillColor( ColorName.DARKGOLDENROD )
-                    .setX( x + w / 2 )
-                    .setY( HEADER_HEIGHT / 2 )
-                    .setFontSize( 12 )
-                    .setFontStyle( "bold" )
-                    .setFontFamily( "serif" )
-                    .setListening( false )
-                    .setTextBaseLine( TextBaseLine.MIDDLE )
-                    .setTextAlign( TextAlign.CENTER );
-            g.add( t );
+            hc.setX( x + w / 2 )
+                    .setY( getHeaderHeight() / 2 )
+                    .setListening( false );
+            g.add( hc );
             x = x + w;
         }
 
@@ -147,7 +135,7 @@ public class CustomGridRenderer implements IGridRenderer<MergableGrid> {
     }
 
     @Override
-    public Group renderBody( final MergableGrid model,
+    public Group renderBody( final MergableGridData model,
                              final int startColumnIndex,
                              final int endColumnIndex,
                              final int startRowIndex,
@@ -164,8 +152,7 @@ public class CustomGridRenderer implements IGridRenderer<MergableGrid> {
                 .setHeight( ROW_HEIGHT * rows );
         g.add( body );
 
-        final List<GridColumn> columns = model.getColumns();
-        final MergableGridData data = model.getData();
+        final List<MergableGridColumn> columns = model.getColumns();
 
         //Grid lines
         final MultiPath bodyGrid = new MultiPath()
@@ -176,7 +163,7 @@ public class CustomGridRenderer implements IGridRenderer<MergableGrid> {
         final double maxY = ( endRowIndex - startRowIndex ) * getRowHeight();
         double x = 0;
         for ( int i = startColumnIndex; i <= endColumnIndex; i++ ) {
-            final GridColumn column = columns.get( i );
+            final MergableGridColumn column = columns.get( i );
             bodyGrid.M( x,
                         0 ).L( x,
                                maxY );
@@ -185,13 +172,11 @@ public class CustomGridRenderer implements IGridRenderer<MergableGrid> {
         for ( int rowIndex = startRowIndex; rowIndex < endRowIndex; rowIndex++ ) {
             final double y = ( rowIndex - startRowIndex ) * getRowHeight();
             x = 0;
-            if ( data.getRow( rowIndex ).hasMergedCells() ) {
+            if ( model.getRow( rowIndex ).hasMergedCells() ) {
                 for ( int columnIndex = startColumnIndex; columnIndex <= endColumnIndex; columnIndex++ ) {
-                    final GridColumn column = columns.get( columnIndex );
-
-                    final int absoluteColumnIndex = model.mapToAbsoluteIndex( columnIndex );
-                    final MergableGridCell cell = data.getRow( rowIndex ).getCells().get( absoluteColumnIndex );
-
+                    final MergableGridColumn column = columns.get( columnIndex );
+                    final MergableGridCell cell = model.getCell( rowIndex,
+                                                                 columnIndex );
                     if ( cell == null || cell.getMergedCellCount() > 0 ) {
                         bodyGrid.M( x,
                                     y ).L( x + column.getWidth(),
@@ -209,38 +194,45 @@ public class CustomGridRenderer implements IGridRenderer<MergableGrid> {
         g.add( bodyGrid );
 
         //Cell content
-        final List<Double> columnPositions = new ArrayList<>();
-        x = 0;
-        for ( GridColumn column : columns ) {
-            columnPositions.add( x - model.getColumnOffset( startColumnIndex ) );
-            x = x + column.getWidth();
-        }
-
         for ( int rowIndex = startRowIndex; rowIndex < endRowIndex; rowIndex++ ) {
-            final double offsetY = ( rowIndex - startRowIndex ) * ROW_HEIGHT;
-            final MergableGridRow row = data.getRow( rowIndex );
-            for ( Map.Entry<Integer, MergableGridCell> e : row.getCells().entrySet() ) {
-                final int absoluteColumnIndex = e.getKey();
-                final int relativeColumnIndex = model.mapToRelativeIndex( absoluteColumnIndex );
-                if ( relativeColumnIndex >= startColumnIndex && relativeColumnIndex <= endColumnIndex ) {
-                    final int columnWidth = columns.get( relativeColumnIndex ).getWidth();
-                    final double offsetX = columnPositions.get( relativeColumnIndex );
-                    final MergableGridCell cell = e.getValue();
-                    if ( cell.getMergedCellCount() > 0 ) {
-                        final Text t = new Text( cell.getValue() )
-                                .setFillColor( ColorName.GREY )
-                                .setX( offsetX + columnWidth / 2 )
-                                .setY( offsetY + ( cell.getMergedCellCount() * ROW_HEIGHT / 2 ) )
-                                .setFontSize( 12 )
-                                .setFontFamily( "serif" )
-                                .setListening( false )
-                                .setTextBaseLine( TextBaseLine.MIDDLE )
-                                .setTextAlign( TextAlign.CENTER );
-                        g.add( t );
-                    }
+            final double offsetY = ( rowIndex - startRowIndex ) * getRowHeight();
+            final MergableGridRow row = model.getRow( rowIndex );
+            x = 0;
+            for ( int columnIndex = startColumnIndex; columnIndex <= endColumnIndex; columnIndex++ ) {
+                final MergableGridColumn column = columns.get( columnIndex );
+                final int w = column.getWidth();
+
+                final MergableGridCell cell = model.getCell( rowIndex,
+                                                             columnIndex );
+                if ( cell.getMergedCellCount() > 0 ) {
+                    final int groupedRowCount = cell.isGrouped() ? 1 : cell.getMergedCellCount();
+                    final Group hc = column.renderRow( row );
+                    hc.setX( x + w / 2 )
+                            .setY( offsetY + ( groupedRowCount * ROW_HEIGHT / 2 ) )
+                            .setListening( false );
+                    g.add( hc );
                 }
+                if ( cell.getMergedCellCount() > 1 ) {
+                    final GroupingToggle gt = renderGroupedCellToggle( w,
+                                                                       getRowHeight(),
+                                                                       cell.isGrouped() );
+                    gt.setX( x ).setY( offsetY );
+                    g.add( gt );
+                }
+                x = x + w;
             }
         }
+
         return g;
     }
+
+    @Override
+    public GroupingToggle renderGroupedCellToggle( final double containerWidth,
+                                                   final double containerHeight,
+                                                   final boolean isGrouped ) {
+        return new GroupingToggle( containerWidth,
+                                   containerHeight,
+                                   isGrouped );
+    }
+
 }

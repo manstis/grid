@@ -60,7 +60,10 @@
         <bs3slider:Slider ui:field="slider" min="10" max="100" step="10" orientation="HORIZONTAL"/>
       </g:SimplePanel>
       <g:SimplePanel styleName="{css.rendererSelector}">
-        <bs3:ListBox ui:field="rendererSelector"/>
+        <bs3:ListBox ui:field="basicRendererSelector"/>
+      </g:SimplePanel>
+      <g:SimplePanel styleName="{css.rendererSelector}">
+        <bs3:ListBox ui:field="mergableRendererSelector"/>
       </g:SimplePanel>
     </g:VerticalPanel>
   </g:HTMLPanel>

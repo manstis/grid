@@ -20,9 +20,13 @@ import org.anstis.client.grid.model.BaseGridRow;
 public class GridRow extends BaseGridRow<GridCell> {
 
     void setCell( final int columnIndex,
-                  final GridCell cell ) {
-        cells.put( columnIndex,
-                   cell );
+                  final String value ) {
+        if ( !cells.containsKey( columnIndex ) ) {
+            cells.put( columnIndex,
+                       new GridCell( value ) );
+        } else {
+            cells.get( columnIndex ).setValue( value );
+        }
     }
 
 }

@@ -15,13 +15,13 @@
  */
 package org.anstis.client.grid.widget;
 
-import org.anstis.client.grid.model.GridColumn;
-import org.anstis.client.grid.model.IGrid;
+import org.anstis.client.grid.model.IGridColumn;
+import org.anstis.client.grid.model.IGridData;
 
 public interface ISelectionManager {
 
-    void select( final IGrid<?> selectable );
+    void select( final IGridData<?, ?, ?> selectable );
 
-    void scrollIntoView( final GridColumn link );
+    void scrollIntoView( final IGridColumn<?, ?> link );
 
 }

@@ -15,13 +15,13 @@
  */
 package org.anstis.client.grid.widget.dnd;
 
-import org.anstis.client.grid.model.GridColumn;
-import org.anstis.client.grid.model.IGrid;
+import org.anstis.client.grid.model.IGridColumn;
+import org.anstis.client.grid.model.IGridData;
 
 public class GridWidgetHandlersState {
 
-    private IGrid<?> grid = null;
-    private GridColumn gridColumn = null;
+    private IGridData grid = null;
+    private IGridColumn gridColumn = null;
     private GridWidgetHandlersOperation operation = GridWidgetHandlersOperation.NONE;
 
     private double eventInitialX = 0;
@@ -36,19 +36,19 @@ public class GridWidgetHandlersState {
         COLUMN_MOVE
     }
 
-    public IGrid<?> getGrid() {
+    public IGridData getGrid() {
         return grid;
     }
 
-    public void setGrid( final IGrid<?> grid ) {
+    public void setGrid( final IGridData grid ) {
         this.grid = grid;
     }
 
-    public GridColumn getGridColumn() {
+    public IGridColumn getGridColumn() {
         return gridColumn;
     }
 
-    public void setGridColumn( final GridColumn gridColumn ) {
+    public void setGridColumn( final IGridColumn gridColumn ) {
         this.gridColumn = gridColumn;
     }
 

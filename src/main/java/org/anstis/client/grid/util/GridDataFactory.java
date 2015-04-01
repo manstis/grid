@@ -15,32 +15,26 @@
  */
 package org.anstis.client.grid.util;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.anstis.client.grid.model.mergable.MergableGridData;
 import org.anstis.client.grid.model.mergable.MergableGridRow;
 
 public class GridDataFactory {
 
-    private static double FILL_FACTOR = 0.75;
+    private static double FILL_FACTOR = 1.0;
 
-    public static MergableGridData makeData( final int columnCount,
-                                             final int rowCount ) {
-        final MergableGridData data = new MergableGridData();
-        final List<MergableGridRow> rows = new ArrayList<>();
-        data.setRows( rows );
+    public static void populate( final MergableGridData grid,
+                                 final int rowCount ) {
+        final int columnCount = grid.getColumns().size();
         for ( int rowIndex = 0; rowIndex < rowCount; rowIndex++ ) {
-            rows.add( new MergableGridRow() );
+            grid.addRow( new MergableGridRow() );
             for ( int columnIndex = 0; columnIndex < columnCount; columnIndex++ ) {
                 if ( Math.random() < FILL_FACTOR ) {
-                    data.setCell( rowIndex,
+                    grid.setCell( rowIndex,
                                   columnIndex,
                                   "(" + columnIndex + ", " + rowIndex + ")" );
                 }
             }
         }
-        return data;
     }
 
 }

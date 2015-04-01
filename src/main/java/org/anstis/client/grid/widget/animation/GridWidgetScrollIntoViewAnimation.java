@@ -24,7 +24,7 @@ import com.ait.lienzo.client.core.shape.Viewport;
 import com.ait.lienzo.client.core.types.Point2D;
 import com.ait.lienzo.client.core.types.Transform;
 import com.google.gwt.user.client.Command;
-import org.anstis.client.grid.widget.GridWidget;
+import org.anstis.client.grid.widget.BaseGridWidget;
 
 public class GridWidgetScrollIntoViewAnimation extends TimedAnimation {
 
@@ -35,19 +35,19 @@ public class GridWidgetScrollIntoViewAnimation extends TimedAnimation {
         }
     };
 
-    public GridWidgetScrollIntoViewAnimation( final GridWidget gridWidget ) {
+    public GridWidgetScrollIntoViewAnimation( final BaseGridWidget<?> gridWidget ) {
         this( gridWidget,
               NULL_COMMAND,
               NULL_COMMAND );
     }
 
-    public GridWidgetScrollIntoViewAnimation( final GridWidget gridWidget,
+    public GridWidgetScrollIntoViewAnimation( final BaseGridWidget<?> gridWidget,
                                               final Command onStartCommand ) {
         this( gridWidget, onStartCommand,
               NULL_COMMAND );
     }
 
-    public GridWidgetScrollIntoViewAnimation( final GridWidget gridWidget,
+    public GridWidgetScrollIntoViewAnimation( final BaseGridWidget<?> gridWidget,
                                               final Command onStartCommand,
                                               final Command onCloseCommand ) {
         super( 500,

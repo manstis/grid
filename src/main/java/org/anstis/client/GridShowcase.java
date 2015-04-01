@@ -18,24 +18,10 @@ package org.anstis.client;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.user.client.ui.RootPanel;
 import org.anstis.client.grid.widget.GridShowcaseWidget;
-import org.anstis.client.grid.widget.renderers.BlueGridRenderer;
-import org.anstis.client.grid.widget.renderers.CustomGridRenderer;
-import org.anstis.client.grid.widget.renderers.GreenGridRenderer;
-import org.anstis.client.grid.widget.renderers.GridRendererRegistry;
-import org.anstis.client.grid.widget.renderers.IGridRenderer;
-import org.anstis.client.grid.widget.renderers.RedGridRenderer;
 
 public class GridShowcase implements EntryPoint {
 
     public void onModuleLoad() {
-        final IGridRenderer custom = new CustomGridRenderer();
-        GridRendererRegistry.addRenderer( custom );
-        GridRendererRegistry.addRenderer( new RedGridRenderer() );
-        GridRendererRegistry.addRenderer( new GreenGridRenderer() );
-        GridRendererRegistry.addRenderer( new BlueGridRenderer() );
-
-        GridRendererRegistry.setActiveStyleName( custom.getName() );
-
         final GridShowcaseWidget container = new GridShowcaseWidget();
         RootPanel.get().add( container );
     }

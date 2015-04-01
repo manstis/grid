@@ -17,7 +17,7 @@ package org.anstis.client.grid.model;
 
 public abstract class BaseGridCell implements IGridCell {
 
-    private String value;
+    protected String value;
 
     public BaseGridCell( final String value ) {
         this.value = value;

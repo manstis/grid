@@ -21,21 +21,21 @@ import com.ait.lienzo.client.core.event.NodeMouseDownEvent;
 import com.ait.lienzo.client.core.event.NodeMouseDownHandler;
 import com.ait.lienzo.client.core.shape.Rectangle;
 import com.ait.lienzo.client.core.types.Point2D;
-import org.anstis.client.grid.model.GridColumn;
-import org.anstis.client.grid.model.IGrid;
+import org.anstis.client.grid.model.IGridColumn;
+import org.anstis.client.grid.model.IGridData;
 import org.anstis.client.grid.util.GridCoordinateUtils;
+import org.anstis.client.grid.widget.BaseGridWidget;
 import org.anstis.client.grid.widget.GridLayer;
-import org.anstis.client.grid.widget.GridWidget;
 
 public class GridWidgetMouseDownHandler implements NodeMouseDownHandler {
 
     private final GridLayer layer;
     private final GridWidgetHandlersState state;
-    private final Map<IGrid<?>, GridWidget> selectables;
+    private final Map<IGridData<?, ?, ?>, BaseGridWidget<?>> selectables;
 
     public GridWidgetMouseDownHandler( final GridLayer layer,
                                        final GridWidgetHandlersState state,
-                                       final Map<IGrid<?>, GridWidget> selectables ) {
+                                       final Map<IGridData<?, ?, ?>, BaseGridWidget<?>> selectables ) {
         this.layer = layer;
         this.state = state;
         this.selectables = selectables;
@@ -47,7 +47,7 @@ public class GridWidgetMouseDownHandler implements NodeMouseDownHandler {
             return;
         }
 
-        final GridWidget gridWidget = selectables.get( state.getGrid() );
+        final BaseGridWidget<?> gridWidget = selectables.get( state.getGrid() );
         final Point2D ap = GridCoordinateUtils.mapToGridWidgetAbsolutePoint( gridWidget,
                                                                              new Point2D( event.getX(),
                                                                                           event.getY() ) );
@@ -67,9 +67,9 @@ public class GridWidgetMouseDownHandler implements NodeMouseDownHandler {
         }
     }
 
-    private void showColumnHighlight( final IGrid<?> grid,
-                                      final GridColumn gridColumn ) {
-        final GridWidget gridWidget = selectables.get( state.getGrid() );
+    private void showColumnHighlight( final IGridData grid,
+                                      final IGridColumn gridColumn ) {
+        final BaseGridWidget<?> gridWidget = selectables.get( grid );
         final double highlightOffsetX = grid.getColumnOffset( gridColumn );
 
         final Rectangle bounds = layer.getVisibleBounds();

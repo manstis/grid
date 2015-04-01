@@ -15,6 +15,9 @@
  */
 package org.anstis.client.grid.widget;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.ait.lienzo.client.core.mediator.MousePanMediator;
 import com.ait.lienzo.client.core.shape.Layer;
 import com.ait.lienzo.client.core.types.Point2D;
@@ -31,13 +34,19 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
-import org.anstis.client.grid.model.GridColumn;
-import org.anstis.client.grid.model.IGrid;
-import org.anstis.client.grid.model.mergable.MergableGrid;
+import org.anstis.client.grid.model.IGridColumn;
+import org.anstis.client.grid.model.IGridData;
+import org.anstis.client.grid.model.mergable.MergableGridColumn;
+import org.anstis.client.grid.model.mergable.MergableGridData;
 import org.anstis.client.grid.util.GridDataFactory;
 import org.anstis.client.grid.widget.edit.EditorPopup;
-import org.anstis.client.grid.widget.renderers.GridRendererRegistry;
+import org.anstis.client.grid.widget.mergable.MergableGridWidget;
 import org.anstis.client.grid.widget.renderers.IGridRenderer;
+import org.anstis.client.grid.widget.renderers.basic.BlueGridRenderer;
+import org.anstis.client.grid.widget.renderers.basic.GreenGridRenderer;
+import org.anstis.client.grid.widget.renderers.basic.RedGridRenderer;
+import org.anstis.client.grid.widget.renderers.mergable.IMergableGridRenderer;
+import org.anstis.client.grid.widget.renderers.mergable.MergableGridRenderer;
 import org.gwtbootstrap3.client.ui.ListBox;
 import org.gwtbootstrap3.extras.slider.client.ui.Slider;
 
@@ -49,9 +58,9 @@ public class GridShowcaseWidget extends Composite implements IEditManager,
 
     private static final double VP_SCALE = 1.0;
 
-    private static final int GRID1_ROWS = 100;
-    private static final int GRID2_ROWS = 100;
-    private static final int GRID3_ROWS = 100;
+    private static final int GRID1_ROWS = 10;
+    private static final int GRID2_ROWS = 10;
+    private static final int GRID3_ROWS = 10;
 
     interface GridShowcaseWidgetUiBinder extends UiBinder<Widget, GridShowcaseWidget> {
 
@@ -66,7 +75,10 @@ public class GridShowcaseWidget extends Composite implements IEditManager,
     Slider slider;
 
     @UiField
-    ListBox rendererSelector;
+    ListBox basicRendererSelector;
+
+    @UiField
+    ListBox mergableRendererSelector;
 
     private final EditorPopup editor = new EditorPopup();
 
@@ -93,34 +105,34 @@ public class GridShowcaseWidget extends Composite implements IEditManager,
         table.setWidget( gridPanel );
 
         //Grid 1
-        final MergableGrid grid1 = new MergableGrid();
+        final MergableGridData grid1 = new MergableGridData();
         for ( int idx = 0; idx < 10; idx++ ) {
-            final GridColumn column = new GridColumn( "G1-Col: " + idx,
-                                                      100 );
+            final MergableGridColumn column = new MergableGridColumn( "G1-Col: " + idx,
+                                                                      100 );
             grid1.addColumn( column );
         }
-        grid1.setData( GridDataFactory.makeData( grid1.getColumns().size(),
-                                                 GRID1_ROWS ) );
+        GridDataFactory.populate( grid1,
+                                  GRID1_ROWS );
 
         //Grid 2
-        final MergableGrid grid2 = new MergableGrid();
+        final MergableGridData grid2 = new MergableGridData();
         for ( int idx = 0; idx < 5; idx++ ) {
-            final GridColumn column = new GridColumn( "G2-Col: " + idx,
-                                                      150 );
+            final MergableGridColumn column = new MergableGridColumn( "G2-Col: " + idx,
+                                                                      150 );
             grid2.addColumn( column );
         }
-        grid2.setData( GridDataFactory.makeData( grid2.getColumns().size(),
-                                                 GRID2_ROWS ) );
+        GridDataFactory.populate( grid2,
+                                  GRID2_ROWS );
 
         //Grid 3
-        final MergableGrid grid3 = new MergableGrid();
+        final MergableGridData grid3 = new MergableGridData();
         for ( int idx = 0; idx < 5; idx++ ) {
-            final GridColumn column = new GridColumn( "G3-Col: " + idx,
-                                                      200 );
+            final MergableGridColumn column = new MergableGridColumn( "G3-Col: " + idx,
+                                                                      200 );
             grid3.addColumn( column );
         }
-        grid3.setData( GridDataFactory.makeData( grid3.getColumns().size(),
-                                                 GRID3_ROWS ) );
+        GridDataFactory.populate( grid3,
+                                  GRID3_ROWS );
 
         //Link grids
         grid1.getColumns().get( 9 ).setLink( grid2.getColumns().get( 0 ) );
@@ -169,28 +181,51 @@ public class GridShowcaseWidget extends Composite implements IEditManager,
 
         } );
 
-        //Style selector
-        for ( IGridRenderer renderer : GridRendererRegistry.getRenderers() ) {
-            rendererSelector.addItem( renderer.getName() );
-            if ( renderer.equals( GridRendererRegistry.getActiveRenderer() ) ) {
-                rendererSelector.setSelectedIndex( rendererSelector.getItemCount() - 1 );
-            }
+        //Style selectors
+        final Map<String, IGridRenderer<?>> basicRenderers = new HashMap<>();
+        final RedGridRenderer redRenderer = new RedGridRenderer();
+        final GreenGridRenderer greenRenderer = new GreenGridRenderer();
+        final BlueGridRenderer blueRenderer = new BlueGridRenderer();
+        basicRenderers.put( redRenderer.getName(),
+                            redRenderer );
+        basicRenderers.put( greenRenderer.getName(),
+                            greenRenderer );
+        basicRenderers.put( blueRenderer.getName(),
+                            blueRenderer );
+        for ( String name : basicRenderers.keySet() ) {
+            basicRendererSelector.addItem( name );
         }
-        rendererSelector.addChangeHandler( new ChangeHandler() {
+        basicRendererSelector.addChangeHandler( new ChangeHandler() {
             @Override
             public void onChange( final ChangeEvent event ) {
-                GridRendererRegistry.setActiveStyleName( rendererSelector.getItemText( rendererSelector.getSelectedIndex() ) );
+                final IGridRenderer<?> renderer = basicRenderers.get( basicRendererSelector.getItemText( basicRendererSelector.getSelectedIndex() ) );
+                gridLayer.draw();
+            }
+        } );
+
+        final Map<String, IMergableGridRenderer> mergableRenderers = new HashMap<>();
+        final MergableGridRenderer mergableRenderer = new MergableGridRenderer();
+        mergableRenderers.put( mergableRenderer.getName(),
+                               mergableRenderer );
+        for ( String name : mergableRenderers.keySet() ) {
+            mergableRendererSelector.addItem( name );
+        }
+        mergableRendererSelector.addChangeHandler( new ChangeHandler() {
+            @Override
+            public void onChange( final ChangeEvent event ) {
+                final IMergableGridRenderer renderer = mergableRenderers.get( mergableRendererSelector.getItemText( mergableRendererSelector.getSelectedIndex() ) );
                 gridLayer.draw();
             }
         } );
     }
 
-    public void addGrid( final IGrid<?> grid,
+    public void addGrid( final MergableGridData grid,
                          final Layer layer,
                          final Point2D location ) {
-        final GridWidget gridWidget = new GridWidget( grid,
-                                                      this,
-                                                      this );
+        final MergableGridWidget gridWidget = new MergableGridWidget( grid,
+                                                                      this,
+                                                                      this,
+                                                                      new MergableGridRenderer() );
         gridWidget.setLocation( location );
         layer.add( gridWidget );
     }
@@ -203,12 +238,12 @@ public class GridShowcaseWidget extends Composite implements IEditManager,
     }
 
     @Override
-    public void select( final IGrid<?> selectable ) {
+    public void select( final IGridData<?, ?, ?> selectable ) {
         gridLayer.select( selectable );
     }
 
     @Override
-    public void scrollIntoView( final GridColumn link ) {
+    public void scrollIntoView( final IGridColumn<?, ?> link ) {
         gridLayer.scrollIntoView( link );
     }
 

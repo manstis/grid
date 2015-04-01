@@ -17,7 +17,7 @@ package org.anstis.client.grid.model.basic;
 
 import org.anstis.client.grid.model.BaseGridData;
 
-public class GridData extends BaseGridData<GridRow, GridCell> {
+public class GridData extends BaseGridData<GridRow, GridColumn, GridCell> {
 
     @Override
     public void setCell( final int rowIndex,
@@ -27,8 +27,9 @@ public class GridData extends BaseGridData<GridRow, GridCell> {
             return;
         }
         final GridRow row = rows.get( rowIndex );
-        row.setCell( columnIndex,
-                     new GridCell( value ) );
+        final int _columnIndex = columns.get(columnIndex).getIndex();
+        row.setCell( _columnIndex,
+                     value );
     }
 
 }

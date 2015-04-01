@@ -19,12 +19,12 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class BaseGridRow<C extends IGridCell> implements IGridRow<C> {
+public abstract class BaseGridRow<V extends IGridCell> implements IGridRow<V> {
 
-    protected Map<Integer, C> cells = new HashMap<>();
+    protected Map<Integer, V> cells = new HashMap<>();
 
     @Override
-    public Map<Integer, C> getCells() {
+    public Map<Integer, V> getCells() {
         return Collections.unmodifiableMap( cells );
     }
 

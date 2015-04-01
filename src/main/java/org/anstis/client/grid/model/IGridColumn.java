@@ -13,18 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.anstis.client.grid.model.basic;
+package org.anstis.client.grid.model;
 
-import org.anstis.client.grid.model.BaseGridCell;
+import com.ait.lienzo.client.core.shape.Group;
 
-public class GridCell extends BaseGridCell {
+public interface IGridColumn<R extends IGridRow<V>, V extends IGridCell> {
 
-    public GridCell( final String value ) {
-        super( value );
-    }
+    String getTitle();
 
-    void setValue( final String value ) {
-        this.value = value;
-    }
+    int getWidth();
+
+    void setWidth( final int width );
+
+    boolean isLinked();
+
+    IGridColumn getLink();
+
+    void setLink( final IGridColumn<R, V> link );
+
+    int getIndex();
+
+    void setIndex( final int index );
+
+    Group renderHeader();
+
+    Group renderRow( final R row );
 
 }

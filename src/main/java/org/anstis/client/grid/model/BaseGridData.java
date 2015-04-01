@@ -16,20 +16,85 @@
 package org.anstis.client.grid.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-public abstract class BaseGridData<R extends IGridRow<C>, C extends IGridCell> implements IGridData<R, C> {
+public abstract class BaseGridData<R extends IGridRow<V>, C extends IGridColumn<R, V>, V extends IGridCell> implements IGridData<R, C, V> {
 
     protected List<R> rows = new ArrayList<>();
+    protected List<C> columns = new ArrayList<>();
 
     @Override
-    public void setRows( final List<R> rows ) {
-        this.rows = rows;
+    public List<C> getColumns() {
+        return Collections.unmodifiableList( columns );
     }
 
     @Override
-    public R getRow( final int index ) {
-        return rows.get( index );
+    public void addColumn( final C column ) {
+        column.setIndex( columns.size() );
+        columns.add( column );
+    }
+
+    @Override
+    public void addColumn( final int index,
+                           final C column ) {
+        column.setIndex( columns.size() );
+        columns.add( index,
+                     column );
+    }
+
+    @Override
+    public void removeColumn( final C column ) {
+        columns.remove( column );
+        for ( R row : rows ) {
+            row.getCells().remove( column.getIndex() );
+        }
+    }
+
+    @Override
+    public void moveColumnTo( final int index,
+                              final C column ) {
+        final int currentIndex = columns.indexOf( column );
+        if ( index == currentIndex ) {
+            return;
+        }
+        columns.remove( currentIndex );
+        columns.add( index,
+                     column );
+    }
+
+    @Override
+    public double getColumnOffset( final C gridColumn ) {
+        final int columnIndex = getColumns().indexOf( gridColumn );
+        return getColumnOffset( columnIndex );
+    }
+
+    @Override
+    public double getColumnOffset( final int columnIndex ) {
+        double columnOffset = 0;
+        final List<C> columns = getColumns();
+        for ( int i = 0; i < columnIndex; i++ ) {
+            final IGridColumn column = columns.get( i );
+            columnOffset = columnOffset + column.getWidth();
+        }
+        return columnOffset;
+    }
+
+    @Override
+    public void addRow( final R row ) {
+        this.rows.add( row );
+    }
+
+    @Override
+    public void addRow( final int rowIndex,
+                        final R row ) {
+        this.rows.add( rowIndex,
+                       row );
+    }
+
+    @Override
+    public R getRow( final int rowIndex ) {
+        return rows.get( rowIndex );
     }
 
     @Override
@@ -38,12 +103,13 @@ public abstract class BaseGridData<R extends IGridRow<C>, C extends IGridCell> i
     }
 
     @Override
-    public C getCell( final int rowIndex,
+    public V getCell( final int rowIndex,
                       final int columnIndex ) {
         if ( rowIndex < 0 || rowIndex > rows.size() - 1 ) {
             return null;
         }
-        return rows.get( rowIndex ).getCells().get( columnIndex );
+        final int _columnIndex = columns.get( columnIndex ).getIndex();
+        return rows.get( rowIndex ).getCells().get( _columnIndex );
     }
 
 }

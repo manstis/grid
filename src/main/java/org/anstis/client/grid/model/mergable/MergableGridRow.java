@@ -19,6 +19,7 @@ import org.anstis.client.grid.model.BaseGridRow;
 
 public class MergableGridRow extends BaseGridRow<MergableGridCell> implements IMergableGridRow<MergableGridCell> {
 
+    private boolean isGrouped = false;
     private boolean hasMergedCells = false;
 
     @Override
@@ -26,10 +27,23 @@ public class MergableGridRow extends BaseGridRow<MergableGridCell> implements IM
         return hasMergedCells;
     }
 
+    @Override
+    public boolean isGrouped() {
+        return isGrouped;
+    }
+
     void setCell( final int columnIndex,
-                  final MergableGridCell cell ) {
-        cells.put( columnIndex,
-                   cell );
+                  final String value ) {
+        if ( !cells.containsKey( columnIndex ) ) {
+            cells.put( columnIndex,
+                       new MergableGridCell( value ) );
+        } else {
+            cells.get( columnIndex ).setValue( value );
+        }
+    }
+
+    public void setIsGrouped( final boolean isGrouped ) {
+        this.isGrouped = isGrouped;
     }
 
     void setHasMergedCells( final boolean hasMergedCells ) {

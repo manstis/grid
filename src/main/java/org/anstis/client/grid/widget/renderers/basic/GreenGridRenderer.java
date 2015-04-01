@@ -13,22 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.anstis.client.grid.widget.renderers;
+package org.anstis.client.grid.widget.renderers.basic;
 
 import com.ait.lienzo.client.core.shape.MultiPath;
 import com.ait.lienzo.client.core.shape.Rectangle;
-import com.ait.lienzo.client.core.shape.Text;
 import com.ait.lienzo.client.core.types.Shadow;
 import com.ait.lienzo.shared.core.types.ColorName;
 
-public class RedGridRenderer extends AbstractClippingGridRenderer {
+public class GreenGridRenderer extends AbstractClippingGridRenderer {
 
     private static final int HEADER_HEIGHT = 30;
     private static final int ROW_HEIGHT = 20;
 
     @Override
     public String getName() {
-        return "Red";
+        return "Green";
     }
 
     @Override
@@ -45,16 +44,16 @@ public class RedGridRenderer extends AbstractClippingGridRenderer {
     public Rectangle getSelector() {
         final Rectangle selector = new Rectangle( 0, 0 )
                 .setStrokeWidth( 2.0 )
-                .setStrokeColor( ColorName.RED )
-                .setShadow( new Shadow( ColorName.DARKRED, 4, 0.0, 0.0 ) );
+                .setStrokeColor( ColorName.GREEN )
+                .setShadow( new Shadow( ColorName.DARKGREEN, 4, 0.0, 0.0 ) );
         return selector;
     }
 
     @Override
     public Rectangle getHeader() {
         final Rectangle header = new Rectangle( 0, 0 )
-                .setFillColor( ColorName.PALEVIOLETRED )
-                .setStrokeColor( ColorName.SLATEGRAY )
+                .setFillColor( ColorName.LAWNGREEN )
+                .setStrokeColor( ColorName.BLACK )
                 .setStrokeWidth( 0.5 );
         return header;
     }
@@ -78,17 +77,9 @@ public class RedGridRenderer extends AbstractClippingGridRenderer {
     }
 
     @Override
-    public Text getHeaderText() {
-        final Text t = new Text( "" )
-                .setFillColor( ColorName.RED )
-                .setFontSize( 12 );
-        return t;
-    }
-
-    @Override
     public Rectangle getBody() {
         final Rectangle body = new Rectangle( 0, 0 )
-                .setFillColor( ColorName.PINK )
+                .setFillColor( ColorName.LIGHTGREEN )
                 .setStrokeColor( ColorName.SLATEGRAY )
                 .setStrokeWidth( 0.5 );
         return body;
@@ -100,14 +91,6 @@ public class RedGridRenderer extends AbstractClippingGridRenderer {
                 .setStrokeColor( ColorName.SLATEGRAY )
                 .setStrokeWidth( 0.5 );
         return bodyGrid;
-    }
-
-    @Override
-    public Text getBodyText() {
-        final Text t = new Text( "" )
-                .setFillColor( ColorName.RED )
-                .setFontSize( 12 );
-        return t;
     }
 
 }

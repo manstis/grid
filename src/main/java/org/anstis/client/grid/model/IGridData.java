@@ -17,15 +17,34 @@ package org.anstis.client.grid.model;
 
 import java.util.List;
 
-public interface IGridData<R extends IGridRow<C>, C extends IGridCell> {
+public interface IGridData<R extends IGridRow<V>, C extends IGridColumn<R, V>, V extends IGridCell> {
 
-    void setRows( final List<R> rows );
+    List<C> getColumns();
 
-    R getRow( final int index );
+    void addColumn( final C column );
+
+    void addColumn( final int index,
+                    final C column );
+
+    void removeColumn( final C column );
+
+    void moveColumnTo( final int index,
+                       final C column );
+
+    double getColumnOffset( final C gridColumn );
+
+    double getColumnOffset( final int columnIndex );
+
+    void addRow( final R row );
+
+    void addRow( final int rowIndex,
+                 final R row );
+
+    R getRow( final int rowIndex );
 
     int getRowCount();
 
-    C getCell( final int rowIndex,
+    V getCell( final int rowIndex,
                final int columnIndex );
 
     void setCell( final int rowIndex,

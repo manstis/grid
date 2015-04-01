@@ -15,12 +15,12 @@
  */
 package org.anstis.client.grid.model.mergable;
 
-import org.anstis.client.grid.model.BaseGrid;
+import org.anstis.client.grid.model.IGridData;
 
-public class MergableGrid extends BaseGrid<MergableGridData> {
+public interface IMergableGridData extends IGridData<MergableGridRow, MergableGridColumn, MergableGridCell> {
 
-    public MergableGrid() {
-        setData( new MergableGridData() );
-    }
+    void groupCell( final int rowIndex,
+                    final int columnIndex,
+                    final boolean isGrouped );
 
 }

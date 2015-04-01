@@ -21,6 +21,10 @@ public interface IMergableGridCell extends IGridCell {
 
     boolean isMerged();
 
-    long getMergedCellCount();
+    int getMergedCellCount();
+
+    boolean isGrouped();
+
+    void setGrouped( final boolean isGrouped );
 
 }
