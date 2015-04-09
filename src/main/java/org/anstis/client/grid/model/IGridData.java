@@ -35,6 +35,10 @@ public interface IGridData<R extends IGridRow<V>, C extends IGridColumn<R, V>, V
 
     double getColumnOffset( final int columnIndex );
 
+    double getRowOffset( final R gridRow );
+
+    double getRowOffset( final int rowIndex );
+
     void addRow( final R row );
 
     void addRow( final int rowIndex,

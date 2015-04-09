@@ -36,9 +36,12 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import org.anstis.client.grid.model.IGridColumn;
 import org.anstis.client.grid.model.IGridData;
+import org.anstis.client.grid.model.basic.GridColumn;
+import org.anstis.client.grid.model.basic.GridData;
 import org.anstis.client.grid.model.mergable.MergableGridColumn;
 import org.anstis.client.grid.model.mergable.MergableGridData;
 import org.anstis.client.grid.util.GridDataFactory;
+import org.anstis.client.grid.widget.basic.GridWidget;
 import org.anstis.client.grid.widget.edit.EditorPopup;
 import org.anstis.client.grid.widget.mergable.MergableGridWidget;
 import org.anstis.client.grid.widget.renderers.IGridRenderer;
@@ -58,9 +61,10 @@ public class GridShowcaseWidget extends Composite implements IEditManager,
 
     private static final double VP_SCALE = 1.0;
 
-    private static final int GRID1_ROWS = 10;
-    private static final int GRID2_ROWS = 10;
-    private static final int GRID3_ROWS = 10;
+    private static final int GRID1_ROWS = 10000;
+    private static final int GRID2_ROWS = 10000;
+    private static final int GRID3_ROWS = 10000;
+    private static final int GRID4_ROWS = 100;
 
     interface GridShowcaseWidgetUiBinder extends UiBinder<Widget, GridShowcaseWidget> {
 
@@ -128,11 +132,21 @@ public class GridShowcaseWidget extends Composite implements IEditManager,
         final MergableGridData grid3 = new MergableGridData();
         for ( int idx = 0; idx < 5; idx++ ) {
             final MergableGridColumn column = new MergableGridColumn( "G3-Col: " + idx,
-                                                                      200 );
+                                                                      100 );
             grid3.addColumn( column );
         }
         GridDataFactory.populate( grid3,
                                   GRID3_ROWS );
+
+        //Grid 4
+        final GridData grid4 = new GridData();
+        for ( int idx = 0; idx < 5; idx++ ) {
+            final GridColumn column = new GridColumn( "G4-Col: " + idx,
+                                                      100 );
+            grid4.addColumn( column );
+        }
+        GridDataFactory.populate( grid4,
+                                  GRID4_ROWS );
 
         //Link grids
         grid1.getColumns().get( 9 ).setLink( grid2.getColumns().get( 0 ) );
@@ -151,6 +165,10 @@ public class GridShowcaseWidget extends Composite implements IEditManager,
         addGrid( grid3,
                  gridLayer,
                  new Point2D( 1050,
+                              0 ) );
+        addGrid( grid4,
+                 gridLayer,
+                 new Point2D( 1600,
                               0 ) );
 
         //Slider
@@ -226,6 +244,17 @@ public class GridShowcaseWidget extends Composite implements IEditManager,
                                                                       this,
                                                                       this,
                                                                       new MergableGridRenderer() );
+        gridWidget.setLocation( location );
+        layer.add( gridWidget );
+    }
+
+    public void addGrid( final GridData grid,
+                         final Layer layer,
+                         final Point2D location ) {
+        final GridWidget gridWidget = new GridWidget( grid,
+                                                      this,
+                                                      this,
+                                                      new RedGridRenderer() );
         gridWidget.setLocation( location );
         layer.add( gridWidget );
     }

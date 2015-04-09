@@ -25,6 +25,6 @@ public interface IMergableGridCell extends IGridCell {
 
     boolean isGrouped();
 
-    void setGrouped( final boolean isGrouped );
+    int getGroupedCellCount();
 
 }

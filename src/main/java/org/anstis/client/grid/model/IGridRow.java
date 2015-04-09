@@ -19,6 +19,10 @@ import java.util.Map;
 
 public interface IGridRow<V extends IGridCell> {
 
+    double getHeight();
+
+    void setHeight( final double height );
+
     Map<Integer, V> getCells();
 
 }

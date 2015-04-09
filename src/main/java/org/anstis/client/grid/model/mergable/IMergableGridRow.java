@@ -20,8 +20,16 @@ import org.anstis.client.grid.model.IGridRow;
 
 public interface IMergableGridRow<V extends IGridCell> extends IGridRow<V> {
 
-    boolean hasMergedCells();
+    boolean isMerged();
 
     boolean isGrouped();
+
+    boolean isCollapsed();
+
+    void storeHeight();
+
+    void restoreHeight();
+
+    double peekHeight();
 
 }

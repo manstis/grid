@@ -15,21 +15,45 @@
  */
 package org.anstis.client.grid.model.mergable;
 
+import java.util.Stack;
+
 import org.anstis.client.grid.model.BaseGridRow;
 
 public class MergableGridRow extends BaseGridRow<MergableGridCell> implements IMergableGridRow<MergableGridCell> {
 
-    private boolean isGrouped = false;
     private boolean hasMergedCells = false;
+    private boolean hasGroupedCells = false;
+    private int collapseLevel = 0;
+    private Stack<Double> heights = new Stack<>();
 
     @Override
-    public boolean hasMergedCells() {
+    public boolean isMerged() {
         return hasMergedCells;
     }
 
     @Override
     public boolean isGrouped() {
-        return isGrouped;
+        return hasGroupedCells;
+    }
+
+    @Override
+    public boolean isCollapsed() {
+        return collapseLevel > 0;
+    }
+
+    @Override
+    public void storeHeight() {
+        heights.push( height );
+    }
+
+    @Override
+    public void restoreHeight() {
+        height = heights.pop();
+    }
+
+    @Override
+    public double peekHeight() {
+        return heights.peek();
     }
 
     void setCell( final int columnIndex,
@@ -42,12 +66,20 @@ public class MergableGridRow extends BaseGridRow<MergableGridCell> implements IM
         }
     }
 
-    public void setIsGrouped( final boolean isGrouped ) {
-        this.isGrouped = isGrouped;
-    }
-
     void setHasMergedCells( final boolean hasMergedCells ) {
         this.hasMergedCells = hasMergedCells;
+    }
+
+    void setHasGroupedCells( final boolean hasGroupedCells ) {
+        this.hasGroupedCells = hasGroupedCells;
+    }
+
+    void increaseCollapseLevel() {
+        this.collapseLevel++;
+    }
+
+    void decreaseCollapseLevel() {
+        this.collapseLevel--;
     }
 
 }

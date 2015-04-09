@@ -32,8 +32,12 @@ public class MergableGridColumn extends BaseGridColumn<MergableGridRow, Mergable
 
     @Override
     public Group renderRow( final MergableGridRow row ) {
+        final MergableGridCell cell = row.getCells().get( getIndex() );
+        if ( cell == null ) {
+            return null;
+        }
         final Group g = new Group();
-        final Text t = new Text( row.getCells().get( getIndex() ).getValue() )
+        final Text t = new Text( cell.getValue() )
                 .setFillColor( ColorName.GREY )
                 .setFontSize( 12 )
                 .setFontFamily( "serif" )

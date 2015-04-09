@@ -47,6 +47,7 @@ public abstract class BaseGridWidgetMouseClickHandler<W extends BaseGridWidget<?
     }
 
     protected void handleHeaderCellClick( final NodeMouseClickEvent event ) {
+        //Convert Canvas co-ordinate to Grid co-ordinate
         final Point2D ap = GridCoordinateUtils.mapToGridWidgetAbsolutePoint( grid,
                                                                              new Point2D( event.getX(),
                                                                                           event.getY() ) );
@@ -59,24 +60,23 @@ public abstract class BaseGridWidgetMouseClickHandler<W extends BaseGridWidget<?
             return;
         }
 
-        if ( grid.getModel().getColumns() == null || grid.getModel().getColumns().isEmpty() ) {
-            return;
-        }
-        double extentX = 0;
-        IGridColumn<?, ?> extentColumn = null;
-        for ( IGridColumn<?, ?> column : grid.getModel().getColumns() ) {
-            if ( x > extentX && x < extentX + column.getWidth() ) {
-                extentColumn = column;
+        //Get column index
+        double offsetX = 0;
+        IGridColumn<?, ?> column = null;
+        for ( IGridColumn<?, ?> gridColumn : grid.getModel().getColumns() ) {
+            if ( x > offsetX && x < offsetX + gridColumn.getWidth() ) {
+                column = gridColumn;
                 break;
             }
-            extentX = extentX + column.getWidth();
+            offsetX = offsetX + gridColumn.getWidth();
         }
-        if ( extentColumn == null ) {
+        if ( column == null ) {
             return;
         }
 
-        if ( extentColumn.isLinked() ) {
-            final IGridColumn<?, ?> link = extentColumn.getLink();
+        //If linked scroll it into view
+        if ( column.isLinked() ) {
+            final IGridColumn<?, ?> link = column.getLink();
             selectionManager.scrollIntoView( link );
         }
     }

@@ -21,11 +21,22 @@ import java.util.Map;
 
 public abstract class BaseGridRow<V extends IGridCell> implements IGridRow<V> {
 
+    protected double height = 20.0;
     protected Map<Integer, V> cells = new HashMap<>();
 
     @Override
     public Map<Integer, V> getCells() {
         return Collections.unmodifiableMap( cells );
+    }
+
+    @Override
+    public double getHeight() {
+        return this.height;
+    }
+
+    @Override
+    public void setHeight( final double height ) {
+        this.height = height;
     }
 
 }

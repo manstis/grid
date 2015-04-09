@@ -22,6 +22,7 @@ import com.ait.lienzo.client.core.shape.Group;
 import com.ait.lienzo.client.core.shape.Rectangle;
 import org.anstis.client.grid.model.IGridColumn;
 import org.anstis.client.grid.model.IGridData;
+import org.anstis.client.grid.model.IGridRow;
 import org.anstis.client.grid.widget.renderers.IGridRenderer;
 
 public abstract class BaseGridWidget<M extends IGridData<?, ?, ?>> extends Group {
@@ -72,7 +73,9 @@ public abstract class BaseGridWidget<M extends IGridData<?, ?, ?>> extends Group
     }
 
     public double getHeight() {
-        return model.getRowCount() * renderer.getRowHeight() + renderer.getHeaderHeight();
+        double height = renderer.getHeaderHeight();
+        height = height + model.getRowOffset( model.getRowCount() );
+        return height;
     }
 
     public void select() {
@@ -142,13 +145,19 @@ public abstract class BaseGridWidget<M extends IGridData<?, ?, ?>> extends Group
         }
 
         //Determine which rows are within visible area
-        int minRow = (int) ( ( vpY - getY() - renderer.getHeaderHeight() ) / renderer.getRowHeight() );
-        if ( minRow < 0 ) {
-            minRow = 0;
+        int minRow = 0;
+        IGridRow<?> row;
+        double clipTop = vpY - getY() - renderer.getHeaderHeight();
+        while ( ( row = model.getRow( minRow ) ).getHeight() < clipTop && minRow < model.getRowCount() - 1 ) {
+            clipTop = clipTop - row.getHeight();
+            minRow++;
         }
-        int maxRow = ( (int) ( ( vpY - getY() - renderer.getHeaderHeight() + vpHeight + renderer.getRowHeight() ) / renderer.getRowHeight() ) );
-        if ( maxRow > model.getRowCount() ) {
-            maxRow = model.getRowCount();
+
+        int maxRow = minRow;
+        double clipBottom = vpY - getY() - renderer.getHeaderHeight() + vpHeight - model.getRowOffset( minRow );
+        while ( ( row = model.getRow( maxRow ) ).getHeight() < clipBottom && maxRow < model.getRowCount() - 1 ) {
+            clipBottom = clipBottom - row.getHeight();
+            maxRow++;
         }
 
         if ( minCol < 0 || maxCol < 0 || maxRow < minRow ) {
@@ -200,7 +209,7 @@ public abstract class BaseGridWidget<M extends IGridData<?, ?, ?>> extends Group
                                              getWidth( startColumnIndex,
                                                        endColumnIndex ) );
         g.setX( model.getColumnOffset( startColumnIndex ) );
-        g.setY( renderer.getHeaderHeight() + startRowIndex * renderer.getRowHeight() );
+        g.setY( renderer.getHeaderHeight() + model.getRowOffset( startRowIndex ) );
         add( g );
     }
 

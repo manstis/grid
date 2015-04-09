@@ -24,8 +24,6 @@ public interface IGridRenderer<G extends IGridData<?, ?, ?>> {
 
     double getHeaderHeight();
 
-    double getRowHeight();
-
     Group renderSelector( final double width,
                           final double height );
 

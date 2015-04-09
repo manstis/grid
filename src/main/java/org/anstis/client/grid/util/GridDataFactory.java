@@ -15,18 +15,22 @@
  */
 package org.anstis.client.grid.util;
 
+import org.anstis.client.grid.model.basic.GridData;
+import org.anstis.client.grid.model.basic.GridRow;
 import org.anstis.client.grid.model.mergable.MergableGridData;
 import org.anstis.client.grid.model.mergable.MergableGridRow;
 
 public class GridDataFactory {
 
-    private static double FILL_FACTOR = 1.0;
+    private static double FILL_FACTOR = 0.75;
 
-    public static void populate( final MergableGridData grid,
+    public static void populate( final GridData grid,
                                  final int rowCount ) {
         final int columnCount = grid.getColumns().size();
         for ( int rowIndex = 0; rowIndex < rowCount; rowIndex++ ) {
-            grid.addRow( new MergableGridRow() );
+            final GridRow row = new GridRow();
+            row.setHeight( getRowHeight() );
+            grid.addRow( row );
             for ( int columnIndex = 0; columnIndex < columnCount; columnIndex++ ) {
                 if ( Math.random() < FILL_FACTOR ) {
                     grid.setCell( rowIndex,
@@ -35,6 +39,34 @@ public class GridDataFactory {
                 }
             }
         }
+    }
+
+    public static void populate( final MergableGridData grid,
+                                 final int rowCount ) {
+        final int columnCount = grid.getColumns().size();
+        for ( int rowIndex = 0; rowIndex < rowCount; rowIndex++ ) {
+            final MergableGridRow row = new MergableGridRow();
+            row.setHeight( getRowHeight() );
+            grid.addRow( row );
+            for ( int columnIndex = 0; columnIndex < columnCount; columnIndex++ ) {
+                if ( Math.random() < FILL_FACTOR ) {
+                    grid.setCell( rowIndex,
+                                  columnIndex,
+                                  "(" + columnIndex + ", " + rowIndex + ")" );
+                }
+            }
+        }
+    }
+
+    private static double getRowHeight() {
+        final int r = (int) Math.round( Math.random() * 3 );
+        switch ( r ) {
+            case 0:
+                return 20.0;
+            case 1:
+                return 40.0;
+        }
+        return 60.0;
     }
 
 }

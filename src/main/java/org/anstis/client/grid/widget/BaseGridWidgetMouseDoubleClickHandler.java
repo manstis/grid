@@ -21,6 +21,7 @@ import com.ait.lienzo.client.core.event.NodeMouseDoubleClickEvent;
 import com.ait.lienzo.client.core.event.NodeMouseDoubleClickHandler;
 import com.ait.lienzo.client.core.types.Point2D;
 import org.anstis.client.grid.model.IGridColumn;
+import org.anstis.client.grid.model.IGridRow;
 import org.anstis.client.grid.util.GridCoordinateUtils;
 import org.anstis.client.grid.widget.renderers.IGridRenderer;
 
@@ -52,6 +53,7 @@ public abstract class BaseGridWidgetMouseDoubleClickHandler<W extends BaseGridWi
     }
 
     protected void handleBodyCellDoubleClick( final NodeMouseDoubleClickEvent event ) {
+        //Convert Canvas co-ordinate to Grid co-ordinate
         final Point2D ap = GridCoordinateUtils.mapToGridWidgetAbsolutePoint( grid,
                                                                              new Point2D( event.getX(),
                                                                                           event.getY() ) );
@@ -63,10 +65,23 @@ public abstract class BaseGridWidgetMouseDoubleClickHandler<W extends BaseGridWi
         if ( y < renderer.getHeaderHeight() || y > grid.getHeight() ) {
             return;
         }
+
+        //Get row index
+        IGridRow<?> row;
+        int rowIndex = 0;
+        double offsetY = y - renderer.getHeaderHeight();
+        while ( ( row = grid.getModel().getRow( rowIndex ) ).getHeight() < offsetY ) {
+            offsetY = offsetY - row.getHeight();
+            rowIndex++;
+        }
+        if ( rowIndex < 0 || rowIndex > grid.getModel().getRowCount() - 1 ) {
+            return;
+        }
+
+        //Get column index
         int columnIndex = -1;
-        final int rowIndex = (int) ( ( y - renderer.getHeaderHeight() ) / renderer.getRowHeight() );
-        final List<? extends IGridColumn<?, ?>> columns = grid.getModel().getColumns();
         double offsetX = 0;
+        final List<? extends IGridColumn<?, ?>> columns = grid.getModel().getColumns();
         for ( int idx = 0; idx < columns.size(); idx++ ) {
             final IGridColumn<?, ?> gridColumn = columns.get( idx );
             final double width = gridColumn.getWidth();
@@ -79,9 +94,7 @@ public abstract class BaseGridWidgetMouseDoubleClickHandler<W extends BaseGridWi
         if ( columnIndex < 0 || columnIndex > columns.size() - 1 ) {
             return;
         }
-        if ( rowIndex < 0 || rowIndex > grid.getModel().getRowCount() - 1 ) {
-            return;
-        }
+
         doEdit( rowIndex,
                 columnIndex );
     }

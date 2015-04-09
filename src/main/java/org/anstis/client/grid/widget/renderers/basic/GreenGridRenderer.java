@@ -23,7 +23,6 @@ import com.ait.lienzo.shared.core.types.ColorName;
 public class GreenGridRenderer extends AbstractClippingGridRenderer {
 
     private static final int HEADER_HEIGHT = 30;
-    private static final int ROW_HEIGHT = 20;
 
     @Override
     public String getName() {
@@ -33,11 +32,6 @@ public class GreenGridRenderer extends AbstractClippingGridRenderer {
     @Override
     public double getHeaderHeight() {
         return HEADER_HEIGHT;
-    }
-
-    @Override
-    public double getRowHeight() {
-        return ROW_HEIGHT;
     }
 
     @Override

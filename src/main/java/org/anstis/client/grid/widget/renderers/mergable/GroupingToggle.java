@@ -28,6 +28,7 @@ public class GroupingToggle extends Group {
                                                SIZE,
                                                5 );
 
+    @SuppressWarnings("unused")
     public GroupingToggle( final double containerWidth,
                            final double containerHeight,
                            final boolean isGrouped ) {
@@ -37,10 +38,10 @@ public class GroupingToggle extends Group {
         add( r );
     }
 
-    public boolean onHotSpot( final double rx,
-                              final double ry ) {
-        if ( rx - r.getX() > 0 && rx - r.getX() < SIZE ) {
-            if ( ry > PADDING && ry < PADDING + SIZE ) {
+    public boolean onHotSpot( final double cellX,
+                              final double cellY ) {
+        if ( cellX - r.getX() > 0 && cellX - r.getX() < SIZE ) {
+            if ( cellY > PADDING && cellY < PADDING + SIZE ) {
                 return true;
             }
         }

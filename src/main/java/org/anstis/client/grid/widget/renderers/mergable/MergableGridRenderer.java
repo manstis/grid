@@ -15,6 +15,7 @@
  */
 package org.anstis.client.grid.widget.renderers.mergable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.ait.lienzo.client.core.shape.Group;
@@ -30,7 +31,6 @@ import org.anstis.client.grid.model.mergable.MergableGridRow;
 public class MergableGridRenderer implements IMergableGridRenderer {
 
     private static final int HEADER_HEIGHT = 34;
-    private static final int ROW_HEIGHT = 20;
 
     @Override
     public String getName() {
@@ -40,11 +40,6 @@ public class MergableGridRenderer implements IMergableGridRenderer {
     @Override
     public double getHeaderHeight() {
         return HEADER_HEIGHT;
-    }
-
-    @Override
-    public double getRowHeight() {
-        return ROW_HEIGHT;
     }
 
     @Override
@@ -142,25 +137,30 @@ public class MergableGridRenderer implements IMergableGridRenderer {
                              final int endRowIndex,
                              final double width ) {
         final Group g = new Group();
-        final int rows = endRowIndex - startRowIndex;
+        final List<MergableGridColumn> columns = model.getColumns();
 
+        final List<Double> rowOffsets = new ArrayList<>();
+        double rowOffset = model.getRowOffset( startRowIndex );
+        for ( int rowIndex = startRowIndex; rowIndex <= endRowIndex; rowIndex++ ) {
+            rowOffsets.add( rowOffset );
+            rowOffset = rowOffset + model.getRow( rowIndex ).getHeight();
+        }
+
+        final double maxY = rowOffsets.get( endRowIndex - startRowIndex ) - rowOffsets.get( 0 ) + model.getRow( endRowIndex ).getHeight();
+        final double maxX = model.getColumnOffset( endColumnIndex ) - model.getColumnOffset( startColumnIndex ) + columns.get( endColumnIndex ).getWidth();
         final Rectangle body = new Rectangle( 0, 0 )
                 .setFillColor( ColorName.LIGHTYELLOW )
                 .setStrokeColor( ColorName.SLATEGRAY )
                 .setStrokeWidth( 0.5 )
                 .setWidth( width )
-                .setHeight( ROW_HEIGHT * rows );
+                .setHeight( maxY );
         g.add( body );
-
-        final List<MergableGridColumn> columns = model.getColumns();
 
         //Grid lines
         final MultiPath bodyGrid = new MultiPath()
                 .setStrokeColor( ColorName.DARKGRAY )
                 .setStrokeWidth( 0.5 )
                 .setListening( false );
-        final double maxX = model.getColumnOffset( endColumnIndex ) - model.getColumnOffset( startColumnIndex ) + columns.get( endColumnIndex ).getWidth();
-        final double maxY = ( endRowIndex - startRowIndex ) * getRowHeight();
         double x = 0;
         for ( int i = startColumnIndex; i <= endColumnIndex; i++ ) {
             final MergableGridColumn column = columns.get( i );
@@ -169,20 +169,23 @@ public class MergableGridRenderer implements IMergableGridRenderer {
                                maxY );
             x = x + column.getWidth();
         }
-        for ( int rowIndex = startRowIndex; rowIndex < endRowIndex; rowIndex++ ) {
-            final double y = ( rowIndex - startRowIndex ) * getRowHeight();
+        for ( int rowIndex = startRowIndex; rowIndex <= endRowIndex; rowIndex++ ) {
             x = 0;
-            if ( model.getRow( rowIndex ).hasMergedCells() ) {
-                for ( int columnIndex = startColumnIndex; columnIndex <= endColumnIndex; columnIndex++ ) {
-                    final MergableGridColumn column = columns.get( columnIndex );
-                    final MergableGridCell cell = model.getCell( rowIndex,
-                                                                 columnIndex );
-                    if ( cell == null || cell.getMergedCellCount() > 0 ) {
-                        bodyGrid.M( x,
-                                    y ).L( x + column.getWidth(),
-                                           y );
+            final double y = rowOffsets.get( rowIndex - startRowIndex ) - rowOffsets.get( 0 );
+            final MergableGridRow row = model.getRow( rowIndex );
+            if ( row.isMerged() ) {
+                if ( !row.isCollapsed() ) {
+                    for ( int columnIndex = startColumnIndex; columnIndex <= endColumnIndex; columnIndex++ ) {
+                        final MergableGridColumn column = columns.get( columnIndex );
+                        final MergableGridCell cell = model.getCell( rowIndex,
+                                                                     columnIndex );
+                        if ( cell == null || cell.getMergedCellCount() > 0 ) {
+                            bodyGrid.M( x,
+                                        y ).L( x + column.getWidth(),
+                                               y );
+                        }
+                        x = x + column.getWidth();
                     }
-                    x = x + column.getWidth();
                 }
             } else {
                 bodyGrid.M( x,
@@ -194,36 +197,53 @@ public class MergableGridRenderer implements IMergableGridRenderer {
         g.add( bodyGrid );
 
         //Cell content
-        for ( int rowIndex = startRowIndex; rowIndex < endRowIndex; rowIndex++ ) {
-            final double offsetY = ( rowIndex - startRowIndex ) * getRowHeight();
-            final MergableGridRow row = model.getRow( rowIndex );
+        for ( int rowIndex = startRowIndex; rowIndex <= endRowIndex; rowIndex++ ) {
             x = 0;
+            final double y = rowOffsets.get( rowIndex - startRowIndex ) - rowOffsets.get( 0 );
+            final MergableGridRow row = model.getRow( rowIndex );
             for ( int columnIndex = startColumnIndex; columnIndex <= endColumnIndex; columnIndex++ ) {
                 final MergableGridColumn column = columns.get( columnIndex );
                 final int w = column.getWidth();
 
                 final MergableGridCell cell = model.getCell( rowIndex,
                                                              columnIndex );
-                if ( cell.getMergedCellCount() > 0 ) {
-                    final int groupedRowCount = cell.isGrouped() ? 1 : cell.getMergedCellCount();
-                    final Group hc = column.renderRow( row );
-                    hc.setX( x + w / 2 )
-                            .setY( offsetY + ( groupedRowCount * ROW_HEIGHT / 2 ) )
-                            .setListening( false );
-                    g.add( hc );
-                }
-                if ( cell.getMergedCellCount() > 1 ) {
-                    final GroupingToggle gt = renderGroupedCellToggle( w,
-                                                                       getRowHeight(),
-                                                                       cell.isGrouped() );
-                    gt.setX( x ).setY( offsetY );
-                    g.add( gt );
+                if ( cell != null ) {
+                    if ( !row.isCollapsed() ) {
+                        if ( cell.getMergedCellCount() > 0 ) {
+                            final Group hc = column.renderRow( row );
+                            if ( hc != null ) {
+                                hc.setX( x + w / 2 )
+                                        .setY( y + getCellHeight( rowIndex,
+                                                                  model,
+                                                                  cell ) / 2 )
+                                        .setListening( false );
+                                g.add( hc );
+                            }
+                        }
+                        if ( cell.getMergedCellCount() > 1 ) {
+                            final GroupingToggle gt = renderGroupedCellToggle( w,
+                                                                               model.getRow( rowIndex ).getHeight(),
+                                                                               cell.isGrouped() );
+                            gt.setX( x ).setY( y );
+                            g.add( gt );
+                        }
+                    }
                 }
                 x = x + w;
             }
         }
 
         return g;
+    }
+
+    private double getCellHeight( final int rowIndex,
+                                  final MergableGridData model,
+                                  final MergableGridCell cell ) {
+        double height = 0;
+        for ( int i = rowIndex; i < rowIndex + cell.getMergedCellCount(); i++ ) {
+            height = height + model.getRow( i ).getHeight();
+        }
+        return height;
     }
 
     @Override

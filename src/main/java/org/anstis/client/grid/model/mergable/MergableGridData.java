@@ -15,69 +15,26 @@
  */
 package org.anstis.client.grid.model.mergable;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.anstis.client.grid.model.BaseGridData;
 
 public class MergableGridData extends BaseGridData<MergableGridRow, MergableGridColumn, MergableGridCell> implements IMergableGridData {
-
-    protected int rowCount = 0;
-    protected List<Integer> index = new ArrayList<>();
-
-    @Override
-    public void addRow( final MergableGridRow row ) {
-        index.add( index.size() );
-        rowCount++;
-        super.addRow( row );
-    }
-
-    @Override
-    public void addRow( final int rowIndex,
-                        final MergableGridRow row ) {
-        index.add( rowIndex,
-                   rowIndex );
-        for ( int i = rowIndex + 1; i < this.index.size(); i++ ) {
-            this.index.set( i,
-                            this.index.get( i ) + 1 );
-        }
-        rowCount++;
-        super.addRow( rowIndex,
-                      row );
-    }
-
-    @Override
-    public MergableGridRow getRow( final int rowIndex ) {
-        final int _rowIndex = index.get( rowIndex );
-        return super.getRow( _rowIndex );
-    }
-
-    @Override
-    public MergableGridCell getCell( final int rowIndex,
-                                     final int columnIndex ) {
-        final int _rowIndex = index.get( rowIndex );
-        return super.getCell( _rowIndex,
-                              columnIndex );
-    }
-
-    @Override
-    public int getRowCount() {
-        return rowCount;
-    }
 
     @Override
     public void setCell( final int rowIndex,
                          final int columnIndex,
                          final String value ) {
-        final int _rowIndex = index.get( rowIndex );
-        final int _columnIndex = columns.get( columnIndex ).getIndex();
-        if ( _rowIndex < 0 || _rowIndex > rows.size() - 1 ) {
+        if ( rowIndex < 0 || rowIndex > rows.size() - 1 ) {
+            return;
+        }
+        if ( columnIndex < 0 || columnIndex > columns.size() - 1 ) {
             return;
         }
 
-        int minRowIndex = _rowIndex;
-        int maxRowIndex = _rowIndex + 1;
-        final MergableGridRow currentRow = getRow( _rowIndex );
+        int minRowIndex = rowIndex;
+        int maxRowIndex = rowIndex + 1;
+        final MergableGridRow currentRow = getRow( rowIndex );
+
+        final int _columnIndex = columns.get( columnIndex ).getIndex();
         final MergableGridCell currentRowCell = currentRow.getCells().get( _columnIndex );
 
         while ( minRowIndex > 0 ) {
@@ -110,7 +67,7 @@ public class MergableGridData extends BaseGridData<MergableGridRow, MergableGrid
                          value );
         }
 
-        assertMerging( _rowIndex,
+        assertMerging( rowIndex,
                        _columnIndex );
     }
 
@@ -118,47 +75,18 @@ public class MergableGridData extends BaseGridData<MergableGridRow, MergableGrid
     public void groupCell( final int rowIndex,
                            final int columnIndex,
                            final boolean isGrouped ) {
-        final MergableGridCell cell = getCell( rowIndex,
-                                               columnIndex );
+        final int _columnIndex = columns.get( columnIndex ).getIndex();
+        final MergableGridRow row = rows.get( rowIndex );
+        final MergableGridCell cell = row.getCells().get( _columnIndex );
         if ( cell == null ) {
             return;
         }
         if ( !cell.isMerged() ) {
             return;
         }
-        if ( !cell.isGrouped() ) {
-            doGroupCell( rowIndex,
-                         columnIndex,
-                         cell );
-        } else {
-            doUngroupCell( rowIndex,
-                           columnIndex,
-                           cell );
-        }
-    }
-
-    private void doGroupCell( final int rowIndex,
-                              final int columnIndex,
-                              final MergableGridCell cell ) {
-        cell.setGrouped( true );
-        final int cellCountAdjustment = cell.getMergedCellCount() - 1;
-        for ( int i = rowIndex + 1; i < this.index.size(); i++ ) {
-            this.index.set( i,
-                            this.index.get( i ) + cellCountAdjustment );
-        }
-        rowCount = rowCount - cellCountAdjustment;
-    }
-
-    private void doUngroupCell( final int rowIndex,
-                                final int columnIndex,
-                                final MergableGridCell cell ) {
-        cell.setGrouped( false );
-        final int cellCountAdjustment = cell.getMergedCellCount() - 1;
-        for ( int i = rowIndex + 1; i < this.index.size(); i++ ) {
-            this.index.set( i,
-                            this.index.get( i ) - cellCountAdjustment );
-        }
-        rowCount = rowCount + cellCountAdjustment;
+        assertGrouping( rowIndex,
+                        _columnIndex,
+                        isGrouped );
     }
 
     private void assertMerging( final int rowIndex,
@@ -217,6 +145,76 @@ public class MergableGridData extends BaseGridData<MergableGridRow, MergableGrid
             }
         }
         row.setHasMergedCells( false );
+    }
+
+    private void assertGrouping( final int rowIndex,
+                                 final int columnIndex,
+                                 final boolean isGrouped ) {
+        int minRowIndex = rowIndex;
+        int maxRowIndex = rowIndex + 1;
+        final MergableGridRow currentRow = rows.get( rowIndex );
+        final MergableGridCell currentRowCell = currentRow.getCells().get( columnIndex );
+        final int groupedCellCount = isGrouped ? 0 : 1;
+
+        if ( currentRowCell != null ) {
+            currentRowCell.setGroupedCellCount( groupedCellCount );
+        }
+        assertRowGroupedCells( currentRow );
+
+        while ( minRowIndex > 0 ) {
+            final MergableGridRow previousRow = rows.get( minRowIndex - 1 );
+            final MergableGridCell previousRowCell = previousRow.getCells().get( columnIndex );
+            if ( previousRowCell == null ) {
+                assertRowGroupedCells( previousRow );
+                break;
+            }
+            if ( !previousRowCell.equals( currentRowCell ) ) {
+                break;
+            }
+            previousRowCell.setGroupedCellCount( groupedCellCount );
+            assertRowGroupedCells( previousRow );
+            minRowIndex--;
+        }
+
+        while ( maxRowIndex < rows.size() ) {
+            final MergableGridRow nextRow = rows.get( maxRowIndex );
+            final MergableGridCell nextRowCell = nextRow.getCells().get( columnIndex );
+            if ( nextRowCell == null ) {
+                assertRowGroupedCells( nextRow );
+                break;
+            }
+            if ( !nextRowCell.equals( currentRowCell ) ) {
+                break;
+            }
+            nextRowCell.setGroupedCellCount( groupedCellCount );
+            assertRowGroupedCells( nextRow );
+            maxRowIndex++;
+        }
+
+        if ( isGrouped ) {
+            final MergableGridRow row = rows.get( minRowIndex );
+            row.getCells().get( columnIndex ).setGroupedCellCount( maxRowIndex - minRowIndex );
+            assertRowGroupedCells( row );
+
+            for ( int i = minRowIndex + 1; i < maxRowIndex; i++ ) {
+                rows.get( i ).increaseCollapseLevel();
+            }
+
+        } else {
+            for ( int i = minRowIndex + 1; i < maxRowIndex; i++ ) {
+                rows.get( i ).decreaseCollapseLevel();
+            }
+        }
+    }
+
+    private void assertRowGroupedCells( final MergableGridRow row ) {
+        for ( MergableGridCell cell : row.getCells().values() ) {
+            if ( cell.isGrouped() ) {
+                row.setHasGroupedCells( true );
+                return;
+            }
+        }
+        row.setHasGroupedCells( false );
     }
 
 }

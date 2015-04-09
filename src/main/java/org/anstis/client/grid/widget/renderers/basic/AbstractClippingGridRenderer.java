@@ -15,6 +15,7 @@
  */
 package org.anstis.client.grid.widget.renderers.basic;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.ait.lienzo.client.core.shape.Group;
@@ -111,46 +112,53 @@ public abstract class AbstractClippingGridRenderer implements IGridRenderer<Grid
                              final int endRowIndex,
                              final double width ) {
         final Group g = new Group();
-        final int rows = endRowIndex - startRowIndex;
-
-        final Rectangle body = getBody().setWidth( width ).setHeight( getRowHeight() * rows );
-        g.add( body );
-
         final List<GridColumn> columns = model.getColumns();
 
-        //Grid lines
-        final double minX = 0;
-        final double minY = 0;
+        final List<Double> rowOffsets = new ArrayList<>();
+        double rowOffset = model.getRowOffset( startRowIndex );
+        for ( int rowIndex = startRowIndex; rowIndex <= endRowIndex; rowIndex++ ) {
+            rowOffsets.add( rowOffset );
+            rowOffset = rowOffset + model.getRow( rowIndex ).getHeight();
+        }
+
+        final double maxY = rowOffsets.get( endRowIndex - startRowIndex ) - rowOffsets.get( 0 ) + model.getRow( endRowIndex ).getHeight();
         final double maxX = model.getColumnOffset( endColumnIndex ) - model.getColumnOffset( startColumnIndex ) + columns.get( endColumnIndex ).getWidth();
-        final double maxY = ( endRowIndex - startRowIndex ) * getRowHeight();
+        final Rectangle body = getBody().setWidth( width ).setHeight( maxY );
+        g.add( body );
+
+        //Grid lines
         final MultiPath bodyGrid = getBodyGridLine().setListening( false );
         double x = 0;
         for ( int i = startColumnIndex; i <= endColumnIndex; i++ ) {
             final GridColumn column = columns.get( i );
-            bodyGrid.M( x, minY ).L( x,
-                                     maxY );
+            bodyGrid.M( x,
+                        0 ).L( x,
+                               maxY );
             x = x + column.getWidth();
         }
-        for ( int rowIndex = startRowIndex; rowIndex < endRowIndex; rowIndex++ ) {
-            bodyGrid.M( minX,
-                        ( rowIndex - startRowIndex ) * getRowHeight() ).L( maxX,
-                                                                           ( rowIndex - startRowIndex ) * getRowHeight() );
+        for ( int rowIndex = startRowIndex; rowIndex <= endRowIndex; rowIndex++ ) {
+            final double y = rowOffsets.get( rowIndex - startRowIndex ) - rowOffsets.get( 0 );
+            bodyGrid.M( 0,
+                        y ).L( maxX,
+                               y );
         }
         g.add( bodyGrid );
 
         //Cell content
-        for ( int rowIndex = startRowIndex; rowIndex < endRowIndex; rowIndex++ ) {
-            final double offsetY = ( rowIndex - startRowIndex ) * getRowHeight();
+        for ( int rowIndex = startRowIndex; rowIndex <= endRowIndex; rowIndex++ ) {
+            final double y = rowOffsets.get( rowIndex - startRowIndex ) - rowOffsets.get( 0 );
             final GridRow row = model.getRow( rowIndex );
             x = 0;
             for ( int columnIndex = startColumnIndex; columnIndex <= endColumnIndex; columnIndex++ ) {
                 final GridColumn column = columns.get( columnIndex );
-                final Group hc = column.renderRow( row );
                 final int w = column.getWidth();
-                hc.setX( x + w / 2 )
-                        .setY( offsetY + getRowHeight() / 2 )
-                        .setListening( false );
-                g.add( hc );
+                final Group hc = column.renderRow( row );
+                if ( hc != null ) {
+                    hc.setX( x + w / 2 )
+                            .setY( y + model.getRow( rowIndex ).getHeight() / 2 )
+                            .setListening( false );
+                    g.add( hc );
+                }
                 x = x + w;
             }
         }

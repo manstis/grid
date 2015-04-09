@@ -81,6 +81,22 @@ public abstract class BaseGridData<R extends IGridRow<V>, C extends IGridColumn<
     }
 
     @Override
+    public double getRowOffset( final R gridRow ) {
+        final int rowIndex = rows.indexOf( gridRow );
+        return getRowOffset( rowIndex );
+    }
+
+    @Override
+    public double getRowOffset( final int rowIndex ) {
+        double height = 0;
+        for ( int i = 0; i < rowIndex; i++ ) {
+            final IGridRow<V> row = getRow( i );
+            height = height + row.getHeight();
+        }
+        return height;
+    }
+
+    @Override
     public void addRow( final R row ) {
         this.rows.add( row );
     }

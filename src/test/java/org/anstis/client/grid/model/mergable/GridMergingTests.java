@@ -44,7 +44,7 @@ public class GridMergingTests {
         }
 
         for ( int rowIndex = 0; rowIndex < data.getRowCount(); rowIndex++ ) {
-            assertFalse( data.getRow( rowIndex ).hasMergedCells() );
+            assertFalse( data.getRow( rowIndex ).isMerged() );
             for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
                 final MergableGridCell cell = data.getCell( rowIndex,
                                                             columnIndex );
@@ -77,9 +77,9 @@ public class GridMergingTests {
             }
         }
 
-        assertTrue( data.getRow( 0 ).hasMergedCells() );
-        assertTrue( data.getRow( 1 ).hasMergedCells() );
-        assertTrue( data.getRow( 2 ).hasMergedCells() );
+        assertTrue( data.getRow( 0 ).isMerged() );
+        assertTrue( data.getRow( 1 ).isMerged() );
+        assertTrue( data.getRow( 2 ).isMerged() );
 
         assertTrue( data.getCell( 0,
                                   0 ).isMerged() );
@@ -144,21 +144,21 @@ public class GridMergingTests {
                       0,
                       "(0, 0)" );
 
-        assertTrue( data.getRow( 0 ).hasMergedCells() );
+        assertTrue( data.getRow( 0 ).isMerged() );
         assertTrue( data.getCell( 0,
                                   0 ).isMerged() );
         assertEquals( 2,
                       data.getCell( 0,
                                     0 ).getMergedCellCount() );
 
-        assertTrue( data.getRow( 1 ).hasMergedCells() );
+        assertTrue( data.getRow( 1 ).isMerged() );
         assertTrue( data.getCell( 1,
                                   0 ).isMerged() );
         assertEquals( 0,
                       data.getCell( 1,
                                     0 ).getMergedCellCount() );
 
-        assertFalse( data.getRow( 2 ).hasMergedCells() );
+        assertFalse( data.getRow( 2 ).isMerged() );
         assertFalse( data.getCell( 2,
                                    0 ).isMerged() );
         assertEquals( 1,
@@ -192,21 +192,21 @@ public class GridMergingTests {
                       0,
                       "(0, 1)" );
 
-        assertFalse( data.getRow( 0 ).hasMergedCells() );
+        assertFalse( data.getRow( 0 ).isMerged() );
         assertFalse( data.getCell( 0,
                                    0 ).isMerged() );
         assertEquals( 1,
                       data.getCell( 0,
                                     0 ).getMergedCellCount() );
 
-        assertTrue( data.getRow( 1 ).hasMergedCells() );
+        assertTrue( data.getRow( 1 ).isMerged() );
         assertTrue( data.getCell( 1,
                                   0 ).isMerged() );
         assertEquals( 2,
                       data.getCell( 1,
                                     0 ).getMergedCellCount() );
 
-        assertTrue( data.getRow( 2 ).hasMergedCells() );
+        assertTrue( data.getRow( 2 ).isMerged() );
         assertTrue( data.getCell( 2,
                                   0 ).isMerged() );
         assertEquals( 0,
@@ -243,21 +243,21 @@ public class GridMergingTests {
                       0,
                       "(0, 0)" );
 
-        assertTrue( data.getRow( 0 ).hasMergedCells() );
+        assertTrue( data.getRow( 0 ).isMerged() );
         assertTrue( data.getCell( 0,
                                   0 ).isMerged() );
         assertEquals( 3,
                       data.getCell( 0,
                                     0 ).getMergedCellCount() );
 
-        assertTrue( data.getRow( 1 ).hasMergedCells() );
+        assertTrue( data.getRow( 1 ).isMerged() );
         assertTrue( data.getCell( 1,
                                   0 ).isMerged() );
         assertEquals( 0,
                       data.getCell( 1,
                                     0 ).getMergedCellCount() );
 
-        assertTrue( data.getRow( 2 ).hasMergedCells() );
+        assertTrue( data.getRow( 2 ).isMerged() );
         assertTrue( data.getCell( 2,
                                   0 ).isMerged() );
         assertEquals( 0,
@@ -291,21 +291,21 @@ public class GridMergingTests {
                       0,
                       "(0, 1)" );
 
-        assertTrue( data.getRow( 0 ).hasMergedCells() );
+        assertTrue( data.getRow( 0 ).isMerged() );
         assertTrue( data.getCell( 0,
                                   0 ).isMerged() );
         assertEquals( 2,
                       data.getCell( 0,
                                     0 ).getMergedCellCount() );
 
-        assertTrue( data.getRow( 1 ).hasMergedCells() );
+        assertTrue( data.getRow( 1 ).isMerged() );
         assertTrue( data.getCell( 1,
                                   0 ).isMerged() );
         assertEquals( 0,
                       data.getCell( 1,
                                     0 ).getMergedCellCount() );
 
-        assertFalse( data.getRow( 2 ).hasMergedCells() );
+        assertFalse( data.getRow( 2 ).isMerged() );
         assertFalse( data.getCell( 2,
                                    0 ).isMerged() );
         assertEquals( 1,
@@ -339,21 +339,21 @@ public class GridMergingTests {
                       0,
                       "(0, 2)" );
 
-        assertFalse( data.getRow( 0 ).hasMergedCells() );
+        assertFalse( data.getRow( 0 ).isMerged() );
         assertFalse( data.getCell( 0,
                                    0 ).isMerged() );
         assertEquals( 1,
                       data.getCell( 0,
                                     0 ).getMergedCellCount() );
 
-        assertTrue( data.getRow( 1 ).hasMergedCells() );
+        assertTrue( data.getRow( 1 ).isMerged() );
         assertTrue( data.getCell( 1,
                                   0 ).isMerged() );
         assertEquals( 2,
                       data.getCell( 1,
                                     0 ).getMergedCellCount() );
 
-        assertTrue( data.getRow( 2 ).hasMergedCells() );
+        assertTrue( data.getRow( 2 ).isMerged() );
         assertTrue( data.getCell( 2,
                                   0 ).isMerged() );
         assertEquals( 0,
@@ -391,21 +391,21 @@ public class GridMergingTests {
                       0,
                       "(0, 2)" );
 
-        assertTrue( data.getRow( 0 ).hasMergedCells() );
+        assertTrue( data.getRow( 0 ).isMerged() );
         assertTrue( data.getCell( 0,
                                   0 ).isMerged() );
         assertEquals( 3,
                       data.getCell( 0,
                                     0 ).getMergedCellCount() );
 
-        assertTrue( data.getRow( 1 ).hasMergedCells() );
+        assertTrue( data.getRow( 1 ).isMerged() );
         assertTrue( data.getCell( 1,
                                   0 ).isMerged() );
         assertEquals( 0,
                       data.getCell( 1,
                                     0 ).getMergedCellCount() );
 
-        assertTrue( data.getRow( 2 ).hasMergedCells() );
+        assertTrue( data.getRow( 2 ).isMerged() );
         assertTrue( data.getCell( 2,
                                   0 ).isMerged() );
         assertEquals( 0,
@@ -447,21 +447,21 @@ public class GridMergingTests {
                       0,
                       "(a, b)" );
 
-        assertTrue( data.getRow( 0 ).hasMergedCells() );
+        assertTrue( data.getRow( 0 ).isMerged() );
         assertTrue( data.getCell( 0,
                                   0 ).isMerged() );
         assertEquals( 3,
                       data.getCell( 0,
                                     0 ).getMergedCellCount() );
 
-        assertTrue( data.getRow( 1 ).hasMergedCells() );
+        assertTrue( data.getRow( 1 ).isMerged() );
         assertTrue( data.getCell( 1,
                                   0 ).isMerged() );
         assertEquals( 0,
                       data.getCell( 1,
                                     0 ).getMergedCellCount() );
 
-        assertTrue( data.getRow( 2 ).hasMergedCells() );
+        assertTrue( data.getRow( 2 ).isMerged() );
         assertTrue( data.getCell( 2,
                                   0 ).isMerged() );
         assertEquals( 0,
@@ -523,9 +523,9 @@ public class GridMergingTests {
                                     0 ).getValue() );
 
         //Check flags
-        assertTrue( data.getRow( 0 ).hasMergedCells() );
-        assertTrue( data.getRow( 1 ).hasMergedCells() );
-        assertFalse( data.getRow( 2 ).hasMergedCells() );
+        assertTrue( data.getRow( 0 ).isMerged() );
+        assertTrue( data.getRow( 1 ).isMerged() );
+        assertFalse( data.getRow( 2 ).isMerged() );
 
         assertTrue( data.getCell( 0,
                                   0 ).isMerged() );
@@ -622,9 +622,9 @@ public class GridMergingTests {
                                     1 ).getValue() );
 
         //Check flags
-        assertTrue( data.getRow( 0 ).hasMergedCells() );
-        assertTrue( data.getRow( 1 ).hasMergedCells() );
-        assertFalse( data.getRow( 2 ).hasMergedCells() );
+        assertTrue( data.getRow( 0 ).isMerged() );
+        assertTrue( data.getRow( 1 ).isMerged() );
+        assertFalse( data.getRow( 2 ).isMerged() );
 
         assertFalse( data.getCell( 0,
                                    0 ).isMerged() );
