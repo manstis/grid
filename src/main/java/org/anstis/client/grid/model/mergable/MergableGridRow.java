@@ -22,18 +22,12 @@ import org.anstis.client.grid.model.BaseGridRow;
 public class MergableGridRow extends BaseGridRow<MergableGridCell> implements IMergableGridRow<MergableGridCell> {
 
     private boolean hasMergedCells = false;
-    private boolean hasGroupedCells = false;
     private int collapseLevel = 0;
     private Stack<Double> heights = new Stack<>();
 
     @Override
     public boolean isMerged() {
         return hasMergedCells;
-    }
-
-    @Override
-    public boolean isGrouped() {
-        return hasGroupedCells;
     }
 
     @Override
@@ -68,10 +62,6 @@ public class MergableGridRow extends BaseGridRow<MergableGridCell> implements IM
 
     void setHasMergedCells( final boolean hasMergedCells ) {
         this.hasMergedCells = hasMergedCells;
-    }
-
-    void setHasGroupedCells( final boolean hasGroupedCells ) {
-        this.hasGroupedCells = hasGroupedCells;
     }
 
     void increaseCollapseLevel() {

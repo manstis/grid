@@ -22,7 +22,7 @@ import org.anstis.client.grid.model.mergable.MergableGridRow;
 
 public class GridDataFactory {
 
-    private static double FILL_FACTOR = 0.75;
+    private static double FILL_FACTOR = 1.0;
 
     public static void populate( final GridData grid,
                                  final int rowCount ) {

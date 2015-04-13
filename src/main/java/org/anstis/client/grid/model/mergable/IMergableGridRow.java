@@ -22,8 +22,6 @@ public interface IMergableGridRow<V extends IGridCell> extends IGridRow<V> {
 
     boolean isMerged();
 
-    boolean isGrouped();
-
     boolean isCollapsed();
 
     void storeHeight();

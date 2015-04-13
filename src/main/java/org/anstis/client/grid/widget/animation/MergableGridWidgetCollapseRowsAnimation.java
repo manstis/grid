@@ -41,9 +41,8 @@ public class MergableGridWidgetCollapseRowsAnimation extends TimedAnimation {
                            final MergableGridRow row = gridWidget.getModel().getRow( rowIndex + i );
                            row.storeHeight();
                        }
-                       gridWidget.getModel().groupCell( rowIndex,
-                                                        columnIndex,
-                                                        true );
+                       gridWidget.getModel().collapseCell( rowIndex,
+                                                           columnIndex );
                    }
 
                    @Override

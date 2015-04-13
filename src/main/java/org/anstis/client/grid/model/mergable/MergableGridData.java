@@ -67,14 +67,13 @@ public class MergableGridData extends BaseGridData<MergableGridRow, MergableGrid
                          value );
         }
 
-        assertMerging( rowIndex,
-                       _columnIndex );
+        updateMergeMetaData( rowIndex,
+                             _columnIndex );
     }
 
     @Override
-    public void groupCell( final int rowIndex,
-                           final int columnIndex,
-                           final boolean isGrouped ) {
+    public void collapseCell( final int rowIndex,
+                              final int columnIndex ) {
         final int _columnIndex = columns.get( columnIndex ).getIndex();
         final MergableGridRow row = rows.get( rowIndex );
         final MergableGridCell cell = row.getCells().get( _columnIndex );
@@ -84,36 +83,53 @@ public class MergableGridData extends BaseGridData<MergableGridRow, MergableGrid
         if ( !cell.isMerged() ) {
             return;
         }
-        assertGrouping( rowIndex,
-                        _columnIndex,
-                        isGrouped );
+        updateCollapseMetaData( rowIndex,
+                                _columnIndex,
+                                true );
     }
 
-    private void assertMerging( final int rowIndex,
-                                final int columnIndex ) {
+    @Override
+    public void expandCell( final int rowIndex,
+                            final int columnIndex ) {
+        final int _columnIndex = columns.get( columnIndex ).getIndex();
+        final MergableGridRow row = rows.get( rowIndex );
+        final MergableGridCell cell = row.getCells().get( _columnIndex );
+        if ( cell == null ) {
+            return;
+        }
+        if ( !cell.isCollapsed() ) {
+            return;
+        }
+        updateCollapseMetaData( rowIndex,
+                                _columnIndex,
+                                false );
+    }
+
+    private void updateMergeMetaData( final int rowIndex,
+                                      final int columnIndex ) {
         int minRowIndex = rowIndex;
         int maxRowIndex = rowIndex + 1;
         final MergableGridRow currentRow = rows.get( rowIndex );
         final MergableGridCell currentRowCell = currentRow.getCells().get( columnIndex );
         if ( currentRowCell != null ) {
-            if ( !currentRowCell.isGrouped() ) {
+            if ( !currentRowCell.isCollapsed() ) {
                 currentRowCell.setMergedCellCount( 0 );
             }
         }
-        assertRowMergedCells( currentRow );
+        updateRowMergedCells( currentRow );
 
         while ( minRowIndex > 0 ) {
             final MergableGridRow previousRow = rows.get( minRowIndex - 1 );
             final MergableGridCell previousRowCell = previousRow.getCells().get( columnIndex );
             if ( previousRowCell == null ) {
-                assertRowMergedCells( previousRow );
+                updateRowMergedCells( previousRow );
                 break;
             }
             if ( !previousRowCell.equals( currentRowCell ) ) {
                 break;
             }
             previousRowCell.setMergedCellCount( 0 );
-            assertRowMergedCells( previousRow );
+            updateRowMergedCells( previousRow );
             minRowIndex--;
         }
 
@@ -121,23 +137,23 @@ public class MergableGridData extends BaseGridData<MergableGridRow, MergableGrid
             final MergableGridRow nextRow = rows.get( maxRowIndex );
             final MergableGridCell nextRowCell = nextRow.getCells().get( columnIndex );
             if ( nextRowCell == null ) {
-                assertRowMergedCells( nextRow );
+                updateRowMergedCells( nextRow );
                 break;
             }
             if ( !nextRowCell.equals( currentRowCell ) ) {
                 break;
             }
             nextRowCell.setMergedCellCount( 0 );
-            assertRowMergedCells( nextRow );
+            updateRowMergedCells( nextRow );
             maxRowIndex++;
         }
 
         final MergableGridRow row = rows.get( minRowIndex );
         row.getCells().get( columnIndex ).setMergedCellCount( maxRowIndex - minRowIndex );
-        assertRowMergedCells( row );
+        updateRowMergedCells( row );
     }
 
-    private void assertRowMergedCells( final MergableGridRow row ) {
+    private void updateRowMergedCells( final MergableGridRow row ) {
         for ( MergableGridCell cell : row.getCells().values() ) {
             if ( cell.isMerged() ) {
                 row.setHasMergedCells( true );
@@ -147,32 +163,29 @@ public class MergableGridData extends BaseGridData<MergableGridRow, MergableGrid
         row.setHasMergedCells( false );
     }
 
-    private void assertGrouping( final int rowIndex,
-                                 final int columnIndex,
-                                 final boolean isGrouped ) {
+    private void updateCollapseMetaData( final int rowIndex,
+                                         final int columnIndex,
+                                         final boolean isCollapsed ) {
         int minRowIndex = rowIndex;
         int maxRowIndex = rowIndex + 1;
         final MergableGridRow currentRow = rows.get( rowIndex );
         final MergableGridCell currentRowCell = currentRow.getCells().get( columnIndex );
-        final int groupedCellCount = isGrouped ? 0 : 1;
+        final int collapsedCellCount = isCollapsed ? 0 : 1;
 
         if ( currentRowCell != null ) {
-            currentRowCell.setGroupedCellCount( groupedCellCount );
+            currentRowCell.setCollapsedCellCount( collapsedCellCount );
         }
-        assertRowGroupedCells( currentRow );
 
         while ( minRowIndex > 0 ) {
             final MergableGridRow previousRow = rows.get( minRowIndex - 1 );
             final MergableGridCell previousRowCell = previousRow.getCells().get( columnIndex );
             if ( previousRowCell == null ) {
-                assertRowGroupedCells( previousRow );
                 break;
             }
             if ( !previousRowCell.equals( currentRowCell ) ) {
                 break;
             }
-            previousRowCell.setGroupedCellCount( groupedCellCount );
-            assertRowGroupedCells( previousRow );
+            previousRowCell.setCollapsedCellCount( collapsedCellCount );
             minRowIndex--;
         }
 
@@ -180,21 +193,18 @@ public class MergableGridData extends BaseGridData<MergableGridRow, MergableGrid
             final MergableGridRow nextRow = rows.get( maxRowIndex );
             final MergableGridCell nextRowCell = nextRow.getCells().get( columnIndex );
             if ( nextRowCell == null ) {
-                assertRowGroupedCells( nextRow );
                 break;
             }
             if ( !nextRowCell.equals( currentRowCell ) ) {
                 break;
             }
-            nextRowCell.setGroupedCellCount( groupedCellCount );
-            assertRowGroupedCells( nextRow );
+            nextRowCell.setCollapsedCellCount( collapsedCellCount );
             maxRowIndex++;
         }
 
-        if ( isGrouped ) {
+        if ( isCollapsed ) {
             final MergableGridRow row = rows.get( minRowIndex );
-            row.getCells().get( columnIndex ).setGroupedCellCount( maxRowIndex - minRowIndex );
-            assertRowGroupedCells( row );
+            row.getCells().get( columnIndex ).setCollapsedCellCount( maxRowIndex - minRowIndex );
 
             for ( int i = minRowIndex + 1; i < maxRowIndex; i++ ) {
                 rows.get( i ).increaseCollapseLevel();
@@ -205,16 +215,6 @@ public class MergableGridData extends BaseGridData<MergableGridRow, MergableGrid
                 rows.get( i ).decreaseCollapseLevel();
             }
         }
-    }
-
-    private void assertRowGroupedCells( final MergableGridRow row ) {
-        for ( MergableGridCell cell : row.getCells().values() ) {
-            if ( cell.isGrouped() ) {
-                row.setHasGroupedCells( true );
-                return;
-            }
-        }
-        row.setHasGroupedCells( false );
     }
 
 }

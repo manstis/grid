@@ -23,8 +23,8 @@ public interface IMergableGridCell extends IGridCell {
 
     int getMergedCellCount();
 
-    boolean isGrouped();
+    boolean isCollapsed();
 
-    int getGroupedCellCount();
+    int getCollapsedCellCount();
 
 }

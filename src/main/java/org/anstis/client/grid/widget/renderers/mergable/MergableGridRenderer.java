@@ -237,7 +237,7 @@ public class MergableGridRenderer implements IMergableGridRenderer {
                             g.add( hc );
 
                             //Skip remainder of merged block
-                            rowIndex = rowIndex + cell.getMergedCellCount();
+                            rowIndex = rowIndex + cell.getMergedCellCount() - 1;
 
                         } else {
                             //Otherwise the cell has been clipped and we need to back-track to the "lead" cell to centralize content
@@ -256,14 +256,14 @@ public class MergableGridRenderer implements IMergableGridRenderer {
                             g.add( hc );
 
                             //Skip remainder of merged block
-                            rowIndex = _rowIndex + _cell.getMergedCellCount();
+                            rowIndex = _rowIndex + _cell.getMergedCellCount() - 1;
                         }
 
                         //Add Group Toggle for first row in a Merged block
                         if ( cell.getMergedCellCount() > 1 ) {
                             final GroupingToggle gt = renderGroupedCellToggle( w,
                                                                                row.getHeight(),
-                                                                               cell.isGrouped() );
+                                                                               cell.isCollapsed() );
                             gt.setX( x ).setY( y );
                             g.add( gt );
                         }

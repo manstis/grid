@@ -105,14 +105,14 @@ public class MergableGridWidgetMouseClickHandler extends BaseGridWidgetMouseClic
         final double cellY = y - grid.getModel().getRowOffset( rowIndex ) - renderer.getHeaderHeight();
         final GroupingToggle gt = new GroupingToggle( gridColumn.getWidth(),
                                                       gridRow.getHeight(),
-                                                      cell.isGrouped() );
+                                                      cell.isCollapsed() );
         if ( !gt.onHotSpot( cellX,
                             cellY ) ) {
             return;
         }
 
         //Collapse or expand rows as needed
-        if ( !cell.isGrouped() ) {
+        if ( !cell.isCollapsed() ) {
             collapseRows( rowIndex,
                           cell.getMergedCellCount(),
                           columnIndex );

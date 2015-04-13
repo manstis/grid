@@ -20,7 +20,7 @@ import org.anstis.client.grid.model.BaseGridCell;
 public class MergableGridCell extends BaseGridCell implements IMergableGridCell {
 
     private int mergedCellCount = 1;
-    private int groupedCellCount = 1;
+    private int collapsedCellCount = 1;
 
     public MergableGridCell( final String value ) {
         super( value );
@@ -37,25 +37,25 @@ public class MergableGridCell extends BaseGridCell implements IMergableGridCell 
     }
 
     @Override
-    public boolean isGrouped() {
-        return getGroupedCellCount() != 1;
+    public boolean isCollapsed() {
+        return getCollapsedCellCount() != 1;
     }
 
     @Override
-    public int getGroupedCellCount() {
-        return groupedCellCount;
+    public int getCollapsedCellCount() {
+        return collapsedCellCount;
     }
 
     void setValue( final String value ) {
         this.value = value;
     }
 
-    void setGroupedCellCount( final int groupedCellCount ) {
-        this.groupedCellCount = groupedCellCount;
-    }
-
     void setMergedCellCount( final int mergedCellCount ) {
         this.mergedCellCount = mergedCellCount;
+    }
+
+    void setCollapsedCellCount( final int collapsedCellCount ) {
+        this.collapsedCellCount = collapsedCellCount;
     }
 
 }

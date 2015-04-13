@@ -37,9 +37,8 @@ public class MergableGridWidgetExpandRowsAnimation extends TimedAnimation {
                    @Override
                    public void onStart( final IAnimation iAnimation,
                                         final IAnimationHandle iAnimationHandle ) {
-                       gridWidget.getModel().groupCell( rowIndex,
-                                                        columnIndex,
-                                                        false );
+                       gridWidget.getModel().expandCell( rowIndex,
+                                                         columnIndex );
                    }
 
                    @Override
