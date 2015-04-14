@@ -125,6 +125,9 @@ public class MergableGridData extends BaseGridData<MergableGridRow, MergableGrid
                 updateRowMergedCells( previousRow );
                 break;
             }
+            if ( previousRowCell.getCollapsedCellCount() == 0 ) {
+                break;
+            }
             if ( !previousRowCell.equals( currentRowCell ) ) {
                 break;
             }
@@ -138,6 +141,9 @@ public class MergableGridData extends BaseGridData<MergableGridRow, MergableGrid
             final MergableGridCell nextRowCell = nextRow.getCells().get( columnIndex );
             if ( nextRowCell == null ) {
                 updateRowMergedCells( nextRow );
+                break;
+            }
+            if ( nextRowCell.getCollapsedCellCount() > 1 ) {
                 break;
             }
             if ( !nextRowCell.equals( currentRowCell ) ) {
@@ -182,6 +188,9 @@ public class MergableGridData extends BaseGridData<MergableGridRow, MergableGrid
             if ( previousRowCell == null ) {
                 break;
             }
+            if ( previousRowCell.getCollapsedCellCount() == 0 || previousRowCell.getMergedCellCount() == 0 ) {
+                break;
+            }
             if ( !previousRowCell.equals( currentRowCell ) ) {
                 break;
             }
@@ -193,6 +202,9 @@ public class MergableGridData extends BaseGridData<MergableGridRow, MergableGrid
             final MergableGridRow nextRow = rows.get( maxRowIndex );
             final MergableGridCell nextRowCell = nextRow.getCells().get( columnIndex );
             if ( nextRowCell == null ) {
+                break;
+            }
+            if ( nextRowCell.getCollapsedCellCount() > 1 || nextRowCell.getMergedCellCount() > 1 ) {
                 break;
             }
             if ( !nextRowCell.equals( currentRowCell ) ) {
@@ -214,6 +226,8 @@ public class MergableGridData extends BaseGridData<MergableGridRow, MergableGrid
             for ( int i = minRowIndex + 1; i < maxRowIndex; i++ ) {
                 rows.get( i ).decreaseCollapseLevel();
             }
+            updateMergeMetaData( rowIndex,
+                                 columnIndex );
         }
     }
 
