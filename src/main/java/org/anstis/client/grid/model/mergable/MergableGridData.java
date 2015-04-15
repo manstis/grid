@@ -30,37 +30,55 @@ public class MergableGridData extends BaseGridData<MergableGridRow, MergableGrid
             return;
         }
 
+        //Find cell's current value
         int minRowIndex = rowIndex;
         int maxRowIndex = rowIndex + 1;
         final MergableGridRow currentRow = getRow( rowIndex );
-
         final int _columnIndex = columns.get( columnIndex ).getIndex();
         final MergableGridCell currentRowCell = currentRow.getCells().get( _columnIndex );
 
+        //Find minimum row with a cell containing the same value as that being updated
+        boolean foundTopSplitMarker = currentRowCell == null ? false : currentRowCell.getMergedCellCount() > 0;
         while ( minRowIndex > 0 ) {
             final MergableGridRow previousRow = rows.get( minRowIndex - 1 );
             final MergableGridCell previousRowCell = previousRow.getCells().get( _columnIndex );
             if ( previousRowCell == null ) {
                 break;
             }
+            if ( previousRowCell.isCollapsed() && foundTopSplitMarker ) {
+                break;
+            }
             if ( !previousRowCell.equals( currentRowCell ) ) {
                 break;
+            }
+            if ( previousRowCell.getMergedCellCount() > 0 ) {
+                foundTopSplitMarker = true;
             }
             minRowIndex--;
         }
 
+        //Find maximum row with a cell containing the same value as that being updated
+        boolean foundBottomSplitMarker = false;
         while ( maxRowIndex < rows.size() ) {
             final MergableGridRow nextRow = rows.get( maxRowIndex );
             final MergableGridCell nextRowCell = nextRow.getCells().get( _columnIndex );
             if ( nextRowCell == null ) {
                 break;
             }
+            if ( nextRowCell.isCollapsed() && foundBottomSplitMarker ) {
+                maxRowIndex--;
+                break;
+            }
             if ( !nextRowCell.equals( currentRowCell ) ) {
                 break;
+            }
+            if ( nextRowCell.getMergedCellCount() > 0 ) {
+                foundBottomSplitMarker = true;
             }
             maxRowIndex++;
         }
 
+        //Update all rows' value
         for ( int i = minRowIndex; i < maxRowIndex; i++ ) {
             final MergableGridRow row = rows.get( i );
             row.setCell( _columnIndex,
@@ -83,9 +101,8 @@ public class MergableGridData extends BaseGridData<MergableGridRow, MergableGrid
         if ( !cell.isMerged() ) {
             return;
         }
-        updateCollapseMetaData( rowIndex,
-                                _columnIndex,
-                                true );
+        updateCollapseMetaDataOnCollapse( rowIndex,
+                                          _columnIndex );
     }
 
     @Override
@@ -97,61 +114,64 @@ public class MergableGridData extends BaseGridData<MergableGridRow, MergableGrid
         if ( cell == null ) {
             return;
         }
-        if ( !cell.isCollapsed() ) {
-            return;
-        }
-        updateCollapseMetaData( rowIndex,
-                                _columnIndex,
-                                false );
+        updateCollapseMetaDataOnExpand( rowIndex,
+                                        _columnIndex );
     }
 
     private void updateMergeMetaData( final int rowIndex,
                                       final int columnIndex ) {
+        //Find cell's current value
         int minRowIndex = rowIndex;
         int maxRowIndex = rowIndex + 1;
-        final MergableGridRow currentRow = rows.get( rowIndex );
+        final MergableGridRow currentRow = getRow( rowIndex );
         final MergableGridCell currentRowCell = currentRow.getCells().get( columnIndex );
-        if ( currentRowCell != null ) {
-            if ( !currentRowCell.isCollapsed() ) {
-                currentRowCell.setMergedCellCount( 0 );
-            }
-        }
-        updateRowMergedCells( currentRow );
 
+        //Find minimum row with a cell containing the same value as that being updated
+        boolean foundTopSplitMarker = currentRowCell == null ? false : currentRowCell.getMergedCellCount() > 0;
         while ( minRowIndex > 0 ) {
             final MergableGridRow previousRow = rows.get( minRowIndex - 1 );
             final MergableGridCell previousRowCell = previousRow.getCells().get( columnIndex );
             if ( previousRowCell == null ) {
-                updateRowMergedCells( previousRow );
                 break;
             }
-            if ( previousRowCell.getCollapsedCellCount() == 0 ) {
+            if ( previousRowCell.isCollapsed() && foundTopSplitMarker ) {
                 break;
             }
             if ( !previousRowCell.equals( currentRowCell ) ) {
                 break;
             }
-            previousRowCell.setMergedCellCount( 0 );
-            updateRowMergedCells( previousRow );
+            if ( previousRowCell.getMergedCellCount() > 0 ) {
+                foundTopSplitMarker = true;
+            }
             minRowIndex--;
         }
 
+        //Find maximum row with a cell containing the same value as that being updated
+        boolean foundBottomSplitMarker = false;
         while ( maxRowIndex < rows.size() ) {
             final MergableGridRow nextRow = rows.get( maxRowIndex );
             final MergableGridCell nextRowCell = nextRow.getCells().get( columnIndex );
             if ( nextRowCell == null ) {
-                updateRowMergedCells( nextRow );
                 break;
             }
-            if ( nextRowCell.getCollapsedCellCount() > 1 ) {
+            if ( nextRowCell.isCollapsed() && foundBottomSplitMarker ) {
+                maxRowIndex--;
                 break;
             }
             if ( !nextRowCell.equals( currentRowCell ) ) {
                 break;
             }
-            nextRowCell.setMergedCellCount( 0 );
-            updateRowMergedCells( nextRow );
+            if ( nextRowCell.getMergedCellCount() > 0 ) {
+                foundBottomSplitMarker = true;
+            }
             maxRowIndex++;
+        }
+
+        //Update merge meta-data
+        for ( int i = minRowIndex; i < maxRowIndex; i++ ) {
+            final MergableGridRow row = rows.get( i );
+            row.getCells().get( columnIndex ).setMergedCellCount( 0 );
+            updateRowMergedCells( row );
         }
 
         final MergableGridRow row = rows.get( minRowIndex );
@@ -169,33 +189,27 @@ public class MergableGridData extends BaseGridData<MergableGridRow, MergableGrid
         row.setHasMergedCells( false );
     }
 
-    private void updateCollapseMetaData( final int rowIndex,
-                                         final int columnIndex,
-                                         final boolean isCollapsed ) {
+    private void updateCollapseMetaDataOnCollapse( final int rowIndex,
+                                                   final int columnIndex ) {
         int minRowIndex = rowIndex;
         int maxRowIndex = rowIndex + 1;
         final MergableGridRow currentRow = rows.get( rowIndex );
         final MergableGridCell currentRowCell = currentRow.getCells().get( columnIndex );
-        final int collapsedCellCount = isCollapsed ? 0 : 1;
 
-        if ( currentRowCell != null ) {
-            currentRowCell.setCollapsedCellCount( collapsedCellCount );
+        if ( currentRowCell == null ) {
+            return;
         }
 
-        while ( minRowIndex > 0 ) {
-            final MergableGridRow previousRow = rows.get( minRowIndex - 1 );
-            final MergableGridCell previousRowCell = previousRow.getCells().get( columnIndex );
-            if ( previousRowCell == null ) {
-                break;
+        if ( currentRowCell.getMergedCellCount() == 0 ) {
+            do {
+                minRowIndex--;
+                final MergableGridRow previousRow = rows.get( minRowIndex );
+                final MergableGridCell previousRowCell = previousRow.getCells().get( columnIndex );
+                if ( previousRowCell.getMergedCellCount() > 0 ) {
+                    break;
+                }
             }
-            if ( previousRowCell.getCollapsedCellCount() == 0 || previousRowCell.getMergedCellCount() == 0 ) {
-                break;
-            }
-            if ( !previousRowCell.equals( currentRowCell ) ) {
-                break;
-            }
-            previousRowCell.setCollapsedCellCount( collapsedCellCount );
-            minRowIndex--;
+            while ( minRowIndex > 0 );
         }
 
         while ( maxRowIndex < rows.size() ) {
@@ -204,31 +218,311 @@ public class MergableGridData extends BaseGridData<MergableGridRow, MergableGrid
             if ( nextRowCell == null ) {
                 break;
             }
-            if ( nextRowCell.getCollapsedCellCount() > 1 || nextRowCell.getMergedCellCount() > 1 ) {
+            if ( nextRowCell.getMergedCellCount() > 0 ) {
+                break;
+            }
+            maxRowIndex++;
+        }
+
+        for ( int i = minRowIndex + 1; i < maxRowIndex; i++ ) {
+            rows.get( i ).collapse();
+        }
+
+        for ( int i = 0; i < getColumns().size(); i++ ) {
+            final int _columnIndex = getColumns().get( i ).getIndex();
+            if ( _columnIndex == columnIndex ) {
+                continue;
+            }
+//            updateMergeMetaDataOnCollapseTopSplitRows( minRowIndex,
+//                                                       maxRowIndex,
+//                                                       _columnIndex );
+            updateMergeMetaDataOnCollapseBottomSplitRows( minRowIndex,
+                                                          maxRowIndex,
+                                                          _columnIndex );
+        }
+    }
+
+    private void updateMergeMetaDataOnCollapseTopSplitRows( final int minRowIndex,
+                                                            final int maxRowIndex,
+                                                            final int columnIndex ) {
+        if ( minRowIndex < 1 ) {
+            return;
+        }
+
+        final MergableGridRow checkTopRow = getRow( minRowIndex - 1 );
+        final MergableGridCell checkTopCell = checkTopRow.getCells().get( columnIndex );
+        if ( checkTopCell == null ) {
+            return;
+        }
+
+        // Scan from the first row before the start of collapsed block downwards to the end of the
+        // collapsed block. If any cell is not identical to first then we need to split the cell.
+        boolean splitTopSection = false;
+        for ( int collapsedRowIndex = minRowIndex; collapsedRowIndex < maxRowIndex; collapsedRowIndex++ ) {
+            final MergableGridRow collapsedRow = getRow( collapsedRowIndex );
+            final MergableGridCell collapsedCell = collapsedRow.getCells().get( columnIndex );
+            if ( collapsedCell == null ) {
+                break;
+            }
+            if ( !collapsedCell.equals( checkTopCell ) ) {
+                break;
+            }
+            splitTopSection = collapsedRowIndex < maxRowIndex - 1;
+        }
+
+        if ( splitTopSection ) {
+
+            //Find minimum row with a cell containing the same value as the split-point
+            int checkMinRowIndex = minRowIndex - 1;
+            if ( checkTopCell.getMergedCellCount() == 0 ) {
+                while ( checkMinRowIndex > 0 ) {
+                    final MergableGridRow previousRow = rows.get( checkMinRowIndex );
+                    final MergableGridCell previousRowCell = previousRow.getCells().get( columnIndex );
+                    if ( previousRowCell.getMergedCellCount() > 0 ) {
+                        break;
+                    }
+                    checkMinRowIndex--;
+                }
+            }
+
+            //Update merge meta-data for top part of split cell
+            for ( int i = checkMinRowIndex; i < minRowIndex; i++ ) {
+                final MergableGridRow row = rows.get( i );
+                row.getCells().get( columnIndex ).setMergedCellCount( 0 );
+                updateRowMergedCells( row );
+            }
+
+            final MergableGridRow topSplitRow = rows.get( checkMinRowIndex );
+            topSplitRow.getCells().get( columnIndex ).setMergedCellCount( minRowIndex - checkMinRowIndex );
+            updateRowMergedCells( topSplitRow );
+
+            //Find maximum row with a cell containing the same value as the split-point
+            int checkMaxRowIndex = minRowIndex;
+            while ( checkMaxRowIndex < rows.size() ) {
+                final MergableGridRow nextRow = rows.get( checkMaxRowIndex );
+                final MergableGridCell nextRowCell = nextRow.getCells().get( columnIndex );
+                if ( nextRowCell == null ) {
+                    break;
+                }
+                if ( nextRowCell.isCollapsed() ) {
+                    checkMaxRowIndex--;
+                    break;
+                }
+                if ( !nextRowCell.equals( checkTopCell ) ) {
+                    break;
+                }
+                checkMaxRowIndex++;
+            }
+
+            //Update merge meta-data for bottom part of split cell
+            for ( int i = minRowIndex; i < checkMaxRowIndex; i++ ) {
+                final MergableGridRow row = rows.get( i );
+                row.getCells().get( columnIndex ).setMergedCellCount( 0 );
+                updateRowMergedCells( row );
+            }
+
+            final MergableGridRow bottomSplitRow = rows.get( minRowIndex );
+            bottomSplitRow.getCells().get( columnIndex ).setMergedCellCount( checkMaxRowIndex - minRowIndex );
+            updateRowMergedCells( bottomSplitRow );
+        }
+    }
+
+    private void updateMergeMetaDataOnCollapseBottomSplitRows( final int minRowIndex,
+                                                               final int maxRowIndex,
+                                                               final int columnIndex ) {
+        if ( maxRowIndex == rows.size() ) {
+            return;
+        }
+
+        final MergableGridRow checkBottomRow = getRow( maxRowIndex );
+        final MergableGridCell checkBottomCell = checkBottomRow.getCells().get( columnIndex );
+        if ( checkBottomCell == null ) {
+            return;
+        }
+
+        // Scan from the first row after the end of collapsed block upwards to the beginning of the
+        // collapsed block. If any cell is not identical to first then we need to split the cell.
+        boolean splitBottomSection = false;
+        for ( int collapsedRowIndex = maxRowIndex - 1; collapsedRowIndex >= minRowIndex; collapsedRowIndex-- ) {
+            final MergableGridRow collapsedRow = getRow( collapsedRowIndex );
+            final MergableGridCell collapsedCell = collapsedRow.getCells().get( columnIndex );
+            if ( collapsedCell == null ) {
+                break;
+            }
+            if ( !collapsedCell.equals( checkBottomCell ) ) {
+                break;
+            }
+            splitBottomSection = collapsedRowIndex > minRowIndex;
+        }
+
+        if ( splitBottomSection ) {
+
+            //Find minimum row with a cell containing the same value as the split-point
+            int checkMinRowIndex = maxRowIndex - 1;
+            if ( checkBottomCell.getMergedCellCount() == 0 ) {
+                while ( checkMinRowIndex > 0 ) {
+                    final MergableGridRow previousRow = rows.get( checkMinRowIndex );
+                    final MergableGridCell previousRowCell = previousRow.getCells().get( columnIndex );
+                    if ( previousRowCell.getMergedCellCount() > 0 ) {
+                        break;
+                    }
+                    checkMinRowIndex--;
+                }
+            }
+
+            //Update merge meta-data for top part of split cell
+            for ( int i = checkMinRowIndex; i < maxRowIndex; i++ ) {
+                final MergableGridRow row = rows.get( i );
+                row.getCells().get( columnIndex ).setMergedCellCount( 0 );
+                updateRowMergedCells( row );
+            }
+
+            final MergableGridRow topSplitRow = rows.get( checkMinRowIndex );
+            topSplitRow.getCells().get( columnIndex ).setMergedCellCount( maxRowIndex - checkMinRowIndex );
+            updateRowMergedCells( topSplitRow );
+
+            //Find maximum row with a cell containing the same value as the split-point
+            int checkMaxRowIndex = maxRowIndex;
+            ;
+            while ( checkMaxRowIndex < rows.size() ) {
+                final MergableGridRow nextRow = rows.get( checkMaxRowIndex );
+                final MergableGridCell nextRowCell = nextRow.getCells().get( columnIndex );
+                if ( nextRowCell == null ) {
+                    break;
+                }
+                if ( nextRowCell.isCollapsed() ) {
+                    checkMaxRowIndex--;
+                    break;
+                }
+                if ( !nextRowCell.equals( checkBottomCell ) ) {
+                    break;
+                }
+                checkMaxRowIndex++;
+            }
+
+            //Update merge meta-data for bottom part of split cell
+            for ( int i = maxRowIndex; i < checkMaxRowIndex; i++ ) {
+                final MergableGridRow row = rows.get( i );
+                row.getCells().get( columnIndex ).setMergedCellCount( 0 );
+                updateRowMergedCells( row );
+            }
+
+            //Only split bottom if it isn't already split
+            final MergableGridRow bottomSplitRow = rows.get( maxRowIndex );
+            if ( bottomSplitRow.getCells().get( columnIndex ).getMergedCellCount() == 0 ) {
+                bottomSplitRow.getCells().get( columnIndex ).setMergedCellCount( checkMaxRowIndex - maxRowIndex );
+                updateRowMergedCells( bottomSplitRow );
+            }
+        }
+    }
+
+    private void updateCollapseMetaDataOnExpand( final int rowIndex,
+                                                 final int columnIndex ) {
+        int minRowIndex = rowIndex;
+        int maxRowIndex = rowIndex + 1;
+        final MergableGridRow currentRow = rows.get( rowIndex );
+        final MergableGridCell currentRowCell = currentRow.getCells().get( columnIndex );
+
+        if ( currentRowCell == null ) {
+            return;
+        }
+
+        if ( currentRowCell.getMergedCellCount() == 0 ) {
+            do {
+                minRowIndex--;
+                final MergableGridRow previousRow = rows.get( minRowIndex );
+                final MergableGridCell previousRowCell = previousRow.getCells().get( columnIndex );
+                if ( previousRowCell.getMergedCellCount() > 0 ) {
+                    break;
+                }
+            }
+            while ( minRowIndex > 0 );
+        }
+
+        while ( maxRowIndex < rows.size() ) {
+            final MergableGridRow nextRow = rows.get( maxRowIndex );
+            final MergableGridCell nextRowCell = nextRow.getCells().get( columnIndex );
+            if ( nextRowCell == null ) {
+                break;
+            }
+            if ( nextRowCell.getMergedCellCount() > 0 ) {
+                break;
+            }
+            maxRowIndex++;
+        }
+
+        for ( int i = minRowIndex + 1; i < maxRowIndex; i++ ) {
+            rows.get( i ).expand();
+        }
+
+        for ( int i = 0; i < getColumns().size(); i++ ) {
+            final int _columnIndex = getColumns().get( i ).getIndex();
+            updateMergeMetaDataOnExpand( minRowIndex,
+                                         _columnIndex );
+            updateMergeMetaDataOnExpand( maxRowIndex - 1,
+                                         _columnIndex );
+        }
+    }
+
+    private void updateMergeMetaDataOnExpand( final int rowIndex,
+                                              final int columnIndex ) {
+        //Find cell's current value
+        int minRowIndex = rowIndex;
+        int maxRowIndex = rowIndex + 1;
+        final MergableGridRow currentRow = getRow( rowIndex );
+        final MergableGridCell currentRowCell = currentRow.getCells().get( columnIndex );
+        boolean foundTopSplitMarker = currentRowCell.getMergedCellCount() > 0;
+        boolean foundBottomSplitMarker = false;
+
+        //Find minimum row with a cell containing the same value as that being updated
+        while ( minRowIndex > 0 ) {
+            final MergableGridRow previousRow = rows.get( minRowIndex - 1 );
+            final MergableGridCell previousRowCell = previousRow.getCells().get( columnIndex );
+            if ( previousRowCell == null ) {
+                break;
+            }
+            if ( previousRowCell.isCollapsed() && foundTopSplitMarker ) {
+                break;
+            }
+            if ( !previousRowCell.equals( currentRowCell ) ) {
+                break;
+            }
+            if ( previousRowCell.getMergedCellCount() > 0 ) {
+                foundTopSplitMarker = true;
+            }
+            minRowIndex--;
+        }
+
+        //Find maximum row with a cell containing the same value as that being updated
+        while ( maxRowIndex < rows.size() ) {
+            final MergableGridRow nextRow = rows.get( maxRowIndex );
+            final MergableGridCell nextRowCell = nextRow.getCells().get( columnIndex );
+            if ( nextRowCell == null ) {
+                break;
+            }
+            if ( nextRowCell.isCollapsed() && foundBottomSplitMarker ) {
+                maxRowIndex--;
                 break;
             }
             if ( !nextRowCell.equals( currentRowCell ) ) {
                 break;
             }
-            nextRowCell.setCollapsedCellCount( collapsedCellCount );
+            if ( nextRowCell.getMergedCellCount() > 0 ) {
+                foundBottomSplitMarker = true;
+            }
             maxRowIndex++;
         }
 
-        if ( isCollapsed ) {
-            final MergableGridRow row = rows.get( minRowIndex );
-            row.getCells().get( columnIndex ).setCollapsedCellCount( maxRowIndex - minRowIndex );
-
-            for ( int i = minRowIndex + 1; i < maxRowIndex; i++ ) {
-                rows.get( i ).increaseCollapseLevel();
-            }
-
-        } else {
-            for ( int i = minRowIndex + 1; i < maxRowIndex; i++ ) {
-                rows.get( i ).decreaseCollapseLevel();
-            }
-            updateMergeMetaData( rowIndex,
-                                 columnIndex );
+        //Update merge meta-data
+        for ( int i = minRowIndex; i < maxRowIndex; i++ ) {
+            final MergableGridRow row = rows.get( i );
+            row.getCells().get( columnIndex ).setMergedCellCount( 0 );
+            updateRowMergedCells( row );
         }
+
+        final MergableGridRow row = rows.get( minRowIndex );
+        row.getCells().get( columnIndex ).setMergedCellCount( maxRowIndex - minRowIndex );
+        updateRowMergedCells( row );
     }
 
 }

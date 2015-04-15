@@ -138,7 +138,6 @@ public class MergableGridRenderer implements IMergableGridRenderer {
                              final double width ) {
         final Group g = new Group();
         final List<MergableGridColumn> columns = model.getColumns();
-
         final List<Double> rowOffsets = new ArrayList<>();
         double rowOffset = model.getRowOffset( startRowIndex );
         for ( int rowIndex = startRowIndex; rowIndex <= endRowIndex; rowIndex++ ) {
@@ -196,9 +195,9 @@ public class MergableGridRenderer implements IMergableGridRenderer {
                                            y );
 
                     } else if ( isCollapsedRowMultiValue( model,
+                                                          column,
                                                           cell,
-                                                          rowIndex,
-                                                          columnIndex ) ) {
+                                                          rowIndex ) ) {
                         //Special case for when a cell follows collapsed row(s) with multiple values
                         bodyGrid.M( x,
                                     y ).L( x + column.getWidth(),
@@ -226,6 +225,20 @@ public class MergableGridRenderer implements IMergableGridRenderer {
 
                     //Only show content if there's a Cell behind it!
                     if ( cell != null ) {
+
+                        //Add Group Toggle for first row in a Merged block
+                        if ( cell.getMergedCellCount() > 1 ) {
+                            final MergableGridRow nextRow = model.getRow( rowIndex + 1 );
+                            final MergableGridCell nextRowCell = nextRow.getCells().get( columnIndex );
+                            if ( nextRowCell != null ) {
+                                final GroupingToggle gt = renderGroupedCellToggle( w,
+                                                                                   row.getHeight(),
+                                                                                   nextRowCell.isCollapsed() );
+                                gt.setX( x ).setY( y );
+                                g.add( gt );
+                            }
+                        }
+
                         final Group hc = column.renderRow( row );
                         hc.setX( x + w / 2 ).setListening( false );
 
@@ -237,7 +250,7 @@ public class MergableGridRenderer implements IMergableGridRenderer {
                             g.add( hc );
 
                             //Skip remainder of merged block
-                            rowIndex = rowIndex + cell.getMergedCellCount() - 1;
+                            //rowIndex = rowIndex + cell.getMergedCellCount() - 1;
 
                         } else {
                             //Otherwise the cell has been clipped and we need to back-track to the "lead" cell to centralize content
@@ -256,16 +269,7 @@ public class MergableGridRenderer implements IMergableGridRenderer {
                             g.add( hc );
 
                             //Skip remainder of merged block
-                            rowIndex = _rowIndex + _cell.getMergedCellCount() - 1;
-                        }
-
-                        //Add Group Toggle for first row in a Merged block
-                        if ( cell.getMergedCellCount() > 1 ) {
-                            final GroupingToggle gt = renderGroupedCellToggle( w,
-                                                                               row.getHeight(),
-                                                                               cell.isCollapsed() );
-                            gt.setX( x ).setY( y );
-                            g.add( gt );
+                            //rowIndex = _rowIndex + _cell.getMergedCellCount() - 1;
                         }
                     }
                 }
@@ -287,11 +291,13 @@ public class MergableGridRenderer implements IMergableGridRenderer {
     }
 
     private boolean isCollapsedRowMultiValue( final MergableGridData model,
+                                              final MergableGridColumn column,
                                               final MergableGridCell cell,
-                                              final int rowIndex,
-                                              final int columnIndex ) {
+                                              final int rowIndex ) {
         MergableGridRow row;
         int rowOffset = 1;
+        final int columnIndex = column.getIndex();
+
         //Iterate collapsed rows checking if the values differ
         while ( ( row = model.getRow( rowIndex - rowOffset ) ).isCollapsed() ) {
             final MergableGridCell nc = row.getCells().get( columnIndex );
@@ -303,6 +309,7 @@ public class MergableGridRenderer implements IMergableGridRenderer {
             }
             rowOffset++;
         }
+
         //Check "lead" row as well - since this is not marked as collapsed
         final MergableGridCell nc = row.getCells().get( columnIndex );
         if ( nc == null ) {
@@ -317,10 +324,10 @@ public class MergableGridRenderer implements IMergableGridRenderer {
     @Override
     public GroupingToggle renderGroupedCellToggle( final double containerWidth,
                                                    final double containerHeight,
-                                                   final boolean isGrouped ) {
+                                                   final boolean isCollapsed ) {
         return new GroupingToggle( containerWidth,
                                    containerHeight,
-                                   isGrouped );
+                                   isCollapsed );
     }
 
 }

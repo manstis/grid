@@ -101,21 +101,6 @@ public class GridGroupingTests {
 
         assertTrue( data.getCell( 0,
                                   0 ).isMerged() );
-        assertEquals( 2,
-                      data.getCell( 0,
-                                    0 ).getCollapsedCellCount() );
-
-        assertTrue( data.getCell( 1,
-                                  0 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 1,
-                                    0 ).getCollapsedCellCount() );
-
-        assertFalse( data.getCell( 2,
-                                   0 ).isMerged() );
-        assertEquals( 1,
-                      data.getCell( 2,
-                                    0 ).getCollapsedCellCount() );
 
         assertEquals( "(0, 0)",
                       data.getCell( 0,
@@ -231,45 +216,30 @@ public class GridGroupingTests {
         assertEquals( 1,
                       data.getCell( 0,
                                     0 ).getMergedCellCount() );
-        assertEquals( 1,
-                      data.getCell( 0,
-                                    0 ).getCollapsedCellCount() );
 
         assertFalse( data.getCell( 1,
                                    0 ).isMerged() );
         assertEquals( 1,
                       data.getCell( 1,
                                     0 ).getMergedCellCount() );
-        assertEquals( 1,
-                      data.getCell( 1,
-                                    0 ).getCollapsedCellCount() );
 
         assertTrue( data.getCell( 2,
                                   0 ).isMerged() );
         assertEquals( 2,
                       data.getCell( 2,
                                     0 ).getMergedCellCount() );
-        assertEquals( 2,
-                      data.getCell( 2,
-                                    0 ).getCollapsedCellCount() );
 
         assertTrue( data.getCell( 3,
                                   0 ).isMerged() );
         assertEquals( 0,
                       data.getCell( 3,
                                     0 ).getMergedCellCount() );
-        assertEquals( 0,
-                      data.getCell( 3,
-                                    0 ).getCollapsedCellCount() );
 
         assertFalse( data.getCell( 4,
                                    0 ).isMerged() );
         assertEquals( 1,
                       data.getCell( 4,
                                     0 ).getMergedCellCount() );
-        assertEquals( 1,
-                      data.getCell( 4,
-                                    0 ).getCollapsedCellCount() );
 
         //Set cell above existing block (should not affect existing block)
         data.setCell( 1,
@@ -296,45 +266,30 @@ public class GridGroupingTests {
         assertEquals( 1,
                       data.getCell( 0,
                                     0 ).getMergedCellCount() );
-        assertEquals( 1,
-                      data.getCell( 0,
-                                    0 ).getCollapsedCellCount() );
 
         assertFalse( data.getCell( 1,
                                    0 ).isMerged() );
         assertEquals( 1,
                       data.getCell( 1,
                                     0 ).getMergedCellCount() );
-        assertEquals( 1,
-                      data.getCell( 1,
-                                    0 ).getCollapsedCellCount() );
 
         assertTrue( data.getCell( 2,
                                   0 ).isMerged() );
         assertEquals( 2,
                       data.getCell( 2,
                                     0 ).getMergedCellCount() );
-        assertEquals( 2,
-                      data.getCell( 2,
-                                    0 ).getCollapsedCellCount() );
 
         assertTrue( data.getCell( 3,
                                   0 ).isMerged() );
         assertEquals( 0,
                       data.getCell( 3,
                                     0 ).getMergedCellCount() );
-        assertEquals( 0,
-                      data.getCell( 3,
-                                    0 ).getCollapsedCellCount() );
 
         assertFalse( data.getCell( 4,
                                    0 ).isMerged() );
         assertEquals( 1,
                       data.getCell( 4,
                                     0 ).getMergedCellCount() );
-        assertEquals( 1,
-                      data.getCell( 4,
-                                    0 ).getCollapsedCellCount() );
 
         //Set cell above existing block (should create a new block)
         data.setCell( 0,
@@ -361,45 +316,30 @@ public class GridGroupingTests {
         assertEquals( 2,
                       data.getCell( 0,
                                     0 ).getMergedCellCount() );
-        assertEquals( 1,
-                      data.getCell( 0,
-                                    0 ).getCollapsedCellCount() );
 
         assertTrue( data.getCell( 1,
                                   0 ).isMerged() );
         assertEquals( 0,
                       data.getCell( 1,
                                     0 ).getMergedCellCount() );
-        assertEquals( 1,
-                      data.getCell( 1,
-                                    0 ).getCollapsedCellCount() );
 
         assertTrue( data.getCell( 2,
                                   0 ).isMerged() );
         assertEquals( 2,
                       data.getCell( 2,
                                     0 ).getMergedCellCount() );
-        assertEquals( 2,
-                      data.getCell( 2,
-                                    0 ).getCollapsedCellCount() );
 
         assertTrue( data.getCell( 3,
                                   0 ).isMerged() );
         assertEquals( 0,
                       data.getCell( 3,
                                     0 ).getMergedCellCount() );
-        assertEquals( 0,
-                      data.getCell( 3,
-                                    0 ).getCollapsedCellCount() );
 
         assertFalse( data.getCell( 4,
                                    0 ).isMerged() );
         assertEquals( 1,
                       data.getCell( 4,
                                     0 ).getMergedCellCount() );
-        assertEquals( 1,
-                      data.getCell( 4,
-                                    0 ).getCollapsedCellCount() );
 
         //Ungroup cell (should result in a single block spanning 4 rows)
         data.expandCell( 2,
@@ -425,45 +365,30 @@ public class GridGroupingTests {
         assertEquals( 4,
                       data.getCell( 0,
                                     0 ).getMergedCellCount() );
-        assertEquals( 1,
-                      data.getCell( 0,
-                                    0 ).getCollapsedCellCount() );
 
         assertTrue( data.getCell( 1,
                                   0 ).isMerged() );
         assertEquals( 0,
                       data.getCell( 1,
                                     0 ).getMergedCellCount() );
-        assertEquals( 1,
-                      data.getCell( 1,
-                                    0 ).getCollapsedCellCount() );
 
         assertTrue( data.getCell( 2,
                                   0 ).isMerged() );
         assertEquals( 0,
                       data.getCell( 2,
                                     0 ).getMergedCellCount() );
-        assertEquals( 1,
-                      data.getCell( 2,
-                                    0 ).getCollapsedCellCount() );
 
         assertTrue( data.getCell( 3,
                                   0 ).isMerged() );
         assertEquals( 0,
                       data.getCell( 3,
                                     0 ).getMergedCellCount() );
-        assertEquals( 1,
-                      data.getCell( 3,
-                                    0 ).getCollapsedCellCount() );
 
         assertFalse( data.getCell( 4,
                                    0 ).isMerged() );
         assertEquals( 1,
                       data.getCell( 4,
                                     0 ).getMergedCellCount() );
-        assertEquals( 1,
-                      data.getCell( 4,
-                                    0 ).getCollapsedCellCount() );
     }
 
     @Test
@@ -526,45 +451,30 @@ public class GridGroupingTests {
         assertEquals( 1,
                       data.getCell( 0,
                                     0 ).getMergedCellCount() );
-        assertEquals( 1,
-                      data.getCell( 0,
-                                    0 ).getCollapsedCellCount() );
 
         assertTrue( data.getCell( 1,
                                   0 ).isMerged() );
         assertEquals( 2,
                       data.getCell( 1,
                                     0 ).getMergedCellCount() );
-        assertEquals( 2,
-                      data.getCell( 1,
-                                    0 ).getCollapsedCellCount() );
 
         assertTrue( data.getCell( 2,
                                   0 ).isMerged() );
         assertEquals( 0,
                       data.getCell( 2,
                                     0 ).getMergedCellCount() );
-        assertEquals( 0,
-                      data.getCell( 2,
-                                    0 ).getCollapsedCellCount() );
 
         assertFalse( data.getCell( 3,
                                    0 ).isMerged() );
         assertEquals( 1,
                       data.getCell( 3,
                                     0 ).getMergedCellCount() );
-        assertEquals( 1,
-                      data.getCell( 3,
-                                    0 ).getCollapsedCellCount() );
 
         assertFalse( data.getCell( 4,
                                    0 ).isMerged() );
         assertEquals( 1,
                       data.getCell( 4,
                                     0 ).getMergedCellCount() );
-        assertEquals( 1,
-                      data.getCell( 4,
-                                    0 ).getCollapsedCellCount() );
 
         //Set cell below existing block (should not affect existing block)
         data.setCell( 3,
@@ -591,45 +501,30 @@ public class GridGroupingTests {
         assertEquals( 1,
                       data.getCell( 0,
                                     0 ).getMergedCellCount() );
-        assertEquals( 1,
-                      data.getCell( 0,
-                                    0 ).getCollapsedCellCount() );
 
         assertTrue( data.getCell( 1,
                                   0 ).isMerged() );
         assertEquals( 2,
                       data.getCell( 1,
                                     0 ).getMergedCellCount() );
-        assertEquals( 2,
-                      data.getCell( 1,
-                                    0 ).getCollapsedCellCount() );
 
         assertTrue( data.getCell( 2,
                                   0 ).isMerged() );
         assertEquals( 0,
                       data.getCell( 2,
                                     0 ).getMergedCellCount() );
-        assertEquals( 0,
-                      data.getCell( 2,
-                                    0 ).getCollapsedCellCount() );
 
         assertFalse( data.getCell( 3,
                                    0 ).isMerged() );
         assertEquals( 1,
                       data.getCell( 3,
                                     0 ).getMergedCellCount() );
-        assertEquals( 1,
-                      data.getCell( 3,
-                                    0 ).getCollapsedCellCount() );
 
         assertFalse( data.getCell( 4,
                                    0 ).isMerged() );
         assertEquals( 1,
                       data.getCell( 4,
                                     0 ).getMergedCellCount() );
-        assertEquals( 1,
-                      data.getCell( 4,
-                                    0 ).getCollapsedCellCount() );
 
         //Set cell below existing block (should create a new block)
         data.setCell( 4,
@@ -656,45 +551,30 @@ public class GridGroupingTests {
         assertEquals( 1,
                       data.getCell( 0,
                                     0 ).getMergedCellCount() );
-        assertEquals( 1,
-                      data.getCell( 0,
-                                    0 ).getCollapsedCellCount() );
 
         assertTrue( data.getCell( 1,
                                   0 ).isMerged() );
         assertEquals( 2,
                       data.getCell( 1,
                                     0 ).getMergedCellCount() );
-        assertEquals( 2,
-                      data.getCell( 1,
-                                    0 ).getCollapsedCellCount() );
 
         assertTrue( data.getCell( 2,
                                   0 ).isMerged() );
         assertEquals( 0,
                       data.getCell( 2,
                                     0 ).getMergedCellCount() );
-        assertEquals( 0,
-                      data.getCell( 2,
-                                    0 ).getCollapsedCellCount() );
 
         assertTrue( data.getCell( 3,
                                   0 ).isMerged() );
         assertEquals( 2,
                       data.getCell( 3,
                                     0 ).getMergedCellCount() );
-        assertEquals( 1,
-                      data.getCell( 3,
-                                    0 ).getCollapsedCellCount() );
 
         assertTrue( data.getCell( 4,
                                   0 ).isMerged() );
         assertEquals( 0,
                       data.getCell( 4,
                                     0 ).getMergedCellCount() );
-        assertEquals( 1,
-                      data.getCell( 4,
-                                    0 ).getCollapsedCellCount() );
 
         //Ungroup cell (should result in a single block spanning 4 rows)
         data.expandCell( 1,
@@ -720,45 +600,30 @@ public class GridGroupingTests {
         assertEquals( 1,
                       data.getCell( 0,
                                     0 ).getMergedCellCount() );
-        assertEquals( 1,
-                      data.getCell( 0,
-                                    0 ).getCollapsedCellCount() );
 
         assertTrue( data.getCell( 1,
                                   0 ).isMerged() );
         assertEquals( 4,
                       data.getCell( 1,
                                     0 ).getMergedCellCount() );
-        assertEquals( 1,
-                      data.getCell( 1,
-                                    0 ).getCollapsedCellCount() );
 
         assertTrue( data.getCell( 2,
                                   0 ).isMerged() );
         assertEquals( 0,
                       data.getCell( 2,
                                     0 ).getMergedCellCount() );
-        assertEquals( 1,
-                      data.getCell( 2,
-                                    0 ).getCollapsedCellCount() );
 
         assertTrue( data.getCell( 3,
                                   0 ).isMerged() );
         assertEquals( 0,
                       data.getCell( 3,
                                     0 ).getMergedCellCount() );
-        assertEquals( 1,
-                      data.getCell( 3,
-                                    0 ).getCollapsedCellCount() );
 
         assertTrue( data.getCell( 4,
                                   0 ).isMerged() );
         assertEquals( 0,
                       data.getCell( 4,
                                     0 ).getMergedCellCount() );
-        assertEquals( 1,
-                      data.getCell( 4,
-                                    0 ).getCollapsedCellCount() );
     }
 
     @Test
@@ -784,6 +649,12 @@ public class GridGroupingTests {
                               "(" + columnIndex + ", " + rowIndex + ")" );
             }
         }
+
+        // [   g1  (1,0) ]
+        // [   g1    g2  ]      [   g1  (1,0) ]
+        // [   g1    g2  ] ---> [   g1    g2  ] ---> [   g1  (1,0) ]
+        // [   g1    g2  ]      [   g1  (1,4) ]
+        // [   g1  (1,4) ]
 
         data.setCell( 0,
                       0,
@@ -864,38 +735,6 @@ public class GridGroupingTests {
                                   1 ).isMerged() );
         assertFalse( data.getCell( 4,
                                    1 ).isMerged() );
-
-        assertEquals( 5,
-                      data.getCell( 0,
-                                    0 ).getCollapsedCellCount() );
-        assertEquals( 0,
-                      data.getCell( 1,
-                                    0 ).getCollapsedCellCount() );
-        assertEquals( 0,
-                      data.getCell( 2,
-                                    0 ).getCollapsedCellCount() );
-        assertEquals( 0,
-                      data.getCell( 3,
-                                    0 ).getCollapsedCellCount() );
-        assertEquals( 0,
-                      data.getCell( 4,
-                                    0 ).getCollapsedCellCount() );
-
-        assertEquals( 1,
-                      data.getCell( 0,
-                                    1 ).getCollapsedCellCount() );
-        assertEquals( 3,
-                      data.getCell( 1,
-                                    1 ).getCollapsedCellCount() );
-        assertEquals( 0,
-                      data.getCell( 2,
-                                    1 ).getCollapsedCellCount() );
-        assertEquals( 0,
-                      data.getCell( 3,
-                                    1 ).getCollapsedCellCount() );
-        assertEquals( 1,
-                      data.getCell( 4,
-                                    1 ).getCollapsedCellCount() );
     }
 
     private void assertGroupOverlap1_g2( final MergableGridData data ) {
@@ -935,38 +774,6 @@ public class GridGroupingTests {
                                   1 ).isMerged() );
         assertFalse( data.getCell( 4,
                                    1 ).isMerged() );
-
-        assertEquals( 1,
-                      data.getCell( 0,
-                                    0 ).getCollapsedCellCount() );
-        assertEquals( 1,
-                      data.getCell( 1,
-                                    0 ).getCollapsedCellCount() );
-        assertEquals( 1,
-                      data.getCell( 2,
-                                    0 ).getCollapsedCellCount() );
-        assertEquals( 1,
-                      data.getCell( 3,
-                                    0 ).getCollapsedCellCount() );
-        assertEquals( 1,
-                      data.getCell( 4,
-                                    0 ).getCollapsedCellCount() );
-
-        assertEquals( 1,
-                      data.getCell( 0,
-                                    1 ).getCollapsedCellCount() );
-        assertEquals( 3,
-                      data.getCell( 1,
-                                    1 ).getCollapsedCellCount() );
-        assertEquals( 0,
-                      data.getCell( 2,
-                                    1 ).getCollapsedCellCount() );
-        assertEquals( 0,
-                      data.getCell( 3,
-                                    1 ).getCollapsedCellCount() );
-        assertEquals( 1,
-                      data.getCell( 4,
-                                    1 ).getCollapsedCellCount() );
     }
 
     @Test
@@ -993,6 +800,12 @@ public class GridGroupingTests {
             }
         }
 
+        // [ (0,0)   g2  ]
+        // [ (0,1)   g2  ]      [ (0,0)   g2  ]      [ (0,0)   g2  ]      [ (0,0)   g2  ]
+        // [   g1    g2  ] ---> [   g1  (1,3) ] ---> [   g1  (1,3) ] ---> [   g1  (1,3) ]
+        // [   g1  (1,3) ]      [   g1  (1,4) ]                           [   g1  (1,4) ]
+        // [   g1  (1,4) ]
+
         data.setCell( 2,
                       0,
                       "g1" );
@@ -1019,12 +832,12 @@ public class GridGroupingTests {
         assertGroupOverlap2_g2( data );
 
         //Group g1
-        data.collapseCell( 2,
+        data.collapseCell( 3,
                            0 );
         assertGroupOverlap2_g1( data );
 
         //Ungroup g1
-        data.expandCell( 2,
+        data.expandCell( 3,
                          0 );
         assertGroupOverlap2_g2( data );
     }
@@ -1042,15 +855,15 @@ public class GridGroupingTests {
         assertFalse( data.getRow( 0 ).isCollapsed() );
         assertTrue( data.getRow( 1 ).isCollapsed() );
         assertTrue( data.getRow( 2 ).isCollapsed() );
-        assertTrue( data.getRow( 3 ).isCollapsed() );
+        assertFalse( data.getRow( 3 ).isCollapsed() );
         assertTrue( data.getRow( 4 ).isCollapsed() );
 
         assertFalse( data.getCell( 0,
                                    0 ).isMerged() );
         assertFalse( data.getCell( 1,
                                    0 ).isMerged() );
-        assertTrue( data.getCell( 2,
-                                  0 ).isMerged() );
+        assertFalse( data.getCell( 2,
+                                   0 ).isMerged() );
         assertTrue( data.getCell( 3,
                                   0 ).isMerged() );
         assertTrue( data.getCell( 4,
@@ -1069,35 +882,35 @@ public class GridGroupingTests {
 
         assertEquals( 1,
                       data.getCell( 0,
-                                    0 ).getCollapsedCellCount() );
+                                    0 ).getMergedCellCount() );
         assertEquals( 1,
                       data.getCell( 1,
-                                    0 ).getCollapsedCellCount() );
-        assertEquals( 3,
+                                    0 ).getMergedCellCount() );
+        assertEquals( 1,
                       data.getCell( 2,
-                                    0 ).getCollapsedCellCount() );
-        assertEquals( 0,
+                                    0 ).getMergedCellCount() );
+        assertEquals( 2,
                       data.getCell( 3,
-                                    0 ).getCollapsedCellCount() );
+                                    0 ).getMergedCellCount() );
         assertEquals( 0,
                       data.getCell( 4,
-                                    0 ).getCollapsedCellCount() );
+                                    0 ).getMergedCellCount() );
 
         assertEquals( 3,
                       data.getCell( 0,
-                                    1 ).getCollapsedCellCount() );
+                                    1 ).getMergedCellCount() );
         assertEquals( 0,
                       data.getCell( 1,
-                                    1 ).getCollapsedCellCount() );
+                                    1 ).getMergedCellCount() );
         assertEquals( 0,
                       data.getCell( 2,
-                                    1 ).getCollapsedCellCount() );
+                                    1 ).getMergedCellCount() );
         assertEquals( 1,
                       data.getCell( 3,
-                                    1 ).getCollapsedCellCount() );
+                                    1 ).getMergedCellCount() );
         assertEquals( 1,
                       data.getCell( 4,
-                                    1 ).getCollapsedCellCount() );
+                                    1 ).getMergedCellCount() );
     }
 
     private void assertGroupOverlap2_g2( final MergableGridData data ) {
@@ -1120,8 +933,8 @@ public class GridGroupingTests {
                                    0 ).isMerged() );
         assertFalse( data.getCell( 1,
                                    0 ).isMerged() );
-        assertTrue( data.getCell( 2,
-                                  0 ).isMerged() );
+        assertFalse( data.getCell( 2,
+                                   0 ).isMerged() );
         assertTrue( data.getCell( 3,
                                   0 ).isMerged() );
         assertTrue( data.getCell( 4,
@@ -1140,35 +953,35 @@ public class GridGroupingTests {
 
         assertEquals( 1,
                       data.getCell( 0,
-                                    0 ).getCollapsedCellCount() );
+                                    0 ).getMergedCellCount() );
         assertEquals( 1,
                       data.getCell( 1,
-                                    0 ).getCollapsedCellCount() );
+                                    0 ).getMergedCellCount() );
         assertEquals( 1,
                       data.getCell( 2,
-                                    0 ).getCollapsedCellCount() );
-        assertEquals( 1,
+                                    0 ).getMergedCellCount() );
+        assertEquals( 2,
                       data.getCell( 3,
-                                    0 ).getCollapsedCellCount() );
-        assertEquals( 1,
+                                    0 ).getMergedCellCount() );
+        assertEquals( 0,
                       data.getCell( 4,
-                                    0 ).getCollapsedCellCount() );
+                                    0 ).getMergedCellCount() );
 
         assertEquals( 3,
                       data.getCell( 0,
-                                    1 ).getCollapsedCellCount() );
+                                    1 ).getMergedCellCount() );
         assertEquals( 0,
                       data.getCell( 1,
-                                    1 ).getCollapsedCellCount() );
+                                    1 ).getMergedCellCount() );
         assertEquals( 0,
                       data.getCell( 2,
-                                    1 ).getCollapsedCellCount() );
+                                    1 ).getMergedCellCount() );
         assertEquals( 1,
                       data.getCell( 3,
-                                    1 ).getCollapsedCellCount() );
+                                    1 ).getMergedCellCount() );
         assertEquals( 1,
                       data.getCell( 4,
-                                    1 ).getCollapsedCellCount() );
+                                    1 ).getMergedCellCount() );
     }
 
     @Test
@@ -1195,40 +1008,46 @@ public class GridGroupingTests {
             }
         }
 
-        data.setCell( 2,
-                      0,
-                      "g1" );
-        data.setCell( 3,
-                      0,
-                      "g1" );
-        data.setCell( 4,
-                      0,
-                      "g1" );
+        // [   g1  (1,0) ]
+        // [   g1  (1,1) ]      [   g1  (1,0) ]                           [   g1  (1,0) ]
+        // [   g1    g2  ] ---> [ (0,3)   g2  ] ---> [ (0,3)   g2  ] ---> [ (0,3)   g2  ]
+        // [ (0,3)   g2  ]      [ (0,4)   g2  ]                           [ (0,4)   g2  ]
+        // [ (0,4)   g2  ]
 
         data.setCell( 0,
-                      1,
-                      "g2" );
+                      0,
+                      "g1" );
         data.setCell( 1,
-                      1,
-                      "g2" );
+                      0,
+                      "g1" );
+        data.setCell( 2,
+                      0,
+                      "g1" );
+
         data.setCell( 2,
                       1,
                       "g2" );
-
-        //Group g2
-        data.collapseCell( 0,
-                           1 );
-        assertGroupOverlap3_g2( data );
+        data.setCell( 3,
+                      1,
+                      "g2" );
+        data.setCell( 4,
+                      1,
+                      "g2" );
 
         //Group g1
-        data.collapseCell( 2,
+        data.collapseCell( 0,
                            0 );
         assertGroupOverlap3_g1( data );
 
+        //Group g2
+        data.collapseCell( 3,
+                           1 );
+        assertGroupOverlap3_g2( data );
+
         //Ungroup g2
-        data.expandCell( 0,
+        data.expandCell( 3,
                          1 );
-        assertGroupOverlap3_g3( data );
+        assertGroupOverlap3_g1( data );
     }
 
     private void assertGroupOverlap3_g1( final MergableGridData data ) {
@@ -1244,62 +1063,62 @@ public class GridGroupingTests {
         assertFalse( data.getRow( 0 ).isCollapsed() );
         assertTrue( data.getRow( 1 ).isCollapsed() );
         assertTrue( data.getRow( 2 ).isCollapsed() );
-        assertTrue( data.getRow( 3 ).isCollapsed() );
-        assertTrue( data.getRow( 4 ).isCollapsed() );
-
-        assertFalse( data.getCell( 0,
-                                   0 ).isMerged() );
-        assertFalse( data.getCell( 1,
-                                   0 ).isMerged() );
-        assertTrue( data.getCell( 2,
-                                  0 ).isMerged() );
-        assertTrue( data.getCell( 3,
-                                  0 ).isMerged() );
-        assertTrue( data.getCell( 4,
-                                  0 ).isMerged() );
+        assertFalse( data.getRow( 3 ).isCollapsed() );
+        assertFalse( data.getRow( 4 ).isCollapsed() );
 
         assertTrue( data.getCell( 0,
-                                  1 ).isMerged() );
+                                  0 ).isMerged() );
         assertTrue( data.getCell( 1,
-                                  1 ).isMerged() );
+                                  0 ).isMerged() );
         assertTrue( data.getCell( 2,
-                                  1 ).isMerged() );
+                                  0 ).isMerged() );
         assertFalse( data.getCell( 3,
-                                   1 ).isMerged() );
+                                   0 ).isMerged() );
         assertFalse( data.getCell( 4,
+                                   0 ).isMerged() );
+
+        assertFalse( data.getCell( 0,
                                    1 ).isMerged() );
-
-        assertEquals( 1,
-                      data.getCell( 0,
-                                    0 ).getCollapsedCellCount() );
-        assertEquals( 1,
-                      data.getCell( 1,
-                                    0 ).getCollapsedCellCount() );
-        assertEquals( 3,
-                      data.getCell( 2,
-                                    0 ).getCollapsedCellCount() );
-        assertEquals( 0,
-                      data.getCell( 3,
-                                    0 ).getCollapsedCellCount() );
-        assertEquals( 0,
-                      data.getCell( 4,
-                                    0 ).getCollapsedCellCount() );
+        assertFalse( data.getCell( 1,
+                                   1 ).isMerged() );
+        assertFalse( data.getCell( 2,
+                                   1 ).isMerged() );
+        assertTrue( data.getCell( 3,
+                                  1 ).isMerged() );
+        assertTrue( data.getCell( 4,
+                                  1 ).isMerged() );
 
         assertEquals( 3,
                       data.getCell( 0,
-                                    1 ).getCollapsedCellCount() );
+                                    0 ).getMergedCellCount() );
         assertEquals( 0,
                       data.getCell( 1,
-                                    1 ).getCollapsedCellCount() );
+                                    0 ).getMergedCellCount() );
         assertEquals( 0,
                       data.getCell( 2,
-                                    1 ).getCollapsedCellCount() );
+                                    0 ).getMergedCellCount() );
         assertEquals( 1,
                       data.getCell( 3,
-                                    1 ).getCollapsedCellCount() );
+                                    0 ).getMergedCellCount() );
         assertEquals( 1,
                       data.getCell( 4,
-                                    1 ).getCollapsedCellCount() );
+                                    0 ).getMergedCellCount() );
+
+        assertEquals( 1,
+                      data.getCell( 0,
+                                    1 ).getMergedCellCount() );
+        assertEquals( 1,
+                      data.getCell( 1,
+                                    1 ).getMergedCellCount() );
+        assertEquals( 1,
+                      data.getCell( 2,
+                                    1 ).getMergedCellCount() );
+        assertEquals( 2,
+                      data.getCell( 3,
+                                    1 ).getMergedCellCount() );
+        assertEquals( 0,
+                      data.getCell( 4,
+                                    1 ).getMergedCellCount() );
     }
 
     private void assertGroupOverlap3_g2( final MergableGridData data ) {
@@ -1316,64 +1135,199 @@ public class GridGroupingTests {
         assertTrue( data.getRow( 1 ).isCollapsed() );
         assertTrue( data.getRow( 2 ).isCollapsed() );
         assertFalse( data.getRow( 3 ).isCollapsed() );
-        assertFalse( data.getRow( 4 ).isCollapsed() );
-
-        assertFalse( data.getCell( 0,
-                                   0 ).isMerged() );
-        assertFalse( data.getCell( 1,
-                                   0 ).isMerged() );
-        assertTrue( data.getCell( 2,
-                                  0 ).isMerged() );
-        assertTrue( data.getCell( 3,
-                                  0 ).isMerged() );
-        assertTrue( data.getCell( 4,
-                                  0 ).isMerged() );
+        assertTrue( data.getRow( 4 ).isCollapsed() );
 
         assertTrue( data.getCell( 0,
-                                  1 ).isMerged() );
+                                  0 ).isMerged() );
         assertTrue( data.getCell( 1,
-                                  1 ).isMerged() );
+                                  0 ).isMerged() );
         assertTrue( data.getCell( 2,
-                                  1 ).isMerged() );
+                                  0 ).isMerged() );
         assertFalse( data.getCell( 3,
-                                   1 ).isMerged() );
+                                   0 ).isMerged() );
         assertFalse( data.getCell( 4,
-                                   1 ).isMerged() );
+                                   0 ).isMerged() );
 
-        assertEquals( 1,
-                      data.getCell( 0,
-                                    0 ).getCollapsedCellCount() );
-        assertEquals( 1,
-                      data.getCell( 1,
-                                    0 ).getCollapsedCellCount() );
-        assertEquals( 1,
-                      data.getCell( 2,
-                                    0 ).getCollapsedCellCount() );
-        assertEquals( 1,
-                      data.getCell( 3,
-                                    0 ).getCollapsedCellCount() );
-        assertEquals( 1,
-                      data.getCell( 4,
-                                    0 ).getCollapsedCellCount() );
+        assertFalse( data.getCell( 0,
+                                   1 ).isMerged() );
+        assertFalse( data.getCell( 1,
+                                   1 ).isMerged() );
+        assertFalse( data.getCell( 2,
+                                   1 ).isMerged() );
+        assertTrue( data.getCell( 3,
+                                  1 ).isMerged() );
+        assertTrue( data.getCell( 4,
+                                  1 ).isMerged() );
 
         assertEquals( 3,
                       data.getCell( 0,
-                                    1 ).getCollapsedCellCount() );
+                                    0 ).getMergedCellCount() );
         assertEquals( 0,
                       data.getCell( 1,
-                                    1 ).getCollapsedCellCount() );
+                                    0 ).getMergedCellCount() );
         assertEquals( 0,
                       data.getCell( 2,
-                                    1 ).getCollapsedCellCount() );
+                                    0 ).getMergedCellCount() );
         assertEquals( 1,
                       data.getCell( 3,
-                                    1 ).getCollapsedCellCount() );
+                                    0 ).getMergedCellCount() );
         assertEquals( 1,
                       data.getCell( 4,
-                                    1 ).getCollapsedCellCount() );
+                                    0 ).getMergedCellCount() );
+
+        assertEquals( 1,
+                      data.getCell( 0,
+                                    1 ).getMergedCellCount() );
+        assertEquals( 1,
+                      data.getCell( 1,
+                                    1 ).getMergedCellCount() );
+        assertEquals( 1,
+                      data.getCell( 2,
+                                    1 ).getMergedCellCount() );
+        assertEquals( 2,
+                      data.getCell( 3,
+                                    1 ).getMergedCellCount() );
+        assertEquals( 0,
+                      data.getCell( 4,
+                                    1 ).getMergedCellCount() );
     }
 
-    private void assertGroupOverlap3_g3( final MergableGridData data ) {
+    @Test
+    public void testGroupOverlap4() {
+        final MergableGridData data = new MergableGridData();
+        final MergableGridColumn gc1 = new MergableGridColumn( "col1",
+                                                               100 );
+        final MergableGridColumn gc2 = new MergableGridColumn( "col2",
+                                                               100 );
+        data.addColumn( gc1 );
+        data.addColumn( gc2 );
+
+        data.addRow( new MergableGridRow() );
+        data.addRow( new MergableGridRow() );
+        data.addRow( new MergableGridRow() );
+        data.addRow( new MergableGridRow() );
+        data.addRow( new MergableGridRow() );
+
+        for ( int rowIndex = 0; rowIndex < data.getRowCount(); rowIndex++ ) {
+            for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
+                data.setCell( rowIndex,
+                              columnIndex,
+                              "(" + columnIndex + ", " + rowIndex + ")" );
+            }
+        }
+
+        // [  g1    g2 ]
+        // [  g1    g2 ]
+        // [ (0,2)  g2 ]
+        // [ (0,3)  g2 ]
+        // [ (0,4)  g2 ]
+
+        data.setCell( 0,
+                      0,
+                      "g1" );
+        data.setCell( 1,
+                      0,
+                      "g1" );
+
+        data.setCell( 0,
+                      1,
+                      "g2" );
+        data.setCell( 1,
+                      1,
+                      "g2" );
+        data.setCell( 2,
+                      1,
+                      "g2" );
+        data.setCell( 3,
+                      1,
+                      "g2" );
+        data.setCell( 4,
+                      1,
+                      "g2" );
+
+        //Group g1
+        data.collapseCell( 0,
+                           0 );
+
+        assertEquals( 5,
+                      data.getRowCount() );
+
+        assertTrue( data.getRow( 0 ).isMerged() );
+        assertTrue( data.getRow( 1 ).isMerged() );
+        assertTrue( data.getRow( 2 ).isMerged() );
+        assertTrue( data.getRow( 3 ).isMerged() );
+        assertTrue( data.getRow( 4 ).isMerged() );
+
+        assertFalse( data.getRow( 0 ).isCollapsed() );
+        assertTrue( data.getRow( 1 ).isCollapsed() );
+        assertFalse( data.getRow( 2 ).isCollapsed() );
+        assertFalse( data.getRow( 3 ).isCollapsed() );
+        assertFalse( data.getRow( 4 ).isCollapsed() );
+
+        assertTrue( data.getCell( 0,
+                                  0 ).isMerged() );
+        assertEquals( 2,
+                      data.getCell( 0,
+                                    0 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 1,
+                                  0 ).isMerged() );
+        assertEquals( 0,
+                      data.getCell( 1,
+                                    0 ).getMergedCellCount() );
+
+        assertFalse( data.getCell( 2,
+                                   0 ).isMerged() );
+        assertEquals( 1,
+                      data.getCell( 2,
+                                    0 ).getMergedCellCount() );
+
+        assertFalse( data.getCell( 3,
+                                   0 ).isMerged() );
+        assertEquals( 1,
+                      data.getCell( 3,
+                                    0 ).getMergedCellCount() );
+
+        assertFalse( data.getCell( 4,
+                                   0 ).isMerged() );
+        assertEquals( 1,
+                      data.getCell( 4,
+                                    0 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 0,
+                                  1 ).isMerged() );
+        assertEquals( 5,
+                      data.getCell( 0,
+                                    1 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 1,
+                                  1 ).isMerged() );
+        assertEquals( 0,
+                      data.getCell( 1,
+                                    1 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 2,
+                                  1 ).isMerged() );
+        assertEquals( 0,
+                      data.getCell( 2,
+                                    1 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 3,
+                                  1 ).isMerged() );
+        assertEquals( 0,
+                      data.getCell( 3,
+                                    1 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 4,
+                                  1 ).isMerged() );
+        assertEquals( 0,
+                      data.getCell( 4,
+                                    1 ).getMergedCellCount() );
+
+        //Ungroup g1
+        data.expandCell( 0,
+                         0 );
+
         assertEquals( 5,
                       data.getRowCount() );
 
@@ -1386,62 +1340,1442 @@ public class GridGroupingTests {
         assertFalse( data.getRow( 0 ).isCollapsed() );
         assertFalse( data.getRow( 1 ).isCollapsed() );
         assertFalse( data.getRow( 2 ).isCollapsed() );
-        assertTrue( data.getRow( 3 ).isCollapsed() );
-        assertTrue( data.getRow( 4 ).isCollapsed() );
+        assertFalse( data.getRow( 3 ).isCollapsed() );
+        assertFalse( data.getRow( 4 ).isCollapsed() );
 
-        assertFalse( data.getCell( 0,
+        assertTrue( data.getCell( 0,
+                                  0 ).isMerged() );
+        assertEquals( 2,
+                      data.getCell( 0,
+                                    0 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 1,
+                                  0 ).isMerged() );
+        assertEquals( 0,
+                      data.getCell( 1,
+                                    0 ).getMergedCellCount() );
+
+        assertFalse( data.getCell( 2,
                                    0 ).isMerged() );
-        assertFalse( data.getCell( 1,
+        assertEquals( 1,
+                      data.getCell( 2,
+                                    0 ).getMergedCellCount() );
+
+        assertFalse( data.getCell( 3,
                                    0 ).isMerged() );
-        assertTrue( data.getCell( 2,
-                                  0 ).isMerged() );
-        assertTrue( data.getCell( 3,
-                                  0 ).isMerged() );
-        assertTrue( data.getCell( 4,
-                                  0 ).isMerged() );
+        assertEquals( 1,
+                      data.getCell( 3,
+                                    0 ).getMergedCellCount() );
+
+        assertFalse( data.getCell( 4,
+                                   0 ).isMerged() );
+        assertEquals( 1,
+                      data.getCell( 4,
+                                    0 ).getMergedCellCount() );
 
         assertTrue( data.getCell( 0,
                                   1 ).isMerged() );
+        assertEquals( 5,
+                      data.getCell( 0,
+                                    1 ).getMergedCellCount() );
+
         assertTrue( data.getCell( 1,
                                   1 ).isMerged() );
+        assertEquals( 0,
+                      data.getCell( 1,
+                                    1 ).getMergedCellCount() );
+
         assertTrue( data.getCell( 2,
                                   1 ).isMerged() );
-        assertFalse( data.getCell( 3,
-                                   1 ).isMerged() );
-        assertFalse( data.getCell( 4,
-                                   1 ).isMerged() );
+        assertEquals( 0,
+                      data.getCell( 2,
+                                    1 ).getMergedCellCount() );
 
+        assertTrue( data.getCell( 3,
+                                  1 ).isMerged() );
+        assertEquals( 0,
+                      data.getCell( 3,
+                                    1 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 4,
+                                  1 ).isMerged() );
+        assertEquals( 0,
+                      data.getCell( 4,
+                                    1 ).getMergedCellCount() );
+    }
+
+    @Test
+    public void testGroupOverlap5() {
+        final MergableGridData data = new MergableGridData();
+        final MergableGridColumn gc1 = new MergableGridColumn( "col1",
+                                                               100 );
+        final MergableGridColumn gc2 = new MergableGridColumn( "col2",
+                                                               100 );
+        data.addColumn( gc1 );
+        data.addColumn( gc2 );
+
+        data.addRow( new MergableGridRow() );
+        data.addRow( new MergableGridRow() );
+        data.addRow( new MergableGridRow() );
+        data.addRow( new MergableGridRow() );
+        data.addRow( new MergableGridRow() );
+
+        for ( int rowIndex = 0; rowIndex < data.getRowCount(); rowIndex++ ) {
+            for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
+                data.setCell( rowIndex,
+                              columnIndex,
+                              "(" + columnIndex + ", " + rowIndex + ")" );
+            }
+        }
+
+        // [ (0,0)  (1,0) ]
+        // [  g1    (1,1) ]
+        // [  g1      g2  ]
+        // [ (0,3)    g2  ]
+        // [ (0,4)    g2  ]
+
+        data.setCell( 1,
+                      0,
+                      "g1" );
+        data.setCell( 2,
+                      0,
+                      "g1" );
+
+        data.setCell( 2,
+                      1,
+                      "g2" );
+        data.setCell( 3,
+                      1,
+                      "g2" );
+        data.setCell( 4,
+                      1,
+                      "g2" );
+
+        //Group g1
+        data.collapseCell( 1,
+                           0 );
+
+        assertEquals( 5,
+                      data.getRowCount() );
+
+        assertFalse( data.getRow( 0 ).isMerged() );
+        assertTrue( data.getRow( 1 ).isMerged() );
+        assertTrue( data.getRow( 2 ).isMerged() );
+        assertTrue( data.getRow( 3 ).isMerged() );
+        assertTrue( data.getRow( 4 ).isMerged() );
+
+        assertFalse( data.getRow( 0 ).isCollapsed() );
+        assertFalse( data.getRow( 1 ).isCollapsed() );
+        assertTrue( data.getRow( 2 ).isCollapsed() );
+        assertFalse( data.getRow( 3 ).isCollapsed() );
+        assertFalse( data.getRow( 4 ).isCollapsed() );
+
+        assertFalse( data.getCell( 0,
+                                   0 ).isMerged() );
         assertEquals( 1,
                       data.getCell( 0,
-                                    0 ).getCollapsedCellCount() );
+                                    0 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 1,
+                                  0 ).isMerged() );
+        assertEquals( 2,
+                      data.getCell( 1,
+                                    0 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 2,
+                                  0 ).isMerged() );
+        assertEquals( 0,
+                      data.getCell( 2,
+                                    0 ).getMergedCellCount() );
+
+        assertFalse( data.getCell( 3,
+                                   0 ).isMerged() );
+        assertEquals( 1,
+                      data.getCell( 3,
+                                    0 ).getMergedCellCount() );
+
+        assertFalse( data.getCell( 4,
+                                   0 ).isMerged() );
+        assertEquals( 1,
+                      data.getCell( 4,
+                                    0 ).getMergedCellCount() );
+
+        assertFalse( data.getCell( 0,
+                                   1 ).isMerged() );
+        assertEquals( 1,
+                      data.getCell( 0,
+                                    1 ).getMergedCellCount() );
+
+        assertFalse( data.getCell( 1,
+                                   1 ).isMerged() );
         assertEquals( 1,
                       data.getCell( 1,
-                                    0 ).getCollapsedCellCount() );
+                                    1 ).getMergedCellCount() );
+
+        assertFalse( data.getCell( 2,
+                                   1 ).isMerged() );
+        assertEquals( 1,
+                      data.getCell( 2,
+                                    1 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 3,
+                                  1 ).isMerged() );
+        assertEquals( 2,
+                      data.getCell( 3,
+                                    1 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 4,
+                                  1 ).isMerged() );
+        assertEquals( 0,
+                      data.getCell( 4,
+                                    1 ).getMergedCellCount() );
+
+        //Ungroup g1
+        data.expandCell( 1,
+                         0 );
+
+        assertEquals( 5,
+                      data.getRowCount() );
+
+        assertFalse( data.getRow( 0 ).isMerged() );
+        assertTrue( data.getRow( 1 ).isMerged() );
+        assertTrue( data.getRow( 2 ).isMerged() );
+        assertTrue( data.getRow( 3 ).isMerged() );
+        assertTrue( data.getRow( 4 ).isMerged() );
+
+        assertFalse( data.getRow( 0 ).isCollapsed() );
+        assertFalse( data.getRow( 1 ).isCollapsed() );
+        assertFalse( data.getRow( 2 ).isCollapsed() );
+        assertFalse( data.getRow( 3 ).isCollapsed() );
+        assertFalse( data.getRow( 4 ).isCollapsed() );
+
+        assertFalse( data.getCell( 0,
+                                   0 ).isMerged() );
+        assertEquals( 1,
+                      data.getCell( 0,
+                                    0 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 1,
+                                  0 ).isMerged() );
+        assertEquals( 2,
+                      data.getCell( 1,
+                                    0 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 2,
+                                  0 ).isMerged() );
+        assertEquals( 0,
+                      data.getCell( 2,
+                                    0 ).getMergedCellCount() );
+
+        assertFalse( data.getCell( 3,
+                                   0 ).isMerged() );
+        assertEquals( 1,
+                      data.getCell( 3,
+                                    0 ).getMergedCellCount() );
+
+        assertFalse( data.getCell( 4,
+                                   0 ).isMerged() );
+        assertEquals( 1,
+                      data.getCell( 4,
+                                    0 ).getMergedCellCount() );
+
+        assertFalse( data.getCell( 0,
+                                   1 ).isMerged() );
+        assertEquals( 1,
+                      data.getCell( 0,
+                                    1 ).getMergedCellCount() );
+
+        assertFalse( data.getCell( 1,
+                                   1 ).isMerged() );
+        assertEquals( 1,
+                      data.getCell( 1,
+                                    1 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 2,
+                                  1 ).isMerged() );
         assertEquals( 3,
                       data.getCell( 2,
-                                    0 ).getCollapsedCellCount() );
+                                    1 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 3,
+                                  1 ).isMerged() );
         assertEquals( 0,
                       data.getCell( 3,
-                                    0 ).getCollapsedCellCount() );
+                                    1 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 4,
+                                  1 ).isMerged() );
         assertEquals( 0,
                       data.getCell( 4,
-                                    0 ).getCollapsedCellCount() );
+                                    1 ).getMergedCellCount() );
+    }
+
+    @Test
+    public void testGroupOverlap6() {
+        final MergableGridData data = new MergableGridData();
+        final MergableGridColumn gc1 = new MergableGridColumn( "col1",
+                                                               100 );
+        final MergableGridColumn gc2 = new MergableGridColumn( "col2",
+                                                               100 );
+        data.addColumn( gc1 );
+        data.addColumn( gc2 );
+
+        data.addRow( new MergableGridRow() );
+        data.addRow( new MergableGridRow() );
+        data.addRow( new MergableGridRow() );
+        data.addRow( new MergableGridRow() );
+        data.addRow( new MergableGridRow() );
+
+        for ( int rowIndex = 0; rowIndex < data.getRowCount(); rowIndex++ ) {
+            for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
+                data.setCell( rowIndex,
+                              columnIndex,
+                              "(" + columnIndex + ", " + rowIndex + ")" );
+            }
+        }
+
+        // [ (0,0)  (1,0) ]
+        // [  g1      g2  ]
+        // [  g1      g2  ]
+        // [ (0,3)    g2  ]
+        // [ (0,4)    g2  ]
+
+        data.setCell( 1,
+                      0,
+                      "g1" );
+        data.setCell( 2,
+                      0,
+                      "g1" );
+
+        data.setCell( 1,
+                      1,
+                      "g2" );
+        data.setCell( 2,
+                      1,
+                      "g2" );
+        data.setCell( 3,
+                      1,
+                      "g2" );
+        data.setCell( 4,
+                      1,
+                      "g2" );
+
+        //Group g1
+        data.collapseCell( 1,
+                           0 );
+
+        assertEquals( 5,
+                      data.getRowCount() );
+
+        assertFalse( data.getRow( 0 ).isMerged() );
+        assertTrue( data.getRow( 1 ).isMerged() );
+        assertTrue( data.getRow( 2 ).isMerged() );
+        assertTrue( data.getRow( 3 ).isMerged() );
+        assertTrue( data.getRow( 4 ).isMerged() );
+
+        assertFalse( data.getRow( 0 ).isCollapsed() );
+        assertFalse( data.getRow( 1 ).isCollapsed() );
+        assertTrue( data.getRow( 2 ).isCollapsed() );
+        assertFalse( data.getRow( 3 ).isCollapsed() );
+        assertFalse( data.getRow( 4 ).isCollapsed() );
+
+        assertFalse( data.getCell( 0,
+                                   0 ).isMerged() );
+        assertEquals( 1,
+                      data.getCell( 0,
+                                    0 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 1,
+                                  0 ).isMerged() );
+        assertEquals( 2,
+                      data.getCell( 1,
+                                    0 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 2,
+                                  0 ).isMerged() );
+        assertEquals( 0,
+                      data.getCell( 2,
+                                    0 ).getMergedCellCount() );
+
+        assertFalse( data.getCell( 3,
+                                   0 ).isMerged() );
+        assertEquals( 1,
+                      data.getCell( 3,
+                                    0 ).getMergedCellCount() );
+
+        assertFalse( data.getCell( 4,
+                                   0 ).isMerged() );
+        assertEquals( 1,
+                      data.getCell( 4,
+                                    0 ).getMergedCellCount() );
+
+        assertFalse( data.getCell( 0,
+                                   1 ).isMerged() );
+        assertEquals( 1,
+                      data.getCell( 0,
+                                    1 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 1,
+                                  1 ).isMerged() );
+        assertEquals( 4,
+                      data.getCell( 1,
+                                    1 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 2,
+                                  1 ).isMerged() );
+        assertEquals( 0,
+                      data.getCell( 2,
+                                    1 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 3,
+                                  1 ).isMerged() );
+        assertEquals( 0,
+                      data.getCell( 3,
+                                    1 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 4,
+                                  1 ).isMerged() );
+        assertEquals( 0,
+                      data.getCell( 4,
+                                    1 ).getMergedCellCount() );
+
+        //Ungroup g1
+        data.expandCell( 1,
+                         0 );
+
+        assertEquals( 5,
+                      data.getRowCount() );
+
+        assertFalse( data.getRow( 0 ).isMerged() );
+        assertTrue( data.getRow( 1 ).isMerged() );
+        assertTrue( data.getRow( 2 ).isMerged() );
+        assertTrue( data.getRow( 3 ).isMerged() );
+        assertTrue( data.getRow( 4 ).isMerged() );
+
+        assertFalse( data.getRow( 0 ).isCollapsed() );
+        assertFalse( data.getRow( 1 ).isCollapsed() );
+        assertFalse( data.getRow( 2 ).isCollapsed() );
+        assertFalse( data.getRow( 3 ).isCollapsed() );
+        assertFalse( data.getRow( 4 ).isCollapsed() );
+
+        assertFalse( data.getCell( 0,
+                                   0 ).isMerged() );
+        assertEquals( 1,
+                      data.getCell( 0,
+                                    0 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 1,
+                                  0 ).isMerged() );
+        assertEquals( 2,
+                      data.getCell( 1,
+                                    0 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 2,
+                                  0 ).isMerged() );
+        assertEquals( 0,
+                      data.getCell( 2,
+                                    0 ).getMergedCellCount() );
+
+        assertFalse( data.getCell( 3,
+                                   0 ).isMerged() );
+        assertEquals( 1,
+                      data.getCell( 3,
+                                    0 ).getMergedCellCount() );
+
+        assertFalse( data.getCell( 4,
+                                   0 ).isMerged() );
+        assertEquals( 1,
+                      data.getCell( 4,
+                                    0 ).getMergedCellCount() );
+
+        assertFalse( data.getCell( 0,
+                                   1 ).isMerged() );
+        assertEquals( 1,
+                      data.getCell( 0,
+                                    1 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 1,
+                                  1 ).isMerged() );
+        assertEquals( 4,
+                      data.getCell( 1,
+                                    1 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 2,
+                                  1 ).isMerged() );
+        assertEquals( 0,
+                      data.getCell( 2,
+                                    1 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 3,
+                                  1 ).isMerged() );
+        assertEquals( 0,
+                      data.getCell( 3,
+                                    1 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 4,
+                                  1 ).isMerged() );
+        assertEquals( 0,
+                      data.getCell( 4,
+                                    1 ).getMergedCellCount() );
+    }
+
+    @Test
+    public void testGroupOverlap7() {
+        final MergableGridData data = new MergableGridData();
+        final MergableGridColumn gc1 = new MergableGridColumn( "col1",
+                                                               100 );
+        final MergableGridColumn gc2 = new MergableGridColumn( "col2",
+                                                               100 );
+        data.addColumn( gc1 );
+        data.addColumn( gc2 );
+
+        data.addRow( new MergableGridRow() );
+        data.addRow( new MergableGridRow() );
+        data.addRow( new MergableGridRow() );
+        data.addRow( new MergableGridRow() );
+        data.addRow( new MergableGridRow() );
+
+        for ( int rowIndex = 0; rowIndex < data.getRowCount(); rowIndex++ ) {
+            for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
+                data.setCell( rowIndex,
+                              columnIndex,
+                              "(" + columnIndex + ", " + rowIndex + ")" );
+            }
+        }
+
+        // [   g1   (1,0) ]
+        // [   g1     g2  ]      [   g1  (1,0) ]
+        // [   g1     g2  ] ---> [ (0,3)   g2  ]
+        // [ (0,3)    g2  ]      [ (0,4)   g2  ]
+        // [ (0,4)    g2  ]
+
+        data.setCell( 0,
+                      0,
+                      "g1" );
+        data.setCell( 1,
+                      0,
+                      "g1" );
+        data.setCell( 2,
+                      0,
+                      "g1" );
+
+        data.setCell( 1,
+                      1,
+                      "g2" );
+        data.setCell( 2,
+                      1,
+                      "g2" );
+        data.setCell( 3,
+                      1,
+                      "g2" );
+        data.setCell( 4,
+                      1,
+                      "g2" );
+
+        //Group g1
+        data.collapseCell( 0,
+                           0 );
+
+        assertEquals( 5,
+                      data.getRowCount() );
+
+        assertTrue( data.getRow( 0 ).isMerged() );
+        assertTrue( data.getRow( 1 ).isMerged() );
+        assertTrue( data.getRow( 2 ).isMerged() );
+        assertTrue( data.getRow( 3 ).isMerged() );
+        assertTrue( data.getRow( 4 ).isMerged() );
+
+        assertFalse( data.getRow( 0 ).isCollapsed() );
+        assertTrue( data.getRow( 1 ).isCollapsed() );
+        assertTrue( data.getRow( 2 ).isCollapsed() );
+        assertFalse( data.getRow( 3 ).isCollapsed() );
+        assertFalse( data.getRow( 4 ).isCollapsed() );
+
+        assertTrue( data.getCell( 0,
+                                  0 ).isMerged() );
+        assertEquals( 3,
+                      data.getCell( 0,
+                                    0 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 1,
+                                  0 ).isMerged() );
+        assertEquals( 0,
+                      data.getCell( 1,
+                                    0 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 2,
+                                  0 ).isMerged() );
+        assertEquals( 0,
+                      data.getCell( 2,
+                                    0 ).getMergedCellCount() );
+
+        assertFalse( data.getCell( 3,
+                                   0 ).isMerged() );
+        assertEquals( 1,
+                      data.getCell( 3,
+                                    0 ).getMergedCellCount() );
+
+        assertFalse( data.getCell( 4,
+                                   0 ).isMerged() );
+        assertEquals( 1,
+                      data.getCell( 4,
+                                    0 ).getMergedCellCount() );
+
+        assertFalse( data.getCell( 0,
+                                   1 ).isMerged() );
+        assertEquals( 1,
+                      data.getCell( 0,
+                                    1 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 1,
+                                  1 ).isMerged() );
+        assertEquals( 2,
+                      data.getCell( 1,
+                                    1 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 2,
+                                  1 ).isMerged() );
+        assertEquals( 0,
+                      data.getCell( 2,
+                                    1 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 3,
+                                  1 ).isMerged() );
+        assertEquals( 2,
+                      data.getCell( 3,
+                                    1 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 4,
+                                  1 ).isMerged() );
+        assertEquals( 0,
+                      data.getCell( 4,
+                                    1 ).getMergedCellCount() );
+
+        //Ungroup g1
+        data.expandCell( 0,
+                         0 );
+
+        assertEquals( 5,
+                      data.getRowCount() );
+
+        assertTrue( data.getRow( 0 ).isMerged() );
+        assertTrue( data.getRow( 1 ).isMerged() );
+        assertTrue( data.getRow( 2 ).isMerged() );
+        assertTrue( data.getRow( 3 ).isMerged() );
+        assertTrue( data.getRow( 4 ).isMerged() );
+
+        assertFalse( data.getRow( 0 ).isCollapsed() );
+        assertFalse( data.getRow( 1 ).isCollapsed() );
+        assertFalse( data.getRow( 2 ).isCollapsed() );
+        assertFalse( data.getRow( 3 ).isCollapsed() );
+        assertFalse( data.getRow( 4 ).isCollapsed() );
+
+        assertTrue( data.getCell( 0,
+                                  0 ).isMerged() );
+        assertEquals( 3,
+                      data.getCell( 0,
+                                    0 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 1,
+                                  0 ).isMerged() );
+        assertEquals( 0,
+                      data.getCell( 1,
+                                    0 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 2,
+                                  0 ).isMerged() );
+        assertEquals( 0,
+                      data.getCell( 2,
+                                    0 ).getMergedCellCount() );
+
+        assertFalse( data.getCell( 3,
+                                   0 ).isMerged() );
+        assertEquals( 1,
+                      data.getCell( 3,
+                                    0 ).getMergedCellCount() );
+
+        assertFalse( data.getCell( 4,
+                                   0 ).isMerged() );
+        assertEquals( 1,
+                      data.getCell( 4,
+                                    0 ).getMergedCellCount() );
+
+        assertFalse( data.getCell( 0,
+                                   1 ).isMerged() );
+        assertEquals( 1,
+                      data.getCell( 0,
+                                    1 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 1,
+                                  1 ).isMerged() );
+        assertEquals( 4,
+                      data.getCell( 1,
+                                    1 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 2,
+                                  1 ).isMerged() );
+        assertEquals( 0,
+                      data.getCell( 2,
+                                    1 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 3,
+                                  1 ).isMerged() );
+        assertEquals( 0,
+                      data.getCell( 3,
+                                    1 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 4,
+                                  1 ).isMerged() );
+        assertEquals( 0,
+                      data.getCell( 4,
+                                    1 ).getMergedCellCount() );
+    }
+
+    @Test
+    public void testGroupOverlap8() {
+        final MergableGridData data = new MergableGridData();
+        final MergableGridColumn gc1 = new MergableGridColumn( "col1",
+                                                               100 );
+        final MergableGridColumn gc2 = new MergableGridColumn( "col2",
+                                                               100 );
+        data.addColumn( gc1 );
+        data.addColumn( gc2 );
+
+        data.addRow( new MergableGridRow() );
+        data.addRow( new MergableGridRow() );
+        data.addRow( new MergableGridRow() );
+        data.addRow( new MergableGridRow() );
+        data.addRow( new MergableGridRow() );
+
+        // [   g1    g2  ]
+        // [   g1    g2  ]
+        // [   g1    g2  ] ---> [   g1    g2  ]
+        // [   g1    g2  ]
+        // [   g1    g2  ]
+
+        for ( int rowIndex = 0; rowIndex < data.getRowCount(); rowIndex++ ) {
+            data.setCell( rowIndex,
+                          0,
+                          "g1" );
+            data.setCell( rowIndex,
+                          1,
+                          "g2" );
+        }
+
+        //Group g1
+        data.collapseCell( 0,
+                           0 );
+
+        assertEquals( 5,
+                      data.getRowCount() );
+
+        assertTrue( data.getRow( 0 ).isMerged() );
+        assertTrue( data.getRow( 1 ).isMerged() );
+        assertTrue( data.getRow( 2 ).isMerged() );
+        assertTrue( data.getRow( 3 ).isMerged() );
+        assertTrue( data.getRow( 4 ).isMerged() );
+
+        assertFalse( data.getRow( 0 ).isCollapsed() );
+        assertTrue( data.getRow( 1 ).isCollapsed() );
+        assertTrue( data.getRow( 2 ).isCollapsed() );
+        assertTrue( data.getRow( 3 ).isCollapsed() );
+        assertTrue( data.getRow( 4 ).isCollapsed() );
+
+        assertTrue( data.getCell( 0,
+                                  0 ).isMerged() );
+        assertEquals( 5,
+                      data.getCell( 0,
+                                    0 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 1,
+                                  0 ).isMerged() );
+        assertEquals( 0,
+                      data.getCell( 1,
+                                    0 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 2,
+                                  0 ).isMerged() );
+        assertEquals( 0,
+                      data.getCell( 2,
+                                    0 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 3,
+                                  0 ).isMerged() );
+        assertEquals( 0,
+                      data.getCell( 3,
+                                    0 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 4,
+                                  0 ).isMerged() );
+        assertEquals( 0,
+                      data.getCell( 4,
+                                    0 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 0,
+                                  1 ).isMerged() );
+        assertEquals( 5,
+                      data.getCell( 0,
+                                    1 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 1,
+                                  1 ).isMerged() );
+        assertEquals( 0,
+                      data.getCell( 1,
+                                    1 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 2,
+                                  1 ).isMerged() );
+        assertEquals( 0,
+                      data.getCell( 2,
+                                    1 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 3,
+                                  1 ).isMerged() );
+        assertEquals( 0,
+                      data.getCell( 3,
+                                    1 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 4,
+                                  1 ).isMerged() );
+        assertEquals( 0,
+                      data.getCell( 4,
+                                    1 ).getMergedCellCount() );
+
+        //Ungroup g1
+        data.expandCell( 0,
+                         0 );
+
+        assertEquals( 5,
+                      data.getRowCount() );
+
+        assertTrue( data.getRow( 0 ).isMerged() );
+        assertTrue( data.getRow( 1 ).isMerged() );
+        assertTrue( data.getRow( 2 ).isMerged() );
+        assertTrue( data.getRow( 3 ).isMerged() );
+        assertTrue( data.getRow( 4 ).isMerged() );
+
+        assertFalse( data.getRow( 0 ).isCollapsed() );
+        assertFalse( data.getRow( 1 ).isCollapsed() );
+        assertFalse( data.getRow( 2 ).isCollapsed() );
+        assertFalse( data.getRow( 3 ).isCollapsed() );
+        assertFalse( data.getRow( 4 ).isCollapsed() );
+
+        assertTrue( data.getCell( 0,
+                                  0 ).isMerged() );
+        assertEquals( 5,
+                      data.getCell( 0,
+                                    0 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 1,
+                                  0 ).isMerged() );
+        assertEquals( 0,
+                      data.getCell( 1,
+                                    0 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 2,
+                                  0 ).isMerged() );
+        assertEquals( 0,
+                      data.getCell( 2,
+                                    0 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 3,
+                                  0 ).isMerged() );
+        assertEquals( 0,
+                      data.getCell( 3,
+                                    0 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 4,
+                                  0 ).isMerged() );
+        assertEquals( 0,
+                      data.getCell( 4,
+                                    0 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 0,
+                                  1 ).isMerged() );
+        assertEquals( 5,
+                      data.getCell( 0,
+                                    1 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 1,
+                                  1 ).isMerged() );
+        assertEquals( 0,
+                      data.getCell( 1,
+                                    1 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 2,
+                                  1 ).isMerged() );
+        assertEquals( 0,
+                      data.getCell( 2,
+                                    1 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 3,
+                                  1 ).isMerged() );
+        assertEquals( 0,
+                      data.getCell( 3,
+                                    1 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 4,
+                                  1 ).isMerged() );
+        assertEquals( 0,
+                      data.getCell( 4,
+                                    1 ).getMergedCellCount() );
+    }
+
+    @Test
+    public void testGroupOverlap9() {
+        final MergableGridData data = new MergableGridData();
+        final MergableGridColumn gc1 = new MergableGridColumn( "col1",
+                                                               100 );
+        final MergableGridColumn gc2 = new MergableGridColumn( "col2",
+                                                               100 );
+        data.addColumn( gc1 );
+        data.addColumn( gc2 );
+
+        data.addRow( new MergableGridRow() );
+        data.addRow( new MergableGridRow() );
+        data.addRow( new MergableGridRow() );
+        data.addRow( new MergableGridRow() );
+        data.addRow( new MergableGridRow() );
+
+        // [   g1    g2  ]
+        // [   g1    g2  ]
+        // [   g1    g2  ] ---> [   g1    g2  ]
+        // [   g1    g2  ]      [ (0,4) (1,4) ]
+        // [ (0,4) (1,4) ]
+
+        for ( int rowIndex = 0; rowIndex < data.getRowCount() - 1; rowIndex++ ) {
+            data.setCell( rowIndex,
+                          0,
+                          "g1" );
+            data.setCell( rowIndex,
+                          1,
+                          "g2" );
+        }
+
+        data.setCell( 4,
+                      0,
+                      "(0, 4)" );
+        data.setCell( 4,
+                      1,
+                      "(1, 4)" );
+
+        //Group g1
+        data.collapseCell( 0,
+                           0 );
+
+        assertEquals( 5,
+                      data.getRowCount() );
+
+        assertTrue( data.getRow( 0 ).isMerged() );
+        assertTrue( data.getRow( 1 ).isMerged() );
+        assertTrue( data.getRow( 2 ).isMerged() );
+        assertTrue( data.getRow( 3 ).isMerged() );
+        assertFalse( data.getRow( 4 ).isMerged() );
+
+        assertFalse( data.getRow( 0 ).isCollapsed() );
+        assertTrue( data.getRow( 1 ).isCollapsed() );
+        assertTrue( data.getRow( 2 ).isCollapsed() );
+        assertTrue( data.getRow( 3 ).isCollapsed() );
+        assertFalse( data.getRow( 4 ).isCollapsed() );
+
+        assertTrue( data.getCell( 0,
+                                  0 ).isMerged() );
+        assertEquals( 4,
+                      data.getCell( 0,
+                                    0 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 1,
+                                  0 ).isMerged() );
+        assertEquals( 0,
+                      data.getCell( 1,
+                                    0 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 2,
+                                  0 ).isMerged() );
+        assertEquals( 0,
+                      data.getCell( 2,
+                                    0 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 3,
+                                  0 ).isMerged() );
+        assertEquals( 0,
+                      data.getCell( 3,
+                                    0 ).getMergedCellCount() );
+
+        assertFalse( data.getCell( 4,
+                                   0 ).isMerged() );
+        assertEquals( 1,
+                      data.getCell( 4,
+                                    0 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 0,
+                                  1 ).isMerged() );
+        assertEquals( 4,
+                      data.getCell( 0,
+                                    1 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 1,
+                                  1 ).isMerged() );
+        assertEquals( 0,
+                      data.getCell( 1,
+                                    1 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 2,
+                                  1 ).isMerged() );
+        assertEquals( 0,
+                      data.getCell( 2,
+                                    1 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 3,
+                                  1 ).isMerged() );
+        assertEquals( 0,
+                      data.getCell( 3,
+                                    1 ).getMergedCellCount() );
+
+        assertFalse( data.getCell( 4,
+                                   1 ).isMerged() );
+        assertEquals( 1,
+                      data.getCell( 4,
+                                    1 ).getMergedCellCount() );
+
+        //Ungroup g1
+        data.expandCell( 0,
+                         0 );
+
+        assertEquals( 5,
+                      data.getRowCount() );
+
+        assertTrue( data.getRow( 0 ).isMerged() );
+        assertTrue( data.getRow( 1 ).isMerged() );
+        assertTrue( data.getRow( 2 ).isMerged() );
+        assertTrue( data.getRow( 3 ).isMerged() );
+        assertFalse( data.getRow( 4 ).isMerged() );
+
+        assertFalse( data.getRow( 0 ).isCollapsed() );
+        assertFalse( data.getRow( 1 ).isCollapsed() );
+        assertFalse( data.getRow( 2 ).isCollapsed() );
+        assertFalse( data.getRow( 3 ).isCollapsed() );
+        assertFalse( data.getRow( 4 ).isCollapsed() );
+
+        assertTrue( data.getCell( 0,
+                                  0 ).isMerged() );
+        assertEquals( 4,
+                      data.getCell( 0,
+                                    0 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 1,
+                                  0 ).isMerged() );
+        assertEquals( 0,
+                      data.getCell( 1,
+                                    0 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 2,
+                                  0 ).isMerged() );
+        assertEquals( 0,
+                      data.getCell( 2,
+                                    0 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 3,
+                                  0 ).isMerged() );
+        assertEquals( 0,
+                      data.getCell( 3,
+                                    0 ).getMergedCellCount() );
+
+        assertFalse( data.getCell( 4,
+                                   0 ).isMerged() );
+        assertEquals( 1,
+                      data.getCell( 4,
+                                    0 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 0,
+                                  1 ).isMerged() );
+        assertEquals( 4,
+                      data.getCell( 0,
+                                    1 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 1,
+                                  1 ).isMerged() );
+        assertEquals( 0,
+                      data.getCell( 1,
+                                    1 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 2,
+                                  1 ).isMerged() );
+        assertEquals( 0,
+                      data.getCell( 2,
+                                    1 ).getMergedCellCount() );
+
+        assertTrue( data.getCell( 3,
+                                  1 ).isMerged() );
+        assertEquals( 0,
+                      data.getCell( 3,
+                                    1 ).getMergedCellCount() );
+
+        assertFalse( data.getCell( 4,
+                                   1 ).isMerged() );
+        assertEquals( 1,
+                      data.getCell( 4,
+                                    1 ).getMergedCellCount() );
+    }
+
+    @Test
+    public void testGroupOverlap10() {
+        final MergableGridData data = new MergableGridData();
+        final MergableGridColumn gc1 = new MergableGridColumn( "col1",
+                                                               100 );
+        final MergableGridColumn gc2 = new MergableGridColumn( "col2",
+                                                               100 );
+        data.addColumn( gc1 );
+        data.addColumn( gc2 );
+
+        data.addRow( new MergableGridRow() );
+        data.addRow( new MergableGridRow() );
+        data.addRow( new MergableGridRow() );
+        data.addRow( new MergableGridRow() );
+        data.addRow( new MergableGridRow() );
+
+        for ( int rowIndex = 0; rowIndex < data.getRowCount(); rowIndex++ ) {
+            for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
+                data.setCell( rowIndex,
+                              columnIndex,
+                              "(" + columnIndex + ", " + rowIndex + ")" );
+            }
+        }
+
+        // [   g1  (1,0) ]
+        // [   g1  (1,1) ]      [   g1  (1,0) ]      [   g1  (1,0) ]      [   g1  (1,0) ]      [   g1  (1,0) ]
+        // [   g1    g2  ] ---> [ (0,3)   g2  ] ---> [ (0,3)   g2  ] ---> [   g1  (1,1) ] ---> [ (0,3)   g2  ]
+        // [ (0,3)   g2  ]      [ (0,4)   g2  ]                           [   g1    g2  ]
+        // [ (0,4)   g2  ]                                                [ (0,3)   g2  ]
+
+        data.setCell( 0,
+                      0,
+                      "g1" );
+        data.setCell( 1,
+                      0,
+                      "g1" );
+        data.setCell( 2,
+                      0,
+                      "g1" );
+
+        data.setCell( 2,
+                      1,
+                      "g2" );
+        data.setCell( 3,
+                      1,
+                      "g2" );
+        data.setCell( 4,
+                      1,
+                      "g2" );
+
+        //Group g1
+        data.collapseCell( 0,
+                           0 );
+        assertGroupOverlap10_g1a( data );
+
+        //Group g2
+        data.collapseCell( 3,
+                           1 );
+        assertGroupOverlap10_g2( data );
+
+        //Ungroup g1
+        data.expandCell( 0,
+                         0 );
+        assertGroupOverlap10_g1b( data );
+
+        //Group g1
+        data.collapseCell( 0,
+                           0 );
+        assertGroupOverlap10_g1c( data );
+
+        //Ungroup g1
+        data.expandCell( 0,
+                         0 );
+        assertGroupOverlap10_g1b( data );
+    }
+
+    private void assertGroupOverlap10_g1a( final MergableGridData data ) {
+        assertEquals( 5,
+                      data.getRowCount() );
+
+        assertTrue( data.getRow( 0 ).isMerged() );
+        assertTrue( data.getRow( 1 ).isMerged() );
+        assertTrue( data.getRow( 2 ).isMerged() );
+        assertTrue( data.getRow( 3 ).isMerged() );
+        assertTrue( data.getRow( 4 ).isMerged() );
+
+        assertFalse( data.getRow( 0 ).isCollapsed() );
+        assertTrue( data.getRow( 1 ).isCollapsed() );
+        assertTrue( data.getRow( 2 ).isCollapsed() );
+        assertFalse( data.getRow( 3 ).isCollapsed() );
+        assertFalse( data.getRow( 4 ).isCollapsed() );
+
+        assertTrue( data.getCell( 0,
+                                  0 ).isMerged() );
+        assertTrue( data.getCell( 1,
+                                  0 ).isMerged() );
+        assertTrue( data.getCell( 2,
+                                  0 ).isMerged() );
+        assertFalse( data.getCell( 3,
+                                   0 ).isMerged() );
+        assertFalse( data.getCell( 4,
+                                   0 ).isMerged() );
+
+        assertFalse( data.getCell( 0,
+                                   1 ).isMerged() );
+        assertFalse( data.getCell( 1,
+                                   1 ).isMerged() );
+        assertFalse( data.getCell( 2,
+                                   1 ).isMerged() );
+        assertTrue( data.getCell( 3,
+                                  1 ).isMerged() );
+        assertTrue( data.getCell( 4,
+                                  1 ).isMerged() );
+
+        assertEquals( 3,
+                      data.getCell( 0,
+                                    0 ).getMergedCellCount() );
+        assertEquals( 0,
+                      data.getCell( 1,
+                                    0 ).getMergedCellCount() );
+        assertEquals( 0,
+                      data.getCell( 2,
+                                    0 ).getMergedCellCount() );
+        assertEquals( 1,
+                      data.getCell( 3,
+                                    0 ).getMergedCellCount() );
+        assertEquals( 1,
+                      data.getCell( 4,
+                                    0 ).getMergedCellCount() );
 
         assertEquals( 1,
                       data.getCell( 0,
-                                    1 ).getCollapsedCellCount() );
+                                    1 ).getMergedCellCount() );
         assertEquals( 1,
                       data.getCell( 1,
-                                    1 ).getCollapsedCellCount() );
+                                    1 ).getMergedCellCount() );
         assertEquals( 1,
                       data.getCell( 2,
-                                    1 ).getCollapsedCellCount() );
+                                    1 ).getMergedCellCount() );
+        assertEquals( 2,
+                      data.getCell( 3,
+                                    1 ).getMergedCellCount() );
+        assertEquals( 0,
+                      data.getCell( 4,
+                                    1 ).getMergedCellCount() );
+    }
+
+    private void assertGroupOverlap10_g1b( final MergableGridData data ) {
+        assertEquals( 5,
+                      data.getRowCount() );
+
+        assertTrue( data.getRow( 0 ).isMerged() );
+        assertTrue( data.getRow( 1 ).isMerged() );
+        assertTrue( data.getRow( 2 ).isMerged() );
+        assertTrue( data.getRow( 3 ).isMerged() );
+        assertTrue( data.getRow( 4 ).isMerged() );
+
+        assertFalse( data.getRow( 0 ).isCollapsed() );
+        assertFalse( data.getRow( 1 ).isCollapsed() );
+        assertFalse( data.getRow( 2 ).isCollapsed() );
+        assertFalse( data.getRow( 3 ).isCollapsed() );
+        assertTrue( data.getRow( 4 ).isCollapsed() );
+
+        assertTrue( data.getCell( 0,
+                                  0 ).isMerged() );
+        assertTrue( data.getCell( 1,
+                                  0 ).isMerged() );
+        assertTrue( data.getCell( 2,
+                                  0 ).isMerged() );
+        assertFalse( data.getCell( 3,
+                                   0 ).isMerged() );
+        assertFalse( data.getCell( 4,
+                                   0 ).isMerged() );
+
+        assertFalse( data.getCell( 0,
+                                   1 ).isMerged() );
+        assertFalse( data.getCell( 1,
+                                   1 ).isMerged() );
+        assertFalse( data.getCell( 2,
+                                   1 ).isMerged() );
+        assertTrue( data.getCell( 3,
+                                  1 ).isMerged() );
+        assertTrue( data.getCell( 4,
+                                  1 ).isMerged() );
+
+        assertEquals( 3,
+                      data.getCell( 0,
+                                    0 ).getMergedCellCount() );
+        assertEquals( 0,
+                      data.getCell( 1,
+                                    0 ).getMergedCellCount() );
+        assertEquals( 0,
+                      data.getCell( 2,
+                                    0 ).getMergedCellCount() );
         assertEquals( 1,
                       data.getCell( 3,
-                                    1 ).getCollapsedCellCount() );
+                                    0 ).getMergedCellCount() );
         assertEquals( 1,
                       data.getCell( 4,
-                                    1 ).getCollapsedCellCount() );
+                                    0 ).getMergedCellCount() );
+
+        assertEquals( 1,
+                      data.getCell( 0,
+                                    1 ).getMergedCellCount() );
+        assertEquals( 1,
+                      data.getCell( 1,
+                                    1 ).getMergedCellCount() );
+        assertEquals( 1,
+                      data.getCell( 2,
+                                    1 ).getMergedCellCount() );
+        assertEquals( 2,
+                      data.getCell( 3,
+                                    1 ).getMergedCellCount() );
+        assertEquals( 0,
+                      data.getCell( 4,
+                                    1 ).getMergedCellCount() );
+    }
+
+    private void assertGroupOverlap10_g1c( final MergableGridData data ) {
+        assertEquals( 5,
+                      data.getRowCount() );
+
+        assertTrue( data.getRow( 0 ).isMerged() );
+        assertTrue( data.getRow( 1 ).isMerged() );
+        assertTrue( data.getRow( 2 ).isMerged() );
+        assertTrue( data.getRow( 3 ).isMerged() );
+        assertTrue( data.getRow( 4 ).isMerged() );
+
+        assertFalse( data.getRow( 0 ).isCollapsed() );
+        assertTrue( data.getRow( 1 ).isCollapsed() );
+        assertTrue( data.getRow( 2 ).isCollapsed() );
+        assertFalse( data.getRow( 3 ).isCollapsed() );
+        assertTrue( data.getRow( 4 ).isCollapsed() );
+
+        assertTrue( data.getCell( 0,
+                                  0 ).isMerged() );
+        assertTrue( data.getCell( 1,
+                                  0 ).isMerged() );
+        assertTrue( data.getCell( 2,
+                                  0 ).isMerged() );
+        assertFalse( data.getCell( 3,
+                                   0 ).isMerged() );
+        assertFalse( data.getCell( 4,
+                                   0 ).isMerged() );
+
+        assertFalse( data.getCell( 0,
+                                   1 ).isMerged() );
+        assertFalse( data.getCell( 1,
+                                   1 ).isMerged() );
+        assertFalse( data.getCell( 2,
+                                   1 ).isMerged() );
+        assertTrue( data.getCell( 3,
+                                  1 ).isMerged() );
+        assertTrue( data.getCell( 4,
+                                  1 ).isMerged() );
+
+        assertEquals( 3,
+                      data.getCell( 0,
+                                    0 ).getMergedCellCount() );
+        assertEquals( 0,
+                      data.getCell( 1,
+                                    0 ).getMergedCellCount() );
+        assertEquals( 0,
+                      data.getCell( 2,
+                                    0 ).getMergedCellCount() );
+        assertEquals( 1,
+                      data.getCell( 3,
+                                    0 ).getMergedCellCount() );
+        assertEquals( 1,
+                      data.getCell( 4,
+                                    0 ).getMergedCellCount() );
+
+        assertEquals( 1,
+                      data.getCell( 0,
+                                    1 ).getMergedCellCount() );
+        assertEquals( 1,
+                      data.getCell( 1,
+                                    1 ).getMergedCellCount() );
+        assertEquals( 1,
+                      data.getCell( 2,
+                                    1 ).getMergedCellCount() );
+        assertEquals( 2,
+                      data.getCell( 3,
+                                    1 ).getMergedCellCount() );
+        assertEquals( 0,
+                      data.getCell( 4,
+                                    1 ).getMergedCellCount() );
+    }
+
+    private void assertGroupOverlap10_g2( final MergableGridData data ) {
+        assertEquals( 5,
+                      data.getRowCount() );
+
+        assertTrue( data.getRow( 0 ).isMerged() );
+        assertTrue( data.getRow( 1 ).isMerged() );
+        assertTrue( data.getRow( 2 ).isMerged() );
+        assertTrue( data.getRow( 3 ).isMerged() );
+        assertTrue( data.getRow( 4 ).isMerged() );
+
+        assertFalse( data.getRow( 0 ).isCollapsed() );
+        assertTrue( data.getRow( 1 ).isCollapsed() );
+        assertTrue( data.getRow( 2 ).isCollapsed() );
+        assertFalse( data.getRow( 3 ).isCollapsed() );
+        assertTrue( data.getRow( 4 ).isCollapsed() );
+
+        assertTrue( data.getCell( 0,
+                                  0 ).isMerged() );
+        assertTrue( data.getCell( 1,
+                                  0 ).isMerged() );
+        assertTrue( data.getCell( 2,
+                                  0 ).isMerged() );
+        assertFalse( data.getCell( 3,
+                                   0 ).isMerged() );
+        assertFalse( data.getCell( 4,
+                                   0 ).isMerged() );
+
+        assertFalse( data.getCell( 0,
+                                   1 ).isMerged() );
+        assertFalse( data.getCell( 1,
+                                   1 ).isMerged() );
+        assertFalse( data.getCell( 2,
+                                   1 ).isMerged() );
+        assertTrue( data.getCell( 3,
+                                  1 ).isMerged() );
+        assertTrue( data.getCell( 4,
+                                  1 ).isMerged() );
+
+        assertEquals( 3,
+                      data.getCell( 0,
+                                    0 ).getMergedCellCount() );
+        assertEquals( 0,
+                      data.getCell( 1,
+                                    0 ).getMergedCellCount() );
+        assertEquals( 0,
+                      data.getCell( 2,
+                                    0 ).getMergedCellCount() );
+        assertEquals( 1,
+                      data.getCell( 3,
+                                    0 ).getMergedCellCount() );
+        assertEquals( 1,
+                      data.getCell( 4,
+                                    0 ).getMergedCellCount() );
+
+        assertEquals( 1,
+                      data.getCell( 0,
+                                    1 ).getMergedCellCount() );
+        assertEquals( 1,
+                      data.getCell( 1,
+                                    1 ).getMergedCellCount() );
+        assertEquals( 1,
+                      data.getCell( 2,
+                                    1 ).getMergedCellCount() );
+        assertEquals( 2,
+                      data.getCell( 3,
+                                    1 ).getMergedCellCount() );
+        assertEquals( 0,
+                      data.getCell( 4,
+                                    1 ).getMergedCellCount() );
     }
 
     @Test
@@ -1524,39 +2858,21 @@ public class GridGroupingTests {
 
         assertTrue( data.getCell( 0,
                                   0 ).isMerged() );
-        assertEquals( 1,
-                      data.getCell( 0,
-                                    0 ).getCollapsedCellCount() );
 
         assertTrue( data.getCell( 1,
                                   0 ).isMerged() );
-        assertEquals( 1,
-                      data.getCell( 1,
-                                    0 ).getCollapsedCellCount() );
 
         assertFalse( data.getCell( 2,
                                    0 ).isMerged() );
-        assertEquals( 1,
-                      data.getCell( 2,
-                                    0 ).getCollapsedCellCount() );
 
         assertFalse( data.getCell( 0,
                                    1 ).isMerged() );
-        assertEquals( 1,
-                      data.getCell( 0,
-                                    1 ).getCollapsedCellCount() );
 
         assertFalse( data.getCell( 1,
                                    1 ).isMerged() );
-        assertEquals( 1,
-                      data.getCell( 1,
-                                    1 ).getCollapsedCellCount() );
 
         assertFalse( data.getCell( 2,
                                    1 ).isMerged() );
-        assertEquals( 1,
-                      data.getCell( 2,
-                                    1 ).getCollapsedCellCount() );
     }
 
     @Test
@@ -1643,39 +2959,21 @@ public class GridGroupingTests {
 
         assertFalse( data.getCell( 0,
                                    0 ).isMerged() );
-        assertEquals( 1,
-                      data.getCell( 0,
-                                    0 ).getCollapsedCellCount() );
 
         assertFalse( data.getCell( 1,
                                    0 ).isMerged() );
-        assertEquals( 1,
-                      data.getCell( 1,
-                                    0 ).getCollapsedCellCount() );
 
         assertFalse( data.getCell( 2,
                                    0 ).isMerged() );
-        assertEquals( 1,
-                      data.getCell( 2,
-                                    0 ).getCollapsedCellCount() );
 
         assertTrue( data.getCell( 0,
                                   1 ).isMerged() );
-        assertEquals( 1,
-                      data.getCell( 0,
-                                    1 ).getCollapsedCellCount() );
 
         assertTrue( data.getCell( 1,
                                   1 ).isMerged() );
-        assertEquals( 1,
-                      data.getCell( 1,
-                                    1 ).getCollapsedCellCount() );
 
         assertFalse( data.getCell( 2,
                                    1 ).isMerged() );
-        assertEquals( 1,
-                      data.getCell( 2,
-                                    1 ).getCollapsedCellCount() );
     }
 
 }

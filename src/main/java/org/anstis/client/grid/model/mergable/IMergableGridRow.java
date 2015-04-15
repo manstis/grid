@@ -24,9 +24,9 @@ public interface IMergableGridRow<V extends IGridCell> extends IGridRow<V> {
 
     boolean isCollapsed();
 
-    void storeHeight();
+    void collapse();
 
-    void restoreHeight();
+    void expand();
 
     double peekHeight();
 

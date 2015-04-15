@@ -25,6 +25,8 @@ public interface IMergableGridCell extends IGridCell {
 
     boolean isCollapsed();
 
-    int getCollapsedCellCount();
+    void collapse();
+
+    void expand();
 
 }

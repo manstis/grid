@@ -15,6 +15,9 @@
  */
 package org.anstis.client.grid.widget.animation;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.ait.lienzo.client.core.animation.AnimationTweener;
 import com.ait.lienzo.client.core.animation.IAnimation;
 import com.ait.lienzo.client.core.animation.IAnimationCallback;
@@ -33,10 +36,15 @@ public class MergableGridWidgetExpandRowsAnimation extends TimedAnimation {
                new IAnimationCallback() {
 
                    private AnimationTweener tweener = AnimationTweener.EASE_OUT;
+                   private List<Double> heights = new ArrayList<>();
 
                    @Override
                    public void onStart( final IAnimation iAnimation,
                                         final IAnimationHandle iAnimationHandle ) {
+                       for ( int i = 0; i < rowCount; i++ ) {
+                           final MergableGridRow row = gridWidget.getModel().getRow( rowIndex + i );
+                           heights.add( row.peekHeight() );
+                       }
                        gridWidget.getModel().expandCell( rowIndex,
                                                          columnIndex );
                    }
@@ -47,7 +55,7 @@ public class MergableGridWidgetExpandRowsAnimation extends TimedAnimation {
                        final double pct = assertPct( iAnimation.getPercent() );
                        for ( int i = 1; i < rowCount; i++ ) {
                            final MergableGridRow row = gridWidget.getModel().getRow( rowIndex + i );
-                           row.setHeight( pct * row.peekHeight() );
+                           row.setHeight( pct * heights.get( i ) );
                        }
                        gridWidget.getLayer().draw();
                    }
@@ -55,10 +63,7 @@ public class MergableGridWidgetExpandRowsAnimation extends TimedAnimation {
                    @Override
                    public void onClose( final IAnimation iAnimation,
                                         final IAnimationHandle iAnimationHandle ) {
-                       for ( int i = 1; i < rowCount; i++ ) {
-                           final MergableGridRow row = gridWidget.getModel().getRow( rowIndex + i );
-                           row.restoreHeight();
-                       }
+                       //Do nothing
                    }
 
                    private double assertPct( final double pct ) {

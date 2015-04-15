@@ -22,8 +22,17 @@ import org.anstis.client.grid.model.BaseGridRow;
 public class MergableGridRow extends BaseGridRow<MergableGridCell> implements IMergableGridRow<MergableGridCell> {
 
     private boolean hasMergedCells = false;
-    private int collapseLevel = 0;
     private Stack<Double> heights = new Stack<>();
+    private int collapseLevel = 0;
+
+    public MergableGridRow() {
+        this( 20 );
+    }
+
+    public MergableGridRow( final double height ) {
+        this.height = height;
+        this.heights.push( height );
+    }
 
     @Override
     public boolean isMerged() {
@@ -36,13 +45,21 @@ public class MergableGridRow extends BaseGridRow<MergableGridCell> implements IM
     }
 
     @Override
-    public void storeHeight() {
+    public void collapse() {
+        collapseLevel++;
         heights.push( height );
+        for ( MergableGridCell cell : cells.values() ) {
+            cell.collapse();
+        }
     }
 
     @Override
-    public void restoreHeight() {
+    public void expand() {
+        collapseLevel--;
         height = heights.pop();
+        for ( MergableGridCell cell : cells.values() ) {
+            cell.expand();
+        }
     }
 
     @Override
@@ -62,14 +79,6 @@ public class MergableGridRow extends BaseGridRow<MergableGridCell> implements IM
 
     void setHasMergedCells( final boolean hasMergedCells ) {
         this.hasMergedCells = hasMergedCells;
-    }
-
-    void increaseCollapseLevel() {
-        this.collapseLevel++;
-    }
-
-    void decreaseCollapseLevel() {
-        this.collapseLevel--;
     }
 
 }

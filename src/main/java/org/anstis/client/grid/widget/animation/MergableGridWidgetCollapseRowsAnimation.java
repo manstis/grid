@@ -37,10 +37,6 @@ public class MergableGridWidgetCollapseRowsAnimation extends TimedAnimation {
                    @Override
                    public void onStart( final IAnimation iAnimation,
                                         final IAnimationHandle iAnimationHandle ) {
-                       for ( int i = 1; i < rowCount; i++ ) {
-                           final MergableGridRow row = gridWidget.getModel().getRow( rowIndex + i );
-                           row.storeHeight();
-                       }
                        gridWidget.getModel().collapseCell( rowIndex,
                                                            columnIndex );
                    }
@@ -59,10 +55,7 @@ public class MergableGridWidgetCollapseRowsAnimation extends TimedAnimation {
                    @Override
                    public void onClose( final IAnimation iAnimation,
                                         final IAnimationHandle iAnimationHandle ) {
-                       for ( int i = 1; i < rowCount; i++ ) {
-                           gridWidget.getModel().getRow( rowIndex + i ).setHeight( 0 );
-                       }
-                       gridWidget.getLayer().draw();
+                       //Do nothing
                    }
 
                    private double assertPct( final double pct ) {

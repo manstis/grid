@@ -45,8 +45,7 @@ public class GridDataFactory {
                                  final int rowCount ) {
         final int columnCount = grid.getColumns().size();
         for ( int rowIndex = 0; rowIndex < rowCount; rowIndex++ ) {
-            final MergableGridRow row = new MergableGridRow();
-            row.setHeight( getRowHeight() );
+            final MergableGridRow row = new MergableGridRow( getRowHeight() );
             grid.addRow( row );
             for ( int columnIndex = 0; columnIndex < columnCount; columnIndex++ ) {
                 if ( Math.random() < FILL_FACTOR ) {
@@ -59,14 +58,15 @@ public class GridDataFactory {
     }
 
     private static double getRowHeight() {
-        final int r = (int) Math.round( Math.random() * 3 );
-        switch ( r ) {
-            case 0:
-                return 20.0;
-            case 1:
-                return 40.0;
-        }
-        return 60.0;
+        return 20;
+//        final int r = (int) Math.round( Math.random() * 3 );
+//        switch ( r ) {
+//            case 0:
+//                return 20.0;
+//            case 1:
+//                return 40.0;
+//        }
+//        return 60.0;
     }
 
 }
