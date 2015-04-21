@@ -38,8 +38,8 @@ public abstract class BaseGridTests {
                           expectedRowMergeStates[ rowIndex ],
                           row.isMerged() );
             assertEquals( "Row[" + rowIndex + "] actual isCollapsed() differs to expected.",
-                          expectedRowMergeStates[ rowIndex ],
-                          row.isMerged() );
+                          expectedRowCollapseStates[ rowIndex ],
+                          row.isCollapsed() );
 
             if ( data.getColumns().size() != expectedCellStates[ rowIndex ].length ) {
                 fail( "Size of parameter 'expectedCellStates[" + rowIndex + "]' differs to expected column count." );

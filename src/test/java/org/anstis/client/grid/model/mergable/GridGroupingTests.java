@@ -19,7 +19,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class GridGroupingTests {
+public class GridGroupingTests extends BaseGridTests {
 
     @Test
     public void testInitialSetup1() {
@@ -88,72 +88,27 @@ public class GridGroupingTests {
         data.collapseCell( 0,
                            0 );
 
-        assertEquals( 3,
-                      data.getRowCount() );
-
-        assertTrue( data.getRow( 0 ).isMerged() );
-        assertTrue( data.getRow( 1 ).isMerged() );
-        assertFalse( data.getRow( 2 ).isMerged() );
-
-        assertFalse( data.getRow( 0 ).isCollapsed() );
-        assertTrue( data.getRow( 1 ).isCollapsed() );
-        assertFalse( data.getRow( 2 ).isCollapsed() );
-
-        assertTrue( data.getCell( 0,
-                                  0 ).isMerged() );
-
-        assertEquals( "(0, 0)",
-                      data.getCell( 0,
-                                    0 ).getValue() );
-        assertEquals( "(0, 0)",
-                      data.getCell( 1,
-                                    0 ).getValue() );
-        assertEquals( "(0, 2)",
-                      data.getCell( 2,
-                                    0 ).getValue() );
+        assertGridIndexes( data,
+                           new boolean[]{ true, true, false },
+                           new boolean[]{ false, true, false },
+                           new BaseGridTests.Expected[][]{
+                                   { BaseGridTests.Expected.build( true, 2, "(0, 0)" ), BaseGridTests.Expected.build( false, 1, "(1, 0)" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "(0, 0)" ), BaseGridTests.Expected.build( false, 1, "(1, 1)" ) },
+                                   { BaseGridTests.Expected.build( false, 1, "(0, 2)" ), BaseGridTests.Expected.build( false, 1, "(1, 2)" ) }
+                           } );
 
         //Ungroup cells
         data.expandCell( 0,
                          0 );
 
-        assertEquals( 3,
-                      data.getRowCount() );
-
-        assertTrue( data.getRow( 0 ).isMerged() );
-        assertTrue( data.getRow( 1 ).isMerged() );
-        assertFalse( data.getRow( 2 ).isMerged() );
-
-        assertFalse( data.getRow( 0 ).isCollapsed() );
-        assertFalse( data.getRow( 1 ).isCollapsed() );
-        assertFalse( data.getRow( 2 ).isCollapsed() );
-
-        assertTrue( data.getCell( 0,
-                                  0 ).isMerged() );
-        assertEquals( 2,
-                      data.getCell( 0,
-                                    0 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 1,
-                                  0 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 1,
-                                    0 ).getMergedCellCount() );
-
-        assertFalse( data.getCell( 2,
-                                   0 ).isMerged() );
-        assertEquals( 1,
-                      data.getCell( 2,
-                                    0 ).getMergedCellCount() );
-
-        assertEquals( "(0, 0)",
-                      data.getCell( 0,
-                                    0 ).getValue() );
-        assertEquals( "(0, 0)",
-                      data.getCell( 1,
-                                    0 ).getValue() );
-        assertEquals( "(0, 2)",
-                      data.getCell( 2,
-                                    0 ).getValue() );
+        assertGridIndexes( data,
+                           new boolean[]{ true, true, false },
+                           new boolean[]{ false, false, false },
+                           new BaseGridTests.Expected[][]{
+                                   { BaseGridTests.Expected.build( true, 2, "(0, 0)" ), BaseGridTests.Expected.build( false, 1, "(1, 0)" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "(0, 0)" ), BaseGridTests.Expected.build( false, 1, "(1, 1)" ) },
+                                   { BaseGridTests.Expected.build( false, 1, "(0, 2)" ), BaseGridTests.Expected.build( false, 1, "(1, 2)" ) }
+                           } );
     }
 
     @Test
@@ -196,199 +151,63 @@ public class GridGroupingTests {
         data.collapseCell( 2,
                            0 );
 
-        assertEquals( 5,
-                      data.getRowCount() );
-
-        assertFalse( data.getRow( 0 ).isMerged() );
-        assertFalse( data.getRow( 1 ).isMerged() );
-        assertTrue( data.getRow( 2 ).isMerged() );
-        assertTrue( data.getRow( 3 ).isMerged() );
-        assertFalse( data.getRow( 4 ).isMerged() );
-
-        assertFalse( data.getRow( 0 ).isCollapsed() );
-        assertFalse( data.getRow( 1 ).isCollapsed() );
-        assertFalse( data.getRow( 2 ).isCollapsed() );
-        assertTrue( data.getRow( 3 ).isCollapsed() );
-        assertFalse( data.getRow( 4 ).isCollapsed() );
-
-        assertFalse( data.getCell( 0,
-                                   0 ).isMerged() );
-        assertEquals( 1,
-                      data.getCell( 0,
-                                    0 ).getMergedCellCount() );
-
-        assertFalse( data.getCell( 1,
-                                   0 ).isMerged() );
-        assertEquals( 1,
-                      data.getCell( 1,
-                                    0 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 2,
-                                  0 ).isMerged() );
-        assertEquals( 2,
-                      data.getCell( 2,
-                                    0 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 3,
-                                  0 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 3,
-                                    0 ).getMergedCellCount() );
-
-        assertFalse( data.getCell( 4,
-                                   0 ).isMerged() );
-        assertEquals( 1,
-                      data.getCell( 4,
-                                    0 ).getMergedCellCount() );
+        assertGridIndexes( data,
+                           new boolean[]{ false, false, true, true, false },
+                           new boolean[]{ false, false, false, true, false },
+                           new BaseGridTests.Expected[][]{
+                                   { BaseGridTests.Expected.build( false, 1, "(0, 0)" ), BaseGridTests.Expected.build( false, 1, "(1, 0)" ) },
+                                   { BaseGridTests.Expected.build( false, 1, "(0, 1)" ), BaseGridTests.Expected.build( false, 1, "(1, 1)" ) },
+                                   { BaseGridTests.Expected.build( true, 2, "(0, 2)" ), BaseGridTests.Expected.build( false, 1, "(1, 2)" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "(0, 2)" ), BaseGridTests.Expected.build( false, 1, "(1, 3)" ) },
+                                   { BaseGridTests.Expected.build( false, 1, "(0, 4)" ), BaseGridTests.Expected.build( false, 1, "(1, 4)" ) }
+                           } );
 
         //Set cell above existing block (should not affect existing block)
         data.setCell( 1,
                       0,
                       "(0, 2)" );
 
-        assertEquals( 5,
-                      data.getRowCount() );
-
-        assertFalse( data.getRow( 0 ).isMerged() );
-        assertFalse( data.getRow( 1 ).isMerged() );
-        assertTrue( data.getRow( 2 ).isMerged() );
-        assertTrue( data.getRow( 3 ).isMerged() );
-        assertFalse( data.getRow( 4 ).isMerged() );
-
-        assertFalse( data.getRow( 0 ).isCollapsed() );
-        assertFalse( data.getRow( 1 ).isCollapsed() );
-        assertFalse( data.getRow( 2 ).isCollapsed() );
-        assertTrue( data.getRow( 3 ).isCollapsed() );
-        assertFalse( data.getRow( 4 ).isCollapsed() );
-
-        assertFalse( data.getCell( 0,
-                                   0 ).isMerged() );
-        assertEquals( 1,
-                      data.getCell( 0,
-                                    0 ).getMergedCellCount() );
-
-        assertFalse( data.getCell( 1,
-                                   0 ).isMerged() );
-        assertEquals( 1,
-                      data.getCell( 1,
-                                    0 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 2,
-                                  0 ).isMerged() );
-        assertEquals( 2,
-                      data.getCell( 2,
-                                    0 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 3,
-                                  0 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 3,
-                                    0 ).getMergedCellCount() );
-
-        assertFalse( data.getCell( 4,
-                                   0 ).isMerged() );
-        assertEquals( 1,
-                      data.getCell( 4,
-                                    0 ).getMergedCellCount() );
+        assertGridIndexes( data,
+                           new boolean[]{ false, false, true, true, false },
+                           new boolean[]{ false, false, false, true, false },
+                           new BaseGridTests.Expected[][]{
+                                   { BaseGridTests.Expected.build( false, 1, "(0, 0)" ), BaseGridTests.Expected.build( false, 1, "(1, 0)" ) },
+                                   { BaseGridTests.Expected.build( false, 1, "(0, 2)" ), BaseGridTests.Expected.build( false, 1, "(1, 1)" ) },
+                                   { BaseGridTests.Expected.build( true, 2, "(0, 2)" ), BaseGridTests.Expected.build( false, 1, "(1, 2)" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "(0, 2)" ), BaseGridTests.Expected.build( false, 1, "(1, 3)" ) },
+                                   { BaseGridTests.Expected.build( false, 1, "(0, 4)" ), BaseGridTests.Expected.build( false, 1, "(1, 4)" ) }
+                           } );
 
         //Set cell above existing block (should create a new block)
         data.setCell( 0,
                       0,
                       "(0, 2)" );
 
-        assertEquals( 5,
-                      data.getRowCount() );
-
-        assertTrue( data.getRow( 0 ).isMerged() );
-        assertTrue( data.getRow( 1 ).isMerged() );
-        assertTrue( data.getRow( 2 ).isMerged() );
-        assertTrue( data.getRow( 3 ).isMerged() );
-        assertFalse( data.getRow( 4 ).isMerged() );
-
-        assertFalse( data.getRow( 0 ).isCollapsed() );
-        assertFalse( data.getRow( 1 ).isCollapsed() );
-        assertFalse( data.getRow( 2 ).isCollapsed() );
-        assertTrue( data.getRow( 3 ).isCollapsed() );
-        assertFalse( data.getRow( 4 ).isCollapsed() );
-
-        assertTrue( data.getCell( 0,
-                                  0 ).isMerged() );
-        assertEquals( 2,
-                      data.getCell( 0,
-                                    0 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 1,
-                                  0 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 1,
-                                    0 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 2,
-                                  0 ).isMerged() );
-        assertEquals( 2,
-                      data.getCell( 2,
-                                    0 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 3,
-                                  0 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 3,
-                                    0 ).getMergedCellCount() );
-
-        assertFalse( data.getCell( 4,
-                                   0 ).isMerged() );
-        assertEquals( 1,
-                      data.getCell( 4,
-                                    0 ).getMergedCellCount() );
+        assertGridIndexes( data,
+                           new boolean[]{ true, true, true, true, false },
+                           new boolean[]{ false, false, false, true, false },
+                           new BaseGridTests.Expected[][]{
+                                   { BaseGridTests.Expected.build( true, 2, "(0, 2)" ), BaseGridTests.Expected.build( false, 1, "(1, 0)" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "(0, 2)" ), BaseGridTests.Expected.build( false, 1, "(1, 1)" ) },
+                                   { BaseGridTests.Expected.build( true, 2, "(0, 2)" ), BaseGridTests.Expected.build( false, 1, "(1, 2)" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "(0, 2)" ), BaseGridTests.Expected.build( false, 1, "(1, 3)" ) },
+                                   { BaseGridTests.Expected.build( false, 1, "(0, 4)" ), BaseGridTests.Expected.build( false, 1, "(1, 4)" ) }
+                           } );
 
         //Ungroup cell (should result in a single block spanning 4 rows)
         data.expandCell( 2,
                          0 );
 
-        assertEquals( 5,
-                      data.getRowCount() );
-
-        assertTrue( data.getRow( 0 ).isMerged() );
-        assertTrue( data.getRow( 1 ).isMerged() );
-        assertTrue( data.getRow( 2 ).isMerged() );
-        assertTrue( data.getRow( 3 ).isMerged() );
-        assertFalse( data.getRow( 4 ).isMerged() );
-
-        assertFalse( data.getRow( 0 ).isCollapsed() );
-        assertFalse( data.getRow( 1 ).isCollapsed() );
-        assertFalse( data.getRow( 2 ).isCollapsed() );
-        assertFalse( data.getRow( 3 ).isCollapsed() );
-        assertFalse( data.getRow( 4 ).isCollapsed() );
-
-        assertTrue( data.getCell( 0,
-                                  0 ).isMerged() );
-        assertEquals( 4,
-                      data.getCell( 0,
-                                    0 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 1,
-                                  0 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 1,
-                                    0 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 2,
-                                  0 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 2,
-                                    0 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 3,
-                                  0 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 3,
-                                    0 ).getMergedCellCount() );
-
-        assertFalse( data.getCell( 4,
-                                   0 ).isMerged() );
-        assertEquals( 1,
-                      data.getCell( 4,
-                                    0 ).getMergedCellCount() );
+        assertGridIndexes( data,
+                           new boolean[]{ true, true, true, true, false },
+                           new boolean[]{ false, false, false, false, false },
+                           new BaseGridTests.Expected[][]{
+                                   { BaseGridTests.Expected.build( true, 4, "(0, 2)" ), BaseGridTests.Expected.build( false, 1, "(1, 0)" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "(0, 2)" ), BaseGridTests.Expected.build( false, 1, "(1, 1)" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "(0, 2)" ), BaseGridTests.Expected.build( false, 1, "(1, 2)" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "(0, 2)" ), BaseGridTests.Expected.build( false, 1, "(1, 3)" ) },
+                                   { BaseGridTests.Expected.build( false, 1, "(0, 4)" ), BaseGridTests.Expected.build( false, 1, "(1, 4)" ) }
+                           } );
     }
 
     @Test
@@ -431,199 +250,63 @@ public class GridGroupingTests {
         data.collapseCell( 1,
                            0 );
 
-        assertEquals( 5,
-                      data.getRowCount() );
-
-        assertFalse( data.getRow( 0 ).isMerged() );
-        assertTrue( data.getRow( 1 ).isMerged() );
-        assertTrue( data.getRow( 2 ).isMerged() );
-        assertFalse( data.getRow( 3 ).isMerged() );
-        assertFalse( data.getRow( 4 ).isMerged() );
-
-        assertFalse( data.getRow( 0 ).isCollapsed() );
-        assertFalse( data.getRow( 1 ).isCollapsed() );
-        assertTrue( data.getRow( 2 ).isCollapsed() );
-        assertFalse( data.getRow( 3 ).isCollapsed() );
-        assertFalse( data.getRow( 4 ).isCollapsed() );
-
-        assertFalse( data.getCell( 0,
-                                   0 ).isMerged() );
-        assertEquals( 1,
-                      data.getCell( 0,
-                                    0 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 1,
-                                  0 ).isMerged() );
-        assertEquals( 2,
-                      data.getCell( 1,
-                                    0 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 2,
-                                  0 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 2,
-                                    0 ).getMergedCellCount() );
-
-        assertFalse( data.getCell( 3,
-                                   0 ).isMerged() );
-        assertEquals( 1,
-                      data.getCell( 3,
-                                    0 ).getMergedCellCount() );
-
-        assertFalse( data.getCell( 4,
-                                   0 ).isMerged() );
-        assertEquals( 1,
-                      data.getCell( 4,
-                                    0 ).getMergedCellCount() );
+        assertGridIndexes( data,
+                           new boolean[]{ false, true, true, false, false },
+                           new boolean[]{ false, false, true, false, false },
+                           new BaseGridTests.Expected[][]{
+                                   { BaseGridTests.Expected.build( false, 1, "(0, 0)" ), BaseGridTests.Expected.build( false, 1, "(1, 0)" ) },
+                                   { BaseGridTests.Expected.build( true, 2, "(0, 1)" ), BaseGridTests.Expected.build( false, 1, "(1, 1)" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "(0, 1)" ), BaseGridTests.Expected.build( false, 1, "(1, 2)" ) },
+                                   { BaseGridTests.Expected.build( false, 1, "(0, 3)" ), BaseGridTests.Expected.build( false, 1, "(1, 3)" ) },
+                                   { BaseGridTests.Expected.build( false, 1, "(0, 4)" ), BaseGridTests.Expected.build( false, 1, "(1, 4)" ) }
+                           } );
 
         //Set cell below existing block (should not affect existing block)
         data.setCell( 3,
                       0,
                       "(0, 1)" );
 
-        assertEquals( 5,
-                      data.getRowCount() );
-
-        assertFalse( data.getRow( 0 ).isMerged() );
-        assertTrue( data.getRow( 1 ).isMerged() );
-        assertTrue( data.getRow( 2 ).isMerged() );
-        assertFalse( data.getRow( 3 ).isMerged() );
-        assertFalse( data.getRow( 4 ).isMerged() );
-
-        assertFalse( data.getRow( 0 ).isCollapsed() );
-        assertFalse( data.getRow( 1 ).isCollapsed() );
-        assertTrue( data.getRow( 2 ).isCollapsed() );
-        assertFalse( data.getRow( 3 ).isCollapsed() );
-        assertFalse( data.getRow( 4 ).isCollapsed() );
-
-        assertFalse( data.getCell( 0,
-                                   0 ).isMerged() );
-        assertEquals( 1,
-                      data.getCell( 0,
-                                    0 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 1,
-                                  0 ).isMerged() );
-        assertEquals( 2,
-                      data.getCell( 1,
-                                    0 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 2,
-                                  0 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 2,
-                                    0 ).getMergedCellCount() );
-
-        assertFalse( data.getCell( 3,
-                                   0 ).isMerged() );
-        assertEquals( 1,
-                      data.getCell( 3,
-                                    0 ).getMergedCellCount() );
-
-        assertFalse( data.getCell( 4,
-                                   0 ).isMerged() );
-        assertEquals( 1,
-                      data.getCell( 4,
-                                    0 ).getMergedCellCount() );
+        assertGridIndexes( data,
+                           new boolean[]{ false, true, true, false, false },
+                           new boolean[]{ false, false, true, false, false },
+                           new BaseGridTests.Expected[][]{
+                                   { BaseGridTests.Expected.build( false, 1, "(0, 0)" ), BaseGridTests.Expected.build( false, 1, "(1, 0)" ) },
+                                   { BaseGridTests.Expected.build( true, 2, "(0, 1)" ), BaseGridTests.Expected.build( false, 1, "(1, 1)" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "(0, 1)" ), BaseGridTests.Expected.build( false, 1, "(1, 2)" ) },
+                                   { BaseGridTests.Expected.build( false, 1, "(0, 1)" ), BaseGridTests.Expected.build( false, 1, "(1, 3)" ) },
+                                   { BaseGridTests.Expected.build( false, 1, "(0, 4)" ), BaseGridTests.Expected.build( false, 1, "(1, 4)" ) }
+                           } );
 
         //Set cell below existing block (should create a new block)
         data.setCell( 4,
                       0,
                       "(0, 1)" );
 
-        assertEquals( 5,
-                      data.getRowCount() );
-
-        assertFalse( data.getRow( 0 ).isMerged() );
-        assertTrue( data.getRow( 1 ).isMerged() );
-        assertTrue( data.getRow( 2 ).isMerged() );
-        assertTrue( data.getRow( 3 ).isMerged() );
-        assertTrue( data.getRow( 4 ).isMerged() );
-
-        assertFalse( data.getRow( 0 ).isCollapsed() );
-        assertFalse( data.getRow( 1 ).isCollapsed() );
-        assertTrue( data.getRow( 2 ).isCollapsed() );
-        assertFalse( data.getRow( 3 ).isCollapsed() );
-        assertFalse( data.getRow( 4 ).isCollapsed() );
-
-        assertFalse( data.getCell( 0,
-                                   0 ).isMerged() );
-        assertEquals( 1,
-                      data.getCell( 0,
-                                    0 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 1,
-                                  0 ).isMerged() );
-        assertEquals( 2,
-                      data.getCell( 1,
-                                    0 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 2,
-                                  0 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 2,
-                                    0 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 3,
-                                  0 ).isMerged() );
-        assertEquals( 2,
-                      data.getCell( 3,
-                                    0 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 4,
-                                  0 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 4,
-                                    0 ).getMergedCellCount() );
+        assertGridIndexes( data,
+                           new boolean[]{ false, true, true, true, true },
+                           new boolean[]{ false, false, true, false, false },
+                           new BaseGridTests.Expected[][]{
+                                   { BaseGridTests.Expected.build( false, 1, "(0, 0)" ), BaseGridTests.Expected.build( false, 1, "(1, 0)" ) },
+                                   { BaseGridTests.Expected.build( true, 2, "(0, 1)" ), BaseGridTests.Expected.build( false, 1, "(1, 1)" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "(0, 1)" ), BaseGridTests.Expected.build( false, 1, "(1, 2)" ) },
+                                   { BaseGridTests.Expected.build( true, 2, "(0, 1)" ), BaseGridTests.Expected.build( false, 1, "(1, 3)" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "(0, 1)" ), BaseGridTests.Expected.build( false, 1, "(1, 4)" ) }
+                           } );
 
         //Ungroup cell (should result in a single block spanning 4 rows)
         data.expandCell( 1,
                          0 );
 
-        assertEquals( 5,
-                      data.getRowCount() );
-
-        assertFalse( data.getRow( 0 ).isMerged() );
-        assertTrue( data.getRow( 1 ).isMerged() );
-        assertTrue( data.getRow( 2 ).isMerged() );
-        assertTrue( data.getRow( 3 ).isMerged() );
-        assertTrue( data.getRow( 4 ).isMerged() );
-
-        assertFalse( data.getRow( 0 ).isCollapsed() );
-        assertFalse( data.getRow( 1 ).isCollapsed() );
-        assertFalse( data.getRow( 2 ).isCollapsed() );
-        assertFalse( data.getRow( 3 ).isCollapsed() );
-        assertFalse( data.getRow( 4 ).isCollapsed() );
-
-        assertFalse( data.getCell( 0,
-                                   0 ).isMerged() );
-        assertEquals( 1,
-                      data.getCell( 0,
-                                    0 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 1,
-                                  0 ).isMerged() );
-        assertEquals( 4,
-                      data.getCell( 1,
-                                    0 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 2,
-                                  0 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 2,
-                                    0 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 3,
-                                  0 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 3,
-                                    0 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 4,
-                                  0 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 4,
-                                    0 ).getMergedCellCount() );
+        assertGridIndexes( data,
+                           new boolean[]{ false, true, true, true, true },
+                           new boolean[]{ false, false, false, false, false },
+                           new BaseGridTests.Expected[][]{
+                                   { BaseGridTests.Expected.build( false, 1, "(0, 0)" ), BaseGridTests.Expected.build( false, 1, "(1, 0)" ) },
+                                   { BaseGridTests.Expected.build( true, 4, "(0, 1)" ), BaseGridTests.Expected.build( false, 1, "(1, 1)" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "(0, 1)" ), BaseGridTests.Expected.build( false, 1, "(1, 2)" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "(0, 1)" ), BaseGridTests.Expected.build( false, 1, "(1, 3)" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "(0, 1)" ), BaseGridTests.Expected.build( false, 1, "(1, 4)" ) }
+                           } );
     }
 
     @Test
@@ -685,95 +368,47 @@ public class GridGroupingTests {
         //Group g2
         data.collapseCell( 1,
                            1 );
-        assertGroupOverlap1_g2( data );
+
+        assertGridIndexes( data,
+                           new boolean[]{ true, true, true, true, true },
+                           new boolean[]{ false, false, true, true, false },
+                           new BaseGridTests.Expected[][]{
+                                   { BaseGridTests.Expected.build( true, 5, "g1" ), BaseGridTests.Expected.build( false, 1, "(1, 0)" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 3, "g2" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( false, 1, "(1, 4)" ) }
+                           } );
 
         //Group g1
         data.collapseCell( 0,
                            0 );
-        assertGroupOverlap1_g1( data );
+
+        assertGridIndexes( data,
+                           new boolean[]{ true, true, true, true, true },
+                           new boolean[]{ false, true, true, true, true },
+                           new BaseGridTests.Expected[][]{
+                                   { BaseGridTests.Expected.build( true, 5, "g1" ), BaseGridTests.Expected.build( false, 1, "(1, 0)" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 3, "g2" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( false, 1, "(1, 4)" ) }
+                           } );
 
         //Ungroup g1
         data.expandCell( 0,
                          0 );
-        assertGroupOverlap1_g2( data );
-    }
 
-    private void assertGroupOverlap1_g1( final MergableGridData data ) {
-        assertEquals( 5,
-                      data.getRowCount() );
-
-        assertTrue( data.getRow( 0 ).isMerged() );
-        assertTrue( data.getRow( 1 ).isMerged() );
-        assertTrue( data.getRow( 2 ).isMerged() );
-        assertTrue( data.getRow( 3 ).isMerged() );
-        assertTrue( data.getRow( 4 ).isMerged() );
-
-        assertFalse( data.getRow( 0 ).isCollapsed() );
-        assertTrue( data.getRow( 1 ).isCollapsed() );
-        assertTrue( data.getRow( 2 ).isCollapsed() );
-        assertTrue( data.getRow( 3 ).isCollapsed() );
-        assertTrue( data.getRow( 4 ).isCollapsed() );
-
-        assertTrue( data.getCell( 0,
-                                  0 ).isMerged() );
-        assertTrue( data.getCell( 1,
-                                  0 ).isMerged() );
-        assertTrue( data.getCell( 2,
-                                  0 ).isMerged() );
-        assertTrue( data.getCell( 3,
-                                  0 ).isMerged() );
-        assertTrue( data.getCell( 4,
-                                  0 ).isMerged() );
-
-        assertFalse( data.getCell( 0,
-                                   1 ).isMerged() );
-        assertTrue( data.getCell( 1,
-                                  1 ).isMerged() );
-        assertTrue( data.getCell( 2,
-                                  1 ).isMerged() );
-        assertTrue( data.getCell( 3,
-                                  1 ).isMerged() );
-        assertFalse( data.getCell( 4,
-                                   1 ).isMerged() );
-    }
-
-    private void assertGroupOverlap1_g2( final MergableGridData data ) {
-        assertEquals( 5,
-                      data.getRowCount() );
-
-        assertTrue( data.getRow( 0 ).isMerged() );
-        assertTrue( data.getRow( 1 ).isMerged() );
-        assertTrue( data.getRow( 2 ).isMerged() );
-        assertTrue( data.getRow( 3 ).isMerged() );
-        assertTrue( data.getRow( 4 ).isMerged() );
-
-        assertFalse( data.getRow( 0 ).isCollapsed() );
-        assertFalse( data.getRow( 1 ).isCollapsed() );
-        assertTrue( data.getRow( 2 ).isCollapsed() );
-        assertTrue( data.getRow( 3 ).isCollapsed() );
-        assertFalse( data.getRow( 4 ).isCollapsed() );
-
-        assertTrue( data.getCell( 0,
-                                  0 ).isMerged() );
-        assertTrue( data.getCell( 1,
-                                  0 ).isMerged() );
-        assertTrue( data.getCell( 2,
-                                  0 ).isMerged() );
-        assertTrue( data.getCell( 3,
-                                  0 ).isMerged() );
-        assertTrue( data.getCell( 4,
-                                  0 ).isMerged() );
-
-        assertFalse( data.getCell( 0,
-                                   1 ).isMerged() );
-        assertTrue( data.getCell( 1,
-                                  1 ).isMerged() );
-        assertTrue( data.getCell( 2,
-                                  1 ).isMerged() );
-        assertTrue( data.getCell( 3,
-                                  1 ).isMerged() );
-        assertFalse( data.getCell( 4,
-                                   1 ).isMerged() );
+        assertGridIndexes( data,
+                           new boolean[]{ true, true, true, true, true },
+                           new boolean[]{ false, false, true, true, false },
+                           new BaseGridTests.Expected[][]{
+                                   { BaseGridTests.Expected.build( true, 5, "g1" ), BaseGridTests.Expected.build( false, 1, "(1, 0)" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 3, "g2" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( false, 1, "(1, 4)" ) }
+                           } );
     }
 
     @Test
@@ -826,162 +461,50 @@ public class GridGroupingTests {
                       1,
                       "g2" );
 
-        //Group g2
+        //Group g2 - should split g1
         data.collapseCell( 0,
                            1 );
-        assertGroupOverlap2_g2( data );
+
+        assertGridIndexes( data,
+                           new boolean[]{ true, true, true, true, true },
+                           new boolean[]{ false, true, true, false, false },
+                           new BaseGridTests.Expected[][]{
+                                   { BaseGridTests.Expected.build( false, 1, "(0, 0)" ), BaseGridTests.Expected.build( true, 3, "g2" ) },
+                                   { BaseGridTests.Expected.build( false, 1, "(0, 1)" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
+                                   { BaseGridTests.Expected.build( false, 1, "g1" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
+                                   { BaseGridTests.Expected.build( true, 2, "g1" ), BaseGridTests.Expected.build( false, 1, "(1, 3)" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( false, 1, "(1, 4)" ) }
+                           } );
 
         //Group g1
         data.collapseCell( 3,
                            0 );
-        assertGroupOverlap2_g1( data );
+
+        assertGridIndexes( data,
+                           new boolean[]{ true, true, true, true, true },
+                           new boolean[]{ false, true, true, false, true },
+                           new BaseGridTests.Expected[][]{
+                                   { BaseGridTests.Expected.build( false, 1, "(0, 0)" ), BaseGridTests.Expected.build( true, 3, "g2" ) },
+                                   { BaseGridTests.Expected.build( false, 1, "(0, 1)" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
+                                   { BaseGridTests.Expected.build( false, 1, "g1" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
+                                   { BaseGridTests.Expected.build( true, 2, "g1" ), BaseGridTests.Expected.build( false, 1, "(1, 3)" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( false, 1, "(1, 4)" ) }
+                           } );
 
         //Ungroup g1
         data.expandCell( 3,
                          0 );
-        assertGroupOverlap2_g2( data );
-    }
 
-    private void assertGroupOverlap2_g1( final MergableGridData data ) {
-        assertEquals( 5,
-                      data.getRowCount() );
-
-        assertTrue( data.getRow( 0 ).isMerged() );
-        assertTrue( data.getRow( 1 ).isMerged() );
-        assertTrue( data.getRow( 2 ).isMerged() );
-        assertTrue( data.getRow( 3 ).isMerged() );
-        assertTrue( data.getRow( 4 ).isMerged() );
-
-        assertFalse( data.getRow( 0 ).isCollapsed() );
-        assertTrue( data.getRow( 1 ).isCollapsed() );
-        assertTrue( data.getRow( 2 ).isCollapsed() );
-        assertFalse( data.getRow( 3 ).isCollapsed() );
-        assertTrue( data.getRow( 4 ).isCollapsed() );
-
-        assertFalse( data.getCell( 0,
-                                   0 ).isMerged() );
-        assertFalse( data.getCell( 1,
-                                   0 ).isMerged() );
-        assertFalse( data.getCell( 2,
-                                   0 ).isMerged() );
-        assertTrue( data.getCell( 3,
-                                  0 ).isMerged() );
-        assertTrue( data.getCell( 4,
-                                  0 ).isMerged() );
-
-        assertTrue( data.getCell( 0,
-                                  1 ).isMerged() );
-        assertTrue( data.getCell( 1,
-                                  1 ).isMerged() );
-        assertTrue( data.getCell( 2,
-                                  1 ).isMerged() );
-        assertFalse( data.getCell( 3,
-                                   1 ).isMerged() );
-        assertFalse( data.getCell( 4,
-                                   1 ).isMerged() );
-
-        assertEquals( 1,
-                      data.getCell( 0,
-                                    0 ).getMergedCellCount() );
-        assertEquals( 1,
-                      data.getCell( 1,
-                                    0 ).getMergedCellCount() );
-        assertEquals( 1,
-                      data.getCell( 2,
-                                    0 ).getMergedCellCount() );
-        assertEquals( 2,
-                      data.getCell( 3,
-                                    0 ).getMergedCellCount() );
-        assertEquals( 0,
-                      data.getCell( 4,
-                                    0 ).getMergedCellCount() );
-
-        assertEquals( 3,
-                      data.getCell( 0,
-                                    1 ).getMergedCellCount() );
-        assertEquals( 0,
-                      data.getCell( 1,
-                                    1 ).getMergedCellCount() );
-        assertEquals( 0,
-                      data.getCell( 2,
-                                    1 ).getMergedCellCount() );
-        assertEquals( 1,
-                      data.getCell( 3,
-                                    1 ).getMergedCellCount() );
-        assertEquals( 1,
-                      data.getCell( 4,
-                                    1 ).getMergedCellCount() );
-    }
-
-    private void assertGroupOverlap2_g2( final MergableGridData data ) {
-        assertEquals( 5,
-                      data.getRowCount() );
-
-        assertTrue( data.getRow( 0 ).isMerged() );
-        assertTrue( data.getRow( 1 ).isMerged() );
-        assertTrue( data.getRow( 2 ).isMerged() );
-        assertTrue( data.getRow( 3 ).isMerged() );
-        assertTrue( data.getRow( 4 ).isMerged() );
-
-        assertFalse( data.getRow( 0 ).isCollapsed() );
-        assertTrue( data.getRow( 1 ).isCollapsed() );
-        assertTrue( data.getRow( 2 ).isCollapsed() );
-        assertFalse( data.getRow( 3 ).isCollapsed() );
-        assertFalse( data.getRow( 4 ).isCollapsed() );
-
-        assertFalse( data.getCell( 0,
-                                   0 ).isMerged() );
-        assertFalse( data.getCell( 1,
-                                   0 ).isMerged() );
-        assertFalse( data.getCell( 2,
-                                   0 ).isMerged() );
-        assertTrue( data.getCell( 3,
-                                  0 ).isMerged() );
-        assertTrue( data.getCell( 4,
-                                  0 ).isMerged() );
-
-        assertTrue( data.getCell( 0,
-                                  1 ).isMerged() );
-        assertTrue( data.getCell( 1,
-                                  1 ).isMerged() );
-        assertTrue( data.getCell( 2,
-                                  1 ).isMerged() );
-        assertFalse( data.getCell( 3,
-                                   1 ).isMerged() );
-        assertFalse( data.getCell( 4,
-                                   1 ).isMerged() );
-
-        assertEquals( 1,
-                      data.getCell( 0,
-                                    0 ).getMergedCellCount() );
-        assertEquals( 1,
-                      data.getCell( 1,
-                                    0 ).getMergedCellCount() );
-        assertEquals( 1,
-                      data.getCell( 2,
-                                    0 ).getMergedCellCount() );
-        assertEquals( 2,
-                      data.getCell( 3,
-                                    0 ).getMergedCellCount() );
-        assertEquals( 0,
-                      data.getCell( 4,
-                                    0 ).getMergedCellCount() );
-
-        assertEquals( 3,
-                      data.getCell( 0,
-                                    1 ).getMergedCellCount() );
-        assertEquals( 0,
-                      data.getCell( 1,
-                                    1 ).getMergedCellCount() );
-        assertEquals( 0,
-                      data.getCell( 2,
-                                    1 ).getMergedCellCount() );
-        assertEquals( 1,
-                      data.getCell( 3,
-                                    1 ).getMergedCellCount() );
-        assertEquals( 1,
-                      data.getCell( 4,
-                                    1 ).getMergedCellCount() );
+        assertGridIndexes( data,
+                           new boolean[]{ true, true, true, true, true },
+                           new boolean[]{ false, true, true, false, false },
+                           new BaseGridTests.Expected[][]{
+                                   { BaseGridTests.Expected.build( false, 1, "(0, 0)" ), BaseGridTests.Expected.build( true, 3, "g2" ) },
+                                   { BaseGridTests.Expected.build( false, 1, "(0, 1)" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
+                                   { BaseGridTests.Expected.build( false, 1, "g1" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
+                                   { BaseGridTests.Expected.build( true, 2, "g1" ), BaseGridTests.Expected.build( false, 1, "(1, 3)" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( false, 1, "(1, 4)" ) }
+                           } );
     }
 
     @Test
@@ -1034,162 +557,50 @@ public class GridGroupingTests {
                       1,
                       "g2" );
 
-        //Group g1
+        //Group g1 - should split g2
         data.collapseCell( 0,
                            0 );
-        assertGroupOverlap3_g1( data );
+
+        assertGridIndexes( data,
+                           new boolean[]{ true, true, true, true, true },
+                           new boolean[]{ false, true, true, false, false },
+                           new BaseGridTests.Expected[][]{
+                                   { BaseGridTests.Expected.build( true, 3, "g1" ), BaseGridTests.Expected.build( false, 1, "(1, 0)" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( false, 1, "(1, 1)" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( false, 1, "g2" ) },
+                                   { BaseGridTests.Expected.build( false, 1, "(0, 3)" ), BaseGridTests.Expected.build( true, 2, "g2" ) },
+                                   { BaseGridTests.Expected.build( false, 1, "(0, 4)" ), BaseGridTests.Expected.build( true, 0, "g2" ) }
+                           } );
 
         //Group g2
         data.collapseCell( 3,
                            1 );
-        assertGroupOverlap3_g2( data );
+
+        assertGridIndexes( data,
+                           new boolean[]{ true, true, true, true, true },
+                           new boolean[]{ false, true, true, false, true },
+                           new BaseGridTests.Expected[][]{
+                                   { BaseGridTests.Expected.build( true, 3, "g1" ), BaseGridTests.Expected.build( false, 1, "(1, 0)" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( false, 1, "(1, 1)" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( false, 1, "g2" ) },
+                                   { BaseGridTests.Expected.build( false, 1, "(0, 3)" ), BaseGridTests.Expected.build( true, 2, "g2" ) },
+                                   { BaseGridTests.Expected.build( false, 1, "(0, 4)" ), BaseGridTests.Expected.build( true, 0, "g2" ) }
+                           } );
 
         //Ungroup g2
         data.expandCell( 3,
                          1 );
-        assertGroupOverlap3_g1( data );
-    }
 
-    private void assertGroupOverlap3_g1( final MergableGridData data ) {
-        assertEquals( 5,
-                      data.getRowCount() );
-
-        assertTrue( data.getRow( 0 ).isMerged() );
-        assertTrue( data.getRow( 1 ).isMerged() );
-        assertTrue( data.getRow( 2 ).isMerged() );
-        assertTrue( data.getRow( 3 ).isMerged() );
-        assertTrue( data.getRow( 4 ).isMerged() );
-
-        assertFalse( data.getRow( 0 ).isCollapsed() );
-        assertTrue( data.getRow( 1 ).isCollapsed() );
-        assertTrue( data.getRow( 2 ).isCollapsed() );
-        assertFalse( data.getRow( 3 ).isCollapsed() );
-        assertFalse( data.getRow( 4 ).isCollapsed() );
-
-        assertTrue( data.getCell( 0,
-                                  0 ).isMerged() );
-        assertTrue( data.getCell( 1,
-                                  0 ).isMerged() );
-        assertTrue( data.getCell( 2,
-                                  0 ).isMerged() );
-        assertFalse( data.getCell( 3,
-                                   0 ).isMerged() );
-        assertFalse( data.getCell( 4,
-                                   0 ).isMerged() );
-
-        assertFalse( data.getCell( 0,
-                                   1 ).isMerged() );
-        assertFalse( data.getCell( 1,
-                                   1 ).isMerged() );
-        assertFalse( data.getCell( 2,
-                                   1 ).isMerged() );
-        assertTrue( data.getCell( 3,
-                                  1 ).isMerged() );
-        assertTrue( data.getCell( 4,
-                                  1 ).isMerged() );
-
-        assertEquals( 3,
-                      data.getCell( 0,
-                                    0 ).getMergedCellCount() );
-        assertEquals( 0,
-                      data.getCell( 1,
-                                    0 ).getMergedCellCount() );
-        assertEquals( 0,
-                      data.getCell( 2,
-                                    0 ).getMergedCellCount() );
-        assertEquals( 1,
-                      data.getCell( 3,
-                                    0 ).getMergedCellCount() );
-        assertEquals( 1,
-                      data.getCell( 4,
-                                    0 ).getMergedCellCount() );
-
-        assertEquals( 1,
-                      data.getCell( 0,
-                                    1 ).getMergedCellCount() );
-        assertEquals( 1,
-                      data.getCell( 1,
-                                    1 ).getMergedCellCount() );
-        assertEquals( 1,
-                      data.getCell( 2,
-                                    1 ).getMergedCellCount() );
-        assertEquals( 2,
-                      data.getCell( 3,
-                                    1 ).getMergedCellCount() );
-        assertEquals( 0,
-                      data.getCell( 4,
-                                    1 ).getMergedCellCount() );
-    }
-
-    private void assertGroupOverlap3_g2( final MergableGridData data ) {
-        assertEquals( 5,
-                      data.getRowCount() );
-
-        assertTrue( data.getRow( 0 ).isMerged() );
-        assertTrue( data.getRow( 1 ).isMerged() );
-        assertTrue( data.getRow( 2 ).isMerged() );
-        assertTrue( data.getRow( 3 ).isMerged() );
-        assertTrue( data.getRow( 4 ).isMerged() );
-
-        assertFalse( data.getRow( 0 ).isCollapsed() );
-        assertTrue( data.getRow( 1 ).isCollapsed() );
-        assertTrue( data.getRow( 2 ).isCollapsed() );
-        assertFalse( data.getRow( 3 ).isCollapsed() );
-        assertTrue( data.getRow( 4 ).isCollapsed() );
-
-        assertTrue( data.getCell( 0,
-                                  0 ).isMerged() );
-        assertTrue( data.getCell( 1,
-                                  0 ).isMerged() );
-        assertTrue( data.getCell( 2,
-                                  0 ).isMerged() );
-        assertFalse( data.getCell( 3,
-                                   0 ).isMerged() );
-        assertFalse( data.getCell( 4,
-                                   0 ).isMerged() );
-
-        assertFalse( data.getCell( 0,
-                                   1 ).isMerged() );
-        assertFalse( data.getCell( 1,
-                                   1 ).isMerged() );
-        assertFalse( data.getCell( 2,
-                                   1 ).isMerged() );
-        assertTrue( data.getCell( 3,
-                                  1 ).isMerged() );
-        assertTrue( data.getCell( 4,
-                                  1 ).isMerged() );
-
-        assertEquals( 3,
-                      data.getCell( 0,
-                                    0 ).getMergedCellCount() );
-        assertEquals( 0,
-                      data.getCell( 1,
-                                    0 ).getMergedCellCount() );
-        assertEquals( 0,
-                      data.getCell( 2,
-                                    0 ).getMergedCellCount() );
-        assertEquals( 1,
-                      data.getCell( 3,
-                                    0 ).getMergedCellCount() );
-        assertEquals( 1,
-                      data.getCell( 4,
-                                    0 ).getMergedCellCount() );
-
-        assertEquals( 1,
-                      data.getCell( 0,
-                                    1 ).getMergedCellCount() );
-        assertEquals( 1,
-                      data.getCell( 1,
-                                    1 ).getMergedCellCount() );
-        assertEquals( 1,
-                      data.getCell( 2,
-                                    1 ).getMergedCellCount() );
-        assertEquals( 2,
-                      data.getCell( 3,
-                                    1 ).getMergedCellCount() );
-        assertEquals( 0,
-                      data.getCell( 4,
-                                    1 ).getMergedCellCount() );
+        assertGridIndexes( data,
+                           new boolean[]{ true, true, true, true, true },
+                           new boolean[]{ false, true, true, false, false },
+                           new BaseGridTests.Expected[][]{
+                                   { BaseGridTests.Expected.build( true, 3, "g1" ), BaseGridTests.Expected.build( false, 1, "(1, 0)" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( false, 1, "(1, 1)" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( false, 1, "g2" ) },
+                                   { BaseGridTests.Expected.build( false, 1, "(0, 3)" ), BaseGridTests.Expected.build( true, 2, "g2" ) },
+                                   { BaseGridTests.Expected.build( false, 1, "(0, 4)" ), BaseGridTests.Expected.build( true, 0, "g2" ) }
+                           } );
     }
 
     @Test
@@ -1249,159 +660,31 @@ public class GridGroupingTests {
         data.collapseCell( 0,
                            0 );
 
-        assertEquals( 5,
-                      data.getRowCount() );
-
-        assertTrue( data.getRow( 0 ).isMerged() );
-        assertTrue( data.getRow( 1 ).isMerged() );
-        assertTrue( data.getRow( 2 ).isMerged() );
-        assertTrue( data.getRow( 3 ).isMerged() );
-        assertTrue( data.getRow( 4 ).isMerged() );
-
-        assertFalse( data.getRow( 0 ).isCollapsed() );
-        assertTrue( data.getRow( 1 ).isCollapsed() );
-        assertFalse( data.getRow( 2 ).isCollapsed() );
-        assertFalse( data.getRow( 3 ).isCollapsed() );
-        assertFalse( data.getRow( 4 ).isCollapsed() );
-
-        assertTrue( data.getCell( 0,
-                                  0 ).isMerged() );
-        assertEquals( 2,
-                      data.getCell( 0,
-                                    0 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 1,
-                                  0 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 1,
-                                    0 ).getMergedCellCount() );
-
-        assertFalse( data.getCell( 2,
-                                   0 ).isMerged() );
-        assertEquals( 1,
-                      data.getCell( 2,
-                                    0 ).getMergedCellCount() );
-
-        assertFalse( data.getCell( 3,
-                                   0 ).isMerged() );
-        assertEquals( 1,
-                      data.getCell( 3,
-                                    0 ).getMergedCellCount() );
-
-        assertFalse( data.getCell( 4,
-                                   0 ).isMerged() );
-        assertEquals( 1,
-                      data.getCell( 4,
-                                    0 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 0,
-                                  1 ).isMerged() );
-        assertEquals( 5,
-                      data.getCell( 0,
-                                    1 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 1,
-                                  1 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 1,
-                                    1 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 2,
-                                  1 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 2,
-                                    1 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 3,
-                                  1 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 3,
-                                    1 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 4,
-                                  1 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 4,
-                                    1 ).getMergedCellCount() );
+        assertGridIndexes( data,
+                           new boolean[]{ true, true, true, true, true },
+                           new boolean[]{ false, true, false, false, false },
+                           new BaseGridTests.Expected[][]{
+                                   { BaseGridTests.Expected.build( true, 2, "g1" ), BaseGridTests.Expected.build( true, 5, "g2" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
+                                   { BaseGridTests.Expected.build( false, 1, "(0, 2)" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
+                                   { BaseGridTests.Expected.build( false, 1, "(0, 3)" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
+                                   { BaseGridTests.Expected.build( false, 1, "(0, 4)" ), BaseGridTests.Expected.build( true, 0, "g2" ) }
+                           } );
 
         //Ungroup g1
         data.expandCell( 0,
                          0 );
 
-        assertEquals( 5,
-                      data.getRowCount() );
-
-        assertTrue( data.getRow( 0 ).isMerged() );
-        assertTrue( data.getRow( 1 ).isMerged() );
-        assertTrue( data.getRow( 2 ).isMerged() );
-        assertTrue( data.getRow( 3 ).isMerged() );
-        assertTrue( data.getRow( 4 ).isMerged() );
-
-        assertFalse( data.getRow( 0 ).isCollapsed() );
-        assertFalse( data.getRow( 1 ).isCollapsed() );
-        assertFalse( data.getRow( 2 ).isCollapsed() );
-        assertFalse( data.getRow( 3 ).isCollapsed() );
-        assertFalse( data.getRow( 4 ).isCollapsed() );
-
-        assertTrue( data.getCell( 0,
-                                  0 ).isMerged() );
-        assertEquals( 2,
-                      data.getCell( 0,
-                                    0 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 1,
-                                  0 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 1,
-                                    0 ).getMergedCellCount() );
-
-        assertFalse( data.getCell( 2,
-                                   0 ).isMerged() );
-        assertEquals( 1,
-                      data.getCell( 2,
-                                    0 ).getMergedCellCount() );
-
-        assertFalse( data.getCell( 3,
-                                   0 ).isMerged() );
-        assertEquals( 1,
-                      data.getCell( 3,
-                                    0 ).getMergedCellCount() );
-
-        assertFalse( data.getCell( 4,
-                                   0 ).isMerged() );
-        assertEquals( 1,
-                      data.getCell( 4,
-                                    0 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 0,
-                                  1 ).isMerged() );
-        assertEquals( 5,
-                      data.getCell( 0,
-                                    1 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 1,
-                                  1 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 1,
-                                    1 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 2,
-                                  1 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 2,
-                                    1 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 3,
-                                  1 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 3,
-                                    1 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 4,
-                                  1 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 4,
-                                    1 ).getMergedCellCount() );
+        assertGridIndexes( data,
+                           new boolean[]{ true, true, true, true, true },
+                           new boolean[]{ false, false, false, false, false },
+                           new BaseGridTests.Expected[][]{
+                                   { BaseGridTests.Expected.build( true, 2, "g1" ), BaseGridTests.Expected.build( true, 5, "g2" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
+                                   { BaseGridTests.Expected.build( false, 1, "(0, 2)" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
+                                   { BaseGridTests.Expected.build( false, 1, "(0, 3)" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
+                                   { BaseGridTests.Expected.build( false, 1, "(0, 4)" ), BaseGridTests.Expected.build( true, 0, "g2" ) }
+                           } );
     }
 
     @Test
@@ -1451,163 +734,35 @@ public class GridGroupingTests {
                       1,
                       "g2" );
 
-        //Group g1
+        //Group g1 - should split g2
         data.collapseCell( 1,
                            0 );
 
-        assertEquals( 5,
-                      data.getRowCount() );
-
-        assertFalse( data.getRow( 0 ).isMerged() );
-        assertTrue( data.getRow( 1 ).isMerged() );
-        assertTrue( data.getRow( 2 ).isMerged() );
-        assertTrue( data.getRow( 3 ).isMerged() );
-        assertTrue( data.getRow( 4 ).isMerged() );
-
-        assertFalse( data.getRow( 0 ).isCollapsed() );
-        assertFalse( data.getRow( 1 ).isCollapsed() );
-        assertTrue( data.getRow( 2 ).isCollapsed() );
-        assertFalse( data.getRow( 3 ).isCollapsed() );
-        assertFalse( data.getRow( 4 ).isCollapsed() );
-
-        assertFalse( data.getCell( 0,
-                                   0 ).isMerged() );
-        assertEquals( 1,
-                      data.getCell( 0,
-                                    0 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 1,
-                                  0 ).isMerged() );
-        assertEquals( 2,
-                      data.getCell( 1,
-                                    0 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 2,
-                                  0 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 2,
-                                    0 ).getMergedCellCount() );
-
-        assertFalse( data.getCell( 3,
-                                   0 ).isMerged() );
-        assertEquals( 1,
-                      data.getCell( 3,
-                                    0 ).getMergedCellCount() );
-
-        assertFalse( data.getCell( 4,
-                                   0 ).isMerged() );
-        assertEquals( 1,
-                      data.getCell( 4,
-                                    0 ).getMergedCellCount() );
-
-        assertFalse( data.getCell( 0,
-                                   1 ).isMerged() );
-        assertEquals( 1,
-                      data.getCell( 0,
-                                    1 ).getMergedCellCount() );
-
-        assertFalse( data.getCell( 1,
-                                   1 ).isMerged() );
-        assertEquals( 1,
-                      data.getCell( 1,
-                                    1 ).getMergedCellCount() );
-
-        assertFalse( data.getCell( 2,
-                                   1 ).isMerged() );
-        assertEquals( 1,
-                      data.getCell( 2,
-                                    1 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 3,
-                                  1 ).isMerged() );
-        assertEquals( 2,
-                      data.getCell( 3,
-                                    1 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 4,
-                                  1 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 4,
-                                    1 ).getMergedCellCount() );
+        assertGridIndexes( data,
+                           new boolean[]{ false, true, true, true, true },
+                           new boolean[]{ false, false, true, false, false },
+                           new BaseGridTests.Expected[][]{
+                                   { BaseGridTests.Expected.build( false, 1, "(0, 0)" ), BaseGridTests.Expected.build( false, 1, "(1, 0)" ) },
+                                   { BaseGridTests.Expected.build( true, 2, "g1" ), BaseGridTests.Expected.build( false, 1, "(1, 1)" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( false, 1, "g2" ) },
+                                   { BaseGridTests.Expected.build( false, 1, "(0, 3)" ), BaseGridTests.Expected.build( true, 2, "g2" ) },
+                                   { BaseGridTests.Expected.build( false, 1, "(0, 4)" ), BaseGridTests.Expected.build( true, 0, "g2" ) }
+                           } );
 
         //Ungroup g1
         data.expandCell( 1,
                          0 );
 
-        assertEquals( 5,
-                      data.getRowCount() );
-
-        assertFalse( data.getRow( 0 ).isMerged() );
-        assertTrue( data.getRow( 1 ).isMerged() );
-        assertTrue( data.getRow( 2 ).isMerged() );
-        assertTrue( data.getRow( 3 ).isMerged() );
-        assertTrue( data.getRow( 4 ).isMerged() );
-
-        assertFalse( data.getRow( 0 ).isCollapsed() );
-        assertFalse( data.getRow( 1 ).isCollapsed() );
-        assertFalse( data.getRow( 2 ).isCollapsed() );
-        assertFalse( data.getRow( 3 ).isCollapsed() );
-        assertFalse( data.getRow( 4 ).isCollapsed() );
-
-        assertFalse( data.getCell( 0,
-                                   0 ).isMerged() );
-        assertEquals( 1,
-                      data.getCell( 0,
-                                    0 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 1,
-                                  0 ).isMerged() );
-        assertEquals( 2,
-                      data.getCell( 1,
-                                    0 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 2,
-                                  0 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 2,
-                                    0 ).getMergedCellCount() );
-
-        assertFalse( data.getCell( 3,
-                                   0 ).isMerged() );
-        assertEquals( 1,
-                      data.getCell( 3,
-                                    0 ).getMergedCellCount() );
-
-        assertFalse( data.getCell( 4,
-                                   0 ).isMerged() );
-        assertEquals( 1,
-                      data.getCell( 4,
-                                    0 ).getMergedCellCount() );
-
-        assertFalse( data.getCell( 0,
-                                   1 ).isMerged() );
-        assertEquals( 1,
-                      data.getCell( 0,
-                                    1 ).getMergedCellCount() );
-
-        assertFalse( data.getCell( 1,
-                                   1 ).isMerged() );
-        assertEquals( 1,
-                      data.getCell( 1,
-                                    1 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 2,
-                                  1 ).isMerged() );
-        assertEquals( 3,
-                      data.getCell( 2,
-                                    1 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 3,
-                                  1 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 3,
-                                    1 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 4,
-                                  1 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 4,
-                                    1 ).getMergedCellCount() );
+        assertGridIndexes( data,
+                           new boolean[]{ false, true, true, true, true },
+                           new boolean[]{ false, false, false, false, false },
+                           new BaseGridTests.Expected[][]{
+                                   { BaseGridTests.Expected.build( false, 1, "(0, 0)" ), BaseGridTests.Expected.build( false, 1, "(1, 0)" ) },
+                                   { BaseGridTests.Expected.build( true, 2, "g1" ), BaseGridTests.Expected.build( false, 1, "(1, 1)" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 3, "g2" ) },
+                                   { BaseGridTests.Expected.build( false, 1, "(0, 3)" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
+                                   { BaseGridTests.Expected.build( false, 1, "(0, 4)" ), BaseGridTests.Expected.build( true, 0, "g2" ) }
+                           } );
     }
 
     @Test
@@ -1660,163 +815,35 @@ public class GridGroupingTests {
                       1,
                       "g2" );
 
-        //Group g1
+        //Group g1 - doesn't need to split g2 since it spans all of g1
         data.collapseCell( 1,
                            0 );
 
-        assertEquals( 5,
-                      data.getRowCount() );
-
-        assertFalse( data.getRow( 0 ).isMerged() );
-        assertTrue( data.getRow( 1 ).isMerged() );
-        assertTrue( data.getRow( 2 ).isMerged() );
-        assertTrue( data.getRow( 3 ).isMerged() );
-        assertTrue( data.getRow( 4 ).isMerged() );
-
-        assertFalse( data.getRow( 0 ).isCollapsed() );
-        assertFalse( data.getRow( 1 ).isCollapsed() );
-        assertTrue( data.getRow( 2 ).isCollapsed() );
-        assertFalse( data.getRow( 3 ).isCollapsed() );
-        assertFalse( data.getRow( 4 ).isCollapsed() );
-
-        assertFalse( data.getCell( 0,
-                                   0 ).isMerged() );
-        assertEquals( 1,
-                      data.getCell( 0,
-                                    0 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 1,
-                                  0 ).isMerged() );
-        assertEquals( 2,
-                      data.getCell( 1,
-                                    0 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 2,
-                                  0 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 2,
-                                    0 ).getMergedCellCount() );
-
-        assertFalse( data.getCell( 3,
-                                   0 ).isMerged() );
-        assertEquals( 1,
-                      data.getCell( 3,
-                                    0 ).getMergedCellCount() );
-
-        assertFalse( data.getCell( 4,
-                                   0 ).isMerged() );
-        assertEquals( 1,
-                      data.getCell( 4,
-                                    0 ).getMergedCellCount() );
-
-        assertFalse( data.getCell( 0,
-                                   1 ).isMerged() );
-        assertEquals( 1,
-                      data.getCell( 0,
-                                    1 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 1,
-                                  1 ).isMerged() );
-        assertEquals( 4,
-                      data.getCell( 1,
-                                    1 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 2,
-                                  1 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 2,
-                                    1 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 3,
-                                  1 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 3,
-                                    1 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 4,
-                                  1 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 4,
-                                    1 ).getMergedCellCount() );
+        assertGridIndexes( data,
+                           new boolean[]{ false, true, true, true, true },
+                           new boolean[]{ false, false, true, false, false },
+                           new BaseGridTests.Expected[][]{
+                                   { BaseGridTests.Expected.build( false, 1, "(0, 0)" ), BaseGridTests.Expected.build( false, 1, "(1, 0)" ) },
+                                   { BaseGridTests.Expected.build( true, 2, "g1" ), BaseGridTests.Expected.build( true, 4, "g2" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
+                                   { BaseGridTests.Expected.build( false, 1, "(0, 3)" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
+                                   { BaseGridTests.Expected.build( false, 1, "(0, 4)" ), BaseGridTests.Expected.build( true, 0, "g2" ) }
+                           } );
 
         //Ungroup g1
         data.expandCell( 1,
                          0 );
 
-        assertEquals( 5,
-                      data.getRowCount() );
-
-        assertFalse( data.getRow( 0 ).isMerged() );
-        assertTrue( data.getRow( 1 ).isMerged() );
-        assertTrue( data.getRow( 2 ).isMerged() );
-        assertTrue( data.getRow( 3 ).isMerged() );
-        assertTrue( data.getRow( 4 ).isMerged() );
-
-        assertFalse( data.getRow( 0 ).isCollapsed() );
-        assertFalse( data.getRow( 1 ).isCollapsed() );
-        assertFalse( data.getRow( 2 ).isCollapsed() );
-        assertFalse( data.getRow( 3 ).isCollapsed() );
-        assertFalse( data.getRow( 4 ).isCollapsed() );
-
-        assertFalse( data.getCell( 0,
-                                   0 ).isMerged() );
-        assertEquals( 1,
-                      data.getCell( 0,
-                                    0 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 1,
-                                  0 ).isMerged() );
-        assertEquals( 2,
-                      data.getCell( 1,
-                                    0 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 2,
-                                  0 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 2,
-                                    0 ).getMergedCellCount() );
-
-        assertFalse( data.getCell( 3,
-                                   0 ).isMerged() );
-        assertEquals( 1,
-                      data.getCell( 3,
-                                    0 ).getMergedCellCount() );
-
-        assertFalse( data.getCell( 4,
-                                   0 ).isMerged() );
-        assertEquals( 1,
-                      data.getCell( 4,
-                                    0 ).getMergedCellCount() );
-
-        assertFalse( data.getCell( 0,
-                                   1 ).isMerged() );
-        assertEquals( 1,
-                      data.getCell( 0,
-                                    1 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 1,
-                                  1 ).isMerged() );
-        assertEquals( 4,
-                      data.getCell( 1,
-                                    1 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 2,
-                                  1 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 2,
-                                    1 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 3,
-                                  1 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 3,
-                                    1 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 4,
-                                  1 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 4,
-                                    1 ).getMergedCellCount() );
+        assertGridIndexes( data,
+                           new boolean[]{ false, true, true, true, true },
+                           new boolean[]{ false, false, false, false, false },
+                           new BaseGridTests.Expected[][]{
+                                   { BaseGridTests.Expected.build( false, 1, "(0, 0)" ), BaseGridTests.Expected.build( false, 1, "(1, 0)" ) },
+                                   { BaseGridTests.Expected.build( true, 2, "g1" ), BaseGridTests.Expected.build( true, 4, "g2" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
+                                   { BaseGridTests.Expected.build( false, 1, "(0, 3)" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
+                                   { BaseGridTests.Expected.build( false, 1, "(0, 4)" ), BaseGridTests.Expected.build( true, 0, "g2" ) }
+                           } );
     }
 
     @Test
@@ -1872,163 +899,35 @@ public class GridGroupingTests {
                       1,
                       "g2" );
 
-        //Group g1
+        //Group g1 - should split g2
         data.collapseCell( 0,
                            0 );
 
-        assertEquals( 5,
-                      data.getRowCount() );
-
-        assertTrue( data.getRow( 0 ).isMerged() );
-        assertTrue( data.getRow( 1 ).isMerged() );
-        assertTrue( data.getRow( 2 ).isMerged() );
-        assertTrue( data.getRow( 3 ).isMerged() );
-        assertTrue( data.getRow( 4 ).isMerged() );
-
-        assertFalse( data.getRow( 0 ).isCollapsed() );
-        assertTrue( data.getRow( 1 ).isCollapsed() );
-        assertTrue( data.getRow( 2 ).isCollapsed() );
-        assertFalse( data.getRow( 3 ).isCollapsed() );
-        assertFalse( data.getRow( 4 ).isCollapsed() );
-
-        assertTrue( data.getCell( 0,
-                                  0 ).isMerged() );
-        assertEquals( 3,
-                      data.getCell( 0,
-                                    0 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 1,
-                                  0 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 1,
-                                    0 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 2,
-                                  0 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 2,
-                                    0 ).getMergedCellCount() );
-
-        assertFalse( data.getCell( 3,
-                                   0 ).isMerged() );
-        assertEquals( 1,
-                      data.getCell( 3,
-                                    0 ).getMergedCellCount() );
-
-        assertFalse( data.getCell( 4,
-                                   0 ).isMerged() );
-        assertEquals( 1,
-                      data.getCell( 4,
-                                    0 ).getMergedCellCount() );
-
-        assertFalse( data.getCell( 0,
-                                   1 ).isMerged() );
-        assertEquals( 1,
-                      data.getCell( 0,
-                                    1 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 1,
-                                  1 ).isMerged() );
-        assertEquals( 2,
-                      data.getCell( 1,
-                                    1 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 2,
-                                  1 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 2,
-                                    1 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 3,
-                                  1 ).isMerged() );
-        assertEquals( 2,
-                      data.getCell( 3,
-                                    1 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 4,
-                                  1 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 4,
-                                    1 ).getMergedCellCount() );
+        assertGridIndexes( data,
+                           new boolean[]{ true, true, true, true, true },
+                           new boolean[]{ false, true, true, false, false },
+                           new BaseGridTests.Expected[][]{
+                                   { BaseGridTests.Expected.build( true, 3, "g1" ), BaseGridTests.Expected.build( false, 1, "(1, 0)" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 2, "g2" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
+                                   { BaseGridTests.Expected.build( false, 1, "(0, 3)" ), BaseGridTests.Expected.build( true, 2, "g2" ) },
+                                   { BaseGridTests.Expected.build( false, 1, "(0, 4)" ), BaseGridTests.Expected.build( true, 0, "g2" ) }
+                           } );
 
         //Ungroup g1
         data.expandCell( 0,
                          0 );
 
-        assertEquals( 5,
-                      data.getRowCount() );
-
-        assertTrue( data.getRow( 0 ).isMerged() );
-        assertTrue( data.getRow( 1 ).isMerged() );
-        assertTrue( data.getRow( 2 ).isMerged() );
-        assertTrue( data.getRow( 3 ).isMerged() );
-        assertTrue( data.getRow( 4 ).isMerged() );
-
-        assertFalse( data.getRow( 0 ).isCollapsed() );
-        assertFalse( data.getRow( 1 ).isCollapsed() );
-        assertFalse( data.getRow( 2 ).isCollapsed() );
-        assertFalse( data.getRow( 3 ).isCollapsed() );
-        assertFalse( data.getRow( 4 ).isCollapsed() );
-
-        assertTrue( data.getCell( 0,
-                                  0 ).isMerged() );
-        assertEquals( 3,
-                      data.getCell( 0,
-                                    0 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 1,
-                                  0 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 1,
-                                    0 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 2,
-                                  0 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 2,
-                                    0 ).getMergedCellCount() );
-
-        assertFalse( data.getCell( 3,
-                                   0 ).isMerged() );
-        assertEquals( 1,
-                      data.getCell( 3,
-                                    0 ).getMergedCellCount() );
-
-        assertFalse( data.getCell( 4,
-                                   0 ).isMerged() );
-        assertEquals( 1,
-                      data.getCell( 4,
-                                    0 ).getMergedCellCount() );
-
-        assertFalse( data.getCell( 0,
-                                   1 ).isMerged() );
-        assertEquals( 1,
-                      data.getCell( 0,
-                                    1 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 1,
-                                  1 ).isMerged() );
-        assertEquals( 4,
-                      data.getCell( 1,
-                                    1 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 2,
-                                  1 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 2,
-                                    1 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 3,
-                                  1 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 3,
-                                    1 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 4,
-                                  1 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 4,
-                                    1 ).getMergedCellCount() );
+        assertGridIndexes( data,
+                           new boolean[]{ true, true, true, true, true },
+                           new boolean[]{ false, false, false, false, false },
+                           new BaseGridTests.Expected[][]{
+                                   { BaseGridTests.Expected.build( true, 3, "g1" ), BaseGridTests.Expected.build( false, 1, "(1, 0)" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 4, "g2" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
+                                   { BaseGridTests.Expected.build( false, 1, "(0, 3)" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
+                                   { BaseGridTests.Expected.build( false, 1, "(0, 4)" ), BaseGridTests.Expected.build( true, 0, "g2" ) }
+                           } );
     }
 
     @Test
@@ -2066,159 +965,31 @@ public class GridGroupingTests {
         data.collapseCell( 0,
                            0 );
 
-        assertEquals( 5,
-                      data.getRowCount() );
-
-        assertTrue( data.getRow( 0 ).isMerged() );
-        assertTrue( data.getRow( 1 ).isMerged() );
-        assertTrue( data.getRow( 2 ).isMerged() );
-        assertTrue( data.getRow( 3 ).isMerged() );
-        assertTrue( data.getRow( 4 ).isMerged() );
-
-        assertFalse( data.getRow( 0 ).isCollapsed() );
-        assertTrue( data.getRow( 1 ).isCollapsed() );
-        assertTrue( data.getRow( 2 ).isCollapsed() );
-        assertTrue( data.getRow( 3 ).isCollapsed() );
-        assertTrue( data.getRow( 4 ).isCollapsed() );
-
-        assertTrue( data.getCell( 0,
-                                  0 ).isMerged() );
-        assertEquals( 5,
-                      data.getCell( 0,
-                                    0 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 1,
-                                  0 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 1,
-                                    0 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 2,
-                                  0 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 2,
-                                    0 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 3,
-                                  0 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 3,
-                                    0 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 4,
-                                  0 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 4,
-                                    0 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 0,
-                                  1 ).isMerged() );
-        assertEquals( 5,
-                      data.getCell( 0,
-                                    1 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 1,
-                                  1 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 1,
-                                    1 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 2,
-                                  1 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 2,
-                                    1 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 3,
-                                  1 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 3,
-                                    1 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 4,
-                                  1 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 4,
-                                    1 ).getMergedCellCount() );
+        assertGridIndexes( data,
+                           new boolean[]{ true, true, true, true, true },
+                           new boolean[]{ false, true, true, true, true },
+                           new BaseGridTests.Expected[][]{
+                                   { BaseGridTests.Expected.build( true, 5, "g1" ), BaseGridTests.Expected.build( true, 5, "g2" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 0, "g2" ) }
+                           } );
 
         //Ungroup g1
         data.expandCell( 0,
                          0 );
 
-        assertEquals( 5,
-                      data.getRowCount() );
-
-        assertTrue( data.getRow( 0 ).isMerged() );
-        assertTrue( data.getRow( 1 ).isMerged() );
-        assertTrue( data.getRow( 2 ).isMerged() );
-        assertTrue( data.getRow( 3 ).isMerged() );
-        assertTrue( data.getRow( 4 ).isMerged() );
-
-        assertFalse( data.getRow( 0 ).isCollapsed() );
-        assertFalse( data.getRow( 1 ).isCollapsed() );
-        assertFalse( data.getRow( 2 ).isCollapsed() );
-        assertFalse( data.getRow( 3 ).isCollapsed() );
-        assertFalse( data.getRow( 4 ).isCollapsed() );
-
-        assertTrue( data.getCell( 0,
-                                  0 ).isMerged() );
-        assertEquals( 5,
-                      data.getCell( 0,
-                                    0 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 1,
-                                  0 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 1,
-                                    0 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 2,
-                                  0 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 2,
-                                    0 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 3,
-                                  0 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 3,
-                                    0 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 4,
-                                  0 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 4,
-                                    0 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 0,
-                                  1 ).isMerged() );
-        assertEquals( 5,
-                      data.getCell( 0,
-                                    1 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 1,
-                                  1 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 1,
-                                    1 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 2,
-                                  1 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 2,
-                                    1 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 3,
-                                  1 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 3,
-                                    1 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 4,
-                                  1 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 4,
-                                    1 ).getMergedCellCount() );
+        assertGridIndexes( data,
+                           new boolean[]{ true, true, true, true, true },
+                           new boolean[]{ false, false, false, false, false },
+                           new BaseGridTests.Expected[][]{
+                                   { BaseGridTests.Expected.build( true, 5, "g1" ), BaseGridTests.Expected.build( true, 5, "g2" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 0, "g2" ) }
+                           } );
     }
 
     @Test
@@ -2263,159 +1034,31 @@ public class GridGroupingTests {
         data.collapseCell( 0,
                            0 );
 
-        assertEquals( 5,
-                      data.getRowCount() );
-
-        assertTrue( data.getRow( 0 ).isMerged() );
-        assertTrue( data.getRow( 1 ).isMerged() );
-        assertTrue( data.getRow( 2 ).isMerged() );
-        assertTrue( data.getRow( 3 ).isMerged() );
-        assertFalse( data.getRow( 4 ).isMerged() );
-
-        assertFalse( data.getRow( 0 ).isCollapsed() );
-        assertTrue( data.getRow( 1 ).isCollapsed() );
-        assertTrue( data.getRow( 2 ).isCollapsed() );
-        assertTrue( data.getRow( 3 ).isCollapsed() );
-        assertFalse( data.getRow( 4 ).isCollapsed() );
-
-        assertTrue( data.getCell( 0,
-                                  0 ).isMerged() );
-        assertEquals( 4,
-                      data.getCell( 0,
-                                    0 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 1,
-                                  0 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 1,
-                                    0 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 2,
-                                  0 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 2,
-                                    0 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 3,
-                                  0 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 3,
-                                    0 ).getMergedCellCount() );
-
-        assertFalse( data.getCell( 4,
-                                   0 ).isMerged() );
-        assertEquals( 1,
-                      data.getCell( 4,
-                                    0 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 0,
-                                  1 ).isMerged() );
-        assertEquals( 4,
-                      data.getCell( 0,
-                                    1 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 1,
-                                  1 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 1,
-                                    1 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 2,
-                                  1 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 2,
-                                    1 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 3,
-                                  1 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 3,
-                                    1 ).getMergedCellCount() );
-
-        assertFalse( data.getCell( 4,
-                                   1 ).isMerged() );
-        assertEquals( 1,
-                      data.getCell( 4,
-                                    1 ).getMergedCellCount() );
+        assertGridIndexes( data,
+                           new boolean[]{ true, true, true, true, false },
+                           new boolean[]{ false, true, true, true, false },
+                           new BaseGridTests.Expected[][]{
+                                   { BaseGridTests.Expected.build( true, 4, "g1" ), BaseGridTests.Expected.build( true, 4, "g2" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
+                                   { BaseGridTests.Expected.build( false, 1, "(0, 4)" ), BaseGridTests.Expected.build( false, 1, "(1, 4)" ) }
+                           } );
 
         //Ungroup g1
         data.expandCell( 0,
                          0 );
 
-        assertEquals( 5,
-                      data.getRowCount() );
-
-        assertTrue( data.getRow( 0 ).isMerged() );
-        assertTrue( data.getRow( 1 ).isMerged() );
-        assertTrue( data.getRow( 2 ).isMerged() );
-        assertTrue( data.getRow( 3 ).isMerged() );
-        assertFalse( data.getRow( 4 ).isMerged() );
-
-        assertFalse( data.getRow( 0 ).isCollapsed() );
-        assertFalse( data.getRow( 1 ).isCollapsed() );
-        assertFalse( data.getRow( 2 ).isCollapsed() );
-        assertFalse( data.getRow( 3 ).isCollapsed() );
-        assertFalse( data.getRow( 4 ).isCollapsed() );
-
-        assertTrue( data.getCell( 0,
-                                  0 ).isMerged() );
-        assertEquals( 4,
-                      data.getCell( 0,
-                                    0 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 1,
-                                  0 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 1,
-                                    0 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 2,
-                                  0 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 2,
-                                    0 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 3,
-                                  0 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 3,
-                                    0 ).getMergedCellCount() );
-
-        assertFalse( data.getCell( 4,
-                                   0 ).isMerged() );
-        assertEquals( 1,
-                      data.getCell( 4,
-                                    0 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 0,
-                                  1 ).isMerged() );
-        assertEquals( 4,
-                      data.getCell( 0,
-                                    1 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 1,
-                                  1 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 1,
-                                    1 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 2,
-                                  1 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 2,
-                                    1 ).getMergedCellCount() );
-
-        assertTrue( data.getCell( 3,
-                                  1 ).isMerged() );
-        assertEquals( 0,
-                      data.getCell( 3,
-                                    1 ).getMergedCellCount() );
-
-        assertFalse( data.getCell( 4,
-                                   1 ).isMerged() );
-        assertEquals( 1,
-                      data.getCell( 4,
-                                    1 ).getMergedCellCount() );
+        assertGridIndexes( data,
+                           new boolean[]{ true, true, true, true, false },
+                           new boolean[]{ false, false, false, false, false },
+                           new BaseGridTests.Expected[][]{
+                                   { BaseGridTests.Expected.build( true, 4, "g1" ), BaseGridTests.Expected.build( true, 4, "g2" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
+                                   { BaseGridTests.Expected.build( false, 1, "(0, 4)" ), BaseGridTests.Expected.build( false, 1, "(1, 4)" ) }
+                           } );
     }
 
     @Test
@@ -2468,314 +1111,80 @@ public class GridGroupingTests {
                       1,
                       "g2" );
 
-        //Group g1
+        //Group g1 - should split g2
         data.collapseCell( 0,
                            0 );
-        assertGroupOverlap10_g1a( data );
+
+        assertGridIndexes( data,
+                           new boolean[]{ true, true, true, true, true },
+                           new boolean[]{ false, true, true, false, false },
+                           new BaseGridTests.Expected[][]{
+                                   { BaseGridTests.Expected.build( true, 3, "g1" ), BaseGridTests.Expected.build( false, 1, "(1, 0)" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( false, 1, "(1, 1)" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( false, 1, "g2" ) },
+                                   { BaseGridTests.Expected.build( false, 1, "(0, 3)" ), BaseGridTests.Expected.build( true, 2, "g2" ) },
+                                   { BaseGridTests.Expected.build( false, 1, "(0, 4)" ), BaseGridTests.Expected.build( true, 0, "g2" ) }
+                           } );
 
         //Group g2
         data.collapseCell( 3,
                            1 );
-        assertGroupOverlap10_g2( data );
 
-        //Ungroup g1
+        assertGridIndexes( data,
+                           new boolean[]{ true, true, true, true, true },
+                           new boolean[]{ false, true, true, false, true },
+                           new BaseGridTests.Expected[][]{
+                                   { BaseGridTests.Expected.build( true, 3, "g1" ), BaseGridTests.Expected.build( false, 1, "(1, 0)" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( false, 1, "(1, 1)" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( false, 1, "g2" ) },
+                                   { BaseGridTests.Expected.build( false, 1, "(0, 3)" ), BaseGridTests.Expected.build( true, 2, "g2" ) },
+                                   { BaseGridTests.Expected.build( false, 1, "(0, 4)" ), BaseGridTests.Expected.build( true, 0, "g2" ) }
+                           } );
+
+        //Ungroup g1 - should not recombine g2 as it has been split and collapsed
         data.expandCell( 0,
                          0 );
-        assertGroupOverlap10_g1b( data );
 
-        //Group g1
+        assertGridIndexes( data,
+                           new boolean[]{ true, true, true, true, true },
+                           new boolean[]{ false, false, false, false, true },
+                           new BaseGridTests.Expected[][]{
+                                   { BaseGridTests.Expected.build( true, 3, "g1" ), BaseGridTests.Expected.build( false, 1, "(1, 0)" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( false, 1, "(1, 1)" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( false, 1, "g2" ) },
+                                   { BaseGridTests.Expected.build( false, 1, "(0, 3)" ), BaseGridTests.Expected.build( true, 2, "g2" ) },
+                                   { BaseGridTests.Expected.build( false, 1, "(0, 4)" ), BaseGridTests.Expected.build( true, 0, "g2" ) }
+                           } );
+
+        //Group g1 - check re-applying collapse preserves indexing
         data.collapseCell( 0,
                            0 );
-        assertGroupOverlap10_g1c( data );
 
-        //Ungroup g1
+        assertGridIndexes( data,
+                           new boolean[]{ true, true, true, true, true },
+                           new boolean[]{ false, true, true, false, true },
+                           new BaseGridTests.Expected[][]{
+                                   { BaseGridTests.Expected.build( true, 3, "g1" ), BaseGridTests.Expected.build( false, 1, "(1, 0)" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( false, 1, "(1, 1)" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( false, 1, "g2" ) },
+                                   { BaseGridTests.Expected.build( false, 1, "(0, 3)" ), BaseGridTests.Expected.build( true, 2, "g2" ) },
+                                   { BaseGridTests.Expected.build( false, 1, "(0, 4)" ), BaseGridTests.Expected.build( true, 0, "g2" ) }
+                           } );
+
+        //Ungroup g1 - check re-applying collapse preserves indexing
         data.expandCell( 0,
                          0 );
-        assertGroupOverlap10_g1b( data );
-    }
 
-    private void assertGroupOverlap10_g1a( final MergableGridData data ) {
-        assertEquals( 5,
-                      data.getRowCount() );
-
-        assertTrue( data.getRow( 0 ).isMerged() );
-        assertTrue( data.getRow( 1 ).isMerged() );
-        assertTrue( data.getRow( 2 ).isMerged() );
-        assertTrue( data.getRow( 3 ).isMerged() );
-        assertTrue( data.getRow( 4 ).isMerged() );
-
-        assertFalse( data.getRow( 0 ).isCollapsed() );
-        assertTrue( data.getRow( 1 ).isCollapsed() );
-        assertTrue( data.getRow( 2 ).isCollapsed() );
-        assertFalse( data.getRow( 3 ).isCollapsed() );
-        assertFalse( data.getRow( 4 ).isCollapsed() );
-
-        assertTrue( data.getCell( 0,
-                                  0 ).isMerged() );
-        assertTrue( data.getCell( 1,
-                                  0 ).isMerged() );
-        assertTrue( data.getCell( 2,
-                                  0 ).isMerged() );
-        assertFalse( data.getCell( 3,
-                                   0 ).isMerged() );
-        assertFalse( data.getCell( 4,
-                                   0 ).isMerged() );
-
-        assertFalse( data.getCell( 0,
-                                   1 ).isMerged() );
-        assertFalse( data.getCell( 1,
-                                   1 ).isMerged() );
-        assertFalse( data.getCell( 2,
-                                   1 ).isMerged() );
-        assertTrue( data.getCell( 3,
-                                  1 ).isMerged() );
-        assertTrue( data.getCell( 4,
-                                  1 ).isMerged() );
-
-        assertEquals( 3,
-                      data.getCell( 0,
-                                    0 ).getMergedCellCount() );
-        assertEquals( 0,
-                      data.getCell( 1,
-                                    0 ).getMergedCellCount() );
-        assertEquals( 0,
-                      data.getCell( 2,
-                                    0 ).getMergedCellCount() );
-        assertEquals( 1,
-                      data.getCell( 3,
-                                    0 ).getMergedCellCount() );
-        assertEquals( 1,
-                      data.getCell( 4,
-                                    0 ).getMergedCellCount() );
-
-        assertEquals( 1,
-                      data.getCell( 0,
-                                    1 ).getMergedCellCount() );
-        assertEquals( 1,
-                      data.getCell( 1,
-                                    1 ).getMergedCellCount() );
-        assertEquals( 1,
-                      data.getCell( 2,
-                                    1 ).getMergedCellCount() );
-        assertEquals( 2,
-                      data.getCell( 3,
-                                    1 ).getMergedCellCount() );
-        assertEquals( 0,
-                      data.getCell( 4,
-                                    1 ).getMergedCellCount() );
-    }
-
-    private void assertGroupOverlap10_g1b( final MergableGridData data ) {
-        assertEquals( 5,
-                      data.getRowCount() );
-
-        assertTrue( data.getRow( 0 ).isMerged() );
-        assertTrue( data.getRow( 1 ).isMerged() );
-        assertTrue( data.getRow( 2 ).isMerged() );
-        assertTrue( data.getRow( 3 ).isMerged() );
-        assertTrue( data.getRow( 4 ).isMerged() );
-
-        assertFalse( data.getRow( 0 ).isCollapsed() );
-        assertFalse( data.getRow( 1 ).isCollapsed() );
-        assertFalse( data.getRow( 2 ).isCollapsed() );
-        assertFalse( data.getRow( 3 ).isCollapsed() );
-        assertTrue( data.getRow( 4 ).isCollapsed() );
-
-        assertTrue( data.getCell( 0,
-                                  0 ).isMerged() );
-        assertTrue( data.getCell( 1,
-                                  0 ).isMerged() );
-        assertTrue( data.getCell( 2,
-                                  0 ).isMerged() );
-        assertFalse( data.getCell( 3,
-                                   0 ).isMerged() );
-        assertFalse( data.getCell( 4,
-                                   0 ).isMerged() );
-
-        assertFalse( data.getCell( 0,
-                                   1 ).isMerged() );
-        assertFalse( data.getCell( 1,
-                                   1 ).isMerged() );
-        assertFalse( data.getCell( 2,
-                                   1 ).isMerged() );
-        assertTrue( data.getCell( 3,
-                                  1 ).isMerged() );
-        assertTrue( data.getCell( 4,
-                                  1 ).isMerged() );
-
-        assertEquals( 3,
-                      data.getCell( 0,
-                                    0 ).getMergedCellCount() );
-        assertEquals( 0,
-                      data.getCell( 1,
-                                    0 ).getMergedCellCount() );
-        assertEquals( 0,
-                      data.getCell( 2,
-                                    0 ).getMergedCellCount() );
-        assertEquals( 1,
-                      data.getCell( 3,
-                                    0 ).getMergedCellCount() );
-        assertEquals( 1,
-                      data.getCell( 4,
-                                    0 ).getMergedCellCount() );
-
-        assertEquals( 1,
-                      data.getCell( 0,
-                                    1 ).getMergedCellCount() );
-        assertEquals( 1,
-                      data.getCell( 1,
-                                    1 ).getMergedCellCount() );
-        assertEquals( 1,
-                      data.getCell( 2,
-                                    1 ).getMergedCellCount() );
-        assertEquals( 2,
-                      data.getCell( 3,
-                                    1 ).getMergedCellCount() );
-        assertEquals( 0,
-                      data.getCell( 4,
-                                    1 ).getMergedCellCount() );
-    }
-
-    private void assertGroupOverlap10_g1c( final MergableGridData data ) {
-        assertEquals( 5,
-                      data.getRowCount() );
-
-        assertTrue( data.getRow( 0 ).isMerged() );
-        assertTrue( data.getRow( 1 ).isMerged() );
-        assertTrue( data.getRow( 2 ).isMerged() );
-        assertTrue( data.getRow( 3 ).isMerged() );
-        assertTrue( data.getRow( 4 ).isMerged() );
-
-        assertFalse( data.getRow( 0 ).isCollapsed() );
-        assertTrue( data.getRow( 1 ).isCollapsed() );
-        assertTrue( data.getRow( 2 ).isCollapsed() );
-        assertFalse( data.getRow( 3 ).isCollapsed() );
-        assertTrue( data.getRow( 4 ).isCollapsed() );
-
-        assertTrue( data.getCell( 0,
-                                  0 ).isMerged() );
-        assertTrue( data.getCell( 1,
-                                  0 ).isMerged() );
-        assertTrue( data.getCell( 2,
-                                  0 ).isMerged() );
-        assertFalse( data.getCell( 3,
-                                   0 ).isMerged() );
-        assertFalse( data.getCell( 4,
-                                   0 ).isMerged() );
-
-        assertFalse( data.getCell( 0,
-                                   1 ).isMerged() );
-        assertFalse( data.getCell( 1,
-                                   1 ).isMerged() );
-        assertFalse( data.getCell( 2,
-                                   1 ).isMerged() );
-        assertTrue( data.getCell( 3,
-                                  1 ).isMerged() );
-        assertTrue( data.getCell( 4,
-                                  1 ).isMerged() );
-
-        assertEquals( 3,
-                      data.getCell( 0,
-                                    0 ).getMergedCellCount() );
-        assertEquals( 0,
-                      data.getCell( 1,
-                                    0 ).getMergedCellCount() );
-        assertEquals( 0,
-                      data.getCell( 2,
-                                    0 ).getMergedCellCount() );
-        assertEquals( 1,
-                      data.getCell( 3,
-                                    0 ).getMergedCellCount() );
-        assertEquals( 1,
-                      data.getCell( 4,
-                                    0 ).getMergedCellCount() );
-
-        assertEquals( 1,
-                      data.getCell( 0,
-                                    1 ).getMergedCellCount() );
-        assertEquals( 1,
-                      data.getCell( 1,
-                                    1 ).getMergedCellCount() );
-        assertEquals( 1,
-                      data.getCell( 2,
-                                    1 ).getMergedCellCount() );
-        assertEquals( 2,
-                      data.getCell( 3,
-                                    1 ).getMergedCellCount() );
-        assertEquals( 0,
-                      data.getCell( 4,
-                                    1 ).getMergedCellCount() );
-    }
-
-    private void assertGroupOverlap10_g2( final MergableGridData data ) {
-        assertEquals( 5,
-                      data.getRowCount() );
-
-        assertTrue( data.getRow( 0 ).isMerged() );
-        assertTrue( data.getRow( 1 ).isMerged() );
-        assertTrue( data.getRow( 2 ).isMerged() );
-        assertTrue( data.getRow( 3 ).isMerged() );
-        assertTrue( data.getRow( 4 ).isMerged() );
-
-        assertFalse( data.getRow( 0 ).isCollapsed() );
-        assertTrue( data.getRow( 1 ).isCollapsed() );
-        assertTrue( data.getRow( 2 ).isCollapsed() );
-        assertFalse( data.getRow( 3 ).isCollapsed() );
-        assertTrue( data.getRow( 4 ).isCollapsed() );
-
-        assertTrue( data.getCell( 0,
-                                  0 ).isMerged() );
-        assertTrue( data.getCell( 1,
-                                  0 ).isMerged() );
-        assertTrue( data.getCell( 2,
-                                  0 ).isMerged() );
-        assertFalse( data.getCell( 3,
-                                   0 ).isMerged() );
-        assertFalse( data.getCell( 4,
-                                   0 ).isMerged() );
-
-        assertFalse( data.getCell( 0,
-                                   1 ).isMerged() );
-        assertFalse( data.getCell( 1,
-                                   1 ).isMerged() );
-        assertFalse( data.getCell( 2,
-                                   1 ).isMerged() );
-        assertTrue( data.getCell( 3,
-                                  1 ).isMerged() );
-        assertTrue( data.getCell( 4,
-                                  1 ).isMerged() );
-
-        assertEquals( 3,
-                      data.getCell( 0,
-                                    0 ).getMergedCellCount() );
-        assertEquals( 0,
-                      data.getCell( 1,
-                                    0 ).getMergedCellCount() );
-        assertEquals( 0,
-                      data.getCell( 2,
-                                    0 ).getMergedCellCount() );
-        assertEquals( 1,
-                      data.getCell( 3,
-                                    0 ).getMergedCellCount() );
-        assertEquals( 1,
-                      data.getCell( 4,
-                                    0 ).getMergedCellCount() );
-
-        assertEquals( 1,
-                      data.getCell( 0,
-                                    1 ).getMergedCellCount() );
-        assertEquals( 1,
-                      data.getCell( 1,
-                                    1 ).getMergedCellCount() );
-        assertEquals( 1,
-                      data.getCell( 2,
-                                    1 ).getMergedCellCount() );
-        assertEquals( 2,
-                      data.getCell( 3,
-                                    1 ).getMergedCellCount() );
-        assertEquals( 0,
-                      data.getCell( 4,
-                                    1 ).getMergedCellCount() );
+        assertGridIndexes( data,
+                           new boolean[]{ true, true, true, true, true },
+                           new boolean[]{ false, false, false, false, true },
+                           new BaseGridTests.Expected[][]{
+                                   { BaseGridTests.Expected.build( true, 3, "g1" ), BaseGridTests.Expected.build( false, 1, "(1, 0)" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( false, 1, "(1, 1)" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( false, 1, "g2" ) },
+                                   { BaseGridTests.Expected.build( false, 1, "(0, 3)" ), BaseGridTests.Expected.build( true, 2, "g2" ) },
+                                   { BaseGridTests.Expected.build( false, 1, "(0, 4)" ), BaseGridTests.Expected.build( true, 0, "g2" ) }
+                           } );
     }
 
     @Test
@@ -2807,25 +1216,15 @@ public class GridGroupingTests {
         //Group cells
         data.collapseCell( 0,
                            0 );
-        assertEquals( 3,
-                      data.getRowCount() );
-        assertEquals( "(0, 0)",
-                      data.getCell( 0,
-                                    0 ).getValue() );
-        assertEquals( "(0, 0)",
-                      data.getCell( 1,
-                                    0 ).getValue() );
-        assertEquals( "(0, 2)",
-                      data.getCell( 2,
-                                    0 ).getValue() );
 
-        assertTrue( data.getRow( 0 ).isMerged() );
-        assertTrue( data.getRow( 1 ).isMerged() );
-        assertFalse( data.getRow( 2 ).isMerged() );
-
-        assertFalse( data.getRow( 0 ).isCollapsed() );
-        assertTrue( data.getRow( 1 ).isCollapsed() );
-        assertFalse( data.getRow( 2 ).isCollapsed() );
+        assertGridIndexes( data,
+                           new boolean[]{ true, true, false },
+                           new boolean[]{ false, true, false },
+                           new BaseGridTests.Expected[][]{
+                                   { BaseGridTests.Expected.build( true, 2, "(0, 0)" ), BaseGridTests.Expected.build( false, 1, "(1, 0)" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "(0, 0)" ), BaseGridTests.Expected.build( false, 1, "(1, 1)" ) },
+                                   { BaseGridTests.Expected.build( false, 1, "(0, 2)" ), BaseGridTests.Expected.build( false, 1, "(1, 2)" ) }
+                           } );
 
         //Update cell value
         data.setCell( 0,
@@ -2835,44 +1234,15 @@ public class GridGroupingTests {
         //Ungroup cells
         data.expandCell( 0,
                          0 );
-        assertEquals( 3,
-                      data.getRowCount() );
-        assertEquals( "<changed>",
-                      data.getCell( 0,
-                                    0 ).getValue() );
-        assertEquals( "<changed>",
-                      data.getCell( 1,
-                                    0 ).getValue() );
-        assertEquals( "(0, 2)",
-                      data.getCell( 2,
-                                    0 ).getValue() );
 
-        //Check flags
-        assertTrue( data.getRow( 0 ).isMerged() );
-        assertTrue( data.getRow( 1 ).isMerged() );
-        assertFalse( data.getRow( 2 ).isMerged() );
-
-        assertFalse( data.getRow( 0 ).isCollapsed() );
-        assertFalse( data.getRow( 1 ).isCollapsed() );
-        assertFalse( data.getRow( 2 ).isCollapsed() );
-
-        assertTrue( data.getCell( 0,
-                                  0 ).isMerged() );
-
-        assertTrue( data.getCell( 1,
-                                  0 ).isMerged() );
-
-        assertFalse( data.getCell( 2,
-                                   0 ).isMerged() );
-
-        assertFalse( data.getCell( 0,
-                                   1 ).isMerged() );
-
-        assertFalse( data.getCell( 1,
-                                   1 ).isMerged() );
-
-        assertFalse( data.getCell( 2,
-                                   1 ).isMerged() );
+        assertGridIndexes( data,
+                           new boolean[]{ true, true, false },
+                           new boolean[]{ false, false, false },
+                           new BaseGridTests.Expected[][]{
+                                   { BaseGridTests.Expected.build( true, 2, "<changed>" ), BaseGridTests.Expected.build( false, 1, "(1, 0)" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "<changed>" ), BaseGridTests.Expected.build( false, 1, "(1, 1)" ) },
+                                   { BaseGridTests.Expected.build( false, 1, "(0, 2)" ), BaseGridTests.Expected.build( false, 1, "(1, 2)" ) }
+                           } );
     }
 
     @Test
@@ -2904,25 +1274,15 @@ public class GridGroupingTests {
         //Group cells
         data.collapseCell( 0,
                            0 );
-        assertEquals( 3,
-                      data.getRowCount() );
-        assertEquals( "(0, 0)",
-                      data.getCell( 0,
-                                    0 ).getValue() );
-        assertEquals( "(0, 0)",
-                      data.getCell( 1,
-                                    0 ).getValue() );
-        assertEquals( "(0, 2)",
-                      data.getCell( 2,
-                                    0 ).getValue() );
 
-        assertTrue( data.getRow( 0 ).isMerged() );
-        assertTrue( data.getRow( 1 ).isMerged() );
-        assertFalse( data.getRow( 2 ).isMerged() );
-
-        assertFalse( data.getRow( 0 ).isCollapsed() );
-        assertTrue( data.getRow( 1 ).isCollapsed() );
-        assertFalse( data.getRow( 2 ).isCollapsed() );
+        assertGridIndexes( data,
+                           new boolean[]{ true, true, false },
+                           new boolean[]{ false, true, false },
+                           new BaseGridTests.Expected[][]{
+                                   { BaseGridTests.Expected.build( true, 2, "(0, 0)" ), BaseGridTests.Expected.build( false, 1, "(1, 0)" ) },
+                                   { BaseGridTests.Expected.build( true, 0, "(0, 0)" ), BaseGridTests.Expected.build( false, 1, "(1, 1)" ) },
+                                   { BaseGridTests.Expected.build( false, 1, "(0, 2)" ), BaseGridTests.Expected.build( false, 1, "(1, 2)" ) }
+                           } );
 
         //Move column
         data.moveColumnTo( 1,
@@ -2936,44 +1296,15 @@ public class GridGroupingTests {
         //Ungroup cells
         data.expandCell( 0,
                          1 );
-        assertEquals( 3,
-                      data.getRowCount() );
-        assertEquals( "<changed>",
-                      data.getCell( 0,
-                                    1 ).getValue() );
-        assertEquals( "<changed>",
-                      data.getCell( 1,
-                                    1 ).getValue() );
-        assertEquals( "(0, 2)",
-                      data.getCell( 2,
-                                    1 ).getValue() );
 
-        //Check flags
-        assertTrue( data.getRow( 0 ).isMerged() );
-        assertTrue( data.getRow( 1 ).isMerged() );
-        assertFalse( data.getRow( 2 ).isMerged() );
-
-        assertFalse( data.getRow( 0 ).isCollapsed() );
-        assertFalse( data.getRow( 1 ).isCollapsed() );
-        assertFalse( data.getRow( 2 ).isCollapsed() );
-
-        assertFalse( data.getCell( 0,
-                                   0 ).isMerged() );
-
-        assertFalse( data.getCell( 1,
-                                   0 ).isMerged() );
-
-        assertFalse( data.getCell( 2,
-                                   0 ).isMerged() );
-
-        assertTrue( data.getCell( 0,
-                                  1 ).isMerged() );
-
-        assertTrue( data.getCell( 1,
-                                  1 ).isMerged() );
-
-        assertFalse( data.getCell( 2,
-                                   1 ).isMerged() );
+        assertGridIndexes( data,
+                           new boolean[]{ true, true, false },
+                           new boolean[]{ false, false, false },
+                           new BaseGridTests.Expected[][]{
+                                   { BaseGridTests.Expected.build( false, 1, "(1, 0)" ), BaseGridTests.Expected.build( true, 2, "<changed>" ) },
+                                   { BaseGridTests.Expected.build( false, 1, "(1, 1)" ), BaseGridTests.Expected.build( true, 0, "<changed>" ) },
+                                   { BaseGridTests.Expected.build( false, 1, "(1, 2)" ), BaseGridTests.Expected.build( false, 1, "(0, 2)" ) }
+                           } );
     }
 
 }
