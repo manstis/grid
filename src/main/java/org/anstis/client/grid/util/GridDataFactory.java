@@ -58,15 +58,14 @@ public class GridDataFactory {
     }
 
     private static double getRowHeight() {
-        return 20;
-//        final int r = (int) Math.round( Math.random() * 3 );
-//        switch ( r ) {
-//            case 0:
-//                return 20.0;
-//            case 1:
-//                return 40.0;
-//        }
-//        return 60.0;
+        final int r = (int) Math.round( Math.random() * 3 );
+        switch ( r ) {
+            case 0:
+                return 20.0;
+            case 1:
+                return 40.0;
+        }
+        return 60.0;
     }
 
 }

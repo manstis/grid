@@ -61,10 +61,10 @@ public class GridShowcaseWidget extends Composite implements IEditManager,
 
     private static final double VP_SCALE = 1.0;
 
-    private static final int GRID1_ROWS = 10;
-    private static final int GRID2_ROWS = 100;
-    private static final int GRID3_ROWS = 100;
-    private static final int GRID4_ROWS = 100;
+    private static final int GRID1_ROWS = 1000;
+    private static final int GRID2_ROWS = 1000;
+    private static final int GRID3_ROWS = 1000;
+    private static final int GRID4_ROWS = 1000;
 
     interface GridShowcaseWidgetUiBinder extends UiBinder<Widget, GridShowcaseWidget> {
 
@@ -110,7 +110,7 @@ public class GridShowcaseWidget extends Composite implements IEditManager,
 
         //Grid 1
         final MergableGridData grid1 = new MergableGridData();
-        for ( int idx = 0; idx < 2; idx++ ) {
+        for ( int idx = 0; idx < 10; idx++ ) {
             final MergableGridColumn column = new MergableGridColumn( "G1-Col: " + idx,
                                                                       100 );
             grid1.addColumn( column );
@@ -149,27 +149,27 @@ public class GridShowcaseWidget extends Composite implements IEditManager,
                                   GRID4_ROWS );
 
         //Link grids
-//        grid1.getColumns().get( 9 ).setLink( grid2.getColumns().get( 0 ) );
-//        grid2.getColumns().get( 3 ).setLink( grid3.getColumns().get( 0 ) );
-//        grid3.getColumns().get( 0 ).setLink( grid1.getColumns().get( 0 ) );
+        grid1.getColumns().get( 9 ).setLink( grid2.getColumns().get( 0 ) );
+        grid2.getColumns().get( 3 ).setLink( grid3.getColumns().get( 0 ) );
+        grid3.getColumns().get( 0 ).setLink( grid1.getColumns().get( 0 ) );
 
         //Widgets
         addGrid( grid1,
                  gridLayer,
                  new Point2D( -1300,
                               0 ) );
-//        addGrid( grid2,
-//                 gridLayer,
-//                 new Point2D( 0,
-//                              750 ) );
-//        addGrid( grid3,
-//                 gridLayer,
-//                 new Point2D( 1050,
-//                              0 ) );
-//        addGrid( grid4,
-//                 gridLayer,
-//                 new Point2D( 1600,
-//                              0 ) );
+        addGrid( grid2,
+                 gridLayer,
+                 new Point2D( 0,
+                              750 ) );
+        addGrid( grid3,
+                 gridLayer,
+                 new Point2D( 1050,
+                              0 ) );
+        addGrid( grid4,
+                 gridLayer,
+                 new Point2D( 1600,
+                              0 ) );
 
         //Slider
         slider.setValue( VP_SCALE * 100 );
@@ -215,7 +215,9 @@ public class GridShowcaseWidget extends Composite implements IEditManager,
         }
         basicRendererSelector.addChangeHandler( new ChangeHandler() {
             @Override
+            @SuppressWarnings("unused")
             public void onChange( final ChangeEvent event ) {
+                //TODO {manstis} Add back styling now that Merge/Collapse is working
                 final IGridRenderer<?> renderer = basicRenderers.get( basicRendererSelector.getItemText( basicRendererSelector.getSelectedIndex() ) );
                 gridLayer.draw();
             }
@@ -230,7 +232,9 @@ public class GridShowcaseWidget extends Composite implements IEditManager,
         }
         mergableRendererSelector.addChangeHandler( new ChangeHandler() {
             @Override
+            @SuppressWarnings("unused")
             public void onChange( final ChangeEvent event ) {
+                //TODO {manstis} Add back styling now that Merge/Collapse is working
                 final IMergableGridRenderer renderer = mergableRenderers.get( mergableRendererSelector.getItemText( mergableRendererSelector.getSelectedIndex() ) );
                 gridLayer.draw();
             }

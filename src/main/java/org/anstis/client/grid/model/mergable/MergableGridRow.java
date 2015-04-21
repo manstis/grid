@@ -55,6 +55,9 @@ public class MergableGridRow extends BaseGridRow<MergableGridCell> implements IM
 
     @Override
     public void expand() {
+        if ( collapseLevel == 0 ) {
+            return;
+        }
         collapseLevel--;
         height = heights.pop();
         for ( MergableGridCell cell : cells.values() ) {
