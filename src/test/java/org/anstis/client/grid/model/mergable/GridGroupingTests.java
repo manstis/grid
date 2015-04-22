@@ -17,6 +17,7 @@ package org.anstis.client.grid.model.mergable;
 
 import org.junit.Test;
 
+import static org.anstis.client.grid.model.mergable.BaseGridTests.Expected.*;
 import static org.junit.Assert.*;
 
 public class GridGroupingTests extends BaseGridTests {
@@ -92,9 +93,9 @@ public class GridGroupingTests extends BaseGridTests {
                            new boolean[]{ true, true, false },
                            new boolean[]{ false, true, false },
                            new BaseGridTests.Expected[][]{
-                                   { BaseGridTests.Expected.build( true, 2, "(0, 0)" ), BaseGridTests.Expected.build( false, 1, "(1, 0)" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "(0, 0)" ), BaseGridTests.Expected.build( false, 1, "(1, 1)" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 2)" ), BaseGridTests.Expected.build( false, 1, "(1, 2)" ) }
+                                   { build( true, 2, "(0, 0)" ), build( false, 1, "(1, 0)" ) },
+                                   { build( true, 0, "(0, 0)" ), build( false, 1, "(1, 1)" ) },
+                                   { build( false, 1, "(0, 2)" ), build( false, 1, "(1, 2)" ) }
                            } );
 
         //Ungroup cells
@@ -105,9 +106,9 @@ public class GridGroupingTests extends BaseGridTests {
                            new boolean[]{ true, true, false },
                            new boolean[]{ false, false, false },
                            new BaseGridTests.Expected[][]{
-                                   { BaseGridTests.Expected.build( true, 2, "(0, 0)" ), BaseGridTests.Expected.build( false, 1, "(1, 0)" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "(0, 0)" ), BaseGridTests.Expected.build( false, 1, "(1, 1)" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 2)" ), BaseGridTests.Expected.build( false, 1, "(1, 2)" ) }
+                                   { build( true, 2, "(0, 0)" ), build( false, 1, "(1, 0)" ) },
+                                   { build( true, 0, "(0, 0)" ), build( false, 1, "(1, 1)" ) },
+                                   { build( false, 1, "(0, 2)" ), build( false, 1, "(1, 2)" ) }
                            } );
     }
 
@@ -155,11 +156,11 @@ public class GridGroupingTests extends BaseGridTests {
                            new boolean[]{ false, false, true, true, false },
                            new boolean[]{ false, false, false, true, false },
                            new BaseGridTests.Expected[][]{
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 0)" ), BaseGridTests.Expected.build( false, 1, "(1, 0)" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 1)" ), BaseGridTests.Expected.build( false, 1, "(1, 1)" ) },
-                                   { BaseGridTests.Expected.build( true, 2, "(0, 2)" ), BaseGridTests.Expected.build( false, 1, "(1, 2)" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "(0, 2)" ), BaseGridTests.Expected.build( false, 1, "(1, 3)" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 4)" ), BaseGridTests.Expected.build( false, 1, "(1, 4)" ) }
+                                   { build( false, 1, "(0, 0)" ), build( false, 1, "(1, 0)" ) },
+                                   { build( false, 1, "(0, 1)" ), build( false, 1, "(1, 1)" ) },
+                                   { build( true, 2, "(0, 2)" ), build( false, 1, "(1, 2)" ) },
+                                   { build( true, 0, "(0, 2)" ), build( false, 1, "(1, 3)" ) },
+                                   { build( false, 1, "(0, 4)" ), build( false, 1, "(1, 4)" ) }
                            } );
 
         //Set cell above existing block (should not affect existing block)
@@ -171,11 +172,11 @@ public class GridGroupingTests extends BaseGridTests {
                            new boolean[]{ false, false, true, true, false },
                            new boolean[]{ false, false, false, true, false },
                            new BaseGridTests.Expected[][]{
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 0)" ), BaseGridTests.Expected.build( false, 1, "(1, 0)" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 2)" ), BaseGridTests.Expected.build( false, 1, "(1, 1)" ) },
-                                   { BaseGridTests.Expected.build( true, 2, "(0, 2)" ), BaseGridTests.Expected.build( false, 1, "(1, 2)" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "(0, 2)" ), BaseGridTests.Expected.build( false, 1, "(1, 3)" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 4)" ), BaseGridTests.Expected.build( false, 1, "(1, 4)" ) }
+                                   { build( false, 1, "(0, 0)" ), build( false, 1, "(1, 0)" ) },
+                                   { build( false, 1, "(0, 2)" ), build( false, 1, "(1, 1)" ) },
+                                   { build( true, 2, "(0, 2)" ), build( false, 1, "(1, 2)" ) },
+                                   { build( true, 0, "(0, 2)" ), build( false, 1, "(1, 3)" ) },
+                                   { build( false, 1, "(0, 4)" ), build( false, 1, "(1, 4)" ) }
                            } );
 
         //Set cell above existing block (should create a new block)
@@ -187,11 +188,11 @@ public class GridGroupingTests extends BaseGridTests {
                            new boolean[]{ true, true, true, true, false },
                            new boolean[]{ false, false, false, true, false },
                            new BaseGridTests.Expected[][]{
-                                   { BaseGridTests.Expected.build( true, 2, "(0, 2)" ), BaseGridTests.Expected.build( false, 1, "(1, 0)" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "(0, 2)" ), BaseGridTests.Expected.build( false, 1, "(1, 1)" ) },
-                                   { BaseGridTests.Expected.build( true, 2, "(0, 2)" ), BaseGridTests.Expected.build( false, 1, "(1, 2)" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "(0, 2)" ), BaseGridTests.Expected.build( false, 1, "(1, 3)" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 4)" ), BaseGridTests.Expected.build( false, 1, "(1, 4)" ) }
+                                   { build( true, 2, "(0, 2)" ), build( false, 1, "(1, 0)" ) },
+                                   { build( true, 0, "(0, 2)" ), build( false, 1, "(1, 1)" ) },
+                                   { build( true, 2, "(0, 2)" ), build( false, 1, "(1, 2)" ) },
+                                   { build( true, 0, "(0, 2)" ), build( false, 1, "(1, 3)" ) },
+                                   { build( false, 1, "(0, 4)" ), build( false, 1, "(1, 4)" ) }
                            } );
 
         //Ungroup cell (should result in a single block spanning 4 rows)
@@ -202,11 +203,11 @@ public class GridGroupingTests extends BaseGridTests {
                            new boolean[]{ true, true, true, true, false },
                            new boolean[]{ false, false, false, false, false },
                            new BaseGridTests.Expected[][]{
-                                   { BaseGridTests.Expected.build( true, 4, "(0, 2)" ), BaseGridTests.Expected.build( false, 1, "(1, 0)" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "(0, 2)" ), BaseGridTests.Expected.build( false, 1, "(1, 1)" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "(0, 2)" ), BaseGridTests.Expected.build( false, 1, "(1, 2)" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "(0, 2)" ), BaseGridTests.Expected.build( false, 1, "(1, 3)" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 4)" ), BaseGridTests.Expected.build( false, 1, "(1, 4)" ) }
+                                   { build( true, 4, "(0, 2)" ), build( false, 1, "(1, 0)" ) },
+                                   { build( true, 0, "(0, 2)" ), build( false, 1, "(1, 1)" ) },
+                                   { build( true, 0, "(0, 2)" ), build( false, 1, "(1, 2)" ) },
+                                   { build( true, 0, "(0, 2)" ), build( false, 1, "(1, 3)" ) },
+                                   { build( false, 1, "(0, 4)" ), build( false, 1, "(1, 4)" ) }
                            } );
     }
 
@@ -254,11 +255,11 @@ public class GridGroupingTests extends BaseGridTests {
                            new boolean[]{ false, true, true, false, false },
                            new boolean[]{ false, false, true, false, false },
                            new BaseGridTests.Expected[][]{
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 0)" ), BaseGridTests.Expected.build( false, 1, "(1, 0)" ) },
-                                   { BaseGridTests.Expected.build( true, 2, "(0, 1)" ), BaseGridTests.Expected.build( false, 1, "(1, 1)" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "(0, 1)" ), BaseGridTests.Expected.build( false, 1, "(1, 2)" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 3)" ), BaseGridTests.Expected.build( false, 1, "(1, 3)" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 4)" ), BaseGridTests.Expected.build( false, 1, "(1, 4)" ) }
+                                   { build( false, 1, "(0, 0)" ), build( false, 1, "(1, 0)" ) },
+                                   { build( true, 2, "(0, 1)" ), build( false, 1, "(1, 1)" ) },
+                                   { build( true, 0, "(0, 1)" ), build( false, 1, "(1, 2)" ) },
+                                   { build( false, 1, "(0, 3)" ), build( false, 1, "(1, 3)" ) },
+                                   { build( false, 1, "(0, 4)" ), build( false, 1, "(1, 4)" ) }
                            } );
 
         //Set cell below existing block (should not affect existing block)
@@ -270,11 +271,11 @@ public class GridGroupingTests extends BaseGridTests {
                            new boolean[]{ false, true, true, false, false },
                            new boolean[]{ false, false, true, false, false },
                            new BaseGridTests.Expected[][]{
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 0)" ), BaseGridTests.Expected.build( false, 1, "(1, 0)" ) },
-                                   { BaseGridTests.Expected.build( true, 2, "(0, 1)" ), BaseGridTests.Expected.build( false, 1, "(1, 1)" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "(0, 1)" ), BaseGridTests.Expected.build( false, 1, "(1, 2)" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 1)" ), BaseGridTests.Expected.build( false, 1, "(1, 3)" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 4)" ), BaseGridTests.Expected.build( false, 1, "(1, 4)" ) }
+                                   { build( false, 1, "(0, 0)" ), build( false, 1, "(1, 0)" ) },
+                                   { build( true, 2, "(0, 1)" ), build( false, 1, "(1, 1)" ) },
+                                   { build( true, 0, "(0, 1)" ), build( false, 1, "(1, 2)" ) },
+                                   { build( false, 1, "(0, 1)" ), build( false, 1, "(1, 3)" ) },
+                                   { build( false, 1, "(0, 4)" ), build( false, 1, "(1, 4)" ) }
                            } );
 
         //Set cell below existing block (should create a new block)
@@ -286,11 +287,11 @@ public class GridGroupingTests extends BaseGridTests {
                            new boolean[]{ false, true, true, true, true },
                            new boolean[]{ false, false, true, false, false },
                            new BaseGridTests.Expected[][]{
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 0)" ), BaseGridTests.Expected.build( false, 1, "(1, 0)" ) },
-                                   { BaseGridTests.Expected.build( true, 2, "(0, 1)" ), BaseGridTests.Expected.build( false, 1, "(1, 1)" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "(0, 1)" ), BaseGridTests.Expected.build( false, 1, "(1, 2)" ) },
-                                   { BaseGridTests.Expected.build( true, 2, "(0, 1)" ), BaseGridTests.Expected.build( false, 1, "(1, 3)" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "(0, 1)" ), BaseGridTests.Expected.build( false, 1, "(1, 4)" ) }
+                                   { build( false, 1, "(0, 0)" ), build( false, 1, "(1, 0)" ) },
+                                   { build( true, 2, "(0, 1)" ), build( false, 1, "(1, 1)" ) },
+                                   { build( true, 0, "(0, 1)" ), build( false, 1, "(1, 2)" ) },
+                                   { build( true, 2, "(0, 1)" ), build( false, 1, "(1, 3)" ) },
+                                   { build( true, 0, "(0, 1)" ), build( false, 1, "(1, 4)" ) }
                            } );
 
         //Ungroup cell (should result in a single block spanning 4 rows)
@@ -301,11 +302,11 @@ public class GridGroupingTests extends BaseGridTests {
                            new boolean[]{ false, true, true, true, true },
                            new boolean[]{ false, false, false, false, false },
                            new BaseGridTests.Expected[][]{
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 0)" ), BaseGridTests.Expected.build( false, 1, "(1, 0)" ) },
-                                   { BaseGridTests.Expected.build( true, 4, "(0, 1)" ), BaseGridTests.Expected.build( false, 1, "(1, 1)" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "(0, 1)" ), BaseGridTests.Expected.build( false, 1, "(1, 2)" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "(0, 1)" ), BaseGridTests.Expected.build( false, 1, "(1, 3)" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "(0, 1)" ), BaseGridTests.Expected.build( false, 1, "(1, 4)" ) }
+                                   { build( false, 1, "(0, 0)" ), build( false, 1, "(1, 0)" ) },
+                                   { build( true, 4, "(0, 1)" ), build( false, 1, "(1, 1)" ) },
+                                   { build( true, 0, "(0, 1)" ), build( false, 1, "(1, 2)" ) },
+                                   { build( true, 0, "(0, 1)" ), build( false, 1, "(1, 3)" ) },
+                                   { build( true, 0, "(0, 1)" ), build( false, 1, "(1, 4)" ) }
                            } );
     }
 
@@ -373,11 +374,11 @@ public class GridGroupingTests extends BaseGridTests {
                            new boolean[]{ true, true, true, true, true },
                            new boolean[]{ false, false, true, true, false },
                            new BaseGridTests.Expected[][]{
-                                   { BaseGridTests.Expected.build( true, 5, "g1" ), BaseGridTests.Expected.build( false, 1, "(1, 0)" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 3, "g2" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( false, 1, "(1, 4)" ) }
+                                   { build( true, 5, "g1" ), build( false, 1, "(1, 0)" ) },
+                                   { build( true, 0, "g1" ), build( true, 3, "g2" ) },
+                                   { build( true, 0, "g1" ), build( true, 0, "g2" ) },
+                                   { build( true, 0, "g1" ), build( true, 0, "g2" ) },
+                                   { build( true, 0, "g1" ), build( false, 1, "(1, 4)" ) }
                            } );
 
         //Group g1
@@ -388,11 +389,11 @@ public class GridGroupingTests extends BaseGridTests {
                            new boolean[]{ true, true, true, true, true },
                            new boolean[]{ false, true, true, true, true },
                            new BaseGridTests.Expected[][]{
-                                   { BaseGridTests.Expected.build( true, 5, "g1" ), BaseGridTests.Expected.build( false, 1, "(1, 0)" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 3, "g2" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( false, 1, "(1, 4)" ) }
+                                   { build( true, 5, "g1" ), build( false, 1, "(1, 0)" ) },
+                                   { build( true, 0, "g1" ), build( true, 3, "g2" ) },
+                                   { build( true, 0, "g1" ), build( true, 0, "g2" ) },
+                                   { build( true, 0, "g1" ), build( true, 0, "g2" ) },
+                                   { build( true, 0, "g1" ), build( false, 1, "(1, 4)" ) }
                            } );
 
         //Ungroup g1
@@ -403,11 +404,11 @@ public class GridGroupingTests extends BaseGridTests {
                            new boolean[]{ true, true, true, true, true },
                            new boolean[]{ false, false, true, true, false },
                            new BaseGridTests.Expected[][]{
-                                   { BaseGridTests.Expected.build( true, 5, "g1" ), BaseGridTests.Expected.build( false, 1, "(1, 0)" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 3, "g2" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( false, 1, "(1, 4)" ) }
+                                   { build( true, 5, "g1" ), build( false, 1, "(1, 0)" ) },
+                                   { build( true, 0, "g1" ), build( true, 3, "g2" ) },
+                                   { build( true, 0, "g1" ), build( true, 0, "g2" ) },
+                                   { build( true, 0, "g1" ), build( true, 0, "g2" ) },
+                                   { build( true, 0, "g1" ), build( false, 1, "(1, 4)" ) }
                            } );
     }
 
@@ -469,11 +470,11 @@ public class GridGroupingTests extends BaseGridTests {
                            new boolean[]{ true, true, true, true, true },
                            new boolean[]{ false, true, true, false, false },
                            new BaseGridTests.Expected[][]{
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 0)" ), BaseGridTests.Expected.build( true, 3, "g2" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 1)" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "g1" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
-                                   { BaseGridTests.Expected.build( true, 2, "g1" ), BaseGridTests.Expected.build( false, 1, "(1, 3)" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( false, 1, "(1, 4)" ) }
+                                   { build( false, 1, "(0, 0)" ), build( true, 3, "g2" ) },
+                                   { build( false, 1, "(0, 1)" ), build( true, 0, "g2" ) },
+                                   { build( false, 1, "g1" ), build( true, 0, "g2" ) },
+                                   { build( true, 2, "g1" ), build( false, 1, "(1, 3)" ) },
+                                   { build( true, 0, "g1" ), build( false, 1, "(1, 4)" ) }
                            } );
 
         //Group g1
@@ -484,11 +485,11 @@ public class GridGroupingTests extends BaseGridTests {
                            new boolean[]{ true, true, true, true, true },
                            new boolean[]{ false, true, true, false, true },
                            new BaseGridTests.Expected[][]{
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 0)" ), BaseGridTests.Expected.build( true, 3, "g2" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 1)" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "g1" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
-                                   { BaseGridTests.Expected.build( true, 2, "g1" ), BaseGridTests.Expected.build( false, 1, "(1, 3)" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( false, 1, "(1, 4)" ) }
+                                   { build( false, 1, "(0, 0)" ), build( true, 3, "g2" ) },
+                                   { build( false, 1, "(0, 1)" ), build( true, 0, "g2" ) },
+                                   { build( false, 1, "g1" ), build( true, 0, "g2" ) },
+                                   { build( true, 2, "g1" ), build( false, 1, "(1, 3)" ) },
+                                   { build( true, 0, "g1" ), build( false, 1, "(1, 4)" ) }
                            } );
 
         //Ungroup g1
@@ -499,11 +500,11 @@ public class GridGroupingTests extends BaseGridTests {
                            new boolean[]{ true, true, true, true, true },
                            new boolean[]{ false, true, true, false, false },
                            new BaseGridTests.Expected[][]{
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 0)" ), BaseGridTests.Expected.build( true, 3, "g2" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 1)" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "g1" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
-                                   { BaseGridTests.Expected.build( true, 2, "g1" ), BaseGridTests.Expected.build( false, 1, "(1, 3)" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( false, 1, "(1, 4)" ) }
+                                   { build( false, 1, "(0, 0)" ), build( true, 3, "g2" ) },
+                                   { build( false, 1, "(0, 1)" ), build( true, 0, "g2" ) },
+                                   { build( false, 1, "g1" ), build( true, 0, "g2" ) },
+                                   { build( true, 2, "g1" ), build( false, 1, "(1, 3)" ) },
+                                   { build( true, 0, "g1" ), build( false, 1, "(1, 4)" ) }
                            } );
     }
 
@@ -565,11 +566,11 @@ public class GridGroupingTests extends BaseGridTests {
                            new boolean[]{ true, true, true, true, true },
                            new boolean[]{ false, true, true, false, false },
                            new BaseGridTests.Expected[][]{
-                                   { BaseGridTests.Expected.build( true, 3, "g1" ), BaseGridTests.Expected.build( false, 1, "(1, 0)" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( false, 1, "(1, 1)" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( false, 1, "g2" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 3)" ), BaseGridTests.Expected.build( true, 2, "g2" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 4)" ), BaseGridTests.Expected.build( true, 0, "g2" ) }
+                                   { build( true, 3, "g1" ), build( false, 1, "(1, 0)" ) },
+                                   { build( true, 0, "g1" ), build( false, 1, "(1, 1)" ) },
+                                   { build( true, 0, "g1" ), build( false, 1, "g2" ) },
+                                   { build( false, 1, "(0, 3)" ), build( true, 2, "g2" ) },
+                                   { build( false, 1, "(0, 4)" ), build( true, 0, "g2" ) }
                            } );
 
         //Group g2
@@ -580,11 +581,11 @@ public class GridGroupingTests extends BaseGridTests {
                            new boolean[]{ true, true, true, true, true },
                            new boolean[]{ false, true, true, false, true },
                            new BaseGridTests.Expected[][]{
-                                   { BaseGridTests.Expected.build( true, 3, "g1" ), BaseGridTests.Expected.build( false, 1, "(1, 0)" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( false, 1, "(1, 1)" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( false, 1, "g2" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 3)" ), BaseGridTests.Expected.build( true, 2, "g2" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 4)" ), BaseGridTests.Expected.build( true, 0, "g2" ) }
+                                   { build( true, 3, "g1" ), build( false, 1, "(1, 0)" ) },
+                                   { build( true, 0, "g1" ), build( false, 1, "(1, 1)" ) },
+                                   { build( true, 0, "g1" ), build( false, 1, "g2" ) },
+                                   { build( false, 1, "(0, 3)" ), build( true, 2, "g2" ) },
+                                   { build( false, 1, "(0, 4)" ), build( true, 0, "g2" ) }
                            } );
 
         //Ungroup g2
@@ -595,11 +596,11 @@ public class GridGroupingTests extends BaseGridTests {
                            new boolean[]{ true, true, true, true, true },
                            new boolean[]{ false, true, true, false, false },
                            new BaseGridTests.Expected[][]{
-                                   { BaseGridTests.Expected.build( true, 3, "g1" ), BaseGridTests.Expected.build( false, 1, "(1, 0)" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( false, 1, "(1, 1)" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( false, 1, "g2" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 3)" ), BaseGridTests.Expected.build( true, 2, "g2" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 4)" ), BaseGridTests.Expected.build( true, 0, "g2" ) }
+                                   { build( true, 3, "g1" ), build( false, 1, "(1, 0)" ) },
+                                   { build( true, 0, "g1" ), build( false, 1, "(1, 1)" ) },
+                                   { build( true, 0, "g1" ), build( false, 1, "g2" ) },
+                                   { build( false, 1, "(0, 3)" ), build( true, 2, "g2" ) },
+                                   { build( false, 1, "(0, 4)" ), build( true, 0, "g2" ) }
                            } );
     }
 
@@ -664,11 +665,11 @@ public class GridGroupingTests extends BaseGridTests {
                            new boolean[]{ true, true, true, true, true },
                            new boolean[]{ false, true, false, false, false },
                            new BaseGridTests.Expected[][]{
-                                   { BaseGridTests.Expected.build( true, 2, "g1" ), BaseGridTests.Expected.build( true, 5, "g2" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 2)" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 3)" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 4)" ), BaseGridTests.Expected.build( true, 0, "g2" ) }
+                                   { build( true, 2, "g1" ), build( true, 5, "g2" ) },
+                                   { build( true, 0, "g1" ), build( true, 0, "g2" ) },
+                                   { build( false, 1, "(0, 2)" ), build( true, 0, "g2" ) },
+                                   { build( false, 1, "(0, 3)" ), build( true, 0, "g2" ) },
+                                   { build( false, 1, "(0, 4)" ), build( true, 0, "g2" ) }
                            } );
 
         //Ungroup g1
@@ -679,11 +680,11 @@ public class GridGroupingTests extends BaseGridTests {
                            new boolean[]{ true, true, true, true, true },
                            new boolean[]{ false, false, false, false, false },
                            new BaseGridTests.Expected[][]{
-                                   { BaseGridTests.Expected.build( true, 2, "g1" ), BaseGridTests.Expected.build( true, 5, "g2" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 2)" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 3)" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 4)" ), BaseGridTests.Expected.build( true, 0, "g2" ) }
+                                   { build( true, 2, "g1" ), build( true, 5, "g2" ) },
+                                   { build( true, 0, "g1" ), build( true, 0, "g2" ) },
+                                   { build( false, 1, "(0, 2)" ), build( true, 0, "g2" ) },
+                                   { build( false, 1, "(0, 3)" ), build( true, 0, "g2" ) },
+                                   { build( false, 1, "(0, 4)" ), build( true, 0, "g2" ) }
                            } );
     }
 
@@ -742,11 +743,11 @@ public class GridGroupingTests extends BaseGridTests {
                            new boolean[]{ false, true, true, true, true },
                            new boolean[]{ false, false, true, false, false },
                            new BaseGridTests.Expected[][]{
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 0)" ), BaseGridTests.Expected.build( false, 1, "(1, 0)" ) },
-                                   { BaseGridTests.Expected.build( true, 2, "g1" ), BaseGridTests.Expected.build( false, 1, "(1, 1)" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( false, 1, "g2" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 3)" ), BaseGridTests.Expected.build( true, 2, "g2" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 4)" ), BaseGridTests.Expected.build( true, 0, "g2" ) }
+                                   { build( false, 1, "(0, 0)" ), build( false, 1, "(1, 0)" ) },
+                                   { build( true, 2, "g1" ), build( false, 1, "(1, 1)" ) },
+                                   { build( true, 0, "g1" ), build( false, 1, "g2" ) },
+                                   { build( false, 1, "(0, 3)" ), build( true, 2, "g2" ) },
+                                   { build( false, 1, "(0, 4)" ), build( true, 0, "g2" ) }
                            } );
 
         //Ungroup g1
@@ -757,11 +758,11 @@ public class GridGroupingTests extends BaseGridTests {
                            new boolean[]{ false, true, true, true, true },
                            new boolean[]{ false, false, false, false, false },
                            new BaseGridTests.Expected[][]{
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 0)" ), BaseGridTests.Expected.build( false, 1, "(1, 0)" ) },
-                                   { BaseGridTests.Expected.build( true, 2, "g1" ), BaseGridTests.Expected.build( false, 1, "(1, 1)" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 3, "g2" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 3)" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 4)" ), BaseGridTests.Expected.build( true, 0, "g2" ) }
+                                   { build( false, 1, "(0, 0)" ), build( false, 1, "(1, 0)" ) },
+                                   { build( true, 2, "g1" ), build( false, 1, "(1, 1)" ) },
+                                   { build( true, 0, "g1" ), build( true, 3, "g2" ) },
+                                   { build( false, 1, "(0, 3)" ), build( true, 0, "g2" ) },
+                                   { build( false, 1, "(0, 4)" ), build( true, 0, "g2" ) }
                            } );
     }
 
@@ -823,11 +824,11 @@ public class GridGroupingTests extends BaseGridTests {
                            new boolean[]{ false, true, true, true, true },
                            new boolean[]{ false, false, true, false, false },
                            new BaseGridTests.Expected[][]{
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 0)" ), BaseGridTests.Expected.build( false, 1, "(1, 0)" ) },
-                                   { BaseGridTests.Expected.build( true, 2, "g1" ), BaseGridTests.Expected.build( true, 4, "g2" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 3)" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 4)" ), BaseGridTests.Expected.build( true, 0, "g2" ) }
+                                   { build( false, 1, "(0, 0)" ), build( false, 1, "(1, 0)" ) },
+                                   { build( true, 2, "g1" ), build( true, 4, "g2" ) },
+                                   { build( true, 0, "g1" ), build( true, 0, "g2" ) },
+                                   { build( false, 1, "(0, 3)" ), build( true, 0, "g2" ) },
+                                   { build( false, 1, "(0, 4)" ), build( true, 0, "g2" ) }
                            } );
 
         //Ungroup g1
@@ -838,11 +839,11 @@ public class GridGroupingTests extends BaseGridTests {
                            new boolean[]{ false, true, true, true, true },
                            new boolean[]{ false, false, false, false, false },
                            new BaseGridTests.Expected[][]{
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 0)" ), BaseGridTests.Expected.build( false, 1, "(1, 0)" ) },
-                                   { BaseGridTests.Expected.build( true, 2, "g1" ), BaseGridTests.Expected.build( true, 4, "g2" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 3)" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 4)" ), BaseGridTests.Expected.build( true, 0, "g2" ) }
+                                   { build( false, 1, "(0, 0)" ), build( false, 1, "(1, 0)" ) },
+                                   { build( true, 2, "g1" ), build( true, 4, "g2" ) },
+                                   { build( true, 0, "g1" ), build( true, 0, "g2" ) },
+                                   { build( false, 1, "(0, 3)" ), build( true, 0, "g2" ) },
+                                   { build( false, 1, "(0, 4)" ), build( true, 0, "g2" ) }
                            } );
     }
 
@@ -907,11 +908,11 @@ public class GridGroupingTests extends BaseGridTests {
                            new boolean[]{ true, true, true, true, true },
                            new boolean[]{ false, true, true, false, false },
                            new BaseGridTests.Expected[][]{
-                                   { BaseGridTests.Expected.build( true, 3, "g1" ), BaseGridTests.Expected.build( false, 1, "(1, 0)" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 2, "g2" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 3)" ), BaseGridTests.Expected.build( true, 2, "g2" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 4)" ), BaseGridTests.Expected.build( true, 0, "g2" ) }
+                                   { build( true, 3, "g1" ), build( false, 1, "(1, 0)" ) },
+                                   { build( true, 0, "g1" ), build( true, 2, "g2" ) },
+                                   { build( true, 0, "g1" ), build( true, 0, "g2" ) },
+                                   { build( false, 1, "(0, 3)" ), build( true, 2, "g2" ) },
+                                   { build( false, 1, "(0, 4)" ), build( true, 0, "g2" ) }
                            } );
 
         //Ungroup g1
@@ -922,11 +923,11 @@ public class GridGroupingTests extends BaseGridTests {
                            new boolean[]{ true, true, true, true, true },
                            new boolean[]{ false, false, false, false, false },
                            new BaseGridTests.Expected[][]{
-                                   { BaseGridTests.Expected.build( true, 3, "g1" ), BaseGridTests.Expected.build( false, 1, "(1, 0)" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 4, "g2" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 3)" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 4)" ), BaseGridTests.Expected.build( true, 0, "g2" ) }
+                                   { build( true, 3, "g1" ), build( false, 1, "(1, 0)" ) },
+                                   { build( true, 0, "g1" ), build( true, 4, "g2" ) },
+                                   { build( true, 0, "g1" ), build( true, 0, "g2" ) },
+                                   { build( false, 1, "(0, 3)" ), build( true, 0, "g2" ) },
+                                   { build( false, 1, "(0, 4)" ), build( true, 0, "g2" ) }
                            } );
     }
 
@@ -969,11 +970,11 @@ public class GridGroupingTests extends BaseGridTests {
                            new boolean[]{ true, true, true, true, true },
                            new boolean[]{ false, true, true, true, true },
                            new BaseGridTests.Expected[][]{
-                                   { BaseGridTests.Expected.build( true, 5, "g1" ), BaseGridTests.Expected.build( true, 5, "g2" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 0, "g2" ) }
+                                   { build( true, 5, "g1" ), build( true, 5, "g2" ) },
+                                   { build( true, 0, "g1" ), build( true, 0, "g2" ) },
+                                   { build( true, 0, "g1" ), build( true, 0, "g2" ) },
+                                   { build( true, 0, "g1" ), build( true, 0, "g2" ) },
+                                   { build( true, 0, "g1" ), build( true, 0, "g2" ) }
                            } );
 
         //Ungroup g1
@@ -984,11 +985,11 @@ public class GridGroupingTests extends BaseGridTests {
                            new boolean[]{ true, true, true, true, true },
                            new boolean[]{ false, false, false, false, false },
                            new BaseGridTests.Expected[][]{
-                                   { BaseGridTests.Expected.build( true, 5, "g1" ), BaseGridTests.Expected.build( true, 5, "g2" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 0, "g2" ) }
+                                   { build( true, 5, "g1" ), build( true, 5, "g2" ) },
+                                   { build( true, 0, "g1" ), build( true, 0, "g2" ) },
+                                   { build( true, 0, "g1" ), build( true, 0, "g2" ) },
+                                   { build( true, 0, "g1" ), build( true, 0, "g2" ) },
+                                   { build( true, 0, "g1" ), build( true, 0, "g2" ) }
                            } );
     }
 
@@ -1038,11 +1039,11 @@ public class GridGroupingTests extends BaseGridTests {
                            new boolean[]{ true, true, true, true, false },
                            new boolean[]{ false, true, true, true, false },
                            new BaseGridTests.Expected[][]{
-                                   { BaseGridTests.Expected.build( true, 4, "g1" ), BaseGridTests.Expected.build( true, 4, "g2" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 4)" ), BaseGridTests.Expected.build( false, 1, "(1, 4)" ) }
+                                   { build( true, 4, "g1" ), build( true, 4, "g2" ) },
+                                   { build( true, 0, "g1" ), build( true, 0, "g2" ) },
+                                   { build( true, 0, "g1" ), build( true, 0, "g2" ) },
+                                   { build( true, 0, "g1" ), build( true, 0, "g2" ) },
+                                   { build( false, 1, "(0, 4)" ), build( false, 1, "(1, 4)" ) }
                            } );
 
         //Ungroup g1
@@ -1053,11 +1054,11 @@ public class GridGroupingTests extends BaseGridTests {
                            new boolean[]{ true, true, true, true, false },
                            new boolean[]{ false, false, false, false, false },
                            new BaseGridTests.Expected[][]{
-                                   { BaseGridTests.Expected.build( true, 4, "g1" ), BaseGridTests.Expected.build( true, 4, "g2" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 4)" ), BaseGridTests.Expected.build( false, 1, "(1, 4)" ) }
+                                   { build( true, 4, "g1" ), build( true, 4, "g2" ) },
+                                   { build( true, 0, "g1" ), build( true, 0, "g2" ) },
+                                   { build( true, 0, "g1" ), build( true, 0, "g2" ) },
+                                   { build( true, 0, "g1" ), build( true, 0, "g2" ) },
+                                   { build( false, 1, "(0, 4)" ), build( false, 1, "(1, 4)" ) }
                            } );
     }
 
@@ -1119,11 +1120,11 @@ public class GridGroupingTests extends BaseGridTests {
                            new boolean[]{ true, true, true, true, true },
                            new boolean[]{ false, true, true, false, false },
                            new BaseGridTests.Expected[][]{
-                                   { BaseGridTests.Expected.build( true, 3, "g1" ), BaseGridTests.Expected.build( false, 1, "(1, 0)" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( false, 1, "(1, 1)" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( false, 1, "g2" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 3)" ), BaseGridTests.Expected.build( true, 2, "g2" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 4)" ), BaseGridTests.Expected.build( true, 0, "g2" ) }
+                                   { build( true, 3, "g1" ), build( false, 1, "(1, 0)" ) },
+                                   { build( true, 0, "g1" ), build( false, 1, "(1, 1)" ) },
+                                   { build( true, 0, "g1" ), build( false, 1, "g2" ) },
+                                   { build( false, 1, "(0, 3)" ), build( true, 2, "g2" ) },
+                                   { build( false, 1, "(0, 4)" ), build( true, 0, "g2" ) }
                            } );
 
         //Group g2
@@ -1134,11 +1135,11 @@ public class GridGroupingTests extends BaseGridTests {
                            new boolean[]{ true, true, true, true, true },
                            new boolean[]{ false, true, true, false, true },
                            new BaseGridTests.Expected[][]{
-                                   { BaseGridTests.Expected.build( true, 3, "g1" ), BaseGridTests.Expected.build( false, 1, "(1, 0)" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( false, 1, "(1, 1)" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( false, 1, "g2" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 3)" ), BaseGridTests.Expected.build( true, 2, "g2" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 4)" ), BaseGridTests.Expected.build( true, 0, "g2" ) }
+                                   { build( true, 3, "g1" ), build( false, 1, "(1, 0)" ) },
+                                   { build( true, 0, "g1" ), build( false, 1, "(1, 1)" ) },
+                                   { build( true, 0, "g1" ), build( false, 1, "g2" ) },
+                                   { build( false, 1, "(0, 3)" ), build( true, 2, "g2" ) },
+                                   { build( false, 1, "(0, 4)" ), build( true, 0, "g2" ) }
                            } );
 
         //Ungroup g1 - should not recombine g2 as it has been split and collapsed
@@ -1149,11 +1150,11 @@ public class GridGroupingTests extends BaseGridTests {
                            new boolean[]{ true, true, true, true, true },
                            new boolean[]{ false, false, false, false, true },
                            new BaseGridTests.Expected[][]{
-                                   { BaseGridTests.Expected.build( true, 3, "g1" ), BaseGridTests.Expected.build( false, 1, "(1, 0)" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( false, 1, "(1, 1)" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( false, 1, "g2" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 3)" ), BaseGridTests.Expected.build( true, 2, "g2" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 4)" ), BaseGridTests.Expected.build( true, 0, "g2" ) }
+                                   { build( true, 3, "g1" ), build( false, 1, "(1, 0)" ) },
+                                   { build( true, 0, "g1" ), build( false, 1, "(1, 1)" ) },
+                                   { build( true, 0, "g1" ), build( false, 1, "g2" ) },
+                                   { build( false, 1, "(0, 3)" ), build( true, 2, "g2" ) },
+                                   { build( false, 1, "(0, 4)" ), build( true, 0, "g2" ) }
                            } );
 
         //Group g1 - check re-applying collapse preserves indexing
@@ -1164,11 +1165,11 @@ public class GridGroupingTests extends BaseGridTests {
                            new boolean[]{ true, true, true, true, true },
                            new boolean[]{ false, true, true, false, true },
                            new BaseGridTests.Expected[][]{
-                                   { BaseGridTests.Expected.build( true, 3, "g1" ), BaseGridTests.Expected.build( false, 1, "(1, 0)" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( false, 1, "(1, 1)" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( false, 1, "g2" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 3)" ), BaseGridTests.Expected.build( true, 2, "g2" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 4)" ), BaseGridTests.Expected.build( true, 0, "g2" ) }
+                                   { build( true, 3, "g1" ), build( false, 1, "(1, 0)" ) },
+                                   { build( true, 0, "g1" ), build( false, 1, "(1, 1)" ) },
+                                   { build( true, 0, "g1" ), build( false, 1, "g2" ) },
+                                   { build( false, 1, "(0, 3)" ), build( true, 2, "g2" ) },
+                                   { build( false, 1, "(0, 4)" ), build( true, 0, "g2" ) }
                            } );
 
         //Ungroup g1 - check re-applying collapse preserves indexing
@@ -1179,11 +1180,11 @@ public class GridGroupingTests extends BaseGridTests {
                            new boolean[]{ true, true, true, true, true },
                            new boolean[]{ false, false, false, false, true },
                            new BaseGridTests.Expected[][]{
-                                   { BaseGridTests.Expected.build( true, 3, "g1" ), BaseGridTests.Expected.build( false, 1, "(1, 0)" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( false, 1, "(1, 1)" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( false, 1, "g2" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 3)" ), BaseGridTests.Expected.build( true, 2, "g2" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 4)" ), BaseGridTests.Expected.build( true, 0, "g2" ) }
+                                   { build( true, 3, "g1" ), build( false, 1, "(1, 0)" ) },
+                                   { build( true, 0, "g1" ), build( false, 1, "(1, 1)" ) },
+                                   { build( true, 0, "g1" ), build( false, 1, "g2" ) },
+                                   { build( false, 1, "(0, 3)" ), build( true, 2, "g2" ) },
+                                   { build( false, 1, "(0, 4)" ), build( true, 0, "g2" ) }
                            } );
     }
 
@@ -1251,11 +1252,11 @@ public class GridGroupingTests extends BaseGridTests {
                            new boolean[]{ true, true, true, true, true },
                            new boolean[]{ false, true, true, true, true },
                            new BaseGridTests.Expected[][]{
-                                   { BaseGridTests.Expected.build( true, 3, "g1" ), BaseGridTests.Expected.build( true, 5, "g2" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 3)" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 4)" ), BaseGridTests.Expected.build( true, 0, "g2" ) }
+                                   { build( true, 3, "g1" ), build( true, 5, "g2" ) },
+                                   { build( true, 0, "g1" ), build( true, 0, "g2" ) },
+                                   { build( true, 0, "g1" ), build( true, 0, "g2" ) },
+                                   { build( false, 1, "(0, 3)" ), build( true, 0, "g2" ) },
+                                   { build( false, 1, "(0, 4)" ), build( true, 0, "g2" ) }
                            } );
 
         //Ungroup g1 - should result in g2 being split and collapsed
@@ -1266,11 +1267,11 @@ public class GridGroupingTests extends BaseGridTests {
                            new boolean[]{ true, true, true, true, true },
                            new boolean[]{ false, false, false, false, true },
                            new BaseGridTests.Expected[][]{
-                                   { BaseGridTests.Expected.build( true, 3, "g1" ), BaseGridTests.Expected.build( true, 3, "g2" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 3)" ), BaseGridTests.Expected.build( true, 2, "g2" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 4)" ), BaseGridTests.Expected.build( true, 0, "g2" ) }
+                                   { build( true, 3, "g1" ), build( true, 3, "g2" ) },
+                                   { build( true, 0, "g1" ), build( true, 0, "g2" ) },
+                                   { build( true, 0, "g1" ), build( true, 0, "g2" ) },
+                                   { build( false, 1, "(0, 3)" ), build( true, 2, "g2" ) },
+                                   { build( false, 1, "(0, 4)" ), build( true, 0, "g2" ) }
                            } );
 
         //Ungroup g2 - should restore to original configuration
@@ -1281,11 +1282,11 @@ public class GridGroupingTests extends BaseGridTests {
                            new boolean[]{ true, true, true, true, true },
                            new boolean[]{ false, false, false, false, false },
                            new BaseGridTests.Expected[][]{
-                                   { BaseGridTests.Expected.build( true, 3, "g1" ), BaseGridTests.Expected.build( true, 5, "g2" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 3)" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 4)" ), BaseGridTests.Expected.build( true, 0, "g2" ) }
+                                   { build( true, 3, "g1" ), build( true, 5, "g2" ) },
+                                   { build( true, 0, "g1" ), build( true, 0, "g2" ) },
+                                   { build( true, 0, "g1" ), build( true, 0, "g2" ) },
+                                   { build( false, 1, "(0, 3)" ), build( true, 0, "g2" ) },
+                                   { build( false, 1, "(0, 4)" ), build( true, 0, "g2" ) }
                            } );
     }
 
@@ -1353,11 +1354,11 @@ public class GridGroupingTests extends BaseGridTests {
                            new boolean[]{ true, true, true, true, true },
                            new boolean[]{ false, true, true, false, false },
                            new BaseGridTests.Expected[][]{
-                                   { BaseGridTests.Expected.build( true, 3, "g1" ), BaseGridTests.Expected.build( true, 5, "g2" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 3)" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 4)" ), BaseGridTests.Expected.build( true, 0, "g2" ) }
+                                   { build( true, 3, "g1" ), build( true, 5, "g2" ) },
+                                   { build( true, 0, "g1" ), build( true, 0, "g2" ) },
+                                   { build( true, 0, "g1" ), build( true, 0, "g2" ) },
+                                   { build( false, 1, "(0, 3)" ), build( true, 0, "g2" ) },
+                                   { build( false, 1, "(0, 4)" ), build( true, 0, "g2" ) }
                            } );
 
         //Ungroup g2
@@ -1368,11 +1369,11 @@ public class GridGroupingTests extends BaseGridTests {
                            new boolean[]{ true, true, true, true, true },
                            new boolean[]{ false, false, false, false, false },
                            new BaseGridTests.Expected[][]{
-                                   { BaseGridTests.Expected.build( true, 3, "g1" ), BaseGridTests.Expected.build( true, 5, "g2" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 3)" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 4)" ), BaseGridTests.Expected.build( true, 0, "g2" ) }
+                                   { build( true, 3, "g1" ), build( true, 5, "g2" ) },
+                                   { build( true, 0, "g1" ), build( true, 0, "g2" ) },
+                                   { build( true, 0, "g1" ), build( true, 0, "g2" ) },
+                                   { build( false, 1, "(0, 3)" ), build( true, 0, "g2" ) },
+                                   { build( false, 1, "(0, 4)" ), build( true, 0, "g2" ) }
                            } );
 
         //Group g2
@@ -1383,11 +1384,11 @@ public class GridGroupingTests extends BaseGridTests {
                            new boolean[]{ true, true, true, true, true },
                            new boolean[]{ false, true, true, true, true },
                            new BaseGridTests.Expected[][]{
-                                   { BaseGridTests.Expected.build( true, 3, "g1" ), BaseGridTests.Expected.build( true, 5, "g2" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 3)" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 4)" ), BaseGridTests.Expected.build( true, 0, "g2" ) }
+                                   { build( true, 3, "g1" ), build( true, 5, "g2" ) },
+                                   { build( true, 0, "g1" ), build( true, 0, "g2" ) },
+                                   { build( true, 0, "g1" ), build( true, 0, "g2" ) },
+                                   { build( false, 1, "(0, 3)" ), build( true, 0, "g2" ) },
+                                   { build( false, 1, "(0, 4)" ), build( true, 0, "g2" ) }
                            } );
     }
 
@@ -1449,11 +1450,11 @@ public class GridGroupingTests extends BaseGridTests {
                            new boolean[]{ true, true, true, true, true },
                            new boolean[]{ false, false, false, true, true },
                            new BaseGridTests.Expected[][]{
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 0)" ), BaseGridTests.Expected.build( true, 2, "g2" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 1)" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
-                                   { BaseGridTests.Expected.build( true, 3, "g1" ), BaseGridTests.Expected.build( false, 1, "g2" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( false, 1, "(1, 3)" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( false, 1, "(1, 4)" ) }
+                                   { build( false, 1, "(0, 0)" ), build( true, 2, "g2" ) },
+                                   { build( false, 1, "(0, 1)" ), build( true, 0, "g2" ) },
+                                   { build( true, 3, "g1" ), build( false, 1, "g2" ) },
+                                   { build( true, 0, "g1" ), build( false, 1, "(1, 3)" ) },
+                                   { build( true, 0, "g1" ), build( false, 1, "(1, 4)" ) }
                            } );
 
         //Group g2
@@ -1464,11 +1465,11 @@ public class GridGroupingTests extends BaseGridTests {
                            new boolean[]{ true, true, true, true, true },
                            new boolean[]{ false, true, false, true, true },
                            new BaseGridTests.Expected[][]{
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 0)" ), BaseGridTests.Expected.build( true, 2, "g2" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 1)" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
-                                   { BaseGridTests.Expected.build( true, 3, "g1" ), BaseGridTests.Expected.build( false, 1, "g2" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( false, 1, "(1, 3)" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( false, 1, "(1, 4)" ) }
+                                   { build( false, 1, "(0, 0)" ), build( true, 2, "g2" ) },
+                                   { build( false, 1, "(0, 1)" ), build( true, 0, "g2" ) },
+                                   { build( true, 3, "g1" ), build( false, 1, "g2" ) },
+                                   { build( true, 0, "g1" ), build( false, 1, "(1, 3)" ) },
+                                   { build( true, 0, "g1" ), build( false, 1, "(1, 4)" ) }
                            } );
 
         //Ungroup g1 - g2 should remain split
@@ -1479,11 +1480,11 @@ public class GridGroupingTests extends BaseGridTests {
                            new boolean[]{ true, true, true, true, true },
                            new boolean[]{ false, true, false, false, false },
                            new BaseGridTests.Expected[][]{
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 0)" ), BaseGridTests.Expected.build( true, 2, "g2" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 1)" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
-                                   { BaseGridTests.Expected.build( true, 3, "g1" ), BaseGridTests.Expected.build( false, 1, "g2" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( false, 1, "(1, 3)" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( false, 1, "(1, 4)" ) }
+                                   { build( false, 1, "(0, 0)" ), build( true, 2, "g2" ) },
+                                   { build( false, 1, "(0, 1)" ), build( true, 0, "g2" ) },
+                                   { build( true, 3, "g1" ), build( false, 1, "g2" ) },
+                                   { build( true, 0, "g1" ), build( false, 1, "(1, 3)" ) },
+                                   { build( true, 0, "g1" ), build( false, 1, "(1, 4)" ) }
                            } );
 
         //Ungroup g2 - g2 should not be split
@@ -1494,11 +1495,247 @@ public class GridGroupingTests extends BaseGridTests {
                            new boolean[]{ true, true, true, true, true },
                            new boolean[]{ false, false, false, false, false },
                            new BaseGridTests.Expected[][]{
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 0)" ), BaseGridTests.Expected.build( true, 3, "g2" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 1)" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
-                                   { BaseGridTests.Expected.build( true, 3, "g1" ), BaseGridTests.Expected.build( true, 0, "g2" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( false, 1, "(1, 3)" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "g1" ), BaseGridTests.Expected.build( false, 1, "(1, 4)" ) }
+                                   { build( false, 1, "(0, 0)" ), build( true, 3, "g2" ) },
+                                   { build( false, 1, "(0, 1)" ), build( true, 0, "g2" ) },
+                                   { build( true, 3, "g1" ), build( true, 0, "g2" ) },
+                                   { build( true, 0, "g1" ), build( false, 1, "(1, 3)" ) },
+                                   { build( true, 0, "g1" ), build( false, 1, "(1, 4)" ) }
+                           } );
+    }
+
+    @Test
+    public void testGroupOverlap14() {
+        final MergableGridData data = new MergableGridData();
+        final MergableGridColumn gc1 = new MergableGridColumn( "col1",
+                                                               100 );
+        final MergableGridColumn gc2 = new MergableGridColumn( "col2",
+                                                               100 );
+        final MergableGridColumn gc3 = new MergableGridColumn( "col3",
+                                                               100 );
+        data.addColumn( gc1 );
+        data.addColumn( gc2 );
+        data.addColumn( gc3 );
+
+        data.addRow( new MergableGridRow() );
+        data.addRow( new MergableGridRow() );
+        data.addRow( new MergableGridRow() );
+        data.addRow( new MergableGridRow() );
+        data.addRow( new MergableGridRow() );
+
+        for ( int rowIndex = 0; rowIndex < data.getRowCount(); rowIndex++ ) {
+            for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
+                data.setCell( rowIndex,
+                              columnIndex,
+                              "(" + columnIndex + ", " + rowIndex + ")" );
+            }
+        }
+
+        // [ (0,0) (1,0)   g3  ]
+        // [ (0,1) (1,1)   g3  ]      [ (0,0) (1,0)   g3  ]
+        // [   g1    g2    g3  ] ---> [   g1    g2  (2,3) ] ---> [ (0,0) (1,0)   g3  ]
+        // [   g1    g2  (2,3) ]      [ (0,4)   g2  (2,4) ]      [   g1    g2  (2,3) ]
+        // [ (0,4)   g2  (2,4) ]
+
+        data.setCell( 2,
+                      0,
+                      "g1" );
+        data.setCell( 3,
+                      0,
+                      "g1" );
+
+        data.setCell( 2,
+                      1,
+                      "g2" );
+        data.setCell( 3,
+                      1,
+                      "g2" );
+        data.setCell( 4,
+                      1,
+                      "g2" );
+
+        data.setCell( 0,
+                      2,
+                      "g3" );
+        data.setCell( 1,
+                      2,
+                      "g3" );
+        data.setCell( 2,
+                      2,
+                      "g3" );
+
+        //Check initial setup
+        assertGridIndexes( data,
+                           new boolean[]{ true, true, true, true, true },
+                           new boolean[]{ false, false, false, false, false },
+                           new BaseGridTests.Expected[][]{
+                                   { build( false, 1, "(0, 0)" ), build( false, 1, "(1, 0)" ), build( true, 3, "g3" ) },
+                                   { build( false, 1, "(0, 1)" ), build( false, 1, "(1, 1)" ), build( true, 0, "g3" ) },
+                                   { build( true, 2, "g1" ), build( true, 3, "g2" ), build( true, 0, "g3" ) },
+                                   { build( true, 0, "g1" ), build( true, 0, "g2" ), build( false, 1, "(2, 3)" ) },
+                                   { build( false, 1, "(0, 4)" ), build( true, 0, "g2" ), build( false, 1, "(2, 4)" ) }
+                           } );
+
+        //Group g3 - should split g1 and g2
+        data.collapseCell( 0,
+                           2 );
+
+        assertGridIndexes( data,
+                           new boolean[]{ true, true, true, true, true },
+                           new boolean[]{ false, true, true, false, false },
+                           new BaseGridTests.Expected[][]{
+                                   { build( false, 1, "(0, 0)" ), build( false, 1, "(1, 0)" ), build( true, 3, "g3" ) },
+                                   { build( false, 1, "(0, 1)" ), build( false, 1, "(1, 1)" ), build( true, 0, "g3" ) },
+                                   { build( false, 1, "g1" ), build( false, 1, "g2" ), build( true, 0, "g3" ) },
+                                   { build( false, 1, "g1" ), build( true, 2, "g2" ), build( false, 1, "(2, 3)" ) },
+                                   { build( false, 1, "(0, 4)" ), build( true, 0, "g2" ), build( false, 1, "(2, 4)" ) }
+                           } );
+
+        //Group g2
+        data.collapseCell( 3,
+                           1 );
+
+        assertGridIndexes( data,
+                           new boolean[]{ true, true, true, true, true },
+                           new boolean[]{ false, true, true, false, true },
+                           new BaseGridTests.Expected[][]{
+                                   { build( false, 1, "(0, 0)" ), build( false, 1, "(1, 0)" ), build( true, 3, "g3" ) },
+                                   { build( false, 1, "(0, 1)" ), build( false, 1, "(1, 1)" ), build( true, 0, "g3" ) },
+                                   { build( false, 1, "g1" ), build( false, 1, "g2" ), build( true, 0, "g3" ) },
+                                   { build( false, 1, "g1" ), build( true, 2, "g2" ), build( false, 1, "(2, 3)" ) },
+                                   { build( false, 1, "(0, 4)" ), build( true, 0, "g2" ), build( false, 1, "(2, 4)" ) }
+                           } );
+    }
+
+    @Test
+    public void testGroupOverlap15() {
+        final MergableGridData data = new MergableGridData();
+        final MergableGridColumn gc1 = new MergableGridColumn( "col1",
+                                                               100 );
+        final MergableGridColumn gc2 = new MergableGridColumn( "col2",
+                                                               100 );
+        final MergableGridColumn gc3 = new MergableGridColumn( "col3",
+                                                               100 );
+        data.addColumn( gc1 );
+        data.addColumn( gc2 );
+        data.addColumn( gc3 );
+
+        data.addRow( new MergableGridRow() );
+        data.addRow( new MergableGridRow() );
+        data.addRow( new MergableGridRow() );
+        data.addRow( new MergableGridRow() );
+        data.addRow( new MergableGridRow() );
+        data.addRow( new MergableGridRow() );
+        data.addRow( new MergableGridRow() );
+
+        for ( int rowIndex = 0; rowIndex < data.getRowCount(); rowIndex++ ) {
+            for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
+                data.setCell( rowIndex,
+                              columnIndex,
+                              "(" + columnIndex + ", " + rowIndex + ")" );
+            }
+        }
+
+        // [ (0,0) (1,0)   g3  ]
+        // [ (0,1) (1,1)   g3  ]      [ (0,0) (1,0)   g3  ]      [ (0,0) (1,0)   g3  ]
+        // [ (0,2)   g2    g3) ]      [ (0,1) (1,1)   g3  ]      [ (0,1) (1,1)   g3  ]      [ (0,0) (1,0)   g3  ]
+        // [ (0,3)   g2  (2,3) ] ---> [ (0,2)   g2    g3  ] ---> [ (0,2)   g2    g3  ] ---> [   g1    g2  (2,4) ]
+        // [   g1    g2  (2,4) ]      [ (0,3)   g2  (2,3) ]      [   g1    g2  (2,4) ]
+        // [   g1  (1,5) (2,5) ]      [   g1    g2  (2,4) ]
+        // [   g1  (1,6) (2,6) ]
+
+        data.setCell( 4,
+                      0,
+                      "g1" );
+        data.setCell( 5,
+                      0,
+                      "g1" );
+        data.setCell( 6,
+                      0,
+                      "g1" );
+
+        data.setCell( 2,
+                      1,
+                      "g2" );
+        data.setCell( 3,
+                      1,
+                      "g2" );
+        data.setCell( 4,
+                      1,
+                      "g2" );
+
+        data.setCell( 0,
+                      2,
+                      "g3" );
+        data.setCell( 1,
+                      2,
+                      "g3" );
+        data.setCell( 2,
+                      2,
+                      "g3" );
+
+        //Check initial setup
+        assertGridIndexes( data,
+                           new boolean[]{ true, true, true, true, true, true, true },
+                           new boolean[]{ false, false, false, false, false, false, false },
+                           new BaseGridTests.Expected[][]{
+                                   { build( false, 1, "(0, 0)" ), build( false, 1, "(1, 0)" ), build( true, 3, "g3" ) },
+                                   { build( false, 1, "(0, 1)" ), build( false, 1, "(1, 1)" ), build( true, 0, "g3" ) },
+                                   { build( false, 1, "(0, 2)" ), build( true, 3, "g2" ), build( true, 0, "g3" ) },
+                                   { build( false, 1, "(0, 3)" ), build( true, 0, "g2" ), build( false, 1, "(2, 3)" ) },
+                                   { build( true, 3, "g1" ), build( true, 0, "g2" ), build( false, 1, "(2, 4)" ) },
+                                   { build( true, 0, "g1" ), build( false, 1, "(1, 5)" ), build( false, 1, "(2, 5)" ) },
+                                   { build( true, 0, "g1" ), build( false, 1, "(1, 6)" ), build( false, 1, "(2, 6)" ) }
+                           } );
+
+        //Group g1 - should split g2
+        data.collapseCell( 4,
+                           0 );
+
+        assertGridIndexes( data,
+                           new boolean[]{ true, true, true, true, true, true, true },
+                           new boolean[]{ false, false, false, false, false, true, true },
+                           new BaseGridTests.Expected[][]{
+                                   { build( false, 1, "(0, 0)" ), build( false, 1, "(1, 0)" ), build( true, 3, "g3" ) },
+                                   { build( false, 1, "(0, 1)" ), build( false, 1, "(1, 1)" ), build( true, 0, "g3" ) },
+                                   { build( false, 1, "(0, 2)" ), build( true, 2, "g2" ), build( true, 0, "g3" ) },
+                                   { build( false, 1, "(0, 3)" ), build( true, 0, "g2" ), build( false, 1, "(2, 3)" ) },
+                                   { build( true, 3, "g1" ), build( false, 1, "g2" ), build( false, 1, "(2, 4)" ) },
+                                   { build( true, 0, "g1" ), build( false, 1, "(1, 5)" ), build( false, 1, "(2, 5)" ) },
+                                   { build( true, 0, "g1" ), build( false, 1, "(1, 6)" ), build( false, 1, "(2, 6)" ) }
+                           } );
+
+        //Group g2 - should split g1
+        data.collapseCell( 2,
+                           1 );
+
+        assertGridIndexes( data,
+                           new boolean[]{ true, true, true, true, true, true, true },
+                           new boolean[]{ false, false, false, true, false, true, true },
+                           new BaseGridTests.Expected[][]{
+                                   { build( false, 1, "(0, 0)" ), build( false, 1, "(1, 0)" ), build( true, 2, "g3" ) },
+                                   { build( false, 1, "(0, 1)" ), build( false, 1, "(1, 1)" ), build( true, 0, "g3" ) },
+                                   { build( false, 1, "(0, 2)" ), build( true, 2, "g2" ), build( false, 1, "g3" ) },
+                                   { build( false, 1, "(0, 3)" ), build( true, 0, "g2" ), build( false, 1, "(2, 3)" ) },
+                                   { build( true, 3, "g1" ), build( false, 1, "g2" ), build( false, 1, "(2, 4)" ) },
+                                   { build( true, 0, "g1" ), build( false, 1, "(1, 5)" ), build( false, 1, "(2, 5)" ) },
+                                   { build( true, 0, "g1" ), build( false, 1, "(1, 6)" ), build( false, 1, "(2, 6)" ) }
+                           } );
+
+        //Group g3
+        data.collapseCell( 0,
+                           2 );
+
+        assertGridIndexes( data,
+                           new boolean[]{ true, true, true, true, true, true, true },
+                           new boolean[]{ false, true, false, true, false, true, true },
+                           new BaseGridTests.Expected[][]{
+                                   { build( false, 1, "(0, 0)" ), build( false, 1, "(1, 0)" ), build( true, 2, "g3" ) },
+                                   { build( false, 1, "(0, 1)" ), build( false, 1, "(1, 1)" ), build( true, 0, "g3" ) },
+                                   { build( false, 1, "(0, 2)" ), build( true, 2, "g2" ), build( false, 1, "g3" ) },
+                                   { build( false, 1, "(0, 3)" ), build( true, 0, "g2" ), build( false, 1, "(2, 3)" ) },
+                                   { build( true, 3, "g1" ), build( false, 1, "g2" ), build( false, 1, "(2, 4)" ) },
+                                   { build( true, 0, "g1" ), build( false, 1, "(1, 5)" ), build( false, 1, "(2, 5)" ) },
+                                   { build( true, 0, "g1" ), build( false, 1, "(1, 6)" ), build( false, 1, "(2, 6)" ) }
                            } );
     }
 
@@ -1536,9 +1773,9 @@ public class GridGroupingTests extends BaseGridTests {
                            new boolean[]{ true, true, false },
                            new boolean[]{ false, true, false },
                            new BaseGridTests.Expected[][]{
-                                   { BaseGridTests.Expected.build( true, 2, "(0, 0)" ), BaseGridTests.Expected.build( false, 1, "(1, 0)" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "(0, 0)" ), BaseGridTests.Expected.build( false, 1, "(1, 1)" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 2)" ), BaseGridTests.Expected.build( false, 1, "(1, 2)" ) }
+                                   { build( true, 2, "(0, 0)" ), build( false, 1, "(1, 0)" ) },
+                                   { build( true, 0, "(0, 0)" ), build( false, 1, "(1, 1)" ) },
+                                   { build( false, 1, "(0, 2)" ), build( false, 1, "(1, 2)" ) }
                            } );
 
         //Update cell value
@@ -1554,9 +1791,9 @@ public class GridGroupingTests extends BaseGridTests {
                            new boolean[]{ true, true, false },
                            new boolean[]{ false, false, false },
                            new BaseGridTests.Expected[][]{
-                                   { BaseGridTests.Expected.build( true, 2, "<changed>" ), BaseGridTests.Expected.build( false, 1, "(1, 0)" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "<changed>" ), BaseGridTests.Expected.build( false, 1, "(1, 1)" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 2)" ), BaseGridTests.Expected.build( false, 1, "(1, 2)" ) }
+                                   { build( true, 2, "<changed>" ), build( false, 1, "(1, 0)" ) },
+                                   { build( true, 0, "<changed>" ), build( false, 1, "(1, 1)" ) },
+                                   { build( false, 1, "(0, 2)" ), build( false, 1, "(1, 2)" ) }
                            } );
     }
 
@@ -1594,9 +1831,9 @@ public class GridGroupingTests extends BaseGridTests {
                            new boolean[]{ true, true, false },
                            new boolean[]{ false, true, false },
                            new BaseGridTests.Expected[][]{
-                                   { BaseGridTests.Expected.build( true, 2, "(0, 0)" ), BaseGridTests.Expected.build( false, 1, "(1, 0)" ) },
-                                   { BaseGridTests.Expected.build( true, 0, "(0, 0)" ), BaseGridTests.Expected.build( false, 1, "(1, 1)" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "(0, 2)" ), BaseGridTests.Expected.build( false, 1, "(1, 2)" ) }
+                                   { build( true, 2, "(0, 0)" ), build( false, 1, "(1, 0)" ) },
+                                   { build( true, 0, "(0, 0)" ), build( false, 1, "(1, 1)" ) },
+                                   { build( false, 1, "(0, 2)" ), build( false, 1, "(1, 2)" ) }
                            } );
 
         //Move column
@@ -1616,9 +1853,9 @@ public class GridGroupingTests extends BaseGridTests {
                            new boolean[]{ true, true, false },
                            new boolean[]{ false, false, false },
                            new BaseGridTests.Expected[][]{
-                                   { BaseGridTests.Expected.build( false, 1, "(1, 0)" ), BaseGridTests.Expected.build( true, 2, "<changed>" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "(1, 1)" ), BaseGridTests.Expected.build( true, 0, "<changed>" ) },
-                                   { BaseGridTests.Expected.build( false, 1, "(1, 2)" ), BaseGridTests.Expected.build( false, 1, "(0, 2)" ) }
+                                   { build( false, 1, "(1, 0)" ), build( true, 2, "<changed>" ) },
+                                   { build( false, 1, "(1, 1)" ), build( true, 0, "<changed>" ) },
+                                   { build( false, 1, "(1, 2)" ), build( false, 1, "(0, 2)" ) }
                            } );
     }
 

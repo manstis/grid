@@ -61,10 +61,10 @@ public class GridShowcaseWidget extends Composite implements IEditManager,
 
     private static final double VP_SCALE = 1.0;
 
-    private static final int GRID1_ROWS = 1000;
-    private static final int GRID2_ROWS = 1000;
-    private static final int GRID3_ROWS = 1000;
-    private static final int GRID4_ROWS = 1000;
+    private static final int GRID1_ROWS = 100;
+    private static final int GRID2_ROWS = 100;
+    private static final int GRID3_ROWS = 100;
+    private static final int GRID4_ROWS = 100;
 
     interface GridShowcaseWidgetUiBinder extends UiBinder<Widget, GridShowcaseWidget> {
 

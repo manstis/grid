@@ -260,6 +260,10 @@ public class MergableGridData extends BaseGridData<MergableGridRow, MergableGrid
             return;
         }
 
+        if ( checkTopCell.getMergedCellCount() == 1 ) {
+            return;
+        }
+
         // Scan from the first row before the start of collapsed block downwards to the end of the
         // collapsed block. If any cell is not identical to first then we need to split the cell.
         boolean splitTopSection = false;
@@ -347,6 +351,10 @@ public class MergableGridData extends BaseGridData<MergableGridRow, MergableGrid
         final MergableGridCell checkBottomCell = checkBottomRow.getCells().get( columnIndex );
 
         if ( checkBottomCell == null ) {
+            return;
+        }
+
+        if ( checkBottomCell.getMergedCellCount() == 1 ) {
             return;
         }
 
