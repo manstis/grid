@@ -9,7 +9,6 @@
   <artifactId>grid</artifactId>
   <packaging>war</packaging>
   <version>1.0-SNAPSHOT</version>
-  <name>GWT Maven Archetype</name>
 
   <properties>
     <!-- Convenience property to set the GWT version -->
@@ -70,6 +69,7 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.11</version>
+      <scope>test</scope>
     </dependency>
 
   </dependencies>
@@ -77,6 +77,24 @@
   <build>
     <!-- Output classes directly into the webapp, so that IDEs and "mvn process-classes" update them in DevMode -->
     <outputDirectory>${project.build.directory}/${project.build.finalName}/WEB-INF/classes</outputDirectory>
+
+    <pluginManagement>
+      <plugins>
+
+        <!-- Surefire -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>2.15</version>
+          <configuration>
+            <includes>
+              <include>**/*Tests.java</include>
+            </includes>
+          </configuration>
+        </plugin>
+
+      </plugins>
+    </pluginManagement>
 
     <plugins>
 
@@ -101,6 +119,7 @@
           </modules>
         </configuration>
       </plugin>
+
     </plugins>
   </build>
 
