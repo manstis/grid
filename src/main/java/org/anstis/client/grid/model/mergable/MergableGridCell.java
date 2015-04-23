@@ -51,6 +51,12 @@ public class MergableGridCell extends BaseGridCell implements IMergableGridCell 
         collapseLevel--;
     }
 
+    @Override
+    public void reset() {
+        mergedCellCount = 1;
+        collapseLevel = 0;
+    }
+
     void setValue( final String value ) {
         this.value = value;
     }

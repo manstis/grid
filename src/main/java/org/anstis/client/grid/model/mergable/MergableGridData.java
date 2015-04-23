@@ -19,6 +19,76 @@ import org.anstis.client.grid.model.BaseGridData;
 
 public class MergableGridData extends BaseGridData<MergableGridRow, MergableGridColumn, MergableGridCell> implements IMergableGridData {
 
+    private boolean isMerged = true;
+
+    @Override
+    public boolean isMerged() {
+        return this.isMerged;
+    }
+
+    @Override
+    public void setMerged( final boolean isMerged ) {
+        if ( this.isMerged == isMerged ) {
+            return;
+        }
+        this.isMerged = isMerged;
+        if ( isMerged ) {
+            fullIndex();
+        } else {
+            reset();
+        }
+    }
+
+    //Update all merge meta-data
+    private void fullIndex() {
+        for ( int columnIndex = 0; columnIndex < columns.size(); columnIndex++ ) {
+            for ( int rowIndex = 0; rowIndex < rows.size(); rowIndex++ ) {
+                final MergableGridCell currentRowCell = getCell( rowIndex,
+                                                                 columnIndex );
+                if ( currentRowCell == null ) {
+                    continue;
+                }
+
+                currentRowCell.reset();
+
+                int maxRowIndex = rowIndex + 1;
+                while ( maxRowIndex < rows.size() ) {
+                    final MergableGridCell nextRowCell = getCell( maxRowIndex,
+                                                                  columnIndex );
+                    if ( nextRowCell == null ) {
+                        break;
+                    }
+                    if ( !nextRowCell.equals( currentRowCell ) ) {
+                        break;
+                    }
+                    maxRowIndex++;
+                }
+
+                //Update merge meta-data
+                if ( maxRowIndex - rowIndex > 1 ) {
+                    for ( int i = rowIndex; i < maxRowIndex; i++ ) {
+                        final MergableGridRow row = rows.get( i );
+                        row.getCells().get( columnIndex ).setMergedCellCount( 0 );
+                        updateRowMergedCells( row );
+                    }
+
+                    final MergableGridRow row = rows.get( rowIndex );
+                    row.getCells().get( columnIndex ).setMergedCellCount( maxRowIndex - rowIndex );
+                    updateRowMergedCells( row );
+
+                    rowIndex = maxRowIndex;
+                }
+            }
+        }
+    }
+
+    //Clear all merge meta-data
+    private void reset() {
+        for ( MergableGridRow row : rows ) {
+            row.reset();
+        }
+    }
+
     @Override
     public void setCell( final int rowIndex,
                          final int columnIndex,
@@ -30,11 +100,18 @@ public class MergableGridData extends BaseGridData<MergableGridRow, MergableGrid
             return;
         }
 
+        final int _columnIndex = columns.get( columnIndex ).getIndex();
+
+        //If we're not merged just set the value of a single cell
+        if ( !isMerged ) {
+            rows.get( rowIndex ).setCell( _columnIndex,
+                                          value );
+            return;
+        }
+
         //Find cell's current value
         int minRowIndex = rowIndex;
         int maxRowIndex = rowIndex + 1;
-        final int _columnIndex = columns.get( columnIndex ).getIndex();
-
         final MergableGridRow currentRow = getRow( rowIndex );
         final MergableGridCell currentRowCell = currentRow.getCells().get( _columnIndex );
 
@@ -93,6 +170,11 @@ public class MergableGridData extends BaseGridData<MergableGridRow, MergableGrid
     @Override
     public void collapseCell( final int rowIndex,
                               final int columnIndex ) {
+        //Data needs to be merged to collapse cells
+        if ( !isMerged ) {
+            return;
+        }
+
         final int _columnIndex = columns.get( columnIndex ).getIndex();
         final MergableGridRow row = rows.get( rowIndex );
         final MergableGridCell cell = row.getCells().get( _columnIndex );
@@ -109,6 +191,11 @@ public class MergableGridData extends BaseGridData<MergableGridRow, MergableGrid
     @Override
     public void expandCell( final int rowIndex,
                             final int columnIndex ) {
+        //Data needs to be merged to expand cells
+        if ( !isMerged ) {
+            return;
+        }
+
         final int _columnIndex = columns.get( columnIndex ).getIndex();
         final MergableGridRow row = rows.get( rowIndex );
         final MergableGridCell cell = row.getCells().get( _columnIndex );
@@ -233,16 +320,17 @@ public class MergableGridData extends BaseGridData<MergableGridRow, MergableGrid
             rows.get( i ).collapse();
         }
 
-        for ( int i = 0; i < getColumns().size(); i++ ) {
-            if ( i == columnIndex ) {
+        for ( int i = 0; i < columns.size(); i++ ) {
+            final int _columnIndex = columns.get( i ).getIndex();
+            if ( _columnIndex == columnIndex ) {
                 continue;
             }
             updateMergeMetaDataOnCollapseTopSplitRows( minRowIndex,
                                                        maxRowIndex,
-                                                       i );
+                                                       _columnIndex );
             updateMergeMetaDataOnCollapseBottomSplitRows( minRowIndex,
                                                           maxRowIndex,
-                                                          i );
+                                                          _columnIndex );
         }
     }
 

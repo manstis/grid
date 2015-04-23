@@ -19,7 +19,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.ait.lienzo.client.core.mediator.MousePanMediator;
-import com.ait.lienzo.client.core.shape.Layer;
 import com.ait.lienzo.client.core.types.Point2D;
 import com.ait.lienzo.client.core.types.Transform;
 import com.ait.lienzo.client.widget.LienzoPanel;
@@ -48,8 +47,8 @@ import org.anstis.client.grid.widget.renderers.IGridRenderer;
 import org.anstis.client.grid.widget.renderers.basic.BlueGridRenderer;
 import org.anstis.client.grid.widget.renderers.basic.GreenGridRenderer;
 import org.anstis.client.grid.widget.renderers.basic.RedGridRenderer;
-import org.anstis.client.grid.widget.renderers.mergable.IMergableGridRenderer;
 import org.anstis.client.grid.widget.renderers.mergable.MergableGridRenderer;
+import org.gwtbootstrap3.client.ui.CheckBox;
 import org.gwtbootstrap3.client.ui.ListBox;
 import org.gwtbootstrap3.extras.slider.client.ui.Slider;
 
@@ -82,7 +81,7 @@ public class GridShowcaseWidget extends Composite implements IEditManager,
     ListBox basicRendererSelector;
 
     @UiField
-    ListBox mergableRendererSelector;
+    CheckBox chkShowMerged;
 
     private final EditorPopup editor = new EditorPopup();
 
@@ -154,22 +153,39 @@ public class GridShowcaseWidget extends Composite implements IEditManager,
         grid3.getColumns().get( 0 ).setLink( grid1.getColumns().get( 0 ) );
 
         //Widgets
-        addGrid( grid1,
-                 gridLayer,
-                 new Point2D( -1300,
-                              0 ) );
-        addGrid( grid2,
-                 gridLayer,
-                 new Point2D( 0,
-                              750 ) );
-        addGrid( grid3,
-                 gridLayer,
-                 new Point2D( 1050,
-                              0 ) );
-        addGrid( grid4,
-                 gridLayer,
-                 new Point2D( 1800,
-                              0 ) );
+        final MergableGridWidget gridWidget1 = new MergableGridWidget( grid1,
+                                                                       this,
+                                                                       this,
+                                                                       new MergableGridRenderer() );
+
+        final MergableGridWidget gridWidget2 = new MergableGridWidget( grid2,
+                                                                       this,
+                                                                       this,
+                                                                       new MergableGridRenderer() );
+
+        final MergableGridWidget gridWidget3 = new MergableGridWidget( grid3,
+                                                                       this,
+                                                                       this,
+                                                                       new MergableGridRenderer() );
+
+        final GridWidget gridWidget4 = new GridWidget( grid4,
+                                                       this,
+                                                       this,
+                                                       new RedGridRenderer() );
+
+        //Add Widgets to the Layer
+        gridWidget1.setLocation( new Point2D( -1300,
+                                              0 ) );
+        gridWidget2.setLocation( new Point2D( 0,
+                                              750 ) );
+        gridWidget3.setLocation( new Point2D( 1050,
+                                              0 ) );
+        gridWidget4.setLocation( new Point2D( 1800,
+                                              0 ) );
+        gridLayer.add( gridWidget1 );
+        gridLayer.add( gridWidget2 );
+        gridLayer.add( gridWidget3 );
+        gridLayer.add( gridWidget4 );
 
         //Slider
         slider.setValue( VP_SCALE * 100 );
@@ -200,7 +216,7 @@ public class GridShowcaseWidget extends Composite implements IEditManager,
         } );
 
         //Style selectors
-        final Map<String, IGridRenderer<?>> basicRenderers = new HashMap<>();
+        final Map<String, IGridRenderer<GridData>> basicRenderers = new HashMap<>();
         final RedGridRenderer redRenderer = new RedGridRenderer();
         final GreenGridRenderer greenRenderer = new GreenGridRenderer();
         final BlueGridRenderer blueRenderer = new BlueGridRenderer();
@@ -217,50 +233,24 @@ public class GridShowcaseWidget extends Composite implements IEditManager,
             @Override
             @SuppressWarnings("unused")
             public void onChange( final ChangeEvent event ) {
-                //TODO {manstis} Add back styling now that Merge/Collapse is working
-                final IGridRenderer<?> renderer = basicRenderers.get( basicRendererSelector.getItemText( basicRendererSelector.getSelectedIndex() ) );
+                final IGridRenderer<GridData> renderer = basicRenderers.get( basicRendererSelector.getItemText( basicRendererSelector.getSelectedIndex() ) );
+                gridWidget4.setRenderer( renderer );
                 gridLayer.draw();
             }
         } );
 
-        final Map<String, IMergableGridRenderer> mergableRenderers = new HashMap<>();
-        final MergableGridRenderer mergableRenderer = new MergableGridRenderer();
-        mergableRenderers.put( mergableRenderer.getName(),
-                               mergableRenderer );
-        for ( String name : mergableRenderers.keySet() ) {
-            mergableRendererSelector.addItem( name );
-        }
-        mergableRendererSelector.addChangeHandler( new ChangeHandler() {
+        //Merged indicator
+        chkShowMerged.setValue( grid1.isMerged() );
+        chkShowMerged.addChangeHandler( new ChangeHandler() {
             @Override
             @SuppressWarnings("unused")
             public void onChange( final ChangeEvent event ) {
-                //TODO {manstis} Add back styling now that Merge/Collapse is working
-                final IMergableGridRenderer renderer = mergableRenderers.get( mergableRendererSelector.getItemText( mergableRendererSelector.getSelectedIndex() ) );
+                grid1.setMerged( chkShowMerged.getValue() );
+                grid2.setMerged( chkShowMerged.getValue() );
+                grid3.setMerged( chkShowMerged.getValue() );
                 gridLayer.draw();
             }
         } );
-    }
-
-    public void addGrid( final MergableGridData grid,
-                         final Layer layer,
-                         final Point2D location ) {
-        final MergableGridWidget gridWidget = new MergableGridWidget( grid,
-                                                                      this,
-                                                                      this,
-                                                                      new MergableGridRenderer() );
-        gridWidget.setLocation( location );
-        layer.add( gridWidget );
-    }
-
-    public void addGrid( final GridData grid,
-                         final Layer layer,
-                         final Point2D location ) {
-        final GridWidget gridWidget = new GridWidget( grid,
-                                                      this,
-                                                      this,
-                                                      new RedGridRenderer() );
-        gridWidget.setLocation( location );
-        layer.add( gridWidget );
     }
 
     @Override

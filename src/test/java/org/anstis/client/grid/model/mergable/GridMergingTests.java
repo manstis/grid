@@ -458,4 +458,212 @@ public class GridMergingTests extends BaseGridTests {
                            } );
     }
 
+    @Test
+    public void testFullIndexing1() {
+        final MergableGridData data = new MergableGridData();
+        final MergableGridColumn gc1 = new MergableGridColumn( "col1",
+                                                               100 );
+        final MergableGridColumn gc2 = new MergableGridColumn( "col2",
+                                                               100 );
+        data.addColumn( gc1 );
+        data.addColumn( gc2 );
+
+        data.addRow( new MergableGridRow() );
+        data.addRow( new MergableGridRow() );
+        data.addRow( new MergableGridRow() );
+
+        for ( int rowIndex = 0; rowIndex < data.getRowCount(); rowIndex++ ) {
+            for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
+                data.setCell( rowIndex,
+                              columnIndex,
+                              "(" + columnIndex + ", " + rowIndex + ")" );
+            }
+        }
+
+        data.setCell( 1,
+                      0,
+                      "(0, 0)" );
+        data.setCell( 2,
+                      0,
+                      "(0, 0)" );
+
+        //Check initial indexing
+        assertGridIndexes( data,
+                           new boolean[]{ true, true, true },
+                           new boolean[]{ false, false, false },
+                           new Expected[][]{
+                                   { Expected.build( true, 3, "(0, 0)" ), Expected.build( false, 1, "(1, 0)" ) },
+                                   { Expected.build( true, 0, "(0, 0)" ), Expected.build( false, 1, "(1, 1)" ) },
+                                   { Expected.build( true, 0, "(0, 0)" ), Expected.build( false, 1, "(1, 2)" ) },
+                           } );
+
+        //Clear merging
+        data.setMerged( false );
+
+        assertGridIndexes( data,
+                           new boolean[]{ false, false, false },
+                           new boolean[]{ false, false, false },
+                           new Expected[][]{
+                                   { Expected.build( false, 1, "(0, 0)" ), Expected.build( false, 1, "(1, 0)" ) },
+                                   { Expected.build( false, 1, "(0, 0)" ), Expected.build( false, 1, "(1, 1)" ) },
+                                   { Expected.build( false, 1, "(0, 0)" ), Expected.build( false, 1, "(1, 2)" ) },
+                           } );
+
+        //Set merging
+        data.setMerged( true );
+
+        assertGridIndexes( data,
+                           new boolean[]{ true, true, true },
+                           new boolean[]{ false, false, false },
+                           new Expected[][]{
+                                   { Expected.build( true, 3, "(0, 0)" ), Expected.build( false, 1, "(1, 0)" ) },
+                                   { Expected.build( true, 0, "(0, 0)" ), Expected.build( false, 1, "(1, 1)" ) },
+                                   { Expected.build( true, 0, "(0, 0)" ), Expected.build( false, 1, "(1, 2)" ) },
+                           } );
+    }
+
+    @Test
+    public void testFullIndexing2() {
+        final MergableGridData data = new MergableGridData();
+        final MergableGridColumn gc1 = new MergableGridColumn( "col1",
+                                                               100 );
+        final MergableGridColumn gc2 = new MergableGridColumn( "col2",
+                                                               100 );
+        data.addColumn( gc1 );
+        data.addColumn( gc2 );
+
+        data.addRow( new MergableGridRow() );
+        data.addRow( new MergableGridRow() );
+        data.addRow( new MergableGridRow() );
+        data.addRow( new MergableGridRow() );
+        data.addRow( new MergableGridRow() );
+
+        for ( int rowIndex = 0; rowIndex < data.getRowCount(); rowIndex++ ) {
+            for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
+                data.setCell( rowIndex,
+                              columnIndex,
+                              "(" + columnIndex + ", " + rowIndex + ")" );
+            }
+        }
+
+        data.setCell( 1,
+                      0,
+                      "(0, 0)" );
+        data.setCell( 2,
+                      0,
+                      "(0, 0)" );
+
+        //Check initial indexing
+        assertGridIndexes( data,
+                           new boolean[]{ true, true, true, false, false },
+                           new boolean[]{ false, false, false, false, false },
+                           new Expected[][]{
+                                   { Expected.build( true, 3, "(0, 0)" ), Expected.build( false, 1, "(1, 0)" ) },
+                                   { Expected.build( true, 0, "(0, 0)" ), Expected.build( false, 1, "(1, 1)" ) },
+                                   { Expected.build( true, 0, "(0, 0)" ), Expected.build( false, 1, "(1, 2)" ) },
+                                   { Expected.build( false, 1, "(0, 3)" ), Expected.build( false, 1, "(1, 3)" ) },
+                                   { Expected.build( false, 1, "(0, 4)" ), Expected.build( false, 1, "(1, 4)" ) }
+                           } );
+
+        //Clear merging
+        data.setMerged( false );
+
+        assertGridIndexes( data,
+                           new boolean[]{ false, false, false, false, false },
+                           new boolean[]{ false, false, false, false, false },
+                           new Expected[][]{
+                                   { Expected.build( false, 1, "(0, 0)" ), Expected.build( false, 1, "(1, 0)" ) },
+                                   { Expected.build( false, 1, "(0, 0)" ), Expected.build( false, 1, "(1, 1)" ) },
+                                   { Expected.build( false, 1, "(0, 0)" ), Expected.build( false, 1, "(1, 2)" ) },
+                                   { Expected.build( false, 1, "(0, 3)" ), Expected.build( false, 1, "(1, 3)" ) },
+                                   { Expected.build( false, 1, "(0, 4)" ), Expected.build( false, 1, "(1, 4)" ) }
+                           } );
+
+        //Set merging
+        data.setMerged( true );
+
+        assertGridIndexes( data,
+                           new boolean[]{ true, true, true, false, false },
+                           new boolean[]{ false, false, false, false, false },
+                           new Expected[][]{
+                                   { Expected.build( true, 3, "(0, 0)" ), Expected.build( false, 1, "(1, 0)" ) },
+                                   { Expected.build( true, 0, "(0, 0)" ), Expected.build( false, 1, "(1, 1)" ) },
+                                   { Expected.build( true, 0, "(0, 0)" ), Expected.build( false, 1, "(1, 2)" ) },
+                                   { Expected.build( false, 1, "(0, 3)" ), Expected.build( false, 1, "(1, 3)" ) },
+                                   { Expected.build( false, 1, "(0, 4)" ), Expected.build( false, 1, "(1, 4)" ) }
+                           } );
+    }
+
+    @Test
+    public void testFullIndexing3() {
+        final MergableGridData data = new MergableGridData();
+        final MergableGridColumn gc1 = new MergableGridColumn( "col1",
+                                                               100 );
+        final MergableGridColumn gc2 = new MergableGridColumn( "col2",
+                                                               100 );
+        data.addColumn( gc1 );
+        data.addColumn( gc2 );
+
+        data.addRow( new MergableGridRow() );
+        data.addRow( new MergableGridRow() );
+        data.addRow( new MergableGridRow() );
+        data.addRow( new MergableGridRow() );
+        data.addRow( new MergableGridRow() );
+
+        for ( int rowIndex = 0; rowIndex < data.getRowCount(); rowIndex++ ) {
+            for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
+                data.setCell( rowIndex,
+                              columnIndex,
+                              "(" + columnIndex + ", " + rowIndex + ")" );
+            }
+        }
+
+        data.setCell( 3,
+                      0,
+                      "(0, 2)" );
+        data.setCell( 4,
+                      0,
+                      "(0, 2)" );
+
+        //Check initial indexing
+        assertGridIndexes( data,
+                           new boolean[]{ false, false, true, true, true },
+                           new boolean[]{ false, false, false, false, false },
+                           new Expected[][]{
+                                   { Expected.build( false, 1, "(0, 0)" ), Expected.build( false, 1, "(1, 0)" ) },
+                                   { Expected.build( false, 1, "(0, 1)" ), Expected.build( false, 1, "(1, 1)" ) },
+                                   { Expected.build( true, 3, "(0, 2)" ), Expected.build( false, 1, "(1, 2)" ) },
+                                   { Expected.build( true, 0, "(0, 2)" ), Expected.build( false, 1, "(1, 3)" ) },
+                                   { Expected.build( true, 0, "(0, 2)" ), Expected.build( false, 1, "(1, 4)" ) }
+                           } );
+
+        //Clear merging
+        data.setMerged( false );
+
+        assertGridIndexes( data,
+                           new boolean[]{ false, false, false, false, false },
+                           new boolean[]{ false, false, false, false, false },
+                           new Expected[][]{
+                                   { Expected.build( false, 1, "(0, 0)" ), Expected.build( false, 1, "(1, 0)" ) },
+                                   { Expected.build( false, 1, "(0, 1)" ), Expected.build( false, 1, "(1, 1)" ) },
+                                   { Expected.build( false, 1, "(0, 2)" ), Expected.build( false, 1, "(1, 2)" ) },
+                                   { Expected.build( false, 1, "(0, 2)" ), Expected.build( false, 1, "(1, 3)" ) },
+                                   { Expected.build( false, 1, "(0, 2)" ), Expected.build( false, 1, "(1, 4)" ) }
+                           } );
+
+        //Set merging
+        data.setMerged( true );
+
+        assertGridIndexes( data,
+                           new boolean[]{ false, false, true, true, true },
+                           new boolean[]{ false, false, false, false, false },
+                           new Expected[][]{
+                                   { Expected.build( false, 1, "(0, 0)" ), Expected.build( false, 1, "(1, 0)" ) },
+                                   { Expected.build( false, 1, "(0, 1)" ), Expected.build( false, 1, "(1, 1)" ) },
+                                   { Expected.build( true, 3, "(0, 2)" ), Expected.build( false, 1, "(1, 2)" ) },
+                                   { Expected.build( true, 0, "(0, 2)" ), Expected.build( false, 1, "(1, 3)" ) },
+                                   { Expected.build( true, 0, "(0, 2)" ), Expected.build( false, 1, "(1, 4)" ) }
+                           } );
+    }
+
 }

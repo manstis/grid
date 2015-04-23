@@ -49,8 +49,12 @@ public abstract class BaseGridWidget<M extends IGridData<?, ?, ?>> extends Group
         return model;
     }
 
-    public IGridRenderer<?> getRenderer() {
+    public IGridRenderer<M> getRenderer() {
         return this.renderer;
+    }
+
+    public void setRenderer( final IGridRenderer<M> renderer ) {
+        this.renderer = renderer;
     }
 
     public double getWidth() {

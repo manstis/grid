@@ -19,6 +19,10 @@ import org.anstis.client.grid.model.IGridData;
 
 public interface IMergableGridData extends IGridData<MergableGridRow, MergableGridColumn, MergableGridCell> {
 
+    boolean isMerged();
+
+    void setMerged(final boolean isMerged);
+
     void collapseCell( final int rowIndex,
                        final int columnIndex );
 

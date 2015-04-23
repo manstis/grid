@@ -42,11 +42,17 @@
       text-align: center;
     }
 
-    .rendererSelector {
+    .renderers {
       margin-bottom: 20px;
       margin-left: 20px;
       margin-right: 20px;
       text-align: center;
+    }
+
+    .merged {
+      margin-bottom: 20px;
+      margin-left: 20px;
+      margin-right: 20px;
     }
 
   </ui:style>
@@ -59,11 +65,11 @@
       <g:SimplePanel styleName="{css.slider}">
         <bs3slider:Slider ui:field="slider" min="10" max="100" step="10" orientation="HORIZONTAL"/>
       </g:SimplePanel>
-      <g:SimplePanel styleName="{css.rendererSelector}">
+      <g:SimplePanel styleName="{css.renderers}">
         <bs3:ListBox ui:field="basicRendererSelector"/>
       </g:SimplePanel>
-      <g:SimplePanel styleName="{css.rendererSelector}">
-        <bs3:ListBox ui:field="mergableRendererSelector"/>
+      <g:SimplePanel styleName="{css.merged}">
+        <bs3:CheckBox ui:field="chkShowMerged" text="Show merged"/>
       </g:SimplePanel>
     </g:VerticalPanel>
   </g:HTMLPanel>

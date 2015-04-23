@@ -29,4 +29,6 @@ public interface IMergableGridCell extends IGridCell {
 
     void expand();
 
+    void reset();
+
 }

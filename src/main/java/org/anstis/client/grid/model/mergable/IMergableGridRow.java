@@ -28,6 +28,8 @@ public interface IMergableGridRow<V extends IGridCell> extends IGridRow<V> {
 
     void expand();
 
+    void reset();
+
     double peekHeight();
 
 }

@@ -66,6 +66,18 @@ public class MergableGridRow extends BaseGridRow<MergableGridCell> implements IM
     }
 
     @Override
+    public void reset() {
+        collapseLevel = 0;
+        hasMergedCells = false;
+        height = heights.firstElement();
+        heights.clear();
+        heights.push( height );
+        for ( MergableGridCell cell : cells.values() ) {
+            cell.reset();
+        }
+    }
+
+    @Override
     public double peekHeight() {
         return heights.peek();
     }
