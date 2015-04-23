@@ -214,9 +214,6 @@ public class MergableGridRenderer implements IMergableGridRenderer {
         for ( int columnIndex = startColumnIndex; columnIndex <= endColumnIndex; columnIndex++ ) {
             final MergableGridColumn column = columns.get( columnIndex );
             final int w = column.getWidth();
-
-            int counter = 0;
-
             for ( int rowIndex = startRowIndex; rowIndex <= endRowIndex; rowIndex++ ) {
                 final double y = rowOffsets.get( rowIndex - startRowIndex ) - rowOffsets.get( 0 );
                 final MergableGridRow row = model.getRow( rowIndex );
@@ -231,8 +228,8 @@ public class MergableGridRenderer implements IMergableGridRenderer {
 
                         //Add Group Toggle for first row in a Merged block
                         if ( cell.getMergedCellCount() > 1 ) {
-                            final MergableGridRow nextRow = model.getRow( rowIndex + 1 );
-                            final MergableGridCell nextRowCell = nextRow.getCells().get( columnIndex );
+                            final MergableGridCell nextRowCell = model.getCell( rowIndex + 1,
+                                                                                columnIndex );
                             if ( nextRowCell != null ) {
                                 final GroupingToggle gt = renderGroupedCellToggle( w,
                                                                                    row.getHeight(),
@@ -275,11 +272,6 @@ public class MergableGridRenderer implements IMergableGridRenderer {
                             rowIndex = _rowIndex + _cell.getMergedCellCount() - 1;
                         }
                     }
-                }
-                counter++;
-                if(counter>1000) {
-                    g.setAlpha( 0.5 );
-                    break;
                 }
             }
             x = x + w;
