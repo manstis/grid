@@ -16,8 +16,9 @@
 package org.anstis.client.grid.model.mergable;
 
 import org.anstis.client.grid.model.BaseGridData;
+import org.anstis.client.grid.model.IGridCellValue;
 
-public class MergableGridData extends BaseGridData<MergableGridRow, MergableGridColumn, MergableGridCell> implements IMergableGridData {
+public class MergableGridData extends BaseGridData<MergableGridRow, MergableGridColumn<?>, MergableGridCell<?>> implements IMergableGridData {
 
     private boolean isMerged = true;
 
@@ -92,7 +93,7 @@ public class MergableGridData extends BaseGridData<MergableGridRow, MergableGrid
     @Override
     public void setCell( final int rowIndex,
                          final int columnIndex,
-                         final String value ) {
+                         final IGridCellValue<?> value ) {
         if ( rowIndex < 0 || rowIndex > rows.size() - 1 ) {
             return;
         }

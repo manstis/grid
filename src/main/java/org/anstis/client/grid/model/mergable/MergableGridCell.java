@@ -16,13 +16,14 @@
 package org.anstis.client.grid.model.mergable;
 
 import org.anstis.client.grid.model.BaseGridCell;
+import org.anstis.client.grid.model.IGridCellValue;
 
-public class MergableGridCell extends BaseGridCell implements IMergableGridCell {
+public class MergableGridCell<T> extends BaseGridCell<T> implements IMergableGridCell<T> {
 
     private int mergedCellCount = 1;
     private int collapseLevel = 0;
 
-    public MergableGridCell( final String value ) {
+    public MergableGridCell( final IGridCellValue<T> value ) {
         super( value );
     }
 
@@ -57,7 +58,7 @@ public class MergableGridCell extends BaseGridCell implements IMergableGridCell 
         collapseLevel = 0;
     }
 
-    void setValue( final String value ) {
+    void setValue( final IGridCellValue<T> value ) {
         this.value = value;
     }
 

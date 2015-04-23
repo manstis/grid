@@ -17,7 +17,7 @@ package org.anstis.client.grid.model;
 
 import java.util.List;
 
-public interface IGridData<R extends IGridRow<V>, C extends IGridColumn<R, V>, V extends IGridCell> {
+public interface IGridData<R extends IGridRow<V>, C extends IGridColumn<R, V>, V extends IGridCell<?>> {
 
     List<C> getColumns();
 
@@ -53,6 +53,6 @@ public interface IGridData<R extends IGridRow<V>, C extends IGridColumn<R, V>, V
 
     void setCell( final int rowIndex,
                   final int columnIndex,
-                  final String value );
+                  final IGridCellValue<?> value );
 
 }

@@ -13,19 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.anstis.client.grid.model.basic;
+package org.anstis.client.grid.model;
 
-import org.anstis.client.grid.model.BaseGridCell;
-import org.anstis.client.grid.model.IGridCellValue;
+public interface IGridCellValue<T> {
 
-public class GridCell<T> extends BaseGridCell<T> {
+    T getValue();
 
-    public GridCell( final IGridCellValue<T> value ) {
-        super( value );
-    }
-
-    void setValue( final IGridCellValue<T> value ) {
-        this.value = value;
-    }
+    void setValue(final T value);
 
 }

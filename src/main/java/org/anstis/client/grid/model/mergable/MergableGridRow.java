@@ -18,8 +18,9 @@ package org.anstis.client.grid.model.mergable;
 import java.util.Stack;
 
 import org.anstis.client.grid.model.BaseGridRow;
+import org.anstis.client.grid.model.IGridCellValue;
 
-public class MergableGridRow extends BaseGridRow<MergableGridCell> implements IMergableGridRow<MergableGridCell> {
+public class MergableGridRow extends BaseGridRow<MergableGridCell<?>> implements IMergableGridRow<MergableGridCell<?>> {
 
     private boolean hasMergedCells = false;
     private Stack<Double> heights = new Stack<>();
@@ -83,7 +84,7 @@ public class MergableGridRow extends BaseGridRow<MergableGridCell> implements IM
     }
 
     void setCell( final int columnIndex,
-                  final String value ) {
+                  final IGridCellValue value ) {
         if ( !cells.containsKey( columnIndex ) ) {
             cells.put( columnIndex,
                        new MergableGridCell( value ) );

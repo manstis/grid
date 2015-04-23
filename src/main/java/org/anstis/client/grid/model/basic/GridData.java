@@ -16,13 +16,14 @@
 package org.anstis.client.grid.model.basic;
 
 import org.anstis.client.grid.model.BaseGridData;
+import org.anstis.client.grid.model.IGridCellValue;
 
-public class GridData extends BaseGridData<GridRow, GridColumn, GridCell> {
+public class GridData extends BaseGridData<GridRow, GridColumn<?>, GridCell<?>> {
 
     @Override
     public void setCell( final int rowIndex,
                          final int columnIndex,
-                         final String value ) {
+                         final IGridCellValue<?> value ) {
         if ( rowIndex < 0 || rowIndex > rows.size() - 1 ) {
             return;
         }

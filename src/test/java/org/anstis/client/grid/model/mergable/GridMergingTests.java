@@ -15,6 +15,7 @@
  */
 package org.anstis.client.grid.model.mergable;
 
+import org.anstis.client.grid.model.BaseGridCellValue;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -24,10 +25,10 @@ public class GridMergingTests extends BaseGridTests {
     @Test
     public void testInitialSetup1() {
         final MergableGridData data = new MergableGridData();
-        final MergableGridColumn gc1 = new MergableGridColumn( "col1",
-                                                               100 );
-        final MergableGridColumn gc2 = new MergableGridColumn( "col2",
-                                                               100 );
+        final MergableGridColumn<String> gc1 = new MockMergableGridColumn<>( "col1",
+                                                                             100 );
+        final MergableGridColumn<String> gc2 = new MockMergableGridColumn<>( "col2",
+                                                                             100 );
         data.addColumn( gc1 );
         data.addColumn( gc2 );
 
@@ -39,7 +40,7 @@ public class GridMergingTests extends BaseGridTests {
             for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
                 data.setCell( rowIndex,
                               columnIndex,
-                              "(" + columnIndex + ", " + rowIndex + ")" );
+                              new BaseGridCellValue<>( "(" + columnIndex + ", " + rowIndex + ")" ) );
             }
         }
 
@@ -58,10 +59,10 @@ public class GridMergingTests extends BaseGridTests {
     @Test
     public void testInitialSetup2() {
         final MergableGridData data = new MergableGridData();
-        final MergableGridColumn gc1 = new MergableGridColumn( "col1",
-                                                               100 );
-        final MergableGridColumn gc2 = new MergableGridColumn( "col2",
-                                                               100 );
+        final MergableGridColumn<String> gc1 = new MockMergableGridColumn<>( "col1",
+                                                                             100 );
+        final MergableGridColumn<String> gc2 = new MockMergableGridColumn<>( "col2",
+                                                                             100 );
         data.addColumn( gc1 );
         data.addColumn( gc2 );
 
@@ -73,7 +74,7 @@ public class GridMergingTests extends BaseGridTests {
             for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
                 data.setCell( rowIndex,
                               columnIndex,
-                              "(" + columnIndex + ", " + ( columnIndex == 0 ? "X" : rowIndex ) + ")" );
+                              new BaseGridCellValue<>( "(" + columnIndex + ", " + ( columnIndex == 0 ? "X" : rowIndex ) + ")" ) );
             }
         }
 
@@ -90,10 +91,10 @@ public class GridMergingTests extends BaseGridTests {
     @Test
     public void testMergeNext1() {
         final MergableGridData data = new MergableGridData();
-        final MergableGridColumn gc1 = new MergableGridColumn( "col1",
-                                                               100 );
-        final MergableGridColumn gc2 = new MergableGridColumn( "col2",
-                                                               100 );
+        final MergableGridColumn<String> gc1 = new MockMergableGridColumn<>( "col1",
+                                                                             100 );
+        final MergableGridColumn<String> gc2 = new MockMergableGridColumn<>( "col2",
+                                                                             100 );
         data.addColumn( gc1 );
         data.addColumn( gc2 );
 
@@ -105,13 +106,13 @@ public class GridMergingTests extends BaseGridTests {
             for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
                 data.setCell( rowIndex,
                               columnIndex,
-                              "(" + columnIndex + ", " + rowIndex + ")" );
+                              new BaseGridCellValue<>( "(" + columnIndex + ", " + rowIndex + ")" ) );
             }
         }
 
         data.setCell( 1,
                       0,
-                      "(0, 0)" );
+                      new BaseGridCellValue<>( "(0, 0)" ) );
 
         assertGridIndexes( data,
                            new boolean[]{ true, true, false },
@@ -126,10 +127,10 @@ public class GridMergingTests extends BaseGridTests {
     @Test
     public void testMergeNext2() {
         final MergableGridData data = new MergableGridData();
-        final MergableGridColumn gc1 = new MergableGridColumn( "col1",
-                                                               100 );
-        final MergableGridColumn gc2 = new MergableGridColumn( "col2",
-                                                               100 );
+        final MergableGridColumn<String> gc1 = new MockMergableGridColumn<>( "col1",
+                                                                             100 );
+        final MergableGridColumn<String> gc2 = new MockMergableGridColumn<>( "col2",
+                                                                             100 );
         data.addColumn( gc1 );
         data.addColumn( gc2 );
 
@@ -141,13 +142,13 @@ public class GridMergingTests extends BaseGridTests {
             for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
                 data.setCell( rowIndex,
                               columnIndex,
-                              "(" + columnIndex + ", " + rowIndex + ")" );
+                              new BaseGridCellValue<>( "(" + columnIndex + ", " + rowIndex + ")" ) );
             }
         }
 
         data.setCell( 2,
                       0,
-                      "(0, 1)" );
+                      new BaseGridCellValue<>( "(0, 1)" ) );
 
         assertGridIndexes( data,
                            new boolean[]{ false, true, true },
@@ -162,10 +163,10 @@ public class GridMergingTests extends BaseGridTests {
     @Test
     public void testMergeNext3() {
         final MergableGridData data = new MergableGridData();
-        final MergableGridColumn gc1 = new MergableGridColumn( "col1",
-                                                               100 );
-        final MergableGridColumn gc2 = new MergableGridColumn( "col2",
-                                                               100 );
+        final MergableGridColumn<String> gc1 = new MockMergableGridColumn<>( "col1",
+                                                                             100 );
+        final MergableGridColumn<String> gc2 = new MockMergableGridColumn<>( "col2",
+                                                                             100 );
         data.addColumn( gc1 );
         data.addColumn( gc2 );
 
@@ -177,16 +178,16 @@ public class GridMergingTests extends BaseGridTests {
             for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
                 data.setCell( rowIndex,
                               columnIndex,
-                              "(" + columnIndex + ", " + rowIndex + ")" );
+                              new BaseGridCellValue<>( "(" + columnIndex + ", " + rowIndex + ")" ) );
             }
         }
 
         data.setCell( 1,
                       0,
-                      "(0, 0)" );
+                      new BaseGridCellValue<>( "(0, 0)" ) );
         data.setCell( 2,
                       0,
-                      "(0, 0)" );
+                      new BaseGridCellValue<>( "(0, 0)" ) );
 
         assertGridIndexes( data,
                            new boolean[]{ true, true, true },
@@ -201,10 +202,10 @@ public class GridMergingTests extends BaseGridTests {
     @Test
     public void testMergePrevious1() {
         final MergableGridData data = new MergableGridData();
-        final MergableGridColumn gc1 = new MergableGridColumn( "col1",
-                                                               100 );
-        final MergableGridColumn gc2 = new MergableGridColumn( "col2",
-                                                               100 );
+        final MergableGridColumn<String> gc1 = new MockMergableGridColumn<>( "col1",
+                                                                             100 );
+        final MergableGridColumn<String> gc2 = new MockMergableGridColumn<>( "col2",
+                                                                             100 );
         data.addColumn( gc1 );
         data.addColumn( gc2 );
 
@@ -216,13 +217,13 @@ public class GridMergingTests extends BaseGridTests {
             for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
                 data.setCell( rowIndex,
                               columnIndex,
-                              "(" + columnIndex + ", " + rowIndex + ")" );
+                              new BaseGridCellValue<>( "(" + columnIndex + ", " + rowIndex + ")" ) );
             }
         }
 
         data.setCell( 0,
                       0,
-                      "(0, 1)" );
+                      new BaseGridCellValue<>( "(0, 1)" ) );
 
         assertGridIndexes( data,
                            new boolean[]{ true, true, false },
@@ -237,10 +238,10 @@ public class GridMergingTests extends BaseGridTests {
     @Test
     public void testMergePrevious2() {
         final MergableGridData data = new MergableGridData();
-        final MergableGridColumn gc1 = new MergableGridColumn( "col1",
-                                                               100 );
-        final MergableGridColumn gc2 = new MergableGridColumn( "col2",
-                                                               100 );
+        final MergableGridColumn<String> gc1 = new MockMergableGridColumn<>( "col1",
+                                                                             100 );
+        final MergableGridColumn<String> gc2 = new MockMergableGridColumn<>( "col2",
+                                                                             100 );
         data.addColumn( gc1 );
         data.addColumn( gc2 );
 
@@ -252,13 +253,13 @@ public class GridMergingTests extends BaseGridTests {
             for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
                 data.setCell( rowIndex,
                               columnIndex,
-                              "(" + columnIndex + ", " + rowIndex + ")" );
+                              new BaseGridCellValue<>( "(" + columnIndex + ", " + rowIndex + ")" ) );
             }
         }
 
         data.setCell( 1,
                       0,
-                      "(0, 2)" );
+                      new BaseGridCellValue<>( "(0, 2)" ) );
 
         assertGridIndexes( data,
                            new boolean[]{ false, true, true },
@@ -273,10 +274,10 @@ public class GridMergingTests extends BaseGridTests {
     @Test
     public void testMergePrevious3() {
         final MergableGridData data = new MergableGridData();
-        final MergableGridColumn gc1 = new MergableGridColumn( "col1",
-                                                               100 );
-        final MergableGridColumn gc2 = new MergableGridColumn( "col2",
-                                                               100 );
+        final MergableGridColumn<String> gc1 = new MockMergableGridColumn<>( "col1",
+                                                                             100 );
+        final MergableGridColumn<String> gc2 = new MockMergableGridColumn<>( "col2",
+                                                                             100 );
         data.addColumn( gc1 );
         data.addColumn( gc2 );
 
@@ -288,17 +289,17 @@ public class GridMergingTests extends BaseGridTests {
             for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
                 data.setCell( rowIndex,
                               columnIndex,
-                              "(" + columnIndex + ", " + rowIndex + ")" );
+                              new BaseGridCellValue<>( "(" + columnIndex + ", " + rowIndex + ")" ) );
             }
         }
 
         data.setCell( 1,
                       0,
-                      "(0, 2)" );
+                      new BaseGridCellValue<>( "(0, 2)" ) );
 
         data.setCell( 0,
                       0,
-                      "(0, 2)" );
+                      new BaseGridCellValue<>( "(0, 2)" ) );
 
         assertGridIndexes( data,
                            new boolean[]{ true, true, true },
@@ -313,10 +314,10 @@ public class GridMergingTests extends BaseGridTests {
     @Test
     public void testMergeNonSequential() {
         final MergableGridData data = new MergableGridData();
-        final MergableGridColumn gc1 = new MergableGridColumn( "col1",
-                                                               100 );
-        final MergableGridColumn gc2 = new MergableGridColumn( "col2",
-                                                               100 );
+        final MergableGridColumn<String> gc1 = new MockMergableGridColumn<>( "col1",
+                                                                             100 );
+        final MergableGridColumn<String> gc2 = new MockMergableGridColumn<>( "col2",
+                                                                             100 );
         data.addColumn( gc1 );
         data.addColumn( gc2 );
 
@@ -328,21 +329,21 @@ public class GridMergingTests extends BaseGridTests {
             for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
                 data.setCell( rowIndex,
                               columnIndex,
-                              "(" + columnIndex + ", " + rowIndex + ")" );
+                              new BaseGridCellValue<>( "(" + columnIndex + ", " + rowIndex + ")" ) );
             }
         }
 
         data.setCell( 0,
                       0,
-                      "(a, b)" );
+                      new BaseGridCellValue<>( "(a, b)" ) );
 
         data.setCell( 2,
                       0,
-                      "(a, b)" );
+                      new BaseGridCellValue<>( "(a, b)" ) );
 
         data.setCell( 1,
                       0,
-                      "(a, b)" );
+                      new BaseGridCellValue<>( "(a, b)" ) );
 
         assertGridIndexes( data,
                            new boolean[]{ true, true, true },
@@ -357,10 +358,10 @@ public class GridMergingTests extends BaseGridTests {
     @Test
     public void testMergedUpdateCellValue() {
         final MergableGridData data = new MergableGridData();
-        final MergableGridColumn gc1 = new MergableGridColumn( "col1",
-                                                               100 );
-        final MergableGridColumn gc2 = new MergableGridColumn( "col2",
-                                                               100 );
+        final MergableGridColumn<String> gc1 = new MockMergableGridColumn<>( "col1",
+                                                                             100 );
+        final MergableGridColumn<String> gc2 = new MockMergableGridColumn<>( "col2",
+                                                                             100 );
         data.addColumn( gc1 );
         data.addColumn( gc2 );
 
@@ -372,13 +373,13 @@ public class GridMergingTests extends BaseGridTests {
             for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
                 data.setCell( rowIndex,
                               columnIndex,
-                              "(" + columnIndex + ", " + rowIndex + ")" );
+                              new BaseGridCellValue<>( "(" + columnIndex + ", " + rowIndex + ")" ) );
             }
         }
 
         data.setCell( 1,
                       0,
-                      "(0, 0)" );
+                      new BaseGridCellValue<>( "(0, 0)" ) );
 
         assertGridIndexes( data,
                            new boolean[]{ true, true, false },
@@ -392,7 +393,7 @@ public class GridMergingTests extends BaseGridTests {
         //Update cell value
         data.setCell( 0,
                       0,
-                      "<changed>" );
+                      new BaseGridCellValue<>( "<changed>" ) );
 
         assertGridIndexes( data,
                            new boolean[]{ true, true, false },
@@ -407,10 +408,10 @@ public class GridMergingTests extends BaseGridTests {
     @Test
     public void testMergedMovedColumnUpdateCellValue() {
         final MergableGridData data = new MergableGridData();
-        final MergableGridColumn gc1 = new MergableGridColumn( "col1",
-                                                               100 );
-        final MergableGridColumn gc2 = new MergableGridColumn( "col2",
-                                                               100 );
+        final MergableGridColumn<String> gc1 = new MockMergableGridColumn<>( "col1",
+                                                                             100 );
+        final MergableGridColumn<String> gc2 = new MockMergableGridColumn<>( "col2",
+                                                                             100 );
         data.addColumn( gc1 );
         data.addColumn( gc2 );
 
@@ -422,13 +423,13 @@ public class GridMergingTests extends BaseGridTests {
             for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
                 data.setCell( rowIndex,
                               columnIndex,
-                              "(" + columnIndex + ", " + rowIndex + ")" );
+                              new BaseGridCellValue<>( "(" + columnIndex + ", " + rowIndex + ")" ) );
             }
         }
 
         data.setCell( 1,
                       0,
-                      "(0, 0)" );
+                      new BaseGridCellValue<>( "(0, 0)" ) );
 
         assertGridIndexes( data,
                            new boolean[]{ true, true, false },
@@ -446,7 +447,7 @@ public class GridMergingTests extends BaseGridTests {
         //Update cell value
         data.setCell( 0,
                       1,
-                      "<changed>" );
+                      new BaseGridCellValue<>( "<changed>" ) );
 
         assertGridIndexes( data,
                            new boolean[]{ true, true, false },
@@ -461,10 +462,10 @@ public class GridMergingTests extends BaseGridTests {
     @Test
     public void testFullIndexing1() {
         final MergableGridData data = new MergableGridData();
-        final MergableGridColumn gc1 = new MergableGridColumn( "col1",
-                                                               100 );
-        final MergableGridColumn gc2 = new MergableGridColumn( "col2",
-                                                               100 );
+        final MergableGridColumn<String> gc1 = new MockMergableGridColumn<>( "col1",
+                                                                             100 );
+        final MergableGridColumn<String> gc2 = new MockMergableGridColumn<>( "col2",
+                                                                             100 );
         data.addColumn( gc1 );
         data.addColumn( gc2 );
 
@@ -476,16 +477,16 @@ public class GridMergingTests extends BaseGridTests {
             for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
                 data.setCell( rowIndex,
                               columnIndex,
-                              "(" + columnIndex + ", " + rowIndex + ")" );
+                              new BaseGridCellValue<>( "(" + columnIndex + ", " + rowIndex + ")" ) );
             }
         }
 
         data.setCell( 1,
                       0,
-                      "(0, 0)" );
+                      new BaseGridCellValue<>( "(0, 0)" ) );
         data.setCell( 2,
                       0,
-                      "(0, 0)" );
+                      new BaseGridCellValue<>( "(0, 0)" ) );
 
         //Check initial indexing
         assertGridIndexes( data,
@@ -525,10 +526,10 @@ public class GridMergingTests extends BaseGridTests {
     @Test
     public void testFullIndexing2() {
         final MergableGridData data = new MergableGridData();
-        final MergableGridColumn gc1 = new MergableGridColumn( "col1",
-                                                               100 );
-        final MergableGridColumn gc2 = new MergableGridColumn( "col2",
-                                                               100 );
+        final MergableGridColumn<String> gc1 = new MockMergableGridColumn<>( "col1",
+                                                                             100 );
+        final MergableGridColumn<String> gc2 = new MockMergableGridColumn<>( "col2",
+                                                                             100 );
         data.addColumn( gc1 );
         data.addColumn( gc2 );
 
@@ -542,16 +543,16 @@ public class GridMergingTests extends BaseGridTests {
             for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
                 data.setCell( rowIndex,
                               columnIndex,
-                              "(" + columnIndex + ", " + rowIndex + ")" );
+                              new BaseGridCellValue<>( "(" + columnIndex + ", " + rowIndex + ")" ) );
             }
         }
 
         data.setCell( 1,
                       0,
-                      "(0, 0)" );
+                      new BaseGridCellValue<>( "(0, 0)" ) );
         data.setCell( 2,
                       0,
-                      "(0, 0)" );
+                      new BaseGridCellValue<>( "(0, 0)" ) );
 
         //Check initial indexing
         assertGridIndexes( data,
@@ -597,10 +598,10 @@ public class GridMergingTests extends BaseGridTests {
     @Test
     public void testFullIndexing3() {
         final MergableGridData data = new MergableGridData();
-        final MergableGridColumn gc1 = new MergableGridColumn( "col1",
-                                                               100 );
-        final MergableGridColumn gc2 = new MergableGridColumn( "col2",
-                                                               100 );
+        final MergableGridColumn<String> gc1 = new MockMergableGridColumn<>( "col1",
+                                                                             100 );
+        final MergableGridColumn<String> gc2 = new MockMergableGridColumn<>( "col2",
+                                                                             100 );
         data.addColumn( gc1 );
         data.addColumn( gc2 );
 
@@ -614,16 +615,16 @@ public class GridMergingTests extends BaseGridTests {
             for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
                 data.setCell( rowIndex,
                               columnIndex,
-                              "(" + columnIndex + ", " + rowIndex + ")" );
+                              new BaseGridCellValue<>( "(" + columnIndex + ", " + rowIndex + ")" ) );
             }
         }
 
         data.setCell( 3,
                       0,
-                      "(0, 2)" );
+                      new BaseGridCellValue<>( "(0, 2)" ) );
         data.setCell( 4,
                       0,
-                      "(0, 2)" );
+                      new BaseGridCellValue<>( "(0, 2)" ) );
 
         //Check initial indexing
         assertGridIndexes( data,

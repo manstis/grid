@@ -21,6 +21,8 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyDownHandler;
+import org.anstis.client.grid.model.BaseGridCellValue;
+import org.anstis.client.grid.model.IGridCellValue;
 import org.gwtbootstrap3.client.shared.event.ModalShownEvent;
 import org.gwtbootstrap3.client.shared.event.ModalShownHandler;
 import org.gwtbootstrap3.client.ui.Button;
@@ -35,8 +37,8 @@ public class EditorPopup extends Modal {
 
     private final TextBox textBox = new TextBox();
 
-    private String value;
-    private Callback<String, String> callback = null;
+    private IGridCellValue<?> value;
+    private Callback<IGridCellValue<?>, IGridCellValue<?>> callback = null;
 
     public EditorPopup() {
         setTitle( "Edit" );
@@ -86,11 +88,11 @@ public class EditorPopup extends Modal {
         } );
     }
 
-    public void edit( final String value,
-                      final Callback<String, String> callback ) {
+    public void edit( final IGridCellValue<?> value,
+                      final Callback<IGridCellValue<?>, IGridCellValue<?>> callback ) {
         this.value = value;
         this.callback = callback;
-        textBox.setText( value );
+        textBox.setText( value == null ? "" : value.getValue().toString() );
         show();
     }
 
@@ -103,7 +105,7 @@ public class EditorPopup extends Modal {
 
     private void commit() {
         if ( callback != null ) {
-            callback.onSuccess( textBox.getText() );
+            callback.onSuccess( new BaseGridCellValue<>( textBox.getText() ) );
         }
         hide();
     }

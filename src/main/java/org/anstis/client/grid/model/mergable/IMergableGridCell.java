@@ -17,7 +17,7 @@ package org.anstis.client.grid.model.mergable;
 
 import org.anstis.client.grid.model.IGridCell;
 
-public interface IMergableGridCell extends IGridCell {
+public interface IMergableGridCell<T> extends IGridCell<T> {
 
     boolean isMerged();
 

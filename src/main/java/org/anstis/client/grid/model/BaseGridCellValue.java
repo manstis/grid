@@ -15,17 +15,22 @@
  */
 package org.anstis.client.grid.model;
 
-public abstract class BaseGridCell<T> implements IGridCell<T> {
+public class BaseGridCellValue<T> implements IGridCellValue<T> {
 
-    protected IGridCellValue<T> value;
+    protected T value;
 
-    public BaseGridCell( final IGridCellValue<T> value ) {
+    public BaseGridCellValue( final T value ) {
         this.value = value;
     }
 
     @Override
-    public IGridCellValue<T> getValue() {
+    public T getValue() {
         return value;
+    }
+
+    @Override
+    public void setValue( final T value ) {
+        this.value = value;
     }
 
     @Override
@@ -37,7 +42,7 @@ public abstract class BaseGridCell<T> implements IGridCell<T> {
             return false;
         }
 
-        BaseGridCell that = (BaseGridCell) o;
+        BaseGridCellValue that = (BaseGridCellValue) o;
 
         if ( value != null ? !value.equals( that.value ) : that.value != null ) {
             return false;

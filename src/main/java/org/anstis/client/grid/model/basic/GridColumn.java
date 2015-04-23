@@ -16,13 +16,9 @@
 package org.anstis.client.grid.model.basic;
 
 import com.ait.lienzo.client.core.shape.Group;
-import com.ait.lienzo.client.core.shape.Text;
-import com.ait.lienzo.shared.core.types.ColorName;
-import com.ait.lienzo.shared.core.types.TextAlign;
-import com.ait.lienzo.shared.core.types.TextBaseLine;
 import org.anstis.client.grid.model.BaseGridColumn;
 
-public class GridColumn extends BaseGridColumn<GridRow, GridCell> {
+public abstract class GridColumn<T> extends BaseGridColumn<GridRow, GridCell<?>> {
 
     public GridColumn( final String title,
                        final int width ) {
@@ -37,15 +33,12 @@ public class GridColumn extends BaseGridColumn<GridRow, GridCell> {
             return null;
         }
         final Group g = new Group();
-        final Text t = new Text( cell.getValue() )
-                .setFillColor( ColorName.GREY )
-                .setFontSize( 12 )
-                .setFontFamily( "serif" )
-                .setListening( false )
-                .setTextBaseLine( TextBaseLine.MIDDLE )
-                .setTextAlign( TextAlign.CENTER );
-        g.add( t );
+        renderCell( g,
+                    cell );
         return g;
     }
+
+    public abstract void renderCell( final Group g,
+                                     final GridCell<T> cell );
 
 }

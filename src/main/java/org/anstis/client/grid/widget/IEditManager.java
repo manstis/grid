@@ -16,10 +16,11 @@
 package org.anstis.client.grid.widget;
 
 import com.google.gwt.core.client.Callback;
+import org.anstis.client.grid.model.IGridCellValue;
 
 public interface IEditManager {
 
-    void edit( final String value,
-               final Callback<String, String> callback );
+    void edit( final IGridCellValue<?> value,
+               final Callback<IGridCellValue<?>, IGridCellValue<?>> callback );
 
 }

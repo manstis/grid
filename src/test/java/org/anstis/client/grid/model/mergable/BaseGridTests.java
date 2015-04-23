@@ -15,6 +15,8 @@
  */
 package org.anstis.client.grid.model.mergable;
 
+import com.ait.lienzo.client.core.shape.Group;
+
 import static org.junit.Assert.*;
 
 public abstract class BaseGridTests {
@@ -56,7 +58,7 @@ public abstract class BaseGridTests {
                               cell.getMergedCellCount() );
                 assertEquals( "Cell[" + columnIndex + ", " + rowIndex + "] actual getValue() differs to expected.",
                               expectedCellStates[ rowIndex ][ columnIndex ].value,
-                              cell.getValue() );
+                              cell.getValue().getValue() );
             }
         }
     }
@@ -65,7 +67,7 @@ public abstract class BaseGridTests {
 
         public static Expected build( final boolean isMerged,
                                       final int mergedCellCount,
-                                      final String value ) {
+                                      final Object value ) {
             return new Expected( isMerged,
                                  mergedCellCount,
                                  value );
@@ -73,16 +75,31 @@ public abstract class BaseGridTests {
 
         private final boolean isMerged;
         private int mergedCellCount;
-        private String value;
+        private Object value;
 
         private Expected( final boolean isMerged,
                           final int mergedCellCount,
-                          final String value ) {
+                          final Object value ) {
             this.isMerged = isMerged;
             this.mergedCellCount = mergedCellCount;
             this.value = value;
         }
 
+    }
+
+    static class MockMergableGridColumn<T> extends MergableGridColumn<T> {
+
+        MockMergableGridColumn( final String title,
+                                final int width ) {
+            super( title,
+                   width );
+        }
+
+        @Override
+        public void renderCell( final Group g,
+                                final MergableGridCell<T> cell ) {
+            //Do nothing
+        }
     }
 
 }

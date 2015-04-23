@@ -19,9 +19,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.ait.lienzo.client.core.mediator.MousePanMediator;
+import com.ait.lienzo.client.core.shape.Group;
+import com.ait.lienzo.client.core.shape.Text;
 import com.ait.lienzo.client.core.types.Point2D;
 import com.ait.lienzo.client.core.types.Transform;
 import com.ait.lienzo.client.widget.LienzoPanel;
+import com.ait.lienzo.shared.core.types.ColorName;
+import com.ait.lienzo.shared.core.types.TextAlign;
+import com.ait.lienzo.shared.core.types.TextBaseLine;
 import com.google.gwt.core.client.Callback;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
@@ -33,10 +38,13 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
+import org.anstis.client.grid.model.IGridCellValue;
 import org.anstis.client.grid.model.IGridColumn;
 import org.anstis.client.grid.model.IGridData;
+import org.anstis.client.grid.model.basic.GridCell;
 import org.anstis.client.grid.model.basic.GridColumn;
 import org.anstis.client.grid.model.basic.GridData;
+import org.anstis.client.grid.model.mergable.MergableGridCell;
 import org.anstis.client.grid.model.mergable.MergableGridColumn;
 import org.anstis.client.grid.model.mergable.MergableGridData;
 import org.anstis.client.grid.util.GridDataFactory;
@@ -110,8 +118,21 @@ public class GridShowcaseWidget extends Composite implements IEditManager,
         //Grid 1
         final MergableGridData grid1 = new MergableGridData();
         for ( int idx = 0; idx < 10; idx++ ) {
-            final MergableGridColumn column = new MergableGridColumn( "G1-Col: " + idx,
-                                                                      100 );
+            final MergableGridColumn<String> column = new MergableGridColumn<String>( "G1-Col: " + idx,
+                                                                                      100 ) {
+                @Override
+                public void renderCell( final Group g,
+                                        final MergableGridCell<String> cell ) {
+                    final Text t = new Text( cell.getValue().getValue() )
+                            .setFillColor( ColorName.GREY )
+                            .setFontSize( 12 )
+                            .setFontFamily( "serif" )
+                            .setListening( false )
+                            .setTextBaseLine( TextBaseLine.MIDDLE )
+                            .setTextAlign( TextAlign.CENTER );
+                    g.add( t );
+                }
+            };
             grid1.addColumn( column );
         }
         GridDataFactory.populate( grid1,
@@ -120,8 +141,21 @@ public class GridShowcaseWidget extends Composite implements IEditManager,
         //Grid 2
         final MergableGridData grid2 = new MergableGridData();
         for ( int idx = 0; idx < 5; idx++ ) {
-            final MergableGridColumn column = new MergableGridColumn( "G2-Col: " + idx,
-                                                                      150 );
+            final MergableGridColumn<String> column = new MergableGridColumn<String>( "G2-Col: " + idx,
+                                                                                      150 ) {
+                @Override
+                public void renderCell( final Group g,
+                                        final MergableGridCell<String> cell ) {
+                    final Text t = new Text( cell.getValue().getValue() )
+                            .setFillColor( ColorName.GREY )
+                            .setFontSize( 12 )
+                            .setFontFamily( "serif" )
+                            .setListening( false )
+                            .setTextBaseLine( TextBaseLine.MIDDLE )
+                            .setTextAlign( TextAlign.CENTER );
+                    g.add( t );
+                }
+            };
             grid2.addColumn( column );
         }
         GridDataFactory.populate( grid2,
@@ -130,8 +164,21 @@ public class GridShowcaseWidget extends Composite implements IEditManager,
         //Grid 3
         final MergableGridData grid3 = new MergableGridData();
         for ( int idx = 0; idx < 5; idx++ ) {
-            final MergableGridColumn column = new MergableGridColumn( "G3-Col: " + idx,
-                                                                      100 );
+            final MergableGridColumn<String> column = new MergableGridColumn<String>( "G3-Col: " + idx,
+                                                                                      100 ) {
+                @Override
+                public void renderCell( final Group g,
+                                        final MergableGridCell<String> cell ) {
+                    final Text t = new Text( cell.getValue().getValue() )
+                            .setFillColor( ColorName.GREY )
+                            .setFontSize( 12 )
+                            .setFontFamily( "serif" )
+                            .setListening( false )
+                            .setTextBaseLine( TextBaseLine.MIDDLE )
+                            .setTextAlign( TextAlign.CENTER );
+                    g.add( t );
+                }
+            };
             grid3.addColumn( column );
         }
         GridDataFactory.populate( grid3,
@@ -140,8 +187,21 @@ public class GridShowcaseWidget extends Composite implements IEditManager,
         //Grid 4
         final GridData grid4 = new GridData();
         for ( int idx = 0; idx < 5; idx++ ) {
-            final GridColumn column = new GridColumn( "G4-Col: " + idx,
-                                                      100 );
+            final GridColumn<String> column = new GridColumn<String>( "G4-Col: " + idx,
+                                                                      100 ) {
+                @Override
+                public void renderCell( final Group g,
+                                        final GridCell<String> cell ) {
+                    final Text t = new Text( cell.getValue().getValue() )
+                            .setFillColor( ColorName.GREY )
+                            .setFontSize( 12 )
+                            .setFontFamily( "serif" )
+                            .setListening( false )
+                            .setTextBaseLine( TextBaseLine.MIDDLE )
+                            .setTextAlign( TextAlign.CENTER );
+                    g.add( t );
+                }
+            };
             grid4.addColumn( column );
         }
         GridDataFactory.populate( grid4,
@@ -254,8 +314,8 @@ public class GridShowcaseWidget extends Composite implements IEditManager,
     }
 
     @Override
-    public void edit( final String value,
-                      final Callback<String, String> callback ) {
+    public void edit( final IGridCellValue<?> value,
+                      final Callback<IGridCellValue<?>, IGridCellValue<?>> callback ) {
         editor.edit( value,
                      callback );
     }

@@ -16,11 +16,12 @@
 package org.anstis.client.grid.model.basic;
 
 import org.anstis.client.grid.model.BaseGridRow;
+import org.anstis.client.grid.model.IGridCellValue;
 
-public class GridRow extends BaseGridRow<GridCell> {
+public class GridRow extends BaseGridRow<GridCell<?>> {
 
     void setCell( final int columnIndex,
-                  final String value ) {
+                  final IGridCellValue value ) {
         if ( !cells.containsKey( columnIndex ) ) {
             cells.put( columnIndex,
                        new GridCell( value ) );

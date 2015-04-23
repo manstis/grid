@@ -19,7 +19,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class BaseGridRow<V extends IGridCell> implements IGridRow<V> {
+public abstract class BaseGridRow<V extends IGridCell<?>> implements IGridRow<V> {
 
     protected double height = 20.0;
     protected Map<Integer, V> cells = new HashMap<>();

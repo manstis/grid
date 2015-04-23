@@ -17,7 +17,7 @@ package org.anstis.client.grid.model;
 
 import com.ait.lienzo.client.core.shape.Group;
 
-public interface IGridColumn<R extends IGridRow<V>, V extends IGridCell> {
+public interface IGridColumn<R extends IGridRow<V>, V extends IGridCell<?>> {
 
     String getTitle();
 

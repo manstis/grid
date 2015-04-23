@@ -72,7 +72,7 @@ public class MergableGridRenderer implements IMergableGridRenderer {
                 .setHeight( HEADER_HEIGHT );
         g.add( header );
 
-        final List<MergableGridColumn> columns = model.getColumns();
+        final List<MergableGridColumn<?>> columns = model.getColumns();
 
         //Linked columns
         double x = 0;
@@ -194,7 +194,7 @@ public class MergableGridRenderer implements IMergableGridRenderer {
                                  final int endRowIndex,
                                  final double width ) {
             final Group g = new Group();
-            final List<MergableGridColumn> columns = model.getColumns();
+            final List<MergableGridColumn<?>> columns = model.getColumns();
             final List<Double> rowOffsets = new ArrayList<>();
             double rowOffset = model.getRowOffset( startRowIndex );
             for ( int rowIndex = startRowIndex; rowIndex <= endRowIndex; rowIndex++ ) {
@@ -385,7 +385,7 @@ public class MergableGridRenderer implements IMergableGridRenderer {
                                  final int endRowIndex,
                                  final double width ) {
             final Group g = new Group();
-            final List<MergableGridColumn> columns = model.getColumns();
+            final List<MergableGridColumn<?>> columns = model.getColumns();
 
             final List<Double> rowOffsets = new ArrayList<>();
             double rowOffset = model.getRowOffset( startRowIndex );

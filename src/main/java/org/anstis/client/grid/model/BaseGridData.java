@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public abstract class BaseGridData<R extends IGridRow<V>, C extends IGridColumn<R, V>, V extends IGridCell> implements IGridData<R, C, V> {
+public abstract class BaseGridData<R extends IGridRow<V>, C extends IGridColumn<R, V>, V extends IGridCell<?>> implements IGridData<R, C, V> {
 
     protected List<R> rows = new ArrayList<>();
     protected List<C> columns = new ArrayList<>();

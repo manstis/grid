@@ -16,6 +16,7 @@
 package org.anstis.client.grid.widget.mergable;
 
 import com.google.gwt.core.client.Callback;
+import org.anstis.client.grid.model.IGridCellValue;
 import org.anstis.client.grid.model.mergable.MergableGridCell;
 import org.anstis.client.grid.widget.BaseGridWidgetMouseDoubleClickHandler;
 import org.anstis.client.grid.widget.IEditManager;
@@ -39,15 +40,15 @@ public class MergableGridWidgetMouseDoubleClickHandler extends BaseGridWidgetMou
                            final int columnIndex ) {
         final MergableGridCell cell = grid.getModel().getCell( rowIndex,
                                                                columnIndex );
-        editManager.edit( cell == null ? "" : cell.getValue(),
-                          new Callback<String, String>() {
+        editManager.edit( cell == null ? null : cell.getValue(),
+                          new Callback<IGridCellValue<?>, IGridCellValue<?>>() {
                               @Override
-                              public void onFailure( final String value ) {
+                              public void onFailure( final IGridCellValue<?> value ) {
                                   //Do nothing
                               }
 
                               @Override
-                              public void onSuccess( final String value ) {
+                              public void onSuccess( final IGridCellValue<?> value ) {
                                   grid.getModel().setCell( rowIndex,
                                                            columnIndex,
                                                            value );

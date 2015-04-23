@@ -15,6 +15,7 @@
  */
 package org.anstis.client.grid.model.mergable;
 
+import org.anstis.client.grid.model.BaseGridCellValue;
 import org.junit.Test;
 
 import static org.anstis.client.grid.model.mergable.BaseGridTests.Expected.*;
@@ -25,10 +26,10 @@ public class GridGroupingTests extends BaseGridTests {
     @Test
     public void testInitialSetup1() {
         final MergableGridData data = new MergableGridData();
-        final MergableGridColumn gc1 = new MergableGridColumn( "col1",
-                                                               100 );
-        final MergableGridColumn gc2 = new MergableGridColumn( "col2",
-                                                               100 );
+        final MergableGridColumn<String> gc1 = new MockMergableGridColumn<>( "col1",
+                                                                             100 );
+        final MergableGridColumn<String> gc2 = new MockMergableGridColumn<>( "col2",
+                                                                             100 );
         data.addColumn( gc1 );
         data.addColumn( gc2 );
 
@@ -40,7 +41,7 @@ public class GridGroupingTests extends BaseGridTests {
             for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
                 data.setCell( rowIndex,
                               columnIndex,
-                              "(" + columnIndex + ", " + rowIndex + ")" );
+                              new BaseGridCellValue<>( "(" + columnIndex + ", " + rowIndex + ")" ) );
             }
         }
 
@@ -62,10 +63,10 @@ public class GridGroupingTests extends BaseGridTests {
     @Test
     public void testGroup1() {
         final MergableGridData data = new MergableGridData();
-        final MergableGridColumn gc1 = new MergableGridColumn( "col1",
-                                                               100 );
-        final MergableGridColumn gc2 = new MergableGridColumn( "col2",
-                                                               100 );
+        final MergableGridColumn<String> gc1 = new MockMergableGridColumn<>( "col1",
+                                                                             100 );
+        final MergableGridColumn<String> gc2 = new MockMergableGridColumn<>( "col2",
+                                                                             100 );
         data.addColumn( gc1 );
         data.addColumn( gc2 );
 
@@ -77,13 +78,13 @@ public class GridGroupingTests extends BaseGridTests {
             for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
                 data.setCell( rowIndex,
                               columnIndex,
-                              "(" + columnIndex + ", " + rowIndex + ")" );
+                              new BaseGridCellValue<>( "(" + columnIndex + ", " + rowIndex + ")" ) );
             }
         }
 
         data.setCell( 1,
                       0,
-                      "(0, 0)" );
+                      new BaseGridCellValue<>( "(0, 0)" ) );
 
         //Group cells
         data.collapseCell( 0,
@@ -117,10 +118,10 @@ public class GridGroupingTests extends BaseGridTests {
         //Tests that cells with the same value do not combine into existing collapsed blocks
         //Test #1 - Update cells above the existing collapsed block
         final MergableGridData data = new MergableGridData();
-        final MergableGridColumn gc1 = new MergableGridColumn( "col1",
-                                                               100 );
-        final MergableGridColumn gc2 = new MergableGridColumn( "col2",
-                                                               100 );
+        final MergableGridColumn<String> gc1 = new MockMergableGridColumn<>( "col1",
+                                                                             100 );
+        final MergableGridColumn<String> gc2 = new MockMergableGridColumn<>( "col2",
+                                                                             100 );
         data.addColumn( gc1 );
         data.addColumn( gc2 );
 
@@ -134,7 +135,7 @@ public class GridGroupingTests extends BaseGridTests {
             for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
                 data.setCell( rowIndex,
                               columnIndex,
-                              "(" + columnIndex + ", " + rowIndex + ")" );
+                              new BaseGridCellValue<>( "(" + columnIndex + ", " + rowIndex + ")" ) );
             }
         }
 
@@ -146,7 +147,7 @@ public class GridGroupingTests extends BaseGridTests {
 
         data.setCell( 3,
                       0,
-                      "(0, 2)" );
+                      new BaseGridCellValue<>( "(0, 2)" ) );
 
         //Group cells
         data.collapseCell( 2,
@@ -166,7 +167,7 @@ public class GridGroupingTests extends BaseGridTests {
         //Set cell above existing block (should not affect existing block)
         data.setCell( 1,
                       0,
-                      "(0, 2)" );
+                      new BaseGridCellValue<>( "(0, 2)" ) );
 
         assertGridIndexes( data,
                            new boolean[]{ false, false, true, true, false },
@@ -182,7 +183,7 @@ public class GridGroupingTests extends BaseGridTests {
         //Set cell above existing block (should create a new block)
         data.setCell( 0,
                       0,
-                      "(0, 2)" );
+                      new BaseGridCellValue<>( "(0, 2)" ) );
 
         assertGridIndexes( data,
                            new boolean[]{ true, true, true, true, false },
@@ -216,10 +217,10 @@ public class GridGroupingTests extends BaseGridTests {
         //Tests that cells with the same value do not combine into existing collapsed blocks
         //Test #2 - Update cells below the existing collapsed block
         final MergableGridData data = new MergableGridData();
-        final MergableGridColumn gc1 = new MergableGridColumn( "col1",
-                                                               100 );
-        final MergableGridColumn gc2 = new MergableGridColumn( "col2",
-                                                               100 );
+        final MergableGridColumn<String> gc1 = new MockMergableGridColumn<>( "col1",
+                                                                             100 );
+        final MergableGridColumn<String> gc2 = new MockMergableGridColumn<>( "col2",
+                                                                             100 );
         data.addColumn( gc1 );
         data.addColumn( gc2 );
 
@@ -233,7 +234,7 @@ public class GridGroupingTests extends BaseGridTests {
             for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
                 data.setCell( rowIndex,
                               columnIndex,
-                              "(" + columnIndex + ", " + rowIndex + ")" );
+                              new BaseGridCellValue<>( "(" + columnIndex + ", " + rowIndex + ")" ) );
             }
         }
 
@@ -245,7 +246,7 @@ public class GridGroupingTests extends BaseGridTests {
 
         data.setCell( 2,
                       0,
-                      "(0, 1)" );
+                      new BaseGridCellValue<>( "(0, 1)" ) );
 
         //Group cells
         data.collapseCell( 1,
@@ -265,7 +266,7 @@ public class GridGroupingTests extends BaseGridTests {
         //Set cell below existing block (should not affect existing block)
         data.setCell( 3,
                       0,
-                      "(0, 1)" );
+                      new BaseGridCellValue<>( "(0, 1)" ) );
 
         assertGridIndexes( data,
                            new boolean[]{ false, true, true, false, false },
@@ -281,7 +282,7 @@ public class GridGroupingTests extends BaseGridTests {
         //Set cell below existing block (should create a new block)
         data.setCell( 4,
                       0,
-                      "(0, 1)" );
+                      new BaseGridCellValue<>( "(0, 1)" ) );
 
         assertGridIndexes( data,
                            new boolean[]{ false, true, true, true, true },
@@ -313,10 +314,10 @@ public class GridGroupingTests extends BaseGridTests {
     @Test
     public void testGroupOverlap1() {
         final MergableGridData data = new MergableGridData();
-        final MergableGridColumn gc1 = new MergableGridColumn( "col1",
-                                                               100 );
-        final MergableGridColumn gc2 = new MergableGridColumn( "col2",
-                                                               100 );
+        final MergableGridColumn<String> gc1 = new MockMergableGridColumn<>( "col1",
+                                                                             100 );
+        final MergableGridColumn<String> gc2 = new MockMergableGridColumn<>( "col2",
+                                                                             100 );
         data.addColumn( gc1 );
         data.addColumn( gc2 );
 
@@ -330,7 +331,7 @@ public class GridGroupingTests extends BaseGridTests {
             for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
                 data.setCell( rowIndex,
                               columnIndex,
-                              "(" + columnIndex + ", " + rowIndex + ")" );
+                              new BaseGridCellValue<>( "(" + columnIndex + ", " + rowIndex + ")" ) );
             }
         }
 
@@ -342,29 +343,29 @@ public class GridGroupingTests extends BaseGridTests {
 
         data.setCell( 0,
                       0,
-                      "g1" );
+                      new BaseGridCellValue<>( "g1" ) );
         data.setCell( 1,
                       0,
-                      "g1" );
+                      new BaseGridCellValue<>( "g1" ) );
         data.setCell( 2,
                       0,
-                      "g1" );
+                      new BaseGridCellValue<>( "g1" ) );
         data.setCell( 3,
                       0,
-                      "g1" );
+                      new BaseGridCellValue<>( "g1" ) );
         data.setCell( 4,
                       0,
-                      "g1" );
+                      new BaseGridCellValue<>( "g1" ) );
 
         data.setCell( 1,
                       1,
-                      "g2" );
+                      new BaseGridCellValue<>( "g2" ) );
         data.setCell( 2,
                       1,
-                      "g2" );
+                      new BaseGridCellValue<>( "g2" ) );
         data.setCell( 3,
                       1,
-                      "g2" );
+                      new BaseGridCellValue<>( "g2" ) );
 
         //Group g2
         data.collapseCell( 1,
@@ -415,10 +416,10 @@ public class GridGroupingTests extends BaseGridTests {
     @Test
     public void testGroupOverlap2() {
         final MergableGridData data = new MergableGridData();
-        final MergableGridColumn gc1 = new MergableGridColumn( "col1",
-                                                               100 );
-        final MergableGridColumn gc2 = new MergableGridColumn( "col2",
-                                                               100 );
+        final MergableGridColumn<String> gc1 = new MockMergableGridColumn<>( "col1",
+                                                                             100 );
+        final MergableGridColumn<String> gc2 = new MockMergableGridColumn<>( "col2",
+                                                                             100 );
         data.addColumn( gc1 );
         data.addColumn( gc2 );
 
@@ -432,7 +433,7 @@ public class GridGroupingTests extends BaseGridTests {
             for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
                 data.setCell( rowIndex,
                               columnIndex,
-                              "(" + columnIndex + ", " + rowIndex + ")" );
+                              new BaseGridCellValue<>( "(" + columnIndex + ", " + rowIndex + ")" ) );
             }
         }
 
@@ -444,23 +445,23 @@ public class GridGroupingTests extends BaseGridTests {
 
         data.setCell( 2,
                       0,
-                      "g1" );
+                      new BaseGridCellValue<>( "g1" ) );
         data.setCell( 3,
                       0,
-                      "g1" );
+                      new BaseGridCellValue<>( "g1" ) );
         data.setCell( 4,
                       0,
-                      "g1" );
+                      new BaseGridCellValue<>( "g1" ) );
 
         data.setCell( 0,
                       1,
-                      "g2" );
+                      new BaseGridCellValue<>( "g2" ) );
         data.setCell( 1,
                       1,
-                      "g2" );
+                      new BaseGridCellValue<>( "g2" ) );
         data.setCell( 2,
                       1,
-                      "g2" );
+                      new BaseGridCellValue<>( "g2" ) );
 
         //Group g2 - should split g1
         data.collapseCell( 0,
@@ -511,10 +512,10 @@ public class GridGroupingTests extends BaseGridTests {
     @Test
     public void testGroupOverlap3() {
         final MergableGridData data = new MergableGridData();
-        final MergableGridColumn gc1 = new MergableGridColumn( "col1",
-                                                               100 );
-        final MergableGridColumn gc2 = new MergableGridColumn( "col2",
-                                                               100 );
+        final MergableGridColumn<String> gc1 = new MockMergableGridColumn<>( "col1",
+                                                                             100 );
+        final MergableGridColumn<String> gc2 = new MockMergableGridColumn<>( "col2",
+                                                                             100 );
         data.addColumn( gc1 );
         data.addColumn( gc2 );
 
@@ -528,7 +529,7 @@ public class GridGroupingTests extends BaseGridTests {
             for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
                 data.setCell( rowIndex,
                               columnIndex,
-                              "(" + columnIndex + ", " + rowIndex + ")" );
+                              new BaseGridCellValue<>( "(" + columnIndex + ", " + rowIndex + ")" ) );
             }
         }
 
@@ -540,23 +541,23 @@ public class GridGroupingTests extends BaseGridTests {
 
         data.setCell( 0,
                       0,
-                      "g1" );
+                      new BaseGridCellValue<>( "g1" ) );
         data.setCell( 1,
                       0,
-                      "g1" );
+                      new BaseGridCellValue<>( "g1" ) );
         data.setCell( 2,
                       0,
-                      "g1" );
+                      new BaseGridCellValue<>( "g1" ) );
 
         data.setCell( 2,
                       1,
-                      "g2" );
+                      new BaseGridCellValue<>( "g2" ) );
         data.setCell( 3,
                       1,
-                      "g2" );
+                      new BaseGridCellValue<>( "g2" ) );
         data.setCell( 4,
                       1,
-                      "g2" );
+                      new BaseGridCellValue<>( "g2" ) );
 
         //Group g1 - should split g2
         data.collapseCell( 0,
@@ -607,10 +608,10 @@ public class GridGroupingTests extends BaseGridTests {
     @Test
     public void testGroupOverlap4() {
         final MergableGridData data = new MergableGridData();
-        final MergableGridColumn gc1 = new MergableGridColumn( "col1",
-                                                               100 );
-        final MergableGridColumn gc2 = new MergableGridColumn( "col2",
-                                                               100 );
+        final MergableGridColumn<String> gc1 = new MockMergableGridColumn<>( "col1",
+                                                                             100 );
+        final MergableGridColumn<String> gc2 = new MockMergableGridColumn<>( "col2",
+                                                                             100 );
         data.addColumn( gc1 );
         data.addColumn( gc2 );
 
@@ -624,7 +625,7 @@ public class GridGroupingTests extends BaseGridTests {
             for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
                 data.setCell( rowIndex,
                               columnIndex,
-                              "(" + columnIndex + ", " + rowIndex + ")" );
+                              new BaseGridCellValue<>( "(" + columnIndex + ", " + rowIndex + ")" ) );
             }
         }
 
@@ -636,26 +637,26 @@ public class GridGroupingTests extends BaseGridTests {
 
         data.setCell( 0,
                       0,
-                      "g1" );
+                      new BaseGridCellValue<>( "g1" ) );
         data.setCell( 1,
                       0,
-                      "g1" );
+                      new BaseGridCellValue<>( "g1" ) );
 
         data.setCell( 0,
                       1,
-                      "g2" );
+                      new BaseGridCellValue<>( "g2" ) );
         data.setCell( 1,
                       1,
-                      "g2" );
+                      new BaseGridCellValue<>( "g2" ) );
         data.setCell( 2,
                       1,
-                      "g2" );
+                      new BaseGridCellValue<>( "g2" ) );
         data.setCell( 3,
                       1,
-                      "g2" );
+                      new BaseGridCellValue<>( "g2" ) );
         data.setCell( 4,
                       1,
-                      "g2" );
+                      new BaseGridCellValue<>( "g2" ) );
 
         //Group g1
         data.collapseCell( 0,
@@ -691,10 +692,10 @@ public class GridGroupingTests extends BaseGridTests {
     @Test
     public void testGroupOverlap5() {
         final MergableGridData data = new MergableGridData();
-        final MergableGridColumn gc1 = new MergableGridColumn( "col1",
-                                                               100 );
-        final MergableGridColumn gc2 = new MergableGridColumn( "col2",
-                                                               100 );
+        final MergableGridColumn<String> gc1 = new MockMergableGridColumn<>( "col1",
+                                                                             100 );
+        final MergableGridColumn<String> gc2 = new MockMergableGridColumn<>( "col2",
+                                                                             100 );
         data.addColumn( gc1 );
         data.addColumn( gc2 );
 
@@ -708,7 +709,7 @@ public class GridGroupingTests extends BaseGridTests {
             for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
                 data.setCell( rowIndex,
                               columnIndex,
-                              "(" + columnIndex + ", " + rowIndex + ")" );
+                              new BaseGridCellValue<>( "(" + columnIndex + ", " + rowIndex + ")" ) );
             }
         }
 
@@ -720,20 +721,20 @@ public class GridGroupingTests extends BaseGridTests {
 
         data.setCell( 1,
                       0,
-                      "g1" );
+                      new BaseGridCellValue<>( "g1" ) );
         data.setCell( 2,
                       0,
-                      "g1" );
+                      new BaseGridCellValue<>( "g1" ) );
 
         data.setCell( 2,
                       1,
-                      "g2" );
+                      new BaseGridCellValue<>( "g2" ) );
         data.setCell( 3,
                       1,
-                      "g2" );
+                      new BaseGridCellValue<>( "g2" ) );
         data.setCell( 4,
                       1,
-                      "g2" );
+                      new BaseGridCellValue<>( "g2" ) );
 
         //Group g1 - should split g2
         data.collapseCell( 1,
@@ -769,10 +770,10 @@ public class GridGroupingTests extends BaseGridTests {
     @Test
     public void testGroupOverlap6() {
         final MergableGridData data = new MergableGridData();
-        final MergableGridColumn gc1 = new MergableGridColumn( "col1",
-                                                               100 );
-        final MergableGridColumn gc2 = new MergableGridColumn( "col2",
-                                                               100 );
+        final MergableGridColumn<String> gc1 = new MockMergableGridColumn<>( "col1",
+                                                                             100 );
+        final MergableGridColumn<String> gc2 = new MockMergableGridColumn<>( "col2",
+                                                                             100 );
         data.addColumn( gc1 );
         data.addColumn( gc2 );
 
@@ -786,7 +787,7 @@ public class GridGroupingTests extends BaseGridTests {
             for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
                 data.setCell( rowIndex,
                               columnIndex,
-                              "(" + columnIndex + ", " + rowIndex + ")" );
+                              new BaseGridCellValue<>( "(" + columnIndex + ", " + rowIndex + ")" ) );
             }
         }
 
@@ -798,23 +799,23 @@ public class GridGroupingTests extends BaseGridTests {
 
         data.setCell( 1,
                       0,
-                      "g1" );
+                      new BaseGridCellValue<>( "g1" ) );
         data.setCell( 2,
                       0,
-                      "g1" );
+                      new BaseGridCellValue<>( "g1" ) );
 
         data.setCell( 1,
                       1,
-                      "g2" );
+                      new BaseGridCellValue<>( "g2" ) );
         data.setCell( 2,
                       1,
-                      "g2" );
+                      new BaseGridCellValue<>( "g2" ) );
         data.setCell( 3,
                       1,
-                      "g2" );
+                      new BaseGridCellValue<>( "g2" ) );
         data.setCell( 4,
                       1,
-                      "g2" );
+                      new BaseGridCellValue<>( "g2" ) );
 
         //Group g1 - doesn't need to split g2 since it spans all of g1
         data.collapseCell( 1,
@@ -850,10 +851,10 @@ public class GridGroupingTests extends BaseGridTests {
     @Test
     public void testGroupOverlap7() {
         final MergableGridData data = new MergableGridData();
-        final MergableGridColumn gc1 = new MergableGridColumn( "col1",
-                                                               100 );
-        final MergableGridColumn gc2 = new MergableGridColumn( "col2",
-                                                               100 );
+        final MergableGridColumn<String> gc1 = new MockMergableGridColumn<>( "col1",
+                                                                             100 );
+        final MergableGridColumn<String> gc2 = new MockMergableGridColumn<>( "col2",
+                                                                             100 );
         data.addColumn( gc1 );
         data.addColumn( gc2 );
 
@@ -867,7 +868,7 @@ public class GridGroupingTests extends BaseGridTests {
             for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
                 data.setCell( rowIndex,
                               columnIndex,
-                              "(" + columnIndex + ", " + rowIndex + ")" );
+                              new BaseGridCellValue<>( "(" + columnIndex + ", " + rowIndex + ")" ) );
             }
         }
 
@@ -879,26 +880,26 @@ public class GridGroupingTests extends BaseGridTests {
 
         data.setCell( 0,
                       0,
-                      "g1" );
+                      new BaseGridCellValue<>( "g1" ) );
         data.setCell( 1,
                       0,
-                      "g1" );
+                      new BaseGridCellValue<>( "g1" ) );
         data.setCell( 2,
                       0,
-                      "g1" );
+                      new BaseGridCellValue<>( "g1" ) );
 
         data.setCell( 1,
                       1,
-                      "g2" );
+                      new BaseGridCellValue<>( "g2" ) );
         data.setCell( 2,
                       1,
-                      "g2" );
+                      new BaseGridCellValue<>( "g2" ) );
         data.setCell( 3,
                       1,
-                      "g2" );
+                      new BaseGridCellValue<>( "g2" ) );
         data.setCell( 4,
                       1,
-                      "g2" );
+                      new BaseGridCellValue<>( "g2" ) );
 
         //Group g1 - should split g2
         data.collapseCell( 0,
@@ -934,10 +935,10 @@ public class GridGroupingTests extends BaseGridTests {
     @Test
     public void testGroupOverlap8() {
         final MergableGridData data = new MergableGridData();
-        final MergableGridColumn gc1 = new MergableGridColumn( "col1",
-                                                               100 );
-        final MergableGridColumn gc2 = new MergableGridColumn( "col2",
-                                                               100 );
+        final MergableGridColumn<String> gc1 = new MockMergableGridColumn<>( "col1",
+                                                                             100 );
+        final MergableGridColumn<String> gc2 = new MockMergableGridColumn<>( "col2",
+                                                                             100 );
         data.addColumn( gc1 );
         data.addColumn( gc2 );
 
@@ -956,10 +957,10 @@ public class GridGroupingTests extends BaseGridTests {
         for ( int rowIndex = 0; rowIndex < data.getRowCount(); rowIndex++ ) {
             data.setCell( rowIndex,
                           0,
-                          "g1" );
+                          new BaseGridCellValue<>( "g1" ) );
             data.setCell( rowIndex,
                           1,
-                          "g2" );
+                          new BaseGridCellValue<>( "g2" ) );
         }
 
         //Group g1
@@ -996,10 +997,10 @@ public class GridGroupingTests extends BaseGridTests {
     @Test
     public void testGroupOverlap9() {
         final MergableGridData data = new MergableGridData();
-        final MergableGridColumn gc1 = new MergableGridColumn( "col1",
-                                                               100 );
-        final MergableGridColumn gc2 = new MergableGridColumn( "col2",
-                                                               100 );
+        final MergableGridColumn<String> gc1 = new MockMergableGridColumn<>( "col1",
+                                                                             100 );
+        final MergableGridColumn<String> gc2 = new MockMergableGridColumn<>( "col2",
+                                                                             100 );
         data.addColumn( gc1 );
         data.addColumn( gc2 );
 
@@ -1018,18 +1019,18 @@ public class GridGroupingTests extends BaseGridTests {
         for ( int rowIndex = 0; rowIndex < data.getRowCount() - 1; rowIndex++ ) {
             data.setCell( rowIndex,
                           0,
-                          "g1" );
+                          new BaseGridCellValue<>( "g1" ) );
             data.setCell( rowIndex,
                           1,
-                          "g2" );
+                          new BaseGridCellValue<>( "g2" ) );
         }
 
         data.setCell( 4,
                       0,
-                      "(0, 4)" );
+                      new BaseGridCellValue<>( "(0, 4)" ) );
         data.setCell( 4,
                       1,
-                      "(1, 4)" );
+                      new BaseGridCellValue<>( "(1, 4)" ) );
 
         //Group g1
         data.collapseCell( 0,
@@ -1065,10 +1066,10 @@ public class GridGroupingTests extends BaseGridTests {
     @Test
     public void testGroupOverlap10() {
         final MergableGridData data = new MergableGridData();
-        final MergableGridColumn gc1 = new MergableGridColumn( "col1",
-                                                               100 );
-        final MergableGridColumn gc2 = new MergableGridColumn( "col2",
-                                                               100 );
+        final MergableGridColumn<String> gc1 = new MockMergableGridColumn<>( "col1",
+                                                                             100 );
+        final MergableGridColumn<String> gc2 = new MockMergableGridColumn<>( "col2",
+                                                                             100 );
         data.addColumn( gc1 );
         data.addColumn( gc2 );
 
@@ -1082,7 +1083,7 @@ public class GridGroupingTests extends BaseGridTests {
             for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
                 data.setCell( rowIndex,
                               columnIndex,
-                              "(" + columnIndex + ", " + rowIndex + ")" );
+                              new BaseGridCellValue<>( "(" + columnIndex + ", " + rowIndex + ")" ) );
             }
         }
 
@@ -1094,23 +1095,23 @@ public class GridGroupingTests extends BaseGridTests {
 
         data.setCell( 0,
                       0,
-                      "g1" );
+                      new BaseGridCellValue<>( "g1" ) );
         data.setCell( 1,
                       0,
-                      "g1" );
+                      new BaseGridCellValue<>( "g1" ) );
         data.setCell( 2,
                       0,
-                      "g1" );
+                      new BaseGridCellValue<>( "g1" ) );
 
         data.setCell( 2,
                       1,
-                      "g2" );
+                      new BaseGridCellValue<>( "g2" ) );
         data.setCell( 3,
                       1,
-                      "g2" );
+                      new BaseGridCellValue<>( "g2" ) );
         data.setCell( 4,
                       1,
-                      "g2" );
+                      new BaseGridCellValue<>( "g2" ) );
 
         //Group g1 - should split g2
         data.collapseCell( 0,
@@ -1191,10 +1192,10 @@ public class GridGroupingTests extends BaseGridTests {
     @Test
     public void testGroupOverlap11() {
         final MergableGridData data = new MergableGridData();
-        final MergableGridColumn gc1 = new MergableGridColumn( "col1",
-                                                               100 );
-        final MergableGridColumn gc2 = new MergableGridColumn( "col2",
-                                                               100 );
+        final MergableGridColumn<String> gc1 = new MockMergableGridColumn<>( "col1",
+                                                                             100 );
+        final MergableGridColumn<String> gc2 = new MockMergableGridColumn<>( "col2",
+                                                                             100 );
         data.addColumn( gc1 );
         data.addColumn( gc2 );
 
@@ -1208,7 +1209,7 @@ public class GridGroupingTests extends BaseGridTests {
             for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
                 data.setCell( rowIndex,
                               columnIndex,
-                              "(" + columnIndex + ", " + rowIndex + ")" );
+                              new BaseGridCellValue<>( "(" + columnIndex + ", " + rowIndex + ")" ) );
             }
         }
 
@@ -1220,29 +1221,29 @@ public class GridGroupingTests extends BaseGridTests {
 
         data.setCell( 0,
                       0,
-                      "g1" );
+                      new BaseGridCellValue<>( "g1" ) );
         data.setCell( 1,
                       0,
-                      "g1" );
+                      new BaseGridCellValue<>( "g1" ) );
         data.setCell( 2,
                       0,
-                      "g1" );
+                      new BaseGridCellValue<>( "g1" ) );
 
         data.setCell( 0,
                       1,
-                      "g2" );
+                      new BaseGridCellValue<>( "g2" ) );
         data.setCell( 1,
                       1,
-                      "g2" );
+                      new BaseGridCellValue<>( "g2" ) );
         data.setCell( 2,
                       1,
-                      "g2" );
+                      new BaseGridCellValue<>( "g2" ) );
         data.setCell( 3,
                       1,
-                      "g2" );
+                      new BaseGridCellValue<>( "g2" ) );
         data.setCell( 4,
                       1,
-                      "g2" );
+                      new BaseGridCellValue<>( "g2" ) );
 
         //Group g2
         data.collapseCell( 0,
@@ -1293,10 +1294,10 @@ public class GridGroupingTests extends BaseGridTests {
     @Test
     public void testGroupOverlap12() {
         final MergableGridData data = new MergableGridData();
-        final MergableGridColumn gc1 = new MergableGridColumn( "col1",
-                                                               100 );
-        final MergableGridColumn gc2 = new MergableGridColumn( "col2",
-                                                               100 );
+        final MergableGridColumn<String> gc1 = new MockMergableGridColumn<>( "col1",
+                                                                             100 );
+        final MergableGridColumn<String> gc2 = new MockMergableGridColumn<>( "col2",
+                                                                             100 );
         data.addColumn( gc1 );
         data.addColumn( gc2 );
 
@@ -1310,7 +1311,7 @@ public class GridGroupingTests extends BaseGridTests {
             for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
                 data.setCell( rowIndex,
                               columnIndex,
-                              "(" + columnIndex + ", " + rowIndex + ")" );
+                              new BaseGridCellValue<>( "(" + columnIndex + ", " + rowIndex + ")" ) );
             }
         }
 
@@ -1322,29 +1323,29 @@ public class GridGroupingTests extends BaseGridTests {
 
         data.setCell( 0,
                       0,
-                      "g1" );
+                      new BaseGridCellValue<>( "g1" ) );
         data.setCell( 1,
                       0,
-                      "g1" );
+                      new BaseGridCellValue<>( "g1" ) );
         data.setCell( 2,
                       0,
-                      "g1" );
+                      new BaseGridCellValue<>( "g1" ) );
 
         data.setCell( 0,
                       1,
-                      "g2" );
+                      new BaseGridCellValue<>( "g2" ) );
         data.setCell( 1,
                       1,
-                      "g2" );
+                      new BaseGridCellValue<>( "g2" ) );
         data.setCell( 2,
                       1,
-                      "g2" );
+                      new BaseGridCellValue<>( "g2" ) );
         data.setCell( 3,
                       1,
-                      "g2" );
+                      new BaseGridCellValue<>( "g2" ) );
         data.setCell( 4,
                       1,
-                      "g2" );
+                      new BaseGridCellValue<>( "g2" ) );
 
         //Group g1
         data.collapseCell( 0,
@@ -1395,10 +1396,10 @@ public class GridGroupingTests extends BaseGridTests {
     @Test
     public void testGroupOverlap13() {
         final MergableGridData data = new MergableGridData();
-        final MergableGridColumn gc1 = new MergableGridColumn( "col1",
-                                                               100 );
-        final MergableGridColumn gc2 = new MergableGridColumn( "col2",
-                                                               100 );
+        final MergableGridColumn<String> gc1 = new MockMergableGridColumn<>( "col1",
+                                                                             100 );
+        final MergableGridColumn<String> gc2 = new MockMergableGridColumn<>( "col2",
+                                                                             100 );
         data.addColumn( gc1 );
         data.addColumn( gc2 );
 
@@ -1412,7 +1413,7 @@ public class GridGroupingTests extends BaseGridTests {
             for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
                 data.setCell( rowIndex,
                               columnIndex,
-                              "(" + columnIndex + ", " + rowIndex + ")" );
+                              new BaseGridCellValue<>( "(" + columnIndex + ", " + rowIndex + ")" ) );
             }
         }
 
@@ -1424,23 +1425,23 @@ public class GridGroupingTests extends BaseGridTests {
 
         data.setCell( 2,
                       0,
-                      "g1" );
+                      new BaseGridCellValue<>( "g1" ) );
         data.setCell( 3,
                       0,
-                      "g1" );
+                      new BaseGridCellValue<>( "g1" ) );
         data.setCell( 4,
                       0,
-                      "g1" );
+                      new BaseGridCellValue<>( "g1" ) );
 
         data.setCell( 0,
                       1,
-                      "g2" );
+                      new BaseGridCellValue<>( "g2" ) );
         data.setCell( 1,
                       1,
-                      "g2" );
+                      new BaseGridCellValue<>( "g2" ) );
         data.setCell( 2,
                       1,
-                      "g2" );
+                      new BaseGridCellValue<>( "g2" ) );
 
         //Group g1 - should split g2
         data.collapseCell( 2,
@@ -1506,12 +1507,12 @@ public class GridGroupingTests extends BaseGridTests {
     @Test
     public void testGroupOverlap14() {
         final MergableGridData data = new MergableGridData();
-        final MergableGridColumn gc1 = new MergableGridColumn( "col1",
-                                                               100 );
-        final MergableGridColumn gc2 = new MergableGridColumn( "col2",
-                                                               100 );
-        final MergableGridColumn gc3 = new MergableGridColumn( "col3",
-                                                               100 );
+        final MergableGridColumn<String> gc1 = new MockMergableGridColumn<>( "col1",
+                                                                             100 );
+        final MergableGridColumn<String> gc2 = new MockMergableGridColumn<>( "col2",
+                                                                             100 );
+        final MergableGridColumn<String> gc3 = new MockMergableGridColumn<>( "col3",
+                                                                             100 );
         data.addColumn( gc1 );
         data.addColumn( gc2 );
         data.addColumn( gc3 );
@@ -1526,7 +1527,7 @@ public class GridGroupingTests extends BaseGridTests {
             for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
                 data.setCell( rowIndex,
                               columnIndex,
-                              "(" + columnIndex + ", " + rowIndex + ")" );
+                              new BaseGridCellValue<>( "(" + columnIndex + ", " + rowIndex + ")" ) );
             }
         }
 
@@ -1538,30 +1539,30 @@ public class GridGroupingTests extends BaseGridTests {
 
         data.setCell( 2,
                       0,
-                      "g1" );
+                      new BaseGridCellValue<>( "g1" ) );
         data.setCell( 3,
                       0,
-                      "g1" );
+                      new BaseGridCellValue<>( "g1" ) );
 
         data.setCell( 2,
                       1,
-                      "g2" );
+                      new BaseGridCellValue<>( "g2" ) );
         data.setCell( 3,
                       1,
-                      "g2" );
+                      new BaseGridCellValue<>( "g2" ) );
         data.setCell( 4,
                       1,
-                      "g2" );
+                      new BaseGridCellValue<>( "g2" ) );
 
         data.setCell( 0,
                       2,
-                      "g3" );
+                      new BaseGridCellValue<>( "g3" ) );
         data.setCell( 1,
                       2,
-                      "g3" );
+                      new BaseGridCellValue<>( "g3" ) );
         data.setCell( 2,
                       2,
-                      "g3" );
+                      new BaseGridCellValue<>( "g3" ) );
 
         //Check initial setup
         assertGridIndexes( data,
@@ -1609,12 +1610,12 @@ public class GridGroupingTests extends BaseGridTests {
     @Test
     public void testGroupOverlap15() {
         final MergableGridData data = new MergableGridData();
-        final MergableGridColumn gc1 = new MergableGridColumn( "col1",
-                                                               100 );
-        final MergableGridColumn gc2 = new MergableGridColumn( "col2",
-                                                               100 );
-        final MergableGridColumn gc3 = new MergableGridColumn( "col3",
-                                                               100 );
+        final MergableGridColumn<String> gc1 = new MockMergableGridColumn<>( "col1",
+                                                                             100 );
+        final MergableGridColumn<String> gc2 = new MockMergableGridColumn<>( "col2",
+                                                                             100 );
+        final MergableGridColumn<String> gc3 = new MockMergableGridColumn<>( "col3",
+                                                                             100 );
         data.addColumn( gc1 );
         data.addColumn( gc2 );
         data.addColumn( gc3 );
@@ -1631,7 +1632,7 @@ public class GridGroupingTests extends BaseGridTests {
             for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
                 data.setCell( rowIndex,
                               columnIndex,
-                              "(" + columnIndex + ", " + rowIndex + ")" );
+                              new BaseGridCellValue<>( "(" + columnIndex + ", " + rowIndex + ")" ) );
             }
         }
 
@@ -1645,33 +1646,33 @@ public class GridGroupingTests extends BaseGridTests {
 
         data.setCell( 4,
                       0,
-                      "g1" );
+                      new BaseGridCellValue<>( "g1" ) );
         data.setCell( 5,
                       0,
-                      "g1" );
+                      new BaseGridCellValue<>( "g1" ) );
         data.setCell( 6,
                       0,
-                      "g1" );
+                      new BaseGridCellValue<>( "g1" ) );
 
         data.setCell( 2,
                       1,
-                      "g2" );
+                      new BaseGridCellValue<>( "g2" ) );
         data.setCell( 3,
                       1,
-                      "g2" );
+                      new BaseGridCellValue<>( "g2" ) );
         data.setCell( 4,
                       1,
-                      "g2" );
+                      new BaseGridCellValue<>( "g2" ) );
 
         data.setCell( 0,
                       2,
-                      "g3" );
+                      new BaseGridCellValue<>( "g3" ) );
         data.setCell( 1,
                       2,
-                      "g3" );
+                      new BaseGridCellValue<>( "g3" ) );
         data.setCell( 2,
                       2,
-                      "g3" );
+                      new BaseGridCellValue<>( "g3" ) );
 
         //Check initial setup
         assertGridIndexes( data,
@@ -1742,12 +1743,12 @@ public class GridGroupingTests extends BaseGridTests {
     @Test
     public void testGroupOverlap16() {
         final MergableGridData data = new MergableGridData();
-        final MergableGridColumn gc1 = new MergableGridColumn( "col1",
-                                                               100 );
-        final MergableGridColumn gc2 = new MergableGridColumn( "col2",
-                                                               100 );
-        final MergableGridColumn gc3 = new MergableGridColumn( "col3",
-                                                               100 );
+        final MergableGridColumn<String> gc1 = new MockMergableGridColumn<>( "col1",
+                                                                             100 );
+        final MergableGridColumn<String> gc2 = new MockMergableGridColumn<>( "col2",
+                                                                             100 );
+        final MergableGridColumn<String> gc3 = new MockMergableGridColumn<>( "col3",
+                                                                             100 );
         data.addColumn( gc1 );
         data.addColumn( gc2 );
         data.addColumn( gc3 );
@@ -1762,7 +1763,7 @@ public class GridGroupingTests extends BaseGridTests {
             for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
                 data.setCell( rowIndex,
                               columnIndex,
-                              "(" + columnIndex + ", " + rowIndex + ")" );
+                              new BaseGridCellValue<>( "(" + columnIndex + ", " + rowIndex + ")" ) );
             }
         }
 
@@ -1774,30 +1775,30 @@ public class GridGroupingTests extends BaseGridTests {
 
         data.setCell( 1,
                       0,
-                      "g1" );
+                      new BaseGridCellValue<>( "g1" ) );
         data.setCell( 2,
                       0,
-                      "g1" );
+                      new BaseGridCellValue<>( "g1" ) );
         data.setCell( 3,
                       0,
-                      "g1" );
+                      new BaseGridCellValue<>( "g1" ) );
 
         data.setCell( 0,
                       1,
-                      "g2" );
+                      new BaseGridCellValue<>( "g2" ) );
         data.setCell( 1,
                       1,
-                      "g2" );
+                      new BaseGridCellValue<>( "g2" ) );
 
         data.setCell( 0,
                       2,
-                      "g3" );
+                      new BaseGridCellValue<>( "g3" ) );
         data.setCell( 1,
                       2,
-                      "g3" );
+                      new BaseGridCellValue<>( "g3" ) );
         data.setCell( 2,
                       2,
-                      "g3" );
+                      new BaseGridCellValue<>( "g3" ) );
 
         //Check initial setup
         assertGridIndexes( data,
@@ -1875,10 +1876,10 @@ public class GridGroupingTests extends BaseGridTests {
     @Test
     public void testGroupUpdateCellValue() {
         final MergableGridData data = new MergableGridData();
-        final MergableGridColumn gc1 = new MergableGridColumn( "col1",
-                                                               100 );
-        final MergableGridColumn gc2 = new MergableGridColumn( "col2",
-                                                               100 );
+        final MergableGridColumn<String> gc1 = new MockMergableGridColumn<>( "col1",
+                                                                             100 );
+        final MergableGridColumn<String> gc2 = new MockMergableGridColumn<>( "col2",
+                                                                             100 );
         data.addColumn( gc1 );
         data.addColumn( gc2 );
 
@@ -1890,13 +1891,13 @@ public class GridGroupingTests extends BaseGridTests {
             for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
                 data.setCell( rowIndex,
                               columnIndex,
-                              "(" + columnIndex + ", " + rowIndex + ")" );
+                              new BaseGridCellValue<>( "(" + columnIndex + ", " + rowIndex + ")" ) );
             }
         }
 
         data.setCell( 1,
                       0,
-                      "(0, 0)" );
+                      new BaseGridCellValue<>( "(0, 0)" ) );
 
         //Group cells
         data.collapseCell( 0,
@@ -1914,7 +1915,7 @@ public class GridGroupingTests extends BaseGridTests {
         //Update cell value
         data.setCell( 0,
                       0,
-                      "<changed>" );
+                      new BaseGridCellValue<>( "<changed>" ) );
 
         //Ungroup cells
         data.expandCell( 0,
@@ -1933,10 +1934,10 @@ public class GridGroupingTests extends BaseGridTests {
     @Test
     public void testGroupMovedColumnUpdateCellValue() {
         final MergableGridData data = new MergableGridData();
-        final MergableGridColumn gc1 = new MergableGridColumn( "col1",
-                                                               100 );
-        final MergableGridColumn gc2 = new MergableGridColumn( "col2",
-                                                               100 );
+        final MergableGridColumn<String> gc1 = new MockMergableGridColumn<>( "col1",
+                                                                             100 );
+        final MergableGridColumn<String> gc2 = new MockMergableGridColumn<>( "col2",
+                                                                             100 );
         data.addColumn( gc1 );
         data.addColumn( gc2 );
 
@@ -1948,13 +1949,13 @@ public class GridGroupingTests extends BaseGridTests {
             for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
                 data.setCell( rowIndex,
                               columnIndex,
-                              "(" + columnIndex + ", " + rowIndex + ")" );
+                              new BaseGridCellValue<>( "(" + columnIndex + ", " + rowIndex + ")" ) );
             }
         }
 
         data.setCell( 1,
                       0,
-                      "(0, 0)" );
+                      new BaseGridCellValue<>( "(0, 0)" ) );
 
         //Group cells
         data.collapseCell( 0,
@@ -1976,7 +1977,7 @@ public class GridGroupingTests extends BaseGridTests {
         //Update cell value
         data.setCell( 0,
                       1,
-                      "<changed>" );
+                      new BaseGridCellValue<>( "<changed>" ) );
 
         //Ungroup cells
         data.expandCell( 0,

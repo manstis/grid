@@ -15,6 +15,7 @@
  */
 package org.anstis.client.grid.util;
 
+import org.anstis.client.grid.model.BaseGridCellValue;
 import org.anstis.client.grid.model.basic.GridData;
 import org.anstis.client.grid.model.basic.GridRow;
 import org.anstis.client.grid.model.mergable.MergableGridData;
@@ -35,7 +36,7 @@ public class GridDataFactory {
                 if ( Math.random() < FILL_FACTOR ) {
                     grid.setCell( rowIndex,
                                   columnIndex,
-                                  "(" + columnIndex + ", " + rowIndex + ")" );
+                                  new BaseGridCellValue<>( "(" + columnIndex + ", " + rowIndex + ")" ) );
                 }
             }
         }
@@ -51,7 +52,7 @@ public class GridDataFactory {
                 if ( Math.random() < FILL_FACTOR ) {
                     grid.setCell( rowIndex,
                                   columnIndex,
-                                  "(" + columnIndex + ", " + rowIndex + ")" );
+                                  new BaseGridCellValue<>( "(" + columnIndex + ", " + rowIndex + ")" ) );
                 }
             }
         }

@@ -21,7 +21,7 @@ import com.ait.lienzo.shared.core.types.ColorName;
 import com.ait.lienzo.shared.core.types.TextAlign;
 import com.ait.lienzo.shared.core.types.TextBaseLine;
 
-public abstract class BaseGridColumn<R extends IGridRow<V>, V extends IGridCell> implements IGridColumn<R, V> {
+public abstract class BaseGridColumn<R extends IGridRow<V>, V extends IGridCell<?>> implements IGridColumn<R, V> {
 
     private String title;
     private int width;

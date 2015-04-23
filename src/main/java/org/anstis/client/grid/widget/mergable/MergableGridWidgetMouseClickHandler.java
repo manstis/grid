@@ -74,7 +74,7 @@ public class MergableGridWidgetMouseClickHandler extends BaseGridWidgetMouseClic
         //Get column index
         int columnIndex = -1;
         double offsetX = 0;
-        final List<MergableGridColumn> columns = grid.getModel().getColumns();
+        final List<MergableGridColumn<?>> columns = grid.getModel().getColumns();
         for ( int idx = 0; idx < columns.size(); idx++ ) {
             final MergableGridColumn gridColumn = columns.get( idx );
             final double width = gridColumn.getWidth();

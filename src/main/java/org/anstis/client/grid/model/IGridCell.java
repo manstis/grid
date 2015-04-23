@@ -15,8 +15,8 @@
  */
 package org.anstis.client.grid.model;
 
-public interface IGridCell {
+public interface IGridCell<T> {
 
-    String getValue();
+    IGridCellValue<T> getValue();
 
 }

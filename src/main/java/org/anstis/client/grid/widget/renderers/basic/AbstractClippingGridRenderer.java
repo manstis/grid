@@ -54,7 +54,7 @@ public abstract class AbstractClippingGridRenderer implements IGridRenderer<Grid
                 .setListening( false );
         g.add( header );
 
-        final List<GridColumn> columns = model.getColumns();
+        final List<GridColumn<?>> columns = model.getColumns();
 
         //Linked columns
         double x = 0;
@@ -112,7 +112,7 @@ public abstract class AbstractClippingGridRenderer implements IGridRenderer<Grid
                              final int endRowIndex,
                              final double width ) {
         final Group g = new Group();
-        final List<GridColumn> columns = model.getColumns();
+        final List<GridColumn<?>> columns = model.getColumns();
 
         final List<Double> rowOffsets = new ArrayList<>();
         double rowOffset = model.getRowOffset( startRowIndex );

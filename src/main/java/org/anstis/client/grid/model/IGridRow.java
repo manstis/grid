@@ -17,7 +17,7 @@ package org.anstis.client.grid.model;
 
 import java.util.Map;
 
-public interface IGridRow<V extends IGridCell> {
+public interface IGridRow<V extends IGridCell<?>> {
 
     double getHeight();
 
