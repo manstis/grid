@@ -17,30 +17,25 @@ package org.anstis.client.grid.widget.basic;
 
 import org.anstis.client.grid.model.basic.GridData;
 import org.anstis.client.grid.widget.BaseGridWidget;
-import org.anstis.client.grid.widget.IEditManager;
 import org.anstis.client.grid.widget.ISelectionManager;
 import org.anstis.client.grid.widget.renderers.IGridRenderer;
 
 public class GridWidget extends BaseGridWidget<GridData> {
 
     public GridWidget( final GridData model,
-                       final IEditManager editManager,
                        final ISelectionManager selectionManager,
                        final IGridRenderer<GridData> renderer ) {
         super( model,
-               editManager,
                selectionManager,
                renderer );
 
         //Click handler
         addNodeMouseClickHandler( new GridWidgetMouseClickHandler( this,
-                                                                   editManager,
                                                                    selectionManager,
                                                                    renderer ) );
 
         //Double-click handler
         addNodeMouseDoubleClickHandler( new GridWidgetMouseDoubleClickHandler( this,
-                                                                               editManager,
                                                                                selectionManager,
                                                                                renderer ) );
     }

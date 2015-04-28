@@ -28,16 +28,13 @@ import org.anstis.client.grid.widget.renderers.IGridRenderer;
 public abstract class BaseGridWidgetMouseDoubleClickHandler<W extends BaseGridWidget<?>> implements NodeMouseDoubleClickHandler {
 
     protected W grid;
-    protected IEditManager editManager;
     protected ISelectionManager selectionManager;
     protected IGridRenderer<?> renderer;
 
     public BaseGridWidgetMouseDoubleClickHandler( final W grid,
-                                                  final IEditManager editManager,
                                                   final ISelectionManager selectionManager,
                                                   final IGridRenderer<?> renderer ) {
         this.grid = grid;
-        this.editManager = editManager;
         this.selectionManager = selectionManager;
         this.renderer = renderer;
     }

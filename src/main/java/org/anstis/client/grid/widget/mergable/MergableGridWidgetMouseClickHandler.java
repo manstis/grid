@@ -25,7 +25,6 @@ import org.anstis.client.grid.model.mergable.MergableGridColumn;
 import org.anstis.client.grid.model.mergable.MergableGridRow;
 import org.anstis.client.grid.util.GridCoordinateUtils;
 import org.anstis.client.grid.widget.BaseGridWidgetMouseClickHandler;
-import org.anstis.client.grid.widget.IEditManager;
 import org.anstis.client.grid.widget.ISelectionManager;
 import org.anstis.client.grid.widget.animation.MergableGridWidgetCollapseRowsAnimation;
 import org.anstis.client.grid.widget.animation.MergableGridWidgetExpandRowsAnimation;
@@ -35,11 +34,9 @@ import org.anstis.client.grid.widget.renderers.mergable.IMergableGridRenderer;
 public class MergableGridWidgetMouseClickHandler extends BaseGridWidgetMouseClickHandler<MergableGridWidget> {
 
     public MergableGridWidgetMouseClickHandler( final MergableGridWidget grid,
-                                                final IEditManager editManager,
                                                 final ISelectionManager selectionManager,
                                                 final IMergableGridRenderer renderer ) {
         super( grid,
-               editManager,
                selectionManager,
                renderer );
     }
@@ -102,7 +99,8 @@ public class MergableGridWidgetMouseClickHandler extends BaseGridWidgetMouseClic
         final MergableGridRow gridRow = grid.getModel().getRow( rowIndex );
         final MergableGridColumn gridColumn = columns.get( columnIndex );
         final MergableGridRow nextRow = grid.getModel().getRow( rowIndex + 1 );
-        final MergableGridCell nextRowCell = nextRow.getCells().get( columnIndex );
+        final MergableGridCell nextRowCell = grid.getModel().getCell( rowIndex + 1,
+                                                                      columnIndex );
         final double cellX = x - offsetX;
         final double cellY = y - grid.getModel().getRowOffset( rowIndex ) - renderer.getHeaderHeight();
         final GroupingToggle gt = new GroupingToggle( gridColumn.getWidth(),

@@ -17,30 +17,25 @@ package org.anstis.client.grid.widget.mergable;
 
 import org.anstis.client.grid.model.mergable.MergableGridData;
 import org.anstis.client.grid.widget.BaseGridWidget;
-import org.anstis.client.grid.widget.IEditManager;
 import org.anstis.client.grid.widget.ISelectionManager;
 import org.anstis.client.grid.widget.renderers.mergable.IMergableGridRenderer;
 
 public class MergableGridWidget extends BaseGridWidget<MergableGridData> {
 
     public MergableGridWidget( final MergableGridData model,
-                               final IEditManager editManager,
                                final ISelectionManager selectionManager,
                                final IMergableGridRenderer renderer ) {
         super( model,
-               editManager,
                selectionManager,
                renderer );
 
         //Click handler
         addNodeMouseClickHandler( new MergableGridWidgetMouseClickHandler( this,
-                                                                           editManager,
                                                                            selectionManager,
                                                                            renderer ) );
 
         //Double-click handler
         addNodeMouseDoubleClickHandler( new MergableGridWidgetMouseDoubleClickHandler( this,
-                                                                                       editManager,
                                                                                        selectionManager,
                                                                                        renderer ) );
     }

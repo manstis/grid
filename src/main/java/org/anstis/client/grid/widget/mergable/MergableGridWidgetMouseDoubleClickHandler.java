@@ -18,19 +18,17 @@ package org.anstis.client.grid.widget.mergable;
 import com.google.gwt.core.client.Callback;
 import org.anstis.client.grid.model.IGridCellValue;
 import org.anstis.client.grid.model.mergable.MergableGridCell;
+import org.anstis.client.grid.model.mergable.MergableGridColumn;
 import org.anstis.client.grid.widget.BaseGridWidgetMouseDoubleClickHandler;
-import org.anstis.client.grid.widget.IEditManager;
 import org.anstis.client.grid.widget.ISelectionManager;
 import org.anstis.client.grid.widget.renderers.mergable.IMergableGridRenderer;
 
 public class MergableGridWidgetMouseDoubleClickHandler extends BaseGridWidgetMouseDoubleClickHandler<MergableGridWidget> {
 
     public MergableGridWidgetMouseDoubleClickHandler( final MergableGridWidget grid,
-                                                      final IEditManager editManager,
                                                       final ISelectionManager selectionManager,
                                                       final IMergableGridRenderer renderer ) {
         super( grid,
-               editManager,
                selectionManager,
                renderer );
     }
@@ -40,21 +38,23 @@ public class MergableGridWidgetMouseDoubleClickHandler extends BaseGridWidgetMou
                            final int columnIndex ) {
         final MergableGridCell cell = grid.getModel().getCell( rowIndex,
                                                                columnIndex );
-        editManager.edit( cell == null ? null : cell.getValue(),
-                          new Callback<IGridCellValue<?>, IGridCellValue<?>>() {
-                              @Override
-                              public void onFailure( final IGridCellValue<?> value ) {
-                                  //Do nothing
-                              }
+        final MergableGridColumn column = grid.getModel().getColumns().get( columnIndex );
+        column.edit( cell == null ? null : cell.getValue(),
+                     new Callback<IGridCellValue<?>, IGridCellValue<?>>() {
 
-                              @Override
-                              public void onSuccess( final IGridCellValue<?> value ) {
-                                  grid.getModel().setCell( rowIndex,
-                                                           columnIndex,
-                                                           value );
-                                  grid.getLayer().draw();
-                              }
-                          } );
+                         @Override
+                         public void onFailure( final IGridCellValue<?> value ) {
+                             //Do nothing
+                         }
+
+                         @Override
+                         public void onSuccess( final IGridCellValue<?> value ) {
+                             grid.getModel().setCell( rowIndex,
+                                                      columnIndex,
+                                                      value );
+                             grid.getLayer().draw();
+                         }
+                     } );
     }
 
 }

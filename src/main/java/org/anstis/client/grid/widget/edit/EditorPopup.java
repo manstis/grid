@@ -37,8 +37,8 @@ public class EditorPopup extends Modal {
 
     private final TextBox textBox = new TextBox();
 
-    private IGridCellValue<?> value;
-    private Callback<IGridCellValue<?>, IGridCellValue<?>> callback = null;
+    private IGridCellValue<String> value;
+    private Callback<IGridCellValue<String>, IGridCellValue<String>> callback = null;
 
     public EditorPopup() {
         setTitle( "Edit" );
@@ -88,11 +88,11 @@ public class EditorPopup extends Modal {
         } );
     }
 
-    public void edit( final IGridCellValue<?> value,
-                      final Callback<IGridCellValue<?>, IGridCellValue<?>> callback ) {
+    public void edit( final IGridCellValue<String> value,
+                      final Callback<IGridCellValue<String>, IGridCellValue<String>> callback ) {
         this.value = value;
         this.callback = callback;
-        textBox.setText( value == null ? "" : value.getValue().toString() );
+        textBox.setText( value == null ? "" : value.getValue() );
         show();
     }
 

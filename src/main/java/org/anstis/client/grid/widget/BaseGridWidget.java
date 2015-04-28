@@ -31,16 +31,13 @@ public abstract class BaseGridWidget<M extends IGridData<?, ?, ?>> extends Group
     private Group selection = null;
 
     protected M model;
-    protected IEditManager editManager;
     protected ISelectionManager selectionManager;
     protected IGridRenderer<M> renderer;
 
     public BaseGridWidget( final M model,
-                           final IEditManager editManager,
                            final ISelectionManager selectionManager,
                            final IGridRenderer<M> renderer ) {
         this.model = model;
-        this.editManager = editManager;
         this.selectionManager = selectionManager;
         this.renderer = renderer;
     }

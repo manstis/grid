@@ -16,7 +16,9 @@
 package org.anstis.client.grid.model.mergable;
 
 import com.ait.lienzo.client.core.shape.Group;
+import com.google.gwt.core.client.Callback;
 import org.anstis.client.grid.model.BaseGridColumn;
+import org.anstis.client.grid.model.IGridCellValue;
 
 public abstract class MergableGridColumn<T> extends BaseGridColumn<MergableGridRow, MergableGridCell<?>> {
 
@@ -40,5 +42,8 @@ public abstract class MergableGridColumn<T> extends BaseGridColumn<MergableGridR
 
     public abstract void renderCell( final Group g,
                                      final MergableGridCell<T> cell );
+
+    public abstract void edit( final IGridCellValue<T> value,
+                               final Callback<IGridCellValue<T>, IGridCellValue<T>> callback );
 
 }

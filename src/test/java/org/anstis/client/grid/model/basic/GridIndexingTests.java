@@ -18,6 +18,8 @@ package org.anstis.client.grid.model.basic;
 import java.util.List;
 
 import com.ait.lienzo.client.core.shape.Group;
+import com.google.gwt.core.client.Callback;
+import org.anstis.client.grid.model.IGridCellValue;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -206,6 +208,13 @@ public class GridIndexingTests {
                                 final GridCell<T> cell ) {
             //Do nothing
         }
+
+        @Override
+        public void edit( final IGridCellValue<T> value,
+                          final Callback<IGridCellValue<T>, IGridCellValue<T>> callback ) {
+            //Do nothing
+        }
+
     }
 
 }

@@ -60,8 +60,7 @@ import org.gwtbootstrap3.client.ui.CheckBox;
 import org.gwtbootstrap3.client.ui.ListBox;
 import org.gwtbootstrap3.extras.slider.client.ui.Slider;
 
-public class GridShowcaseWidget extends Composite implements IEditManager,
-                                                             ISelectionManager {
+public class GridShowcaseWidget extends Composite implements ISelectionManager {
 
     public static final int VP_WIDTH = 1200;
     public static final int VP_HEIGHT = 600;
@@ -132,6 +131,14 @@ public class GridShowcaseWidget extends Composite implements IEditManager,
                             .setTextAlign( TextAlign.CENTER );
                     g.add( t );
                 }
+
+                @Override
+                public void edit( final IGridCellValue<String> value,
+                                  final Callback<IGridCellValue<String>, IGridCellValue<String>> callback ) {
+                    editor.edit( value,
+                                 callback );
+                }
+
             };
             grid1.addColumn( column );
         }
@@ -155,6 +162,14 @@ public class GridShowcaseWidget extends Composite implements IEditManager,
                             .setTextAlign( TextAlign.CENTER );
                     g.add( t );
                 }
+
+                @Override
+                public void edit( final IGridCellValue<String> value,
+                                  final Callback<IGridCellValue<String>, IGridCellValue<String>> callback ) {
+                    editor.edit( value,
+                                 callback );
+                }
+
             };
             grid2.addColumn( column );
         }
@@ -178,6 +193,14 @@ public class GridShowcaseWidget extends Composite implements IEditManager,
                             .setTextAlign( TextAlign.CENTER );
                     g.add( t );
                 }
+
+                @Override
+                public void edit( final IGridCellValue<String> value,
+                                  final Callback<IGridCellValue<String>, IGridCellValue<String>> callback ) {
+                    editor.edit( value,
+                                 callback );
+                }
+
             };
             grid3.addColumn( column );
         }
@@ -201,6 +224,14 @@ public class GridShowcaseWidget extends Composite implements IEditManager,
                             .setTextAlign( TextAlign.CENTER );
                     g.add( t );
                 }
+
+                @Override
+                public void edit( final IGridCellValue<String> value,
+                                  final Callback<IGridCellValue<String>, IGridCellValue<String>> callback ) {
+                    editor.edit( value,
+                                 callback );
+                }
+
             };
             grid4.addColumn( column );
         }
@@ -215,21 +246,17 @@ public class GridShowcaseWidget extends Composite implements IEditManager,
         //Widgets
         final MergableGridWidget gridWidget1 = new MergableGridWidget( grid1,
                                                                        this,
-                                                                       this,
                                                                        new MergableGridRenderer() );
 
         final MergableGridWidget gridWidget2 = new MergableGridWidget( grid2,
-                                                                       this,
                                                                        this,
                                                                        new MergableGridRenderer() );
 
         final MergableGridWidget gridWidget3 = new MergableGridWidget( grid3,
                                                                        this,
-                                                                       this,
                                                                        new MergableGridRenderer() );
 
         final GridWidget gridWidget4 = new GridWidget( grid4,
-                                                       this,
                                                        this,
                                                        new RedGridRenderer() );
 
@@ -311,13 +338,6 @@ public class GridShowcaseWidget extends Composite implements IEditManager,
                 gridLayer.draw();
             }
         } );
-    }
-
-    @Override
-    public void edit( final IGridCellValue<?> value,
-                      final Callback<IGridCellValue<?>, IGridCellValue<?>> callback ) {
-        editor.edit( value,
-                     callback );
     }
 
     @Override
