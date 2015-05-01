@@ -98,7 +98,6 @@ public class MergableGridWidgetMouseClickHandler extends BaseGridWidgetMouseClic
         //Check if the Grouping control has been clicked
         final MergableGridRow gridRow = grid.getModel().getRow( rowIndex );
         final MergableGridColumn gridColumn = columns.get( columnIndex );
-        final MergableGridRow nextRow = grid.getModel().getRow( rowIndex + 1 );
         final MergableGridCell nextRowCell = grid.getModel().getCell( rowIndex + 1,
                                                                       columnIndex );
         final double cellX = x - offsetX;

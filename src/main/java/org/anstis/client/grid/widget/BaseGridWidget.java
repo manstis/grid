@@ -20,9 +20,12 @@ import java.util.List;
 import com.ait.lienzo.client.core.Context2D;
 import com.ait.lienzo.client.core.shape.Group;
 import com.ait.lienzo.client.core.shape.Rectangle;
+import com.ait.lienzo.client.core.shape.Viewport;
 import org.anstis.client.grid.model.IGridColumn;
 import org.anstis.client.grid.model.IGridData;
 import org.anstis.client.grid.model.IGridRow;
+import org.anstis.client.grid.widget.context.GridBodyRenderContext;
+import org.anstis.client.grid.widget.context.GridHeaderRenderContext;
 import org.anstis.client.grid.widget.renderers.IGridRenderer;
 
 public abstract class BaseGridWidget<M extends IGridData<?, ?, ?>> extends Group {
@@ -145,37 +148,61 @@ public abstract class BaseGridWidget<M extends IGridData<?, ?, ?>> extends Group
             x = x + column.getWidth();
         }
 
-        //Determine which rows are within visible area
-        int minRow = 0;
-        IGridRow<?> row;
-        double clipTop = vpY - getY() - renderer.getHeaderHeight();
-        while ( ( row = model.getRow( minRow ) ).getHeight() < clipTop && minRow < model.getRowCount() - 1 ) {
-            clipTop = clipTop - row.getHeight();
-            minRow++;
-        }
-
-        int maxRow = minRow;
-        double clipBottom = vpY - getY() - renderer.getHeaderHeight() + vpHeight - model.getRowOffset( minRow );
-        while ( ( row = model.getRow( maxRow ) ).getHeight() < clipBottom && maxRow < model.getRowCount() - 1 ) {
-            clipBottom = clipBottom - row.getHeight();
-            maxRow++;
-        }
-
-        if ( minCol < 0 || maxCol < 0 || maxRow < minRow ) {
+        //Draw header if required
+        if ( minCol >= 0 && maxCol >= 0 ) {
+            if ( vpY - getY() < renderer.getHeaderHeight() && getY() < vpY + vpHeight ) {
+                makeGridHeaderWidget( minCol,
+                                      maxCol );
+            }
+        } else {
+            for ( int i = 0; i < columns.size(); i++ ) {
+                final IGridColumn<?, ?> column = columns.get( i );
+                column.detachFromDom();
+            }
             return;
         }
 
-        //Draw header if required
-        if ( vpY - getY() < renderer.getHeaderHeight() && getY() < vpY + vpHeight ) {
-            makeGridHeaderWidget( minCol,
-                                  maxCol );
-        }
+        //Determine which rows are within visible area
+        if ( model.getRowCount() > 0 ) {
+            int minRow = 0;
+            IGridRow<?> row;
+            double clipTop = vpY - getY() - renderer.getHeaderHeight();
+            while ( ( row = model.getRow( minRow ) ).getHeight() < clipTop && minRow < model.getRowCount() - 1 ) {
+                clipTop = clipTop - row.getHeight();
+                minRow++;
+            }
 
-        //Draw body if required
-        makeGridBodyWidget( minCol,
-                            maxCol,
-                            minRow,
-                            maxRow );
+            int maxRow = minRow;
+            double clipBottom = vpY - getY() - renderer.getHeaderHeight() + vpHeight - model.getRowOffset( minRow );
+            while ( ( row = model.getRow( maxRow ) ).getHeight() < clipBottom && maxRow < model.getRowCount() - 1 ) {
+                clipBottom = clipBottom - row.getHeight();
+                maxRow++;
+            }
+
+            //Draw body if required
+            if ( minRow < maxRow || ( clipTop < model.getRow( minRow ).getHeight() && clipBottom > 0 ) ) {
+
+                //Signal columns to attach or detach rendering support
+                for ( int i = 0; i < columns.size(); i++ ) {
+                    final IGridColumn<?, ?> column = columns.get( i );
+                    if ( i >= minCol && i <= maxCol ) {
+                        column.attachToDom();
+                    } else {
+                        column.detachFromDom();
+                    }
+                }
+
+                makeGridBodyWidget( minCol,
+                                    maxCol,
+                                    minRow,
+                                    maxRow );
+            } else {
+                for ( int i = 0; i < columns.size(); i++ ) {
+                    final IGridColumn<?, ?> column = columns.get( i );
+                    column.detachFromDom();
+                }
+            }
+        }
 
         //Include selection indicator if required
         if ( isSelected ) {
@@ -189,11 +216,14 @@ public abstract class BaseGridWidget<M extends IGridData<?, ?, ?>> extends Group
 
     protected void makeGridHeaderWidget( final int startColumnIndex,
                                          final int endColumnIndex ) {
+        final Viewport viewport = BaseGridWidget.this.getViewport();
+        final GridHeaderRenderContext context = new GridHeaderRenderContext( startColumnIndex,
+                                                                             endColumnIndex,
+                                                                             getWidth( startColumnIndex,
+                                                                                       endColumnIndex ),
+                                                                             viewport.getTransform() );
         final Group g = renderer.renderHeader( model,
-                                               startColumnIndex,
-                                               endColumnIndex,
-                                               getWidth( startColumnIndex,
-                                                         endColumnIndex ) );
+                                               context );
         g.setX( model.getColumnOffset( startColumnIndex ) );
         add( g );
     }
@@ -202,13 +232,18 @@ public abstract class BaseGridWidget<M extends IGridData<?, ?, ?>> extends Group
                                        final int endColumnIndex,
                                        final int startRowIndex,
                                        final int endRowIndex ) {
+        final Viewport viewport = BaseGridWidget.this.getViewport();
+        final GridBodyRenderContext context = new GridBodyRenderContext( getX(),
+                                                                         getY(),
+                                                                         getWidth( startColumnIndex,
+                                                                                   endColumnIndex ),
+                                                                         startColumnIndex,
+                                                                         endColumnIndex,
+                                                                         startRowIndex,
+                                                                         endRowIndex,
+                                                                         viewport.getTransform() );
         final Group g = renderer.renderBody( model,
-                                             startColumnIndex,
-                                             endColumnIndex,
-                                             startRowIndex,
-                                             endRowIndex,
-                                             getWidth( startColumnIndex,
-                                                       endColumnIndex ) );
+                                             context );
         g.setX( model.getColumnOffset( startColumnIndex ) );
         g.setY( renderer.getHeaderHeight() + model.getRowOffset( startRowIndex ) );
         add( g );

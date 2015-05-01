@@ -17,6 +17,8 @@ package org.anstis.client.grid.widget.renderers;
 
 import com.ait.lienzo.client.core.shape.Group;
 import org.anstis.client.grid.model.IGridData;
+import org.anstis.client.grid.widget.context.GridBodyRenderContext;
+import org.anstis.client.grid.widget.context.GridHeaderRenderContext;
 
 public interface IGridRenderer<M extends IGridData<?, ?, ?>> {
 
@@ -28,15 +30,9 @@ public interface IGridRenderer<M extends IGridData<?, ?, ?>> {
                           final double height );
 
     Group renderHeader( final M model,
-                        final int startColumnIndex,
-                        final int endColumnIndex,
-                        final double width );
+                        final GridHeaderRenderContext context );
 
     Group renderBody( final M model,
-                      final int startColumnIndex,
-                      final int endColumnIndex,
-                      final int startRowIndex,
-                      final int endRowIndex,
-                      final double width );
+                      final GridBodyRenderContext context );
 
 }

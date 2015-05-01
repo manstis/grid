@@ -20,6 +20,7 @@ import java.util.List;
 import com.ait.lienzo.client.core.shape.Group;
 import com.google.gwt.core.client.Callback;
 import org.anstis.client.grid.model.IGridCellValue;
+import org.anstis.client.grid.widget.context.GridCellRenderContext;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -205,7 +206,8 @@ public class GridIndexingTests {
 
         @Override
         public void renderCell( final Group g,
-                                final GridCell<T> cell ) {
+                                final GridCell<T> cell,
+                                final GridCellRenderContext context ) {
             //Do nothing
         }
 

@@ -21,9 +21,13 @@ import java.util.List;
 import com.ait.lienzo.client.core.shape.Group;
 import com.ait.lienzo.client.core.shape.MultiPath;
 import com.ait.lienzo.client.core.shape.Rectangle;
+import com.ait.lienzo.client.core.types.Transform;
 import org.anstis.client.grid.model.basic.GridColumn;
 import org.anstis.client.grid.model.basic.GridData;
 import org.anstis.client.grid.model.basic.GridRow;
+import org.anstis.client.grid.widget.context.GridBodyRenderContext;
+import org.anstis.client.grid.widget.context.GridCellRenderContext;
+import org.anstis.client.grid.widget.context.GridHeaderRenderContext;
 import org.anstis.client.grid.widget.renderers.IGridRenderer;
 
 public abstract class AbstractClippingGridRenderer implements IGridRenderer<GridData> {
@@ -44,9 +48,11 @@ public abstract class AbstractClippingGridRenderer implements IGridRenderer<Grid
 
     @Override
     public Group renderHeader( final GridData model,
-                               final int startColumnIndex,
-                               final int endColumnIndex,
-                               final double width ) {
+                               final GridHeaderRenderContext context ) {
+        final int startColumnIndex = context.getStartColumnIndex();
+        final int endColumnIndex = context.getEndColumnIndex();
+        final double width = context.getWidth();
+
         final Group g = new Group();
         final Rectangle header = getHeader()
                 .setWidth( width )
@@ -106,11 +112,14 @@ public abstract class AbstractClippingGridRenderer implements IGridRenderer<Grid
 
     @Override
     public Group renderBody( final GridData model,
-                             final int startColumnIndex,
-                             final int endColumnIndex,
-                             final int startRowIndex,
-                             final int endRowIndex,
-                             final double width ) {
+                             final GridBodyRenderContext context ) {
+        final int startColumnIndex = context.getStartColumnIndex();
+        final int endColumnIndex = context.getEndColumnIndex();
+        final int startRowIndex = context.getStartRowIndex();
+        final int endRowIndex = context.getEndRowIndex();
+        final double width = context.getWidth();
+        final Transform transform = context.getTransform();
+
         final Group g = new Group();
         final List<GridColumn<?>> columns = model.getColumns();
 
@@ -151,15 +160,22 @@ public abstract class AbstractClippingGridRenderer implements IGridRenderer<Grid
             x = 0;
             for ( int columnIndex = startColumnIndex; columnIndex <= endColumnIndex; columnIndex++ ) {
                 final GridColumn column = columns.get( columnIndex );
-                final int w = column.getWidth();
-                final Group hc = column.renderRow( row );
+                final double rowHeight = row.getHeight();
+                final double columnWidth = column.getWidth();
+                final GridCellRenderContext cellContext = new GridCellRenderContext( model.getColumnOffset( columnIndex ) + context.getX(),
+                                                                                     rowOffsets.get( rowIndex - startRowIndex ) + context.getY() + getHeaderHeight(),
+                                                                                     columnWidth,
+                                                                                     rowHeight,
+                                                                                     transform );
+                final Group hc = column.renderRow( row,
+                                                   cellContext );
                 if ( hc != null ) {
-                    hc.setX( x + w / 2 )
+                    hc.setX( x + columnWidth / 2 )
                             .setY( y + model.getRow( rowIndex ).getHeight() / 2 )
                             .setListening( false );
                     g.add( hc );
                 }
-                x = x + w;
+                x = x + columnWidth;
             }
         }
 

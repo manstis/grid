@@ -16,6 +16,7 @@
 package org.anstis.client.grid.model;
 
 import com.ait.lienzo.client.core.shape.Group;
+import org.anstis.client.grid.widget.context.GridCellRenderContext;
 
 public interface IGridColumn<R extends IGridRow<V>, V extends IGridCell<?>> {
 
@@ -37,6 +38,11 @@ public interface IGridColumn<R extends IGridRow<V>, V extends IGridCell<?>> {
 
     Group renderHeader();
 
-    Group renderRow( final R row );
+    Group renderRow( final R row,
+                     final GridCellRenderContext context );
+
+    void attachToDom();
+
+    void detachFromDom();
 
 }

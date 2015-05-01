@@ -93,6 +93,16 @@ public abstract class BaseGridColumn<R extends IGridRow<V>, V extends IGridCell<
     }
 
     @Override
+    public void attachToDom() {
+        //Do nothing by default
+    }
+
+    @Override
+    public void detachFromDom() {
+        //Do nothing by default
+    }
+
+    @Override
     public boolean equals( Object o ) {
         if ( this == o ) {
             return true;

@@ -18,6 +18,7 @@ package org.anstis.client.grid.model.mergable;
 import com.ait.lienzo.client.core.shape.Group;
 import com.google.gwt.core.client.Callback;
 import org.anstis.client.grid.model.IGridCellValue;
+import org.anstis.client.grid.widget.context.GridCellRenderContext;
 
 import static org.junit.Assert.*;
 
@@ -99,7 +100,8 @@ public abstract class BaseGridTests {
 
         @Override
         public void renderCell( final Group g,
-                                final MergableGridCell<T> cell ) {
+                                final MergableGridCell<T> cell,
+                                final GridCellRenderContext context ) {
             //Do nothing
         }
 

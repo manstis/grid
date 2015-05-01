@@ -19,6 +19,7 @@ import com.ait.lienzo.client.core.shape.Group;
 import com.google.gwt.core.client.Callback;
 import org.anstis.client.grid.model.BaseGridColumn;
 import org.anstis.client.grid.model.IGridCellValue;
+import org.anstis.client.grid.widget.context.GridCellRenderContext;
 
 public abstract class MergableGridColumn<T> extends BaseGridColumn<MergableGridRow, MergableGridCell<?>> {
 
@@ -29,19 +30,22 @@ public abstract class MergableGridColumn<T> extends BaseGridColumn<MergableGridR
     }
 
     @Override
-    public Group renderRow( final MergableGridRow row ) {
+    public Group renderRow( final MergableGridRow row,
+                            final GridCellRenderContext context ) {
         final MergableGridCell cell = row.getCells().get( getIndex() );
         if ( cell == null ) {
             return null;
         }
         final Group g = new Group();
         renderCell( g,
-                    cell );
+                    cell,
+                    context );
         return g;
     }
 
     public abstract void renderCell( final Group g,
-                                     final MergableGridCell<T> cell );
+                                     final MergableGridCell<T> cell,
+                                     final GridCellRenderContext context );
 
     public abstract void edit( final IGridCellValue<T> value,
                                final Callback<IGridCellValue<T>, IGridCellValue<T>> callback );

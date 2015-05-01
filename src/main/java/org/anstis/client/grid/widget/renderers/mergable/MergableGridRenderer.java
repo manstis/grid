@@ -22,11 +22,15 @@ import com.ait.lienzo.client.core.shape.Group;
 import com.ait.lienzo.client.core.shape.MultiPath;
 import com.ait.lienzo.client.core.shape.Rectangle;
 import com.ait.lienzo.client.core.types.Shadow;
+import com.ait.lienzo.client.core.types.Transform;
 import com.ait.lienzo.shared.core.types.ColorName;
 import org.anstis.client.grid.model.mergable.MergableGridCell;
 import org.anstis.client.grid.model.mergable.MergableGridColumn;
 import org.anstis.client.grid.model.mergable.MergableGridData;
 import org.anstis.client.grid.model.mergable.MergableGridRow;
+import org.anstis.client.grid.widget.context.GridBodyRenderContext;
+import org.anstis.client.grid.widget.context.GridCellRenderContext;
+import org.anstis.client.grid.widget.context.GridHeaderRenderContext;
 
 public class MergableGridRenderer implements IMergableGridRenderer {
 
@@ -60,9 +64,11 @@ public class MergableGridRenderer implements IMergableGridRenderer {
 
     @Override
     public Group renderHeader( final MergableGridData model,
-                               final int startColumnIndex,
-                               final int endColumnIndex,
-                               final double width ) {
+                               final GridHeaderRenderContext context ) {
+        final int startColumnIndex = context.getStartColumnIndex();
+        final int endColumnIndex = context.getEndColumnIndex();
+        final double width = context.getWidth();
+
         final Group g = new Group();
         final Rectangle header = new Rectangle( 0, 0 )
                 .setFillColor( ColorName.BISQUE )
@@ -133,26 +139,14 @@ public class MergableGridRenderer implements IMergableGridRenderer {
 
     @Override
     public Group renderBody( final MergableGridData model,
-                             final int startColumnIndex,
-                             final int endColumnIndex,
-                             final int startRowIndex,
-                             final int endRowIndex,
-                             final double width ) {
+                             final GridBodyRenderContext context ) {
         //Delegate to one of the inner class implementations that support (un)merged rendering
         if ( model.isMerged() ) {
             return mergedRenderer.renderBody( model,
-                                              startColumnIndex,
-                                              endColumnIndex,
-                                              startRowIndex,
-                                              endRowIndex,
-                                              width );
+                                              context );
         } else {
             return flattenedRenderer.renderBody( model,
-                                                 startColumnIndex,
-                                                 endColumnIndex,
-                                                 startRowIndex,
-                                                 endRowIndex,
-                                                 width );
+                                                 context );
         }
     }
 
@@ -188,11 +182,14 @@ public class MergableGridRenderer implements IMergableGridRenderer {
 
         @Override
         public Group renderBody( final MergableGridData model,
-                                 final int startColumnIndex,
-                                 final int endColumnIndex,
-                                 final int startRowIndex,
-                                 final int endRowIndex,
-                                 final double width ) {
+                                 final GridBodyRenderContext context ) {
+            final int startColumnIndex = context.getStartColumnIndex();
+            final int endColumnIndex = context.getEndColumnIndex();
+            final int startRowIndex = context.getStartRowIndex();
+            final int endRowIndex = context.getEndRowIndex();
+            final double width = context.getWidth();
+            final Transform transform = context.getTransform();
+
             final Group g = new Group();
             final List<MergableGridColumn<?>> columns = model.getColumns();
             final List<Double> rowOffsets = new ArrayList<>();
@@ -262,7 +259,7 @@ public class MergableGridRenderer implements IMergableGridRenderer {
             x = 0;
             for ( int columnIndex = startColumnIndex; columnIndex <= endColumnIndex; columnIndex++ ) {
                 final MergableGridColumn column = columns.get( columnIndex );
-                final int w = column.getWidth();
+                final double columnWidth = column.getWidth();
                 for ( int rowIndex = startRowIndex; rowIndex <= endRowIndex; rowIndex++ ) {
                     final double y = rowOffsets.get( rowIndex - startRowIndex ) - rowOffsets.get( 0 );
                     final MergableGridRow row = model.getRow( rowIndex );
@@ -280,7 +277,7 @@ public class MergableGridRenderer implements IMergableGridRenderer {
                                 final MergableGridCell nextRowCell = model.getCell( rowIndex + 1,
                                                                                     columnIndex );
                                 if ( nextRowCell != null ) {
-                                    final GroupingToggle gt = renderGroupedCellToggle( w,
+                                    final GroupingToggle gt = renderGroupedCellToggle( columnWidth,
                                                                                        row.getHeight(),
                                                                                        nextRowCell.isCollapsed() );
                                     gt.setX( x ).setY( y );
@@ -288,8 +285,15 @@ public class MergableGridRenderer implements IMergableGridRenderer {
                                 }
                             }
 
-                            final Group hc = column.renderRow( row );
-                            hc.setX( x + w / 2 ).setListening( false );
+                            final double rowHeight = row.getHeight();
+                            final GridCellRenderContext cellContext = new GridCellRenderContext( model.getColumnOffset( columnIndex ) + context.getX(),
+                                                                                                 rowOffsets.get( rowIndex - startRowIndex ) + context.getY() + getHeaderHeight(),
+                                                                                                 columnWidth,
+                                                                                                 rowHeight,
+                                                                                                 transform );
+                            final Group hc = column.renderRow( row,
+                                                               cellContext );
+                            hc.setX( x + columnWidth / 2 ).setListening( false );
 
                             if ( cell.getMergedCellCount() > 0 ) {
                                 //If cell is "lead" i.e. top of a merged block centralize content in cell
@@ -323,7 +327,7 @@ public class MergableGridRenderer implements IMergableGridRenderer {
                         }
                     }
                 }
-                x = x + w;
+                x = x + columnWidth;
             }
 
             return g;
@@ -379,11 +383,14 @@ public class MergableGridRenderer implements IMergableGridRenderer {
 
         @Override
         public Group renderBody( final MergableGridData model,
-                                 final int startColumnIndex,
-                                 final int endColumnIndex,
-                                 final int startRowIndex,
-                                 final int endRowIndex,
-                                 final double width ) {
+                                 final GridBodyRenderContext context ) {
+            final int startColumnIndex = context.getStartColumnIndex();
+            final int endColumnIndex = context.getEndColumnIndex();
+            final int startRowIndex = context.getStartRowIndex();
+            final int endRowIndex = context.getEndRowIndex();
+            final double width = context.getWidth();
+            final Transform transform = context.getTransform();
+
             final Group g = new Group();
             final List<MergableGridColumn<?>> columns = model.getColumns();
 
@@ -424,15 +431,22 @@ public class MergableGridRenderer implements IMergableGridRenderer {
                 x = 0;
                 for ( int columnIndex = startColumnIndex; columnIndex <= endColumnIndex; columnIndex++ ) {
                     final MergableGridColumn column = columns.get( columnIndex );
-                    final int w = column.getWidth();
-                    final Group hc = column.renderRow( row );
+                    final double rowHeight = row.getHeight();
+                    final double columnWidth = column.getWidth();
+                    final GridCellRenderContext cellContext = new GridCellRenderContext( model.getColumnOffset( columnIndex ) + context.getX(),
+                                                                                         rowOffsets.get( rowIndex - startRowIndex ) + context.getY() + getHeaderHeight(),
+                                                                                         columnWidth,
+                                                                                         rowHeight,
+                                                                                         transform );
+                    final Group hc = column.renderRow( row,
+                                                       cellContext );
                     if ( hc != null ) {
-                        hc.setX( x + w / 2 )
+                        hc.setX( x + columnWidth / 2 )
                                 .setY( y + model.getRow( rowIndex ).getHeight() / 2 )
                                 .setListening( false );
                         g.add( hc );
                     }
-                    x = x + w;
+                    x = x + columnWidth;
                 }
             }
 

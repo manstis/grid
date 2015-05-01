@@ -35,20 +35,26 @@ import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
+import org.anstis.client.grid.model.BaseGridCellValue;
 import org.anstis.client.grid.model.IGridCellValue;
 import org.anstis.client.grid.model.IGridColumn;
 import org.anstis.client.grid.model.IGridData;
 import org.anstis.client.grid.model.basic.GridCell;
 import org.anstis.client.grid.model.basic.GridColumn;
 import org.anstis.client.grid.model.basic.GridData;
+import org.anstis.client.grid.model.basic.GridRow;
 import org.anstis.client.grid.model.mergable.MergableGridCell;
 import org.anstis.client.grid.model.mergable.MergableGridColumn;
 import org.anstis.client.grid.model.mergable.MergableGridData;
 import org.anstis.client.grid.util.GridDataFactory;
 import org.anstis.client.grid.widget.basic.GridWidget;
+import org.anstis.client.grid.widget.context.GridCellRenderContext;
+import org.anstis.client.grid.widget.dom.CheckBoxDOMContainerFactory;
+import org.anstis.client.grid.widget.dom.GridCellDOMContainer;
 import org.anstis.client.grid.widget.edit.EditorPopup;
 import org.anstis.client.grid.widget.mergable.MergableGridWidget;
 import org.anstis.client.grid.widget.renderers.IGridRenderer;
@@ -67,10 +73,10 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
 
     private static final double VP_SCALE = 1.0;
 
-    private static final int GRID1_ROWS = 5000;
-    private static final int GRID2_ROWS = 5000;
-    private static final int GRID3_ROWS = 5000;
-    private static final int GRID4_ROWS = 5000;
+    private static final int GRID1_ROWS = 2000;
+    private static final int GRID2_ROWS = 2000;
+    private static final int GRID3_ROWS = 2000;
+    private static final int GRID4_ROWS = 2000;
 
     interface GridShowcaseWidgetUiBinder extends UiBinder<Widget, GridShowcaseWidget> {
 
@@ -79,7 +85,7 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
     private static GridShowcaseWidgetUiBinder uiBinder = GWT.create( GridShowcaseWidgetUiBinder.class );
 
     @UiField
-    SimplePanel table;
+    AbsolutePanel table;
 
     @UiField
     Slider slider;
@@ -112,7 +118,7 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
 
         //Wire-up widgets
         gridPanel.add( gridLayer );
-        table.setWidget( gridPanel );
+        table.add( gridPanel );
 
         //Grid 1
         final MergableGridData grid1 = new MergableGridData();
@@ -121,7 +127,8 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
                                                                                       100 ) {
                 @Override
                 public void renderCell( final Group g,
-                                        final MergableGridCell<String> cell ) {
+                                        final MergableGridCell<String> cell,
+                                        final GridCellRenderContext context ) {
                     final Text t = new Text( cell.getValue().getValue() )
                             .setFillColor( ColorName.GREY )
                             .setFontSize( 12 )
@@ -152,7 +159,8 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
                                                                                       150 ) {
                 @Override
                 public void renderCell( final Group g,
-                                        final MergableGridCell<String> cell ) {
+                                        final MergableGridCell<String> cell,
+                                        final GridCellRenderContext context ) {
                     final Text t = new Text( cell.getValue().getValue() )
                             .setFillColor( ColorName.GREY )
                             .setFontSize( 12 )
@@ -183,7 +191,8 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
                                                                                       100 ) {
                 @Override
                 public void renderCell( final Group g,
-                                        final MergableGridCell<String> cell ) {
+                                        final MergableGridCell<String> cell,
+                                        final GridCellRenderContext context ) {
                     final Text t = new Text( cell.getValue().getValue() )
                             .setFillColor( ColorName.GREY )
                             .setFontSize( 12 )
@@ -209,34 +218,84 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
 
         //Grid 4
         final GridData grid4 = new GridData();
-        for ( int idx = 0; idx < 5; idx++ ) {
-            final GridColumn<String> column = new GridColumn<String>( "G4-Col: " + idx,
-                                                                      100 ) {
-                @Override
-                public void renderCell( final Group g,
-                                        final GridCell<String> cell ) {
-                    final Text t = new Text( cell.getValue().getValue() )
-                            .setFillColor( ColorName.GREY )
-                            .setFontSize( 12 )
-                            .setFontFamily( "serif" )
-                            .setListening( false )
-                            .setTextBaseLine( TextBaseLine.MIDDLE )
-                            .setTextAlign( TextAlign.CENTER );
-                    g.add( t );
-                }
+        final GridColumn<String> column1 = new GridColumn<String>( "G4-Col: 1",
+                                                                   100 ) {
 
-                @Override
-                public void edit( final IGridCellValue<String> value,
-                                  final Callback<IGridCellValue<String>, IGridCellValue<String>> callback ) {
-                    editor.edit( value,
-                                 callback );
-                }
+            @Override
+            public void renderCell( final Group g,
+                                    final GridCell<String> cell,
+                                    final GridCellRenderContext context ) {
+                final Text t = new Text( cell.getValue().getValue() )
+                        .setFillColor( ColorName.GREY )
+                        .setFontSize( 12 )
+                        .setFontFamily( "serif" )
+                        .setListening( false )
+                        .setTextBaseLine( TextBaseLine.MIDDLE )
+                        .setTextAlign( TextAlign.CENTER );
+                g.add( t );
+            }
 
-            };
-            grid4.addColumn( column );
+            @Override
+            public void edit( final IGridCellValue<String> value,
+                              final Callback<IGridCellValue<String>, IGridCellValue<String>> callback ) {
+                editor.edit( value,
+                             callback );
+            }
+
+        };
+        grid4.addColumn( column1 );
+
+        final GridColumn<Boolean> column2 = new GridColumn<Boolean>( "G4-Col: 2",
+                                                                     100 ) {
+
+            private CheckBoxDOMContainerFactory factory = new CheckBoxDOMContainerFactory( table );
+
+            @Override
+            public void renderCell( final Group g,
+                                    final GridCell<Boolean> cell,
+                                    final GridCellRenderContext context ) {
+                final GridCellDOMContainer dom = factory.getContainer();
+                dom.transform( context );
+                dom.initialise( cell );
+            }
+
+            @Override
+            public void edit( final IGridCellValue<Boolean> value,
+                              final Callback<IGridCellValue<Boolean>, IGridCellValue<Boolean>> callback ) {
+                //Editing disabled for now
+            }
+
+            @Override
+            public void attachToDom() {
+                factory.attach();
+            }
+
+            @Override
+            public void detachFromDom() {
+                factory.detach();
+            }
+
+        };
+        grid4.addColumn( column2 );
+
+        for ( int rowIndex = 0; rowIndex < GRID4_ROWS; rowIndex++ ) {
+            final GridRow row = new GridRow();
+            grid4.addRow( row );
+            for ( int columnIndex = 0; columnIndex < grid4.getColumns().size(); columnIndex++ ) {
+                switch ( columnIndex ) {
+                    case 0:
+                        grid4.setCell( rowIndex,
+                                       columnIndex,
+                                       new BaseGridCellValue<>( "(" + columnIndex + ", " + rowIndex + ")" ) );
+                        break;
+                    case 1:
+                        grid4.setCell( rowIndex,
+                                       columnIndex,
+                                       new BaseGridCellValue<>( true ) );
+                        break;
+                }
+            }
         }
-        GridDataFactory.populate( grid4,
-                                  GRID4_ROWS );
 
         //Link grids
         grid1.getColumns().get( 9 ).setLink( grid2.getColumns().get( 0 ) );

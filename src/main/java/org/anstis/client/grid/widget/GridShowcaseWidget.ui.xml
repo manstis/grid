@@ -35,6 +35,7 @@
       height: 602px;
       border: 1px solid #f0f0f0;
       margin: 20px 20px 20px 20px;
+      position: relative;
     }
 
     .slider {
@@ -60,10 +61,10 @@
   <g:HTMLPanel>
     <g:VerticalPanel styleName="{css.container}">
       <g:HorizontalPanel>
-        <g:SimplePanel ui:field="table" styleName="{css.table}"/>
+        <g:AbsolutePanel ui:field="table" styleName="{css.table}"/>
       </g:HorizontalPanel>
       <g:SimplePanel styleName="{css.slider}">
-        <bs3slider:Slider ui:field="slider" min="10" max="100" step="10" orientation="HORIZONTAL"/>
+        <bs3slider:Slider ui:field="slider" min="30" max="150" step="10" orientation="HORIZONTAL"/>
       </g:SimplePanel>
       <g:SimplePanel styleName="{css.renderers}">
         <bs3:ListBox ui:field="basicRendererSelector"/>
