@@ -16,6 +16,7 @@
 package org.anstis.client.grid.widget.context;
 
 import com.ait.lienzo.client.core.types.Transform;
+import org.anstis.client.grid.widget.BaseGridWidget;
 
 public class GridBodyRenderContext {
 
@@ -27,6 +28,7 @@ public class GridBodyRenderContext {
     private final int startRowIndex;
     private final int endRowIndex;
     private final Transform transform;
+    private final BaseGridWidget<?> widget;
 
     public GridBodyRenderContext( final double x,
                                   final double y,
@@ -35,7 +37,8 @@ public class GridBodyRenderContext {
                                   final int endColumnIndex,
                                   final int startRowIndex,
                                   final int endRowIndex,
-                                  final Transform transform ) {
+                                  final Transform transform,
+                                  final BaseGridWidget<?> widget ) {
         this.x = x;
         this.y = y;
         this.width = width;
@@ -44,6 +47,7 @@ public class GridBodyRenderContext {
         this.startRowIndex = startRowIndex;
         this.endRowIndex = endRowIndex;
         this.transform = transform;
+        this.widget = widget;
     }
 
     public double getX() {
@@ -77,4 +81,9 @@ public class GridBodyRenderContext {
     public Transform getTransform() {
         return transform;
     }
+
+    public BaseGridWidget<?> getWidget() {
+        return widget;
+    }
+
 }

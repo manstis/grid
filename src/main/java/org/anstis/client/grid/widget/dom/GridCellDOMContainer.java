@@ -40,7 +40,8 @@ public abstract class GridCellDOMContainer<T, W extends Widget> {
                          Style.Unit.PX );
     }
 
-    public abstract void initialise( final IGridCell<T> cell );
+    public abstract void initialise( final IGridCell<T> cell,
+                                     final GridCellRenderContext context );
 
     public abstract W getWidget();
 
@@ -48,7 +49,7 @@ public abstract class GridCellDOMContainer<T, W extends Widget> {
         return container;
     }
 
-    public void transform( final GridCellRenderContext context ) {
+    protected void transform( final GridCellRenderContext context ) {
         final Transform transform = context.getTransform();
         final Style style = container.getElement().getStyle();
         style.setPosition( Style.Position.ABSOLUTE );

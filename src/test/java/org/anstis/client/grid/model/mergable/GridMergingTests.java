@@ -667,4 +667,248 @@ public class GridMergingTests extends BaseGridTests {
                            } );
     }
 
+    @Test
+    public void testMergeString() {
+        final MergableGridData data = new MergableGridData();
+        final MergableGridColumn<String> gc1 = new MockMergableGridColumn<>( "col1",
+                                                                             100 );
+        data.addColumn( gc1 );
+
+        data.addRow( new MergableGridRow() );
+        data.addRow( new MergableGridRow() );
+        data.addRow( new MergableGridRow() );
+        data.addRow( new MergableGridRow() );
+
+        for ( int rowIndex = 0; rowIndex < data.getRowCount(); rowIndex++ ) {
+            for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
+                data.setCell( rowIndex,
+                              columnIndex,
+                              new BaseGridCellValue<>( "a" ) );
+            }
+        }
+
+        assertGridIndexes( data,
+                           new boolean[]{ true, true, true, true },
+                           new boolean[]{ false, false, false, false },
+                           new Expected[][]{
+                                   { Expected.build( true, 4, "a" ) },
+                                   { Expected.build( true, 0, "a" ) },
+                                   { Expected.build( true, 0, "a" ) },
+                                   { Expected.build( true, 0, "a" ) }
+                           } );
+    }
+
+    @Test
+    public void testMergeString2() {
+        final MergableGridData data = new MergableGridData();
+        final MergableGridColumn<String> gc1 = new MockMergableGridColumn<>( "col1",
+                                                                             100 );
+        data.addColumn( gc1 );
+
+        data.addRow( new MergableGridRow() );
+        data.addRow( new MergableGridRow() );
+        data.addRow( new MergableGridRow() );
+        data.addRow( new MergableGridRow() );
+
+        for ( int rowIndex = 0; rowIndex < data.getRowCount(); rowIndex++ ) {
+            for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
+                data.setCell( rowIndex,
+                              columnIndex,
+                              new BaseGridCellValue<>( rowIndex == 0 ? "b" : "a" ) );
+            }
+        }
+
+        assertGridIndexes( data,
+                           new boolean[]{ false, true, true, true },
+                           new boolean[]{ false, false, false, false },
+                           new Expected[][]{
+                                   { Expected.build( false, 1, "b" ) },
+                                   { Expected.build( true, 3, "a" ) },
+                                   { Expected.build( true, 0, "a" ) },
+                                   { Expected.build( true, 0, "a" ) }
+                           } );
+    }
+
+    @Test
+    public void testMergeString3() {
+        final MergableGridData data = new MergableGridData();
+        final MergableGridColumn<String> gc1 = new MockMergableGridColumn<>( "col1",
+                                                                             100 );
+        data.addColumn( gc1 );
+
+        data.addRow( new MergableGridRow() );
+        data.addRow( new MergableGridRow() );
+        data.addRow( new MergableGridRow() );
+        data.addRow( new MergableGridRow() );
+        data.addRow( new MergableGridRow() );
+
+        for ( int rowIndex = 0; rowIndex < data.getRowCount(); rowIndex++ ) {
+            for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
+                final String value = ( rowIndex == 0 || rowIndex == 3 || rowIndex == 4 ? "a" : "b" );
+                data.setCell( rowIndex,
+                              columnIndex,
+                              new BaseGridCellValue<>( value ) );
+            }
+        }
+
+        assertGridIndexes( data,
+                           new boolean[]{ false, true, true, true, true },
+                           new boolean[]{ false, false, false, false, false },
+                           new Expected[][]{
+                                   { Expected.build( false, 1, "a" ) },
+                                   { Expected.build( true, 2, "b" ) },
+                                   { Expected.build( true, 0, "b" ) },
+                                   { Expected.build( true, 2, "a" ) },
+                                   { Expected.build( true, 0, "a" ) }
+                           } );
+
+        data.setMerged( false );
+
+        assertGridIndexes( data,
+                           new boolean[]{ false, false, false, false, false },
+                           new boolean[]{ false, false, false, false, false },
+                           new Expected[][]{
+                                   { Expected.build( false, 1, "a" ) },
+                                   { Expected.build( false, 1, "b" ) },
+                                   { Expected.build( false, 1, "b" ) },
+                                   { Expected.build( false, 1, "a" ) },
+                                   { Expected.build( false, 1, "a" ) }
+                           } );
+
+        data.setMerged( true );
+
+        assertGridIndexes( data,
+                           new boolean[]{ false, true, true, true, true },
+                           new boolean[]{ false, false, false, false, false },
+                           new Expected[][]{
+                                   { Expected.build( false, 1, "a" ) },
+                                   { Expected.build( true, 2, "b" ) },
+                                   { Expected.build( true, 0, "b" ) },
+                                   { Expected.build( true, 2, "a" ) },
+                                   { Expected.build( true, 0, "a" ) }
+                           } );
+    }
+
+    @Test
+    public void testMergeBoolean1() {
+        final MergableGridData data = new MergableGridData();
+        final MergableGridColumn<Boolean> gc1 = new MockMergableGridColumn<>( "col1",
+                                                                              100 );
+        data.addColumn( gc1 );
+
+        data.addRow( new MergableGridRow() );
+        data.addRow( new MergableGridRow() );
+        data.addRow( new MergableGridRow() );
+        data.addRow( new MergableGridRow() );
+
+        for ( int rowIndex = 0; rowIndex < data.getRowCount(); rowIndex++ ) {
+            for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
+                data.setCell( rowIndex,
+                              columnIndex,
+                              new BaseGridCellValue<>( false ) );
+            }
+        }
+
+        assertGridIndexes( data,
+                           new boolean[]{ true, true, true, true },
+                           new boolean[]{ false, false, false, false },
+                           new Expected[][]{
+                                   { Expected.build( true, 4, false ) },
+                                   { Expected.build( true, 0, false ) },
+                                   { Expected.build( true, 0, false ) },
+                                   { Expected.build( true, 0, false ) }
+                           } );
+    }
+
+    @Test
+    public void testMergeBoolean2() {
+        final MergableGridData data = new MergableGridData();
+        final MergableGridColumn<Boolean> gc1 = new MockMergableGridColumn<>( "col1",
+                                                                              100 );
+        data.addColumn( gc1 );
+
+        data.addRow( new MergableGridRow() );
+        data.addRow( new MergableGridRow() );
+        data.addRow( new MergableGridRow() );
+        data.addRow( new MergableGridRow() );
+
+        for ( int rowIndex = 0; rowIndex < data.getRowCount(); rowIndex++ ) {
+            for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
+                data.setCell( rowIndex,
+                              columnIndex,
+                              new BaseGridCellValue<>( rowIndex == 0 ) );
+            }
+        }
+
+        assertGridIndexes( data,
+                           new boolean[]{ false, true, true, true },
+                           new boolean[]{ false, false, false, false },
+                           new Expected[][]{
+                                   { Expected.build( false, 1, true ) },
+                                   { Expected.build( true, 3, false ) },
+                                   { Expected.build( true, 0, false ) },
+                                   { Expected.build( true, 0, false ) }
+                           } );
+    }
+
+    @Test
+    public void testMergeBoolean3() {
+        final MergableGridData data = new MergableGridData();
+        final MergableGridColumn<Boolean> gc1 = new MockMergableGridColumn<>( "col1",
+                                                                              100 );
+        data.addColumn( gc1 );
+
+        data.addRow( new MergableGridRow() );
+        data.addRow( new MergableGridRow() );
+        data.addRow( new MergableGridRow() );
+        data.addRow( new MergableGridRow() );
+        data.addRow( new MergableGridRow() );
+
+        for ( int rowIndex = 0; rowIndex < data.getRowCount(); rowIndex++ ) {
+            for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
+                final boolean value = rowIndex == 0 || rowIndex == 3 || rowIndex == 4;
+                data.setCell( rowIndex,
+                              columnIndex,
+                              new BaseGridCellValue<>( value ) );
+            }
+        }
+
+        assertGridIndexes( data,
+                           new boolean[]{ false, true, true, true, true },
+                           new boolean[]{ false, false, false, false, false },
+                           new Expected[][]{
+                                   { Expected.build( false, 1, true ) },
+                                   { Expected.build( true, 2, false ) },
+                                   { Expected.build( true, 0, false ) },
+                                   { Expected.build( true, 2, true ) },
+                                   { Expected.build( true, 0, true ) }
+                           } );
+
+        data.setMerged( false );
+
+        assertGridIndexes( data,
+                           new boolean[]{ false, false, false, false, false },
+                           new boolean[]{ false, false, false, false, false },
+                           new Expected[][]{
+                                   { Expected.build( false, 1, true ) },
+                                   { Expected.build( false, 1, false ) },
+                                   { Expected.build( false, 1, false ) },
+                                   { Expected.build( false, 1, true ) },
+                                   { Expected.build( false, 1, true ) }
+                           } );
+
+        data.setMerged( true );
+
+        assertGridIndexes( data,
+                           new boolean[]{ false, true, true, true, true },
+                           new boolean[]{ false, false, false, false, false },
+                           new Expected[][]{
+                                   { Expected.build( false, 1, true ) },
+                                   { Expected.build( true, 2, false ) },
+                                   { Expected.build( true, 0, false ) },
+                                   { Expected.build( true, 2, true ) },
+                                   { Expected.build( true, 0, true ) }
+                           } );
+    }
+
 }

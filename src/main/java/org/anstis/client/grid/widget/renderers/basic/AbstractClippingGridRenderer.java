@@ -25,6 +25,7 @@ import com.ait.lienzo.client.core.types.Transform;
 import org.anstis.client.grid.model.basic.GridColumn;
 import org.anstis.client.grid.model.basic.GridData;
 import org.anstis.client.grid.model.basic.GridRow;
+import org.anstis.client.grid.widget.BaseGridWidget;
 import org.anstis.client.grid.widget.context.GridBodyRenderContext;
 import org.anstis.client.grid.widget.context.GridCellRenderContext;
 import org.anstis.client.grid.widget.context.GridHeaderRenderContext;
@@ -119,6 +120,7 @@ public abstract class AbstractClippingGridRenderer implements IGridRenderer<Grid
         final int endRowIndex = context.getEndRowIndex();
         final double width = context.getWidth();
         final Transform transform = context.getTransform();
+        final BaseGridWidget<?> widget =context.getWidget();
 
         final Group g = new Group();
         final List<GridColumn<?>> columns = model.getColumns();
@@ -166,7 +168,10 @@ public abstract class AbstractClippingGridRenderer implements IGridRenderer<Grid
                                                                                      rowOffsets.get( rowIndex - startRowIndex ) + context.getY() + getHeaderHeight(),
                                                                                      columnWidth,
                                                                                      rowHeight,
-                                                                                     transform );
+                                                                                     rowIndex,
+                                                                                     columnIndex,
+                                                                                     transform,
+                                                                                     widget);
                 final Group hc = column.renderRow( row,
                                                    cellContext );
                 if ( hc != null ) {

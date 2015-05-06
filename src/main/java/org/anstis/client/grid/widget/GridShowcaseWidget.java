@@ -37,7 +37,6 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import org.anstis.client.grid.model.BaseGridCellValue;
 import org.anstis.client.grid.model.IGridCellValue;
@@ -216,6 +215,38 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
         GridDataFactory.populate( grid3,
                                   GRID3_ROWS );
 
+        final MergableGridColumn<Boolean> column = new MergableGridColumn<Boolean>( "G3-Col: 5",
+                                                                                    100 ) {
+
+            private CheckBoxDOMContainerFactory factory = new CheckBoxDOMContainerFactory( table );
+
+            @Override
+            public void renderCell( final Group g,
+                                    final MergableGridCell<Boolean> cell,
+                                    final GridCellRenderContext context ) {
+                final GridCellDOMContainer dom = factory.getContainer();
+                dom.initialise( cell,
+                                context );
+            }
+
+            @Override
+            public void attachToDom() {
+                factory.attach();
+            }
+
+            @Override
+            public void detachFromDom() {
+                factory.detach();
+            }
+
+        };
+        grid3.addColumn( column );
+        for ( int rowIndex = 0; rowIndex < GRID4_ROWS; rowIndex++ ) {
+            grid3.setCell( rowIndex,
+                           5,
+                           new BaseGridCellValue<>( rowIndex==0 ) );
+        }
+
         //Grid 4
         final GridData grid4 = new GridData();
         final GridColumn<String> column1 = new GridColumn<String>( "G4-Col: 1",
@@ -255,14 +286,8 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
                                     final GridCell<Boolean> cell,
                                     final GridCellRenderContext context ) {
                 final GridCellDOMContainer dom = factory.getContainer();
-                dom.transform( context );
-                dom.initialise( cell );
-            }
-
-            @Override
-            public void edit( final IGridCellValue<Boolean> value,
-                              final Callback<IGridCellValue<Boolean>, IGridCellValue<Boolean>> callback ) {
-                //Editing disabled for now
+                dom.initialise( cell,
+                                context );
             }
 
             @Override

@@ -28,6 +28,7 @@ import org.anstis.client.grid.model.mergable.MergableGridCell;
 import org.anstis.client.grid.model.mergable.MergableGridColumn;
 import org.anstis.client.grid.model.mergable.MergableGridData;
 import org.anstis.client.grid.model.mergable.MergableGridRow;
+import org.anstis.client.grid.widget.BaseGridWidget;
 import org.anstis.client.grid.widget.context.GridBodyRenderContext;
 import org.anstis.client.grid.widget.context.GridCellRenderContext;
 import org.anstis.client.grid.widget.context.GridHeaderRenderContext;
@@ -189,6 +190,7 @@ public class MergableGridRenderer implements IMergableGridRenderer {
             final int endRowIndex = context.getEndRowIndex();
             final double width = context.getWidth();
             final Transform transform = context.getTransform();
+            final BaseGridWidget<?> widget = context.getWidget();
 
             final Group g = new Group();
             final List<MergableGridColumn<?>> columns = model.getColumns();
@@ -290,7 +292,10 @@ public class MergableGridRenderer implements IMergableGridRenderer {
                                                                                                  rowOffsets.get( rowIndex - startRowIndex ) + context.getY() + getHeaderHeight(),
                                                                                                  columnWidth,
                                                                                                  rowHeight,
-                                                                                                 transform );
+                                                                                                 rowIndex,
+                                                                                                 columnIndex,
+                                                                                                 transform,
+                                                                                                 widget );
                             final Group hc = column.renderRow( row,
                                                                cellContext );
                             hc.setX( x + columnWidth / 2 ).setListening( false );
@@ -390,6 +395,7 @@ public class MergableGridRenderer implements IMergableGridRenderer {
             final int endRowIndex = context.getEndRowIndex();
             final double width = context.getWidth();
             final Transform transform = context.getTransform();
+            final BaseGridWidget<?> widget = context.getWidget();
 
             final Group g = new Group();
             final List<MergableGridColumn<?>> columns = model.getColumns();
@@ -437,7 +443,10 @@ public class MergableGridRenderer implements IMergableGridRenderer {
                                                                                          rowOffsets.get( rowIndex - startRowIndex ) + context.getY() + getHeaderHeight(),
                                                                                          columnWidth,
                                                                                          rowHeight,
-                                                                                         transform );
+                                                                                         rowIndex,
+                                                                                         columnIndex,
+                                                                                         transform,
+                                                                                         widget );
                     final Group hc = column.renderRow( row,
                                                        cellContext );
                     if ( hc != null ) {

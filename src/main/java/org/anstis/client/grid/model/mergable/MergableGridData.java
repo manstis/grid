@@ -77,7 +77,7 @@ public class MergableGridData extends BaseGridData<MergableGridRow, MergableGrid
                     row.getCells().get( columnIndex ).setMergedCellCount( maxRowIndex - rowIndex );
                     updateRowMergedCells( row );
 
-                    rowIndex = maxRowIndex;
+                    rowIndex = maxRowIndex - 1;
                 }
             }
         }

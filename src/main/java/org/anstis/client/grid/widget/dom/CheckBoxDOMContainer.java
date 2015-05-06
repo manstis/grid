@@ -19,13 +19,16 @@ import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.AbsolutePanel;
+import org.anstis.client.grid.model.BaseGridCellValue;
 import org.anstis.client.grid.model.IGridCell;
+import org.anstis.client.grid.widget.BaseGridWidget;
+import org.anstis.client.grid.widget.context.GridCellRenderContext;
 import org.gwtbootstrap3.client.ui.CheckBox;
 
 public class CheckBoxDOMContainer extends GridCellDOMContainer<Boolean, CheckBox> {
 
     private final CheckBox cb = new CheckBox();
-    private IGridCell<Boolean> cell;
+    private GridCellRenderContext context;
 
     public CheckBoxDOMContainer( final AbsolutePanel parent ) {
         super( parent );
@@ -39,17 +42,23 @@ public class CheckBoxDOMContainer extends GridCellDOMContainer<Boolean, CheckBox
         cb.addClickHandler( new ClickHandler() {
             @Override
             public void onClick( final ClickEvent event ) {
-                if ( cell != null ) {
-                    cell.getValue().setValue( cb.getValue() );
+                if ( context != null ) {
+                    final BaseGridWidget<?> widget = context.getWidget();
+                    widget.getModel().setCell( context.getRowIndex(),
+                                               context.getColumnIndex(),
+                                               new BaseGridCellValue<>( cb.getValue() ) );
+                    widget.getLayer().draw();
                 }
             }
         } );
     }
 
     @Override
-    public void initialise( final IGridCell<Boolean> cell ) {
+    public void initialise( final IGridCell<Boolean> cell,
+                            final GridCellRenderContext context ) {
         cb.setValue( cell.getValue().getValue() );
-        this.cell = cell;
+        this.context = context;
+        transform( context );
     }
 
     @Override

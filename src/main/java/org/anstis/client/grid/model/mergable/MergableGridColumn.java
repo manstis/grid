@@ -47,7 +47,9 @@ public abstract class MergableGridColumn<T> extends BaseGridColumn<MergableGridR
                                      final MergableGridCell<T> cell,
                                      final GridCellRenderContext context );
 
-    public abstract void edit( final IGridCellValue<T> value,
-                               final Callback<IGridCellValue<T>, IGridCellValue<T>> callback );
+    public void edit( final IGridCellValue<T> value,
+                      final Callback<IGridCellValue<T>, IGridCellValue<T>> callback ) {
+        //Do nothing by default
+    }
 
 }

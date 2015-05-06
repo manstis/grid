@@ -221,7 +221,8 @@ public abstract class BaseGridWidget<M extends IGridData<?, ?, ?>> extends Group
                                                                              endColumnIndex,
                                                                              getWidth( startColumnIndex,
                                                                                        endColumnIndex ),
-                                                                             viewport.getTransform() );
+                                                                             viewport.getTransform(),
+                                                                             this );
         final Group g = renderer.renderHeader( model,
                                                context );
         g.setX( model.getColumnOffset( startColumnIndex ) );
@@ -241,7 +242,8 @@ public abstract class BaseGridWidget<M extends IGridData<?, ?, ?>> extends Group
                                                                          endColumnIndex,
                                                                          startRowIndex,
                                                                          endRowIndex,
-                                                                         viewport.getTransform() );
+                                                                         viewport.getTransform(),
+                                                                         this );
         final Group g = renderer.renderBody( model,
                                              context );
         g.setX( model.getColumnOffset( startColumnIndex ) );
