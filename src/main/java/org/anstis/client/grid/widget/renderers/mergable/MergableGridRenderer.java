@@ -267,6 +267,7 @@ public class MergableGridRenderer implements IMergableGridRenderer {
                     final MergableGridRow row = model.getRow( rowIndex );
                     final MergableGridCell cell = model.getCell( rowIndex,
                                                                  columnIndex );
+                    final double rowHeight = row.getHeight();
 
                     //Only show content for rows that are not collapsed
                     if ( !row.isCollapsed() ) {
@@ -287,24 +288,23 @@ public class MergableGridRenderer implements IMergableGridRenderer {
                                 }
                             }
 
-                            final double rowHeight = row.getHeight();
-                            final GridCellRenderContext cellContext = new GridCellRenderContext( model.getColumnOffset( columnIndex ) + context.getX(),
-                                                                                                 rowOffsets.get( rowIndex - startRowIndex ) + context.getY() + getHeaderHeight(),
-                                                                                                 columnWidth,
-                                                                                                 rowHeight,
-                                                                                                 rowIndex,
-                                                                                                 columnIndex,
-                                                                                                 transform,
-                                                                                                 widget );
-                            final Group hc = column.renderRow( row,
-                                                               cellContext );
-                            hc.setX( x + columnWidth / 2 ).setListening( false );
-
                             if ( cell.getMergedCellCount() > 0 ) {
                                 //If cell is "lead" i.e. top of a merged block centralize content in cell
-                                hc.setY( y + getCellHeight( rowIndex,
-                                                            model,
-                                                            cell ) / 2 );
+                                final double cellHeight = getCellHeight( rowIndex,
+                                                                         model,
+                                                                         cell );
+                                final GridCellRenderContext cellContext = new GridCellRenderContext( context.getX() + model.getColumnOffset( columnIndex ),
+                                                                                                     context.getY() + getHeaderHeight() + rowOffsets.get( rowIndex - startRowIndex ),
+                                                                                                     columnWidth,
+                                                                                                     rowHeight,
+                                                                                                     rowIndex,
+                                                                                                     columnIndex,
+                                                                                                     transform,
+                                                                                                     widget );
+                                final Group hc = column.renderRow( row,
+                                                                   cellContext );
+                                hc.setX( x + columnWidth / 2 ).setListening( false );
+                                hc.setY( y + cellHeight / 2 );
                                 g.add( hc );
 
                                 //Skip remainder of merged block
@@ -321,9 +321,23 @@ public class MergableGridRenderer implements IMergableGridRenderer {
                                     _cell = model.getCell( _rowIndex,
                                                            columnIndex );
                                 }
-                                hc.setY( _y + getCellHeight( _rowIndex,
-                                                             model,
-                                                             _cell ) / 2 );
+
+                                final double cellHeight = getCellHeight( _rowIndex,
+                                                                         model,
+                                                                         _cell );
+                                final GridCellRenderContext cellContext = new GridCellRenderContext( context.getX() + model.getColumnOffset( columnIndex ),
+                                                                                                     context.getY() + getHeaderHeight() + model.getRowOffset( _rowIndex ),
+                                                                                                     columnWidth,
+                                                                                                     rowHeight,
+                                                                                                     rowIndex,
+                                                                                                     columnIndex,
+                                                                                                     transform,
+                                                                                                     widget );
+
+                                final Group hc = column.renderRow( row,
+                                                                   cellContext );
+                                hc.setX( x + columnWidth / 2 ).setListening( false );
+                                hc.setY( _y + cellHeight / 2 );
                                 g.add( hc );
 
                                 //Skip remainder of merged block
@@ -439,8 +453,8 @@ public class MergableGridRenderer implements IMergableGridRenderer {
                     final MergableGridColumn column = columns.get( columnIndex );
                     final double rowHeight = row.getHeight();
                     final double columnWidth = column.getWidth();
-                    final GridCellRenderContext cellContext = new GridCellRenderContext( model.getColumnOffset( columnIndex ) + context.getX(),
-                                                                                         rowOffsets.get( rowIndex - startRowIndex ) + context.getY() + getHeaderHeight(),
+                    final GridCellRenderContext cellContext = new GridCellRenderContext( context.getX() + model.getColumnOffset( columnIndex ),
+                                                                                         context.getY() + getHeaderHeight() + rowOffsets.get( rowIndex - startRowIndex ),
                                                                                          columnWidth,
                                                                                          rowHeight,
                                                                                          rowIndex,

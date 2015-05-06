@@ -37,8 +37,9 @@ public class CheckBoxDOMContainerFactory {
             container = new CheckBoxDOMContainer( parent );
             containers.add( container );
         } else {
-            container = containers.get( consumed++ );
+            container = containers.get( consumed );
         }
+        consumed++;
         container.attach();
         return container;
     }

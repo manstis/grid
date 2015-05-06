@@ -120,7 +120,7 @@ public abstract class AbstractClippingGridRenderer implements IGridRenderer<Grid
         final int endRowIndex = context.getEndRowIndex();
         final double width = context.getWidth();
         final Transform transform = context.getTransform();
-        final BaseGridWidget<?> widget =context.getWidget();
+        final BaseGridWidget<?> widget = context.getWidget();
 
         final Group g = new Group();
         final List<GridColumn<?>> columns = model.getColumns();
@@ -164,14 +164,14 @@ public abstract class AbstractClippingGridRenderer implements IGridRenderer<Grid
                 final GridColumn column = columns.get( columnIndex );
                 final double rowHeight = row.getHeight();
                 final double columnWidth = column.getWidth();
-                final GridCellRenderContext cellContext = new GridCellRenderContext( model.getColumnOffset( columnIndex ) + context.getX(),
-                                                                                     rowOffsets.get( rowIndex - startRowIndex ) + context.getY() + getHeaderHeight(),
+                final GridCellRenderContext cellContext = new GridCellRenderContext( context.getX() + model.getColumnOffset( columnIndex ),
+                                                                                     context.getY() + getHeaderHeight() + rowOffsets.get( rowIndex - startRowIndex ),
                                                                                      columnWidth,
                                                                                      rowHeight,
                                                                                      rowIndex,
                                                                                      columnIndex,
                                                                                      transform,
-                                                                                     widget);
+                                                                                     widget );
                 final Group hc = column.renderRow( row,
                                                    cellContext );
                 if ( hc != null ) {

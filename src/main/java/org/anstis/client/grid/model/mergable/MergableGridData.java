@@ -69,12 +69,16 @@ public class MergableGridData extends BaseGridData<MergableGridRow, MergableGrid
                 if ( maxRowIndex - rowIndex > 1 ) {
                     for ( int i = rowIndex; i < maxRowIndex; i++ ) {
                         final MergableGridRow row = rows.get( i );
-                        row.getCells().get( columnIndex ).setMergedCellCount( 0 );
+                        final MergableGridCell cell = getCell( i,
+                                                               columnIndex );
+                        cell.setMergedCellCount( 0 );
                         updateRowMergedCells( row );
                     }
 
                     final MergableGridRow row = rows.get( rowIndex );
-                    row.getCells().get( columnIndex ).setMergedCellCount( maxRowIndex - rowIndex );
+                    final MergableGridCell cell = getCell( rowIndex,
+                                                           columnIndex );
+                    cell.setMergedCellCount( maxRowIndex - rowIndex );
                     updateRowMergedCells( row );
 
                     rowIndex = maxRowIndex - 1;
