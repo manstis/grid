@@ -27,6 +27,7 @@ import org.gwtbootstrap3.client.ui.CheckBox;
 
 public class CheckBoxDOMContainer extends GridCellDOMContainer<Boolean, CheckBox> {
 
+    //Hack to centre CheckBox
     private static final int SIZE = 20;
 
     private final CheckBox cb = new CheckBox();
@@ -39,6 +40,8 @@ public class CheckBoxDOMContainer extends GridCellDOMContainer<Boolean, CheckBox
                             Style.Unit.PX );
         style.setMarginLeft( 2,
                              Style.Unit.PX );
+        style.setProperty( "pointerEvents", "auto" );
+
         getContainer().setWidget( cb );
 
         cb.addClickHandler( new ClickHandler() {

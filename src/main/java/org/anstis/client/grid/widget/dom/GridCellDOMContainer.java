@@ -18,7 +18,6 @@ package org.anstis.client.grid.widget.dom;
 import java.util.Iterator;
 
 import com.ait.lienzo.client.core.types.Transform;
-import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.ui.AbsolutePanel;
@@ -37,8 +36,11 @@ public abstract class GridCellDOMContainer<T, W extends Widget> {
 
     public GridCellDOMContainer( final AbsolutePanel parent ) {
         this.parent = parent;
-        //This simply doesn't appear to work -- need to find a solution
-        container.getElement().setDraggable( Element.DRAGGABLE_FALSE );
+        //Disable HTML5 DnD support on element, otherwise it interferes with column resizing
+        container.getElement().setAttribute( "draggable", "false" );
+
+        //Allow MouseEvents over absolutely positioned elements to bubble
+        container.getElement().getStyle().setProperty( "pointerEvents", "none" );
     }
 
     public abstract void initialise( final IGridCell<T> cell,
@@ -56,10 +58,7 @@ public abstract class GridCellDOMContainer<T, W extends Widget> {
         final double width = context.getWidth();
         final double height = context.getHeight();
 
-        container.getElement().setDraggable( Element.DRAGGABLE_FALSE );
-
         style.setPosition( Style.Position.ABSOLUTE );
-        style.setBackgroundColor( "red" );
         style.setLeft( ( context.getX() * transform.getScaleX() ) + transform.getTranslateX(),
                        Style.Unit.PX );
         style.setTop( ( context.getY() * transform.getScaleY() ) + transform.getTranslateY(),
@@ -77,7 +76,7 @@ public abstract class GridCellDOMContainer<T, W extends Widget> {
         }
 
         final String scale = "scale(" + FORMAT.format( transform.getScaleX() ) + ", " + FORMAT.format( transform.getScaleY() ) + ")";
-        final String translate = "translate(" + ( ( width - width * transform.getScaleX() ) / -2.0 ) + "px, " + ( ( height - height * transform.getScaleY() ) / -2.0 ) + "px)";
+        final String translate = "translate(" + FORMAT.format( ( ( width - width * transform.getScaleX() ) / -2.0 ) ) + "px, " + FORMAT.format( ( ( height - height * transform.getScaleY() ) / -2.0 ) ) + "px)";
         style.setProperty( "WebkitTransform", translate + " " + scale );
         style.setProperty( "MozTransform", translate + " " + scale );
         style.setProperty( "Transform", translate + " " + scale );
