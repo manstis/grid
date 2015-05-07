@@ -29,15 +29,10 @@ public abstract class GridCellDOMContainer<T, W extends Widget> {
 
     protected final int SIZE = 20;
     protected final AbsolutePanel parent;
-    protected final HTMLPanel container = new HTMLPanel( "<div/>" );
+    protected final HTMLPanel container = new HTMLPanel( "" );
 
     public GridCellDOMContainer( final AbsolutePanel parent ) {
         this.parent = parent;
-        final Style style = container.getElement().getStyle();
-        style.setWidth( SIZE,
-                        Style.Unit.PX );
-        style.setHeight( SIZE,
-                         Style.Unit.PX );
     }
 
     public abstract void initialise( final IGridCell<T> cell,
@@ -57,6 +52,10 @@ public abstract class GridCellDOMContainer<T, W extends Widget> {
                        Style.Unit.PX );
         style.setTop( ( context.getY() * transform.getScaleY() ) + transform.getTranslateY(),
                       Style.Unit.PX );
+        style.setWidth( context.getWidth(),
+                        Style.Unit.PX );
+        style.setHeight( context.getHeight(),
+                         Style.Unit.PX );
 
         final String scale = "scale(" + transform.getScaleX() + ", " + transform.getScaleY() + ")";
         final String translate = "translate(" + ( ( SIZE - SIZE * transform.getScaleX() ) / -2.0 ) + "px, " + ( ( SIZE - SIZE * transform.getScaleY() ) / -2.0 ) + "px)";

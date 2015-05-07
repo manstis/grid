@@ -27,6 +27,8 @@ import org.gwtbootstrap3.client.ui.CheckBox;
 
 public class CheckBoxDOMContainer extends GridCellDOMContainer<Boolean, CheckBox> {
 
+    private static final int SIZE=20;
+
     private final CheckBox cb = new CheckBox();
     private GridCellRenderContext context;
 
@@ -56,8 +58,13 @@ public class CheckBoxDOMContainer extends GridCellDOMContainer<Boolean, CheckBox
     @Override
     public void initialise( final IGridCell<Boolean> cell,
                             final GridCellRenderContext context ) {
-        cb.setValue( cell.getValue().getValue() );
         this.context = context;
+        cb.setValue( cell.getValue().getValue() );
+        final Style style = cb.getElement().getStyle();
+        style.setLeft( ( context.getWidth() - cb.getElement().getClientWidth() ) / 2,
+                       Style.Unit.PX );
+        style.setTop( ( context.getHeight() - cb.getElement().getClientHeight() ) / 2,
+                      Style.Unit.PX );
         transform( context );
     }
 

@@ -296,15 +296,16 @@ public class MergableGridRenderer implements IMergableGridRenderer {
                                 final GridCellRenderContext cellContext = new GridCellRenderContext( context.getX() + model.getColumnOffset( columnIndex ),
                                                                                                      context.getY() + getHeaderHeight() + rowOffsets.get( rowIndex - startRowIndex ),
                                                                                                      columnWidth,
-                                                                                                     rowHeight,
+                                                                                                     cellHeight,
                                                                                                      rowIndex,
                                                                                                      columnIndex,
                                                                                                      transform,
                                                                                                      widget );
                                 final Group hc = column.renderRow( row,
                                                                    cellContext );
-                                hc.setX( x + columnWidth / 2 ).setListening( false );
-                                hc.setY( y + cellHeight / 2 );
+                                hc.setX( x )
+                                        .setY( y )
+                                        .setListening( false );
                                 g.add( hc );
 
                                 //Skip remainder of merged block
@@ -328,7 +329,7 @@ public class MergableGridRenderer implements IMergableGridRenderer {
                                 final GridCellRenderContext cellContext = new GridCellRenderContext( context.getX() + model.getColumnOffset( columnIndex ),
                                                                                                      context.getY() + getHeaderHeight() + model.getRowOffset( _rowIndex ),
                                                                                                      columnWidth,
-                                                                                                     rowHeight,
+                                                                                                     cellHeight,
                                                                                                      rowIndex,
                                                                                                      columnIndex,
                                                                                                      transform,
@@ -336,8 +337,9 @@ public class MergableGridRenderer implements IMergableGridRenderer {
 
                                 final Group hc = column.renderRow( row,
                                                                    cellContext );
-                                hc.setX( x + columnWidth / 2 ).setListening( false );
-                                hc.setY( _y + cellHeight / 2 );
+                                hc.setX( x )
+                                        .setY( _y )
+                                        .setListening( false );
                                 g.add( hc );
 
                                 //Skip remainder of merged block
@@ -464,8 +466,8 @@ public class MergableGridRenderer implements IMergableGridRenderer {
                     final Group hc = column.renderRow( row,
                                                        cellContext );
                     if ( hc != null ) {
-                        hc.setX( x + columnWidth / 2 )
-                                .setY( y + model.getRow( rowIndex ).getHeight() / 2 )
+                        hc.setX( x )
+                                .setY( y )
                                 .setListening( false );
                         g.add( hc );
                     }

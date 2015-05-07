@@ -72,10 +72,10 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
 
     private static final double VP_SCALE = 1.0;
 
-    private static final int GRID1_ROWS = 2000;
-    private static final int GRID2_ROWS = 2000;
-    private static final int GRID3_ROWS = 2000;
-    private static final int GRID4_ROWS = 2000;
+    private static final int GRID1_ROWS = 100;
+    private static final int GRID2_ROWS = 100;
+    private static final int GRID3_ROWS = 100;
+    private static final int GRID4_ROWS = 100;
 
     interface GridShowcaseWidgetUiBinder extends UiBinder<Widget, GridShowcaseWidget> {
 
@@ -134,7 +134,9 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
                             .setFontFamily( "serif" )
                             .setListening( false )
                             .setTextBaseLine( TextBaseLine.MIDDLE )
-                            .setTextAlign( TextAlign.CENTER );
+                            .setTextAlign( TextAlign.CENTER )
+                            .setX( context.getWidth() / 2 )
+                            .setY( context.getHeight() / 2 );
                     g.add( t );
                 }
 
@@ -166,7 +168,9 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
                             .setFontFamily( "serif" )
                             .setListening( false )
                             .setTextBaseLine( TextBaseLine.MIDDLE )
-                            .setTextAlign( TextAlign.CENTER );
+                            .setTextAlign( TextAlign.CENTER )
+                            .setX( context.getWidth() / 2 )
+                            .setY( context.getHeight() / 2 );
                     g.add( t );
                 }
 
@@ -198,7 +202,9 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
                             .setFontFamily( "serif" )
                             .setListening( false )
                             .setTextBaseLine( TextBaseLine.MIDDLE )
-                            .setTextAlign( TextAlign.CENTER );
+                            .setTextAlign( TextAlign.CENTER )
+                            .setX( context.getWidth() / 2 )
+                            .setY( context.getHeight() / 2 );
                     g.add( t );
                 }
 
@@ -244,7 +250,7 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
         for ( int rowIndex = 0; rowIndex < GRID4_ROWS; rowIndex++ ) {
             grid3.setCell( rowIndex,
                            5,
-                           new BaseGridCellValue<>( rowIndex==0 ) );
+                           new BaseGridCellValue<>( rowIndex == 0 ) );
         }
 
         //Grid 4
@@ -262,7 +268,9 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
                         .setFontFamily( "serif" )
                         .setListening( false )
                         .setTextBaseLine( TextBaseLine.MIDDLE )
-                        .setTextAlign( TextAlign.CENTER );
+                        .setTextAlign( TextAlign.CENTER )
+                        .setX( context.getWidth() / 2 )
+                        .setY( context.getHeight() / 2 );
                 g.add( t );
             }
 

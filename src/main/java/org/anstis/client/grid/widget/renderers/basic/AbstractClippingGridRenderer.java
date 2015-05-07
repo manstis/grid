@@ -175,8 +175,8 @@ public abstract class AbstractClippingGridRenderer implements IGridRenderer<Grid
                 final Group hc = column.renderRow( row,
                                                    cellContext );
                 if ( hc != null ) {
-                    hc.setX( x + columnWidth / 2 )
-                            .setY( y + model.getRow( rowIndex ).getHeight() / 2 )
+                    hc.setX( x )
+                            .setY( y )
                             .setListening( false );
                     g.add( hc );
                 }
