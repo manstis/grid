@@ -57,11 +57,15 @@ public class CheckBoxDOMContainerFactory {
     }
 
     public void freeResources() {
-        for(int i = consumed; i<containers.size(); i++) {
-            final CheckBoxDOMContainer container = containers.get(i);
+        final List<CheckBoxDOMContainer> freed = new ArrayList<>();
+        for ( int i = consumed; i < containers.size(); i++ ) {
+            final CheckBoxDOMContainer container = containers.get( i );
             container.detach();
+            freed.add( container );
         }
-
+        for ( CheckBoxDOMContainer container : freed ) {
+            containers.remove( container );
+        }
     }
 
 }

@@ -36,11 +36,13 @@ public abstract class GridCellDOMContainer<T, W extends Widget> {
 
     public GridCellDOMContainer( final AbsolutePanel parent ) {
         this.parent = parent;
-        //Disable HTML5 DnD support on element, otherwise it interferes with column resizing
-        container.getElement().setAttribute( "draggable", "false" );
+
+        final Style style = container.getElement().getStyle();
+        style.setPosition( Style.Position.ABSOLUTE );
 
         //Allow MouseEvents over absolutely positioned elements to bubble
-        container.getElement().getStyle().setProperty( "pointerEvents", "none" );
+        container.getElement().getStyle().setProperty( "pointerEvents",
+                                                       "none" );
     }
 
     public abstract void initialise( final IGridCell<T> cell,
@@ -54,11 +56,10 @@ public abstract class GridCellDOMContainer<T, W extends Widget> {
 
     protected void transform( final GridCellRenderContext context ) {
         final Transform transform = context.getTransform();
-        final Style style = container.getElement().getStyle();
         final double width = context.getWidth();
         final double height = context.getHeight();
 
-        style.setPosition( Style.Position.ABSOLUTE );
+        final Style style = container.getElement().getStyle();
         style.setLeft( ( context.getX() * transform.getScaleX() ) + transform.getTranslateX(),
                        Style.Unit.PX );
         style.setTop( ( context.getY() * transform.getScaleY() ) + transform.getTranslateY(),
@@ -77,9 +78,12 @@ public abstract class GridCellDOMContainer<T, W extends Widget> {
 
         final String scale = "scale(" + FORMAT.format( transform.getScaleX() ) + ", " + FORMAT.format( transform.getScaleY() ) + ")";
         final String translate = "translate(" + FORMAT.format( ( ( width - width * transform.getScaleX() ) / -2.0 ) ) + "px, " + FORMAT.format( ( ( height - height * transform.getScaleY() ) / -2.0 ) ) + "px)";
-        style.setProperty( "WebkitTransform", translate + " " + scale );
-        style.setProperty( "MozTransform", translate + " " + scale );
-        style.setProperty( "Transform", translate + " " + scale );
+        style.setProperty( "WebkitTransform",
+                           translate + " " + scale );
+        style.setProperty( "MozTransform",
+                           translate + " " + scale );
+        style.setProperty( "Transform",
+                           translate + " " + scale );
     }
 
     private boolean isOne( final double value ) {

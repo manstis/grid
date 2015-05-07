@@ -40,7 +40,14 @@ public class CheckBoxDOMContainer extends GridCellDOMContainer<Boolean, CheckBox
                             Style.Unit.PX );
         style.setMarginLeft( 2,
                              Style.Unit.PX );
-        style.setProperty( "pointerEvents", "auto" );
+        style.setWidth( SIZE,
+                        Style.Unit.PX );
+        style.setHeight( SIZE,
+                         Style.Unit.PX );
+
+        //Capture MouseEvents over CheckBox
+        style.setProperty( "pointerEvents",
+                           "auto" );
 
         getContainer().setWidget( cb );
 
