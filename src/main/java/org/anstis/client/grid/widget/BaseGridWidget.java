@@ -157,7 +157,7 @@ public abstract class BaseGridWidget<M extends IGridData<?, ?, ?>> extends Group
         } else {
             for ( int i = 0; i < columns.size(); i++ ) {
                 final IGridColumn<?, ?> column = columns.get( i );
-                column.detachFromDom();
+                column.destroyResources();
             }
             return;
         }
@@ -186,9 +186,9 @@ public abstract class BaseGridWidget<M extends IGridData<?, ?, ?>> extends Group
                 for ( int i = 0; i < columns.size(); i++ ) {
                     final IGridColumn<?, ?> column = columns.get( i );
                     if ( i >= minCol && i <= maxCol ) {
-                        column.attachToDom();
+                        column.initialiseResources();
                     } else {
-                        column.detachFromDom();
+                        column.destroyResources();
                     }
                 }
 
@@ -196,10 +196,19 @@ public abstract class BaseGridWidget<M extends IGridData<?, ?, ?>> extends Group
                                     maxCol,
                                     minRow,
                                     maxRow );
+
+                //Signal columns to free any unused resources
+                for ( int i = 0; i < columns.size(); i++ ) {
+                    final IGridColumn<?, ?> column = columns.get( i );
+                    if ( i >= minCol && i <= maxCol ) {
+                        column.freeResources();
+                    }
+                }
+
             } else {
                 for ( int i = 0; i < columns.size(); i++ ) {
                     final IGridColumn<?, ?> column = columns.get( i );
-                    column.detachFromDom();
+                    column.destroyResources();
                 }
             }
         }

@@ -18,21 +18,27 @@ package org.anstis.client.grid.widget.dom;
 import java.util.Iterator;
 
 import com.ait.lienzo.client.core.types.Transform;
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style;
+import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.ui.AbsolutePanel;
-import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import org.anstis.client.grid.model.IGridCell;
 import org.anstis.client.grid.widget.context.GridCellRenderContext;
 
 public abstract class GridCellDOMContainer<T, W extends Widget> {
 
-    protected final int SIZE = 20;
+    private static final double EPSILON = 0.0000001;
+    private static final NumberFormat FORMAT = NumberFormat.getFormat( "0.0000" );
+
     protected final AbsolutePanel parent;
-    protected final HTMLPanel container = new HTMLPanel( "" );
+    protected final SimplePanel container = new SimplePanel();
 
     public GridCellDOMContainer( final AbsolutePanel parent ) {
         this.parent = parent;
+        //This simply doesn't appear to work -- need to find a solution
+        container.getElement().setDraggable( Element.DRAGGABLE_FALSE );
     }
 
     public abstract void initialise( final IGridCell<T> cell,
@@ -40,28 +46,45 @@ public abstract class GridCellDOMContainer<T, W extends Widget> {
 
     public abstract W getWidget();
 
-    protected HTMLPanel getContainer() {
+    protected SimplePanel getContainer() {
         return container;
     }
 
     protected void transform( final GridCellRenderContext context ) {
         final Transform transform = context.getTransform();
         final Style style = container.getElement().getStyle();
+        final double width = context.getWidth();
+        final double height = context.getHeight();
+
+        container.getElement().setDraggable( Element.DRAGGABLE_FALSE );
+
         style.setPosition( Style.Position.ABSOLUTE );
+        style.setBackgroundColor( "red" );
         style.setLeft( ( context.getX() * transform.getScaleX() ) + transform.getTranslateX(),
                        Style.Unit.PX );
         style.setTop( ( context.getY() * transform.getScaleY() ) + transform.getTranslateY(),
                       Style.Unit.PX );
-        style.setWidth( context.getWidth(),
+        style.setWidth( width,
                         Style.Unit.PX );
-        style.setHeight( context.getHeight(),
+        style.setHeight( height,
                          Style.Unit.PX );
 
-        final String scale = "scale(" + transform.getScaleX() + ", " + transform.getScaleY() + ")";
-        final String translate = "translate(" + ( ( SIZE - SIZE * transform.getScaleX() ) / -2.0 ) + "px, " + ( ( SIZE - SIZE * transform.getScaleY() ) / -2.0 ) + "px)";
+        if ( isOne( transform.getScaleX() ) && isOne( transform.getScaleY() ) ) {
+            style.clearProperty( "WebkitTransform" );
+            style.clearProperty( "MozTransform" );
+            style.clearProperty( "Transform" );
+            return;
+        }
+
+        final String scale = "scale(" + FORMAT.format( transform.getScaleX() ) + ", " + FORMAT.format( transform.getScaleY() ) + ")";
+        final String translate = "translate(" + ( ( width - width * transform.getScaleX() ) / -2.0 ) + "px, " + ( ( height - height * transform.getScaleY() ) / -2.0 ) + "px)";
         style.setProperty( "WebkitTransform", translate + " " + scale );
         style.setProperty( "MozTransform", translate + " " + scale );
         style.setProperty( "Transform", translate + " " + scale );
+    }
+
+    private boolean isOne( final double value ) {
+        return value >= 1.0 - EPSILON && value <= 1.0 + EPSILON;
     }
 
     public void attach() {

@@ -93,12 +93,17 @@ public abstract class BaseGridColumn<R extends IGridRow<V>, V extends IGridCell<
     }
 
     @Override
-    public void attachToDom() {
+    public void initialiseResources() {
         //Do nothing by default
     }
 
     @Override
-    public void detachFromDom() {
+    public void destroyResources() {
+        //Do nothing by default
+    }
+
+    @Override
+    public void freeResources() {
         //Do nothing by default
     }
 

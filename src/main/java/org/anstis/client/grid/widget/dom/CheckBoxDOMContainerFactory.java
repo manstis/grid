@@ -44,19 +44,24 @@ public class CheckBoxDOMContainerFactory {
         return container;
     }
 
-    public void attach() {
-        for ( GridCellDOMContainer container : containers ) {
-            container.detach();
-        }
+    public void initialiseResources() {
         consumed = 0;
     }
 
-    public void detach() {
+    public void destroyResources() {
         for ( GridCellDOMContainer container : containers ) {
             container.detach();
         }
         containers.clear();
         consumed = 0;
+    }
+
+    public void freeResources() {
+        for(int i = consumed; i<containers.size(); i++) {
+            final CheckBoxDOMContainer container = containers.get(i);
+            container.detach();
+        }
+
     }
 
 }

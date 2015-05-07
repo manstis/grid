@@ -236,13 +236,18 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
             }
 
             @Override
-            public void attachToDom() {
-                factory.attach();
+            public void initialiseResources() {
+                factory.initialiseResources();
             }
 
             @Override
-            public void detachFromDom() {
-                factory.detach();
+            public void destroyResources() {
+                factory.destroyResources();
+            }
+
+            @Override
+            public void freeResources() {
+                factory.freeResources();
             }
 
         };
@@ -299,13 +304,18 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
             }
 
             @Override
-            public void attachToDom() {
-                factory.attach();
+            public void initialiseResources() {
+                factory.initialiseResources();
             }
 
             @Override
-            public void detachFromDom() {
-                factory.detach();
+            public void destroyResources() {
+                factory.destroyResources();
+            }
+
+            @Override
+            public void freeResources() {
+                factory.freeResources();
             }
 
         };

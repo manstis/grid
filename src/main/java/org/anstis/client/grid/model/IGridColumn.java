@@ -41,8 +41,10 @@ public interface IGridColumn<R extends IGridRow<V>, V extends IGridCell<?>> {
     Group renderRow( final R row,
                      final GridCellRenderContext context );
 
-    void attachToDom();
+    void initialiseResources();
 
-    void detachFromDom();
+    void destroyResources();
+
+    void freeResources();
 
 }
