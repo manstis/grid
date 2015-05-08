@@ -40,7 +40,7 @@ import org.anstis.client.grid.widget.BaseGridWidget;
 import org.anstis.client.grid.widget.GridLayer;
 import org.anstis.client.grid.widget.context.GridCellRenderContext;
 
-public abstract class GridCellDOMContainer<T, W extends Widget> {
+public abstract class BaseDOMElement<T, W extends Widget> {
 
     private static final double EPSILON = 0.0000001;
     private static final NumberFormat FORMAT = NumberFormat.getFormat( "0.0000" );
@@ -50,9 +50,9 @@ public abstract class GridCellDOMContainer<T, W extends Widget> {
     protected final AbsolutePanel domElementContainer;
     protected final SimplePanel container = new SimplePanel();
 
-    public GridCellDOMContainer( final GridLayer gridLayer,
-                                 final BaseGridWidget<?> gridWidget,
-                                 final AbsolutePanel domElementContainer ) {
+    public BaseDOMElement( final GridLayer gridLayer,
+                           final BaseGridWidget<?> gridWidget,
+                           final AbsolutePanel domElementContainer ) {
         this.gridLayer = gridLayer;
         this.gridWidget = gridWidget;
         this.domElementContainer = domElementContainer;
@@ -145,8 +145,8 @@ public abstract class GridCellDOMContainer<T, W extends Widget> {
         }, ClickEvent.getType() );
     }
 
-    public abstract void initialise( final IGridCell<T> cell,
-                                     final GridCellRenderContext context );
+    protected abstract void initialise( final IGridCell<T> cell,
+                                        final GridCellRenderContext context );
 
     public abstract W getWidget();
 

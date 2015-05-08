@@ -26,7 +26,7 @@ import org.anstis.client.grid.widget.GridLayer;
 import org.anstis.client.grid.widget.context.GridCellRenderContext;
 import org.gwtbootstrap3.client.ui.CheckBox;
 
-public class CheckBoxDOMContainer extends GridCellDOMContainer<Boolean, CheckBox> {
+public class CheckBoxDOMElement extends BaseDOMElement<Boolean, CheckBox> {
 
     //Hack to centre CheckBox
     private static final int SIZE = 20;
@@ -34,9 +34,9 @@ public class CheckBoxDOMContainer extends GridCellDOMContainer<Boolean, CheckBox
     private final CheckBox cb = new CheckBox();
     private GridCellRenderContext context;
 
-    public CheckBoxDOMContainer( final GridLayer gridLayer,
-                                 final BaseGridWidget<?> gridWidget,
-                                 final AbsolutePanel domElementContainer ) {
+    public CheckBoxDOMElement( final GridLayer gridLayer,
+                               final BaseGridWidget<?> gridWidget,
+                               final AbsolutePanel domElementContainer ) {
         super( gridLayer,
                gridWidget,
                domElementContainer );

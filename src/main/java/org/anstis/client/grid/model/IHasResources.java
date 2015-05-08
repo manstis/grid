@@ -15,30 +15,12 @@
  */
 package org.anstis.client.grid.model;
 
-import com.ait.lienzo.client.core.shape.Group;
-import org.anstis.client.grid.widget.context.GridCellRenderContext;
+public interface IHasResources {
 
-public interface IGridColumn<R extends IGridRow<V>, V extends IGridCell<?>> extends IHasResources {
+    void initialiseResources();
 
-    String getTitle();
+    void destroyResources();
 
-    int getWidth();
-
-    void setWidth( final int width );
-
-    boolean isLinked();
-
-    IGridColumn getLink();
-
-    void setLink( final IGridColumn<R, V> link );
-
-    int getIndex();
-
-    void setIndex( final int index );
-
-    Group renderHeader();
-
-    Group renderRow( final R row,
-                     final GridCellRenderContext context );
+    void freeResources();
 
 }

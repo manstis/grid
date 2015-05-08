@@ -52,8 +52,7 @@ import org.anstis.client.grid.model.mergable.MergableGridData;
 import org.anstis.client.grid.util.GridDataFactory;
 import org.anstis.client.grid.widget.basic.GridWidget;
 import org.anstis.client.grid.widget.context.GridCellRenderContext;
-import org.anstis.client.grid.widget.dom.CheckBoxDOMContainerFactory;
-import org.anstis.client.grid.widget.dom.GridCellDOMContainer;
+import org.anstis.client.grid.widget.dom.CheckBoxDOMElementFactory;
 import org.anstis.client.grid.widget.edit.EditorPopup;
 import org.anstis.client.grid.widget.mergable.MergableGridWidget;
 import org.anstis.client.grid.widget.renderers.IGridRenderer;
@@ -234,17 +233,16 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
         final MergableGridColumn<Boolean> column3 = new MergableGridColumn<Boolean>( "G3-Col: 3",
                                                                                      100 ) {
 
-            private CheckBoxDOMContainerFactory factory = new CheckBoxDOMContainerFactory( gridLayer,
-                                                                                           gridWidget3,
-                                                                                           domElementContainer );
+            private CheckBoxDOMElementFactory factory = new CheckBoxDOMElementFactory( gridLayer,
+                                                                                       gridWidget3,
+                                                                                       domElementContainer );
 
             @Override
             public void renderCell( final Group g,
                                     final MergableGridCell<Boolean> cell,
                                     final GridCellRenderContext context ) {
-                final GridCellDOMContainer dom = factory.getContainer();
-                dom.initialise( cell,
-                                context );
+                factory.addCell( cell,
+                                 context );
             }
 
             @Override
@@ -275,9 +273,9 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
                                                                                    100 ) {
 
             private GridCellRenderContext context;
-            private CheckBoxDOMContainerFactory factory = new CheckBoxDOMContainerFactory( gridLayer,
-                                                                                           gridWidget3,
-                                                                                           domElementContainer );
+            private CheckBoxDOMElementFactory factory = new CheckBoxDOMElementFactory( gridLayer,
+                                                                                       gridWidget3,
+                                                                                       domElementContainer );
 
             @Override
             public void renderCell( final Group g,
@@ -364,17 +362,16 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
         final GridColumn<Boolean> column2 = new GridColumn<Boolean>( "G4-Col: 2",
                                                                      100 ) {
 
-            private CheckBoxDOMContainerFactory factory = new CheckBoxDOMContainerFactory( gridLayer,
-                                                                                           gridWidget4,
-                                                                                           domElementContainer );
+            private CheckBoxDOMElementFactory factory = new CheckBoxDOMElementFactory( gridLayer,
+                                                                                       gridWidget4,
+                                                                                       domElementContainer );
 
             @Override
             public void renderCell( final Group g,
                                     final GridCell<Boolean> cell,
                                     final GridCellRenderContext context ) {
-                final GridCellDOMContainer dom = factory.getContainer();
-                dom.initialise( cell,
-                                context );
+                factory.addCell( cell,
+                                 context );
             }
 
             @Override

@@ -13,32 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.anstis.client.grid.model;
+package org.anstis.client.grid.widget.dom;
 
-import com.ait.lienzo.client.core.shape.Group;
+import org.anstis.client.grid.model.IGridCell;
+import org.anstis.client.grid.model.IHasResources;
 import org.anstis.client.grid.widget.context.GridCellRenderContext;
 
-public interface IGridColumn<R extends IGridRow<V>, V extends IGridCell<?>> extends IHasResources {
+public interface IDOMElementFactory<T> extends IHasResources {
 
-    String getTitle();
-
-    int getWidth();
-
-    void setWidth( final int width );
-
-    boolean isLinked();
-
-    IGridColumn getLink();
-
-    void setLink( final IGridColumn<R, V> link );
-
-    int getIndex();
-
-    void setIndex( final int index );
-
-    Group renderHeader();
-
-    Group renderRow( final R row,
-                     final GridCellRenderContext context );
+    void addCell( final IGridCell<T> cell,
+                  final GridCellRenderContext context );
 
 }
