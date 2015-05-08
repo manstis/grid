@@ -53,6 +53,7 @@ import org.anstis.client.grid.util.GridDataFactory;
 import org.anstis.client.grid.widget.basic.GridWidget;
 import org.anstis.client.grid.widget.context.GridCellRenderContext;
 import org.anstis.client.grid.widget.dom.CheckBoxDOMElementFactory;
+import org.anstis.client.grid.widget.dom.TextBoxDOMElementFactory;
 import org.anstis.client.grid.widget.edit.EditorPopup;
 import org.anstis.client.grid.widget.mergable.MergableGridWidget;
 import org.anstis.client.grid.widget.renderers.IGridRenderer;
@@ -272,47 +273,31 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
         final MergableGridColumn<String> column4 = new MergableGridColumn<String>( "G3-Col: 4",
                                                                                    100 ) {
 
-            private GridCellRenderContext context;
-            private CheckBoxDOMElementFactory factory = new CheckBoxDOMElementFactory( gridLayer,
-                                                                                       gridWidget3,
-                                                                                       domElementContainer );
+            private TextBoxDOMElementFactory factory = new TextBoxDOMElementFactory( gridLayer,
+                                                                                     gridWidget3,
+                                                                                     domElementContainer );
 
             @Override
             public void renderCell( final Group g,
                                     final MergableGridCell<String> cell,
                                     final GridCellRenderContext context ) {
-                this.context = context;
-                final Text t = new Text( cell.getValue().getValue() )
-                        .setFillColor( ColorName.GREY )
-                        .setFontSize( 12 )
-                        .setFontFamily( "serif" )
-                        .setListening( false )
-                        .setTextBaseLine( TextBaseLine.MIDDLE )
-                        .setTextAlign( TextAlign.CENTER )
-                        .setX( context.getWidth() / 2 )
-                        .setY( context.getHeight() / 2 );
-                g.add( t );
-            }
-
-            @Override
-            public void edit( final IGridCellValue<String> value,
-                              final Callback<IGridCellValue<String>, IGridCellValue<String>> callback ) {
-                //Show "in-cell" TextBox
+                factory.addCell( cell,
+                                 context );
             }
 
             @Override
             public void initialiseResources() {
-                //factory.initialiseResources();
+                factory.initialiseResources();
             }
 
             @Override
             public void destroyResources() {
-                //factory.destroyResources();
+                factory.destroyResources();
             }
 
             @Override
             public void freeResources() {
-                //factory.freeResources();
+                factory.freeResources();
             }
 
         };

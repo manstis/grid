@@ -19,22 +19,22 @@ import com.google.gwt.user.client.ui.AbsolutePanel;
 import org.anstis.client.grid.widget.BaseGridWidget;
 import org.anstis.client.grid.widget.GridLayer;
 
-public class CheckBoxDOMElementFactory extends BaseDOMElementFactory<Boolean, CheckBoxDOMElement> {
+public class TextBoxDOMElementFactory extends BaseDOMElementFactory<String, TextBoxDOMElement> {
 
-    public CheckBoxDOMElementFactory( final GridLayer gridLayer,
-                                      final BaseGridWidget<?> gridWidget,
-                                      final AbsolutePanel domElementContainer ) {
+    public TextBoxDOMElementFactory( final GridLayer gridLayer,
+                                     final BaseGridWidget<?> gridWidget,
+                                     final AbsolutePanel domElementContainer ) {
         super( gridLayer,
                gridWidget,
                domElementContainer );
     }
 
     @Override
-    public CheckBoxDOMElement newElement( final GridLayer gridLayer,
-                                          final BaseGridWidget<?> gridWidget,
-                                          final AbsolutePanel domElementContainer ) {
-        return new CheckBoxDOMElement( gridLayer,
-                                       gridWidget,
-                                       domElementContainer );
+    public TextBoxDOMElement newElement( final GridLayer gridLayer,
+                                         final BaseGridWidget<?> gridWidget,
+                                         final AbsolutePanel domElementContainer ) {
+        return new TextBoxDOMElement( gridLayer,
+                                      gridWidget,
+                                      domElementContainer );
     }
 }
