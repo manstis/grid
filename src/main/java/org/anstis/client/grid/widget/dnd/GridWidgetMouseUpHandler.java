@@ -43,7 +43,8 @@ public class GridWidgetMouseUpHandler implements NodeMouseUpHandler {
         state.setGrid( null );
         state.setGridColumn( null );
         state.setOperation( GridWidgetHandlersState.GridWidgetHandlersOperation.NONE );
-        layer.getViewport().getElement().getStyle().setCursor( Style.Cursor.DEFAULT );
+        state.setCursor( Style.Cursor.DEFAULT );
+        layer.getViewport().getElement().getStyle().setCursor( state.getCursor() );
         layer.remove( state.getEventColumnHighlight() );
         layer.draw();
     }

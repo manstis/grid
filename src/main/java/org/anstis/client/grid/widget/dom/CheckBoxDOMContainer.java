@@ -22,6 +22,7 @@ import com.google.gwt.user.client.ui.AbsolutePanel;
 import org.anstis.client.grid.model.BaseGridCellValue;
 import org.anstis.client.grid.model.IGridCell;
 import org.anstis.client.grid.widget.BaseGridWidget;
+import org.anstis.client.grid.widget.GridLayer;
 import org.anstis.client.grid.widget.context.GridCellRenderContext;
 import org.gwtbootstrap3.client.ui.CheckBox;
 
@@ -33,8 +34,10 @@ public class CheckBoxDOMContainer extends GridCellDOMContainer<Boolean, CheckBox
     private final CheckBox cb = new CheckBox();
     private GridCellRenderContext context;
 
-    public CheckBoxDOMContainer( final AbsolutePanel parent ) {
-        super( parent );
+    public CheckBoxDOMContainer( final GridLayer gridLayer,
+                                 final AbsolutePanel domElementContainer ) {
+        super( gridLayer,
+               domElementContainer );
         final Style style = cb.getElement().getStyle();
         style.setMarginTop( 0,
                             Style.Unit.PX );
@@ -44,10 +47,6 @@ public class CheckBoxDOMContainer extends GridCellDOMContainer<Boolean, CheckBox
                         Style.Unit.PX );
         style.setHeight( SIZE,
                          Style.Unit.PX );
-
-        //Capture MouseEvents over CheckBox
-        style.setProperty( "pointerEvents",
-                           "auto" );
 
         getContainer().setWidget( cb );
 

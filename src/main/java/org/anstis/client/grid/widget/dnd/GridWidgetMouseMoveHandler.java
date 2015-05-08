@@ -62,7 +62,7 @@ public class GridWidgetMouseMoveHandler implements NodeMouseMoveHandler {
                 state.setGrid( null );
                 state.setGridColumn( null );
                 state.setOperation( GridWidgetHandlersState.GridWidgetHandlersOperation.NONE );
-                Style.Cursor cursor = Style.Cursor.DEFAULT;
+                state.setCursor( Style.Cursor.DEFAULT );
 
                 for ( Map.Entry<IGridData<?, ?, ?>, BaseGridWidget<?>> e : selectables.entrySet() ) {
                     final IGridData<?, ?, ?> grid = e.getKey();
@@ -88,7 +88,7 @@ public class GridWidgetMouseMoveHandler implements NodeMouseMoveHandler {
                                 state.setGrid( grid );
                                 state.setGridColumn( gc );
                                 state.setOperation( GridWidgetHandlersState.GridWidgetHandlersOperation.COLUMN_MOVE_PENDING );
-                                cursor = Style.Cursor.MOVE;
+                                state.setCursor( Style.Cursor.MOVE );
                                 break;
                             }
                             offsetX = offsetX + columnWidth;
@@ -103,7 +103,7 @@ public class GridWidgetMouseMoveHandler implements NodeMouseMoveHandler {
                                 state.setGrid( grid );
                                 state.setGridColumn( gc );
                                 state.setOperation( GridWidgetHandlersState.GridWidgetHandlersOperation.COLUMN_RESIZE_PENDING );
-                                cursor = Style.Cursor.COL_RESIZE;
+                                state.setCursor( Style.Cursor.COL_RESIZE );
                                 break;
                             }
                             offsetX = offsetX + columnWidth;
@@ -111,7 +111,7 @@ public class GridWidgetMouseMoveHandler implements NodeMouseMoveHandler {
                     }
                 }
 
-                layer.getViewport().getElement().getStyle().setCursor( cursor );
+                layer.getViewport().getElement().getStyle().setCursor( state.getCursor() );
                 for ( IMediator mediator : layer.getViewport().getMediators() ) {
                     mediator.setEnabled( state.getGrid() == null );
                 }

@@ -17,13 +17,23 @@ package org.anstis.client.grid.widget.dom;
 
 import java.util.Iterator;
 
+import com.ait.lienzo.client.core.event.NodeMouseDownEvent;
+import com.ait.lienzo.client.core.event.NodeMouseMoveEvent;
+import com.ait.lienzo.client.core.event.NodeMouseUpEvent;
 import com.ait.lienzo.client.core.types.Transform;
 import com.google.gwt.dom.client.Style;
+import com.google.gwt.event.dom.client.MouseDownEvent;
+import com.google.gwt.event.dom.client.MouseDownHandler;
+import com.google.gwt.event.dom.client.MouseMoveEvent;
+import com.google.gwt.event.dom.client.MouseMoveHandler;
+import com.google.gwt.event.dom.client.MouseUpEvent;
+import com.google.gwt.event.dom.client.MouseUpHandler;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import org.anstis.client.grid.model.IGridCell;
+import org.anstis.client.grid.widget.GridLayer;
 import org.anstis.client.grid.widget.context.GridCellRenderContext;
 
 public abstract class GridCellDOMContainer<T, W extends Widget> {
@@ -31,18 +41,81 @@ public abstract class GridCellDOMContainer<T, W extends Widget> {
     private static final double EPSILON = 0.0000001;
     private static final NumberFormat FORMAT = NumberFormat.getFormat( "0.0000" );
 
-    protected final AbsolutePanel parent;
+    protected final GridLayer gridLayer;
+    protected final AbsolutePanel domElementContainer;
     protected final SimplePanel container = new SimplePanel();
 
-    public GridCellDOMContainer( final AbsolutePanel parent ) {
-        this.parent = parent;
+    public GridCellDOMContainer( final GridLayer gridLayer,
+                                 final AbsolutePanel domElementContainer ) {
+        this.gridLayer = gridLayer;
+        this.domElementContainer = domElementContainer;
 
         final Style style = container.getElement().getStyle();
         style.setPosition( Style.Position.ABSOLUTE );
 
-        //Allow MouseEvents over absolutely positioned elements to bubble
-        container.getElement().getStyle().setProperty( "pointerEvents",
-                                                       "none" );
+        //MouseEvents over absolutely positioned elements do not bubble through the DOM.
+        //Consequentially Event Handlers on GridLayer do not receive notification of MouseMove
+        //Events used during column resizing. Therefore we manually bubble events to GridLayer.
+        container.addDomHandler( new MouseDownHandler() {
+            @Override
+            public void onMouseDown( final MouseDownEvent event ) {
+                gridLayer.onNodeMouseDown( new NodeMouseDownEvent( event ) {
+
+                    @Override
+                    public int getX() {
+                        //Adjust the x-coordinate (relative to the DOM Element) to be relative to the GridCanvas.
+                        return super.getX() + container.getElement().getOffsetLeft();
+                    }
+
+                    @Override
+                    public int getY() {
+                        //Adjust the y-coordinate (relative to the DOM Element) to be relative to the GridCanvas.
+                        return super.getY() + container.getElement().getOffsetTop();
+                    }
+
+                } );
+            }
+        }, MouseDownEvent.getType() );
+        container.addDomHandler( new MouseMoveHandler() {
+            @Override
+            public void onMouseMove( final MouseMoveEvent event ) {
+                gridLayer.onNodeMouseMove( new NodeMouseMoveEvent( event ) {
+
+                    @Override
+                    public int getX() {
+                        //Adjust the x-coordinate (relative to the DOM Element) to be relative to the GridCanvas.
+                        return super.getX() + container.getElement().getOffsetLeft();
+                    }
+
+                    @Override
+                    public int getY() {
+                        //Adjust the y-coordinate (relative to the DOM Element) to be relative to the GridCanvas.
+                        return super.getY() + container.getElement().getOffsetTop();
+                    }
+
+                } );
+            }
+        }, MouseMoveEvent.getType() );
+        container.addDomHandler( new MouseUpHandler() {
+            @Override
+            public void onMouseUp( final MouseUpEvent event ) {
+                gridLayer.onNodeMouseUp( new NodeMouseUpEvent( event ) {
+
+                    @Override
+                    public int getX() {
+                        //Adjust the x-coordinate (relative to the DOM Element) to be relative to the GridCanvas.
+                        return super.getX() + container.getElement().getOffsetLeft();
+                    }
+
+                    @Override
+                    public int getY() {
+                        //Adjust the y-coordinate (relative to the DOM Element) to be relative to the GridCanvas.
+                        return super.getY() + container.getElement().getOffsetTop();
+                    }
+
+                } );
+            }
+        }, MouseUpEvent.getType() );
     }
 
     public abstract void initialise( final IGridCell<T> cell,
@@ -60,6 +133,11 @@ public abstract class GridCellDOMContainer<T, W extends Widget> {
         final double height = context.getHeight();
 
         final Style style = container.getElement().getStyle();
+
+        //The DOM Element changes the Cursor, so set to the state determined by the MouseEvent Handlers on GridLayer
+        style.setCursor( gridLayer.getGridWidgetHandlersState().getCursor() );
+
+        //Reposition and transform the DOM Element
         style.setLeft( ( context.getX() * transform.getScaleX() ) + transform.getTranslateX(),
                        Style.Unit.PX );
         style.setTop( ( context.getY() * transform.getScaleY() ) + transform.getTranslateY(),
@@ -91,17 +169,17 @@ public abstract class GridCellDOMContainer<T, W extends Widget> {
     }
 
     public void attach() {
-        final Iterator<Widget> itr = parent.iterator();
+        final Iterator<Widget> itr = domElementContainer.iterator();
         while ( itr.hasNext() ) {
             if ( itr.next().equals( container ) ) {
                 return;
             }
         }
-        parent.add( container );
+        domElementContainer.add( container );
     }
 
     public void detach() {
-        final Iterator<Widget> itr = parent.iterator();
+        final Iterator<Widget> itr = domElementContainer.iterator();
         while ( itr.hasNext() ) {
             if ( itr.next().equals( container ) ) {
                 itr.remove();

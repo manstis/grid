@@ -61,7 +61,7 @@
   <g:HTMLPanel>
     <g:VerticalPanel styleName="{css.container}">
       <g:HorizontalPanel>
-        <g:AbsolutePanel ui:field="table" styleName="{css.table}"/>
+        <g:AbsolutePanel ui:field="domElementContainer" styleName="{css.table}"/>
       </g:HorizontalPanel>
       <g:SimplePanel styleName="{css.slider}">
         <bs3slider:Slider ui:field="slider" min="30" max="150" step="10" orientation="HORIZONTAL"/>

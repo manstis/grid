@@ -84,7 +84,7 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
     private static GridShowcaseWidgetUiBinder uiBinder = GWT.create( GridShowcaseWidgetUiBinder.class );
 
     @UiField
-    AbsolutePanel table;
+    AbsolutePanel domElementContainer;
 
     @UiField
     Slider slider;
@@ -117,7 +117,7 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
 
         //Wire-up widgets
         gridPanel.add( gridLayer );
-        table.add( gridPanel );
+        domElementContainer.add( gridPanel );
 
         //Grid 1
         final MergableGridData grid1 = new MergableGridData();
@@ -189,7 +189,7 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
 
         //Grid 3
         final MergableGridData grid3 = new MergableGridData();
-        for ( int idx = 0; idx < 5; idx++ ) {
+        for ( int idx = 0; idx < 3; idx++ ) {
             final MergableGridColumn<String> column = new MergableGridColumn<String>( "G3-Col: " + idx,
                                                                                       100 ) {
                 @Override
@@ -221,10 +221,12 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
         GridDataFactory.populate( grid3,
                                   GRID3_ROWS );
 
-        final MergableGridColumn<Boolean> column = new MergableGridColumn<Boolean>( "G3-Col: 5",
-                                                                                    100 ) {
+        //Grid 3 - DOM Column - CheckBox
+        final MergableGridColumn<Boolean> column3 = new MergableGridColumn<Boolean>( "G3-Col: 3",
+                                                                                     100 ) {
 
-            private CheckBoxDOMContainerFactory factory = new CheckBoxDOMContainerFactory( table );
+            private CheckBoxDOMContainerFactory factory = new CheckBoxDOMContainerFactory( gridLayer,
+                                                                                           domElementContainer );
 
             @Override
             public void renderCell( final Group g,
@@ -251,11 +253,67 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
             }
 
         };
-        grid3.addColumn( column );
+        grid3.addColumn( column3 );
         for ( int rowIndex = 0; rowIndex < GRID4_ROWS; rowIndex++ ) {
             grid3.setCell( rowIndex,
-                           5,
-                           new BaseGridCellValue<>( rowIndex == 0 ) );
+                           3,
+                           new BaseGridCellValue<>( Math.random() < GridDataFactory.FILL_FACTOR ) );
+        }
+
+        //Grid 4 - DOM Column - TextBox
+        final MergableGridColumn<String> column4 = new MergableGridColumn<String>( "G3-Col: 4",
+                                                                                   100 ) {
+
+            private GridCellRenderContext context;
+            private CheckBoxDOMContainerFactory factory = new CheckBoxDOMContainerFactory( gridLayer,
+                                                                                           domElementContainer );
+
+            @Override
+            public void renderCell( final Group g,
+                                    final MergableGridCell<String> cell,
+                                    final GridCellRenderContext context ) {
+                this.context = context;
+                final Text t = new Text( cell.getValue().getValue() )
+                        .setFillColor( ColorName.GREY )
+                        .setFontSize( 12 )
+                        .setFontFamily( "serif" )
+                        .setListening( false )
+                        .setTextBaseLine( TextBaseLine.MIDDLE )
+                        .setTextAlign( TextAlign.CENTER )
+                        .setX( context.getWidth() / 2 )
+                        .setY( context.getHeight() / 2 );
+                g.add( t );
+            }
+
+            @Override
+            public void edit( final IGridCellValue<String> value,
+                              final Callback<IGridCellValue<String>, IGridCellValue<String>> callback ) {
+                //Show "in-cell" TextBox
+            }
+
+            @Override
+            public void initialiseResources() {
+                //factory.initialiseResources();
+            }
+
+            @Override
+            public void destroyResources() {
+                //factory.destroyResources();
+            }
+
+            @Override
+            public void freeResources() {
+                //factory.freeResources();
+            }
+
+        };
+        grid3.addColumn( column4 );
+        for ( int rowIndex = 0; rowIndex < GRID4_ROWS; rowIndex++ ) {
+            if ( Math.random() < GridDataFactory.FILL_FACTOR ) {
+                grid3.setCell( rowIndex,
+                               4,
+                               new BaseGridCellValue<>( "(" + 4 + ", " + rowIndex + ")" ) );
+            }
         }
 
         //Grid 4
@@ -292,7 +350,8 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
         final GridColumn<Boolean> column2 = new GridColumn<Boolean>( "G4-Col: 2",
                                                                      100 ) {
 
-            private CheckBoxDOMContainerFactory factory = new CheckBoxDOMContainerFactory( table );
+            private CheckBoxDOMContainerFactory factory = new CheckBoxDOMContainerFactory( gridLayer,
+                                                                                           domElementContainer );
 
             @Override
             public void renderCell( final Group g,
@@ -334,7 +393,7 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
                     case 1:
                         grid4.setCell( rowIndex,
                                        columnIndex,
-                                       new BaseGridCellValue<>( true ) );
+                                       new BaseGridCellValue<>( Math.random() < 0.5 ) );
                         break;
                 }
             }

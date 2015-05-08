@@ -15,6 +15,7 @@
  */
 package org.anstis.client.grid.widget.dnd;
 
+import com.google.gwt.dom.client.Style;
 import org.anstis.client.grid.model.IGridColumn;
 import org.anstis.client.grid.model.IGridData;
 
@@ -23,6 +24,7 @@ public class GridWidgetHandlersState {
     private IGridData grid = null;
     private IGridColumn gridColumn = null;
     private GridWidgetHandlersOperation operation = GridWidgetHandlersOperation.NONE;
+    private Style.Cursor cursor = Style.Cursor.DEFAULT;
 
     private double eventInitialX = 0;
     private double eventInitialColumnWidth = 0;
@@ -58,6 +60,14 @@ public class GridWidgetHandlersState {
 
     public void setOperation( final GridWidgetHandlersOperation operation ) {
         this.operation = operation;
+    }
+
+    public Style.Cursor getCursor() {
+        return cursor;
+    }
+
+    public void setCursor( Style.Cursor cursor ) {
+        this.cursor = cursor;
     }
 
     public double getEventInitialX() {

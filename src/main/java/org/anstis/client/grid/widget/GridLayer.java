@@ -21,6 +21,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.ait.lienzo.client.core.event.NodeMouseDownEvent;
+import com.ait.lienzo.client.core.event.NodeMouseDownHandler;
+import com.ait.lienzo.client.core.event.NodeMouseMoveEvent;
+import com.ait.lienzo.client.core.event.NodeMouseMoveHandler;
+import com.ait.lienzo.client.core.event.NodeMouseUpEvent;
+import com.ait.lienzo.client.core.event.NodeMouseUpHandler;
 import com.ait.lienzo.client.core.shape.Arrow;
 import com.ait.lienzo.client.core.shape.IPrimitive;
 import com.ait.lienzo.client.core.shape.Layer;
@@ -41,7 +47,10 @@ import org.anstis.client.grid.widget.dnd.GridWidgetMouseDownHandler;
 import org.anstis.client.grid.widget.dnd.GridWidgetMouseMoveHandler;
 import org.anstis.client.grid.widget.dnd.GridWidgetMouseUpHandler;
 
-public class GridLayer extends Layer implements ISelectionManager {
+public class GridLayer extends Layer implements ISelectionManager,
+                                                NodeMouseDownHandler,
+                                                NodeMouseMoveHandler,
+                                                NodeMouseUpHandler {
 
     private Map<IGridData<?, ?, ?>, BaseGridWidget<?>> selectables = new HashMap<>();
     private Map<GridWidgetConnector, Arrow> connectors = new HashMap<>();
@@ -49,22 +58,48 @@ public class GridLayer extends Layer implements ISelectionManager {
     private Rectangle bounds;
     private boolean isRedrawScheduled = false;
 
+    private final GridWidgetMouseDownHandler mouseDownHandler;
+    private final GridWidgetMouseMoveHandler mouseMoveHandler;
+    private final GridWidgetMouseUpHandler mouseUpHandler;
+    private final GridWidgetHandlersState state = new GridWidgetHandlersState();
+
     public GridLayer() {
         bounds = new Rectangle( 0, 0 )
                 .setVisible( false );
         add( bounds );
 
         //Column DnD handlers
-        final GridWidgetHandlersState state = new GridWidgetHandlersState();
-        addNodeMouseDownHandler( new GridWidgetMouseDownHandler( this,
-                                                                 state,
-                                                                 selectables ) );
-        addNodeMouseMoveHandler( new GridWidgetMouseMoveHandler( this,
-                                                                 state,
-                                                                 selectables ) );
-        addNodeMouseUpHandler( new GridWidgetMouseUpHandler( this,
-                                                             state,
-                                                             selectables ) );
+        mouseDownHandler = new GridWidgetMouseDownHandler( this,
+                                                           state,
+                                                           selectables );
+        mouseMoveHandler = new GridWidgetMouseMoveHandler( this,
+                                                           state,
+                                                           selectables );
+        mouseUpHandler = new GridWidgetMouseUpHandler( this,
+                                                       state,
+                                                       selectables );
+        addNodeMouseDownHandler( mouseDownHandler );
+        addNodeMouseMoveHandler( mouseMoveHandler );
+        addNodeMouseUpHandler( mouseUpHandler );
+    }
+
+    @Override
+    public void onNodeMouseDown( final NodeMouseDownEvent event ) {
+        mouseDownHandler.onNodeMouseDown( event );
+    }
+
+    @Override
+    public void onNodeMouseMove( final NodeMouseMoveEvent event ) {
+        mouseMoveHandler.onNodeMouseMove( event );
+    }
+
+    @Override
+    public void onNodeMouseUp( final NodeMouseUpEvent event ) {
+        mouseUpHandler.onNodeMouseUp( event );
+    }
+
+    public GridWidgetHandlersState getGridWidgetHandlersState() {
+        return this.state;
     }
 
     @Override
