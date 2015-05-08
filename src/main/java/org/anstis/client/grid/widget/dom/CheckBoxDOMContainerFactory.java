@@ -19,19 +19,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gwt.user.client.ui.AbsolutePanel;
+import org.anstis.client.grid.widget.BaseGridWidget;
 import org.anstis.client.grid.widget.GridLayer;
 
 public class CheckBoxDOMContainerFactory {
 
     private final GridLayer gridLayer;
+    private final BaseGridWidget<?> gridWidget;
     private final AbsolutePanel domElementContainer;
     private final List<CheckBoxDOMContainer> containers = new ArrayList<>();
 
     private int consumed = 0;
 
     public CheckBoxDOMContainerFactory( final GridLayer gridLayer,
+                                        final BaseGridWidget<?> gridWidget,
                                         final AbsolutePanel domElementContainer ) {
         this.gridLayer = gridLayer;
+        this.gridWidget = gridWidget;
         this.domElementContainer = domElementContainer;
     }
 
@@ -39,6 +43,7 @@ public class CheckBoxDOMContainerFactory {
         CheckBoxDOMContainer container;
         if ( consumed + 1 > containers.size() ) {
             container = new CheckBoxDOMContainer( gridLayer,
+                                                  gridWidget,
                                                   domElementContainer );
             containers.add( container );
         } else {

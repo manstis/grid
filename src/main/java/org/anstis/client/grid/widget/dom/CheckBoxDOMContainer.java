@@ -35,8 +35,10 @@ public class CheckBoxDOMContainer extends GridCellDOMContainer<Boolean, CheckBox
     private GridCellRenderContext context;
 
     public CheckBoxDOMContainer( final GridLayer gridLayer,
+                                 final BaseGridWidget<?> gridWidget,
                                  final AbsolutePanel domElementContainer ) {
         super( gridLayer,
+               gridWidget,
                domElementContainer );
         final Style style = cb.getElement().getStyle();
         style.setMarginTop( 0,

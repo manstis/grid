@@ -18,6 +18,7 @@ package org.anstis.client.grid.widget;
 import java.util.List;
 
 import com.ait.lienzo.client.core.Context2D;
+import com.ait.lienzo.client.core.event.NodeMouseClickHandler;
 import com.ait.lienzo.client.core.shape.Group;
 import com.ait.lienzo.client.core.shape.Rectangle;
 import com.ait.lienzo.client.core.shape.Viewport;
@@ -28,7 +29,7 @@ import org.anstis.client.grid.widget.context.GridBodyRenderContext;
 import org.anstis.client.grid.widget.context.GridHeaderRenderContext;
 import org.anstis.client.grid.widget.renderers.IGridRenderer;
 
-public abstract class BaseGridWidget<M extends IGridData<?, ?, ?>> extends Group {
+public abstract class BaseGridWidget<M extends IGridData<?, ?, ?>> extends Group implements NodeMouseClickHandler {
 
     private boolean isSelected = false;
     private Group selection = null;

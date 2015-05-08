@@ -15,12 +15,16 @@
  */
 package org.anstis.client.grid.widget.mergable;
 
+import com.ait.lienzo.client.core.event.NodeMouseClickEvent;
 import org.anstis.client.grid.model.mergable.MergableGridData;
 import org.anstis.client.grid.widget.BaseGridWidget;
 import org.anstis.client.grid.widget.ISelectionManager;
 import org.anstis.client.grid.widget.renderers.mergable.IMergableGridRenderer;
 
 public class MergableGridWidget extends BaseGridWidget<MergableGridData> {
+
+    private final MergableGridWidgetMouseClickHandler mouseClickHandler;
+    private final MergableGridWidgetMouseDoubleClickHandler mouseDoubleClickHandler;
 
     public MergableGridWidget( final MergableGridData model,
                                final ISelectionManager selectionManager,
@@ -29,15 +33,20 @@ public class MergableGridWidget extends BaseGridWidget<MergableGridData> {
                selectionManager,
                renderer );
 
-        //Click handler
-        addNodeMouseClickHandler( new MergableGridWidgetMouseClickHandler( this,
-                                                                           selectionManager,
-                                                                           renderer ) );
+        //Click handlers
+        mouseClickHandler = new MergableGridWidgetMouseClickHandler( this,
+                                                                     selectionManager,
+                                                                     renderer );
+        mouseDoubleClickHandler = new MergableGridWidgetMouseDoubleClickHandler( this,
+                                                                                 selectionManager,
+                                                                                 renderer );
+        addNodeMouseClickHandler( mouseClickHandler );
+        addNodeMouseDoubleClickHandler( mouseDoubleClickHandler );
+    }
 
-        //Double-click handler
-        addNodeMouseDoubleClickHandler( new MergableGridWidgetMouseDoubleClickHandler( this,
-                                                                                       selectionManager,
-                                                                                       renderer ) );
+    @Override
+    public void onNodeMouseClick( final NodeMouseClickEvent event ) {
+        mouseClickHandler.onNodeMouseClick( event );
     }
 
 }

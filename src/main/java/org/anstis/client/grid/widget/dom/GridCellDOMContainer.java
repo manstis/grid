@@ -17,11 +17,14 @@ package org.anstis.client.grid.widget.dom;
 
 import java.util.Iterator;
 
+import com.ait.lienzo.client.core.event.NodeMouseClickEvent;
 import com.ait.lienzo.client.core.event.NodeMouseDownEvent;
 import com.ait.lienzo.client.core.event.NodeMouseMoveEvent;
 import com.ait.lienzo.client.core.event.NodeMouseUpEvent;
 import com.ait.lienzo.client.core.types.Transform;
 import com.google.gwt.dom.client.Style;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseDownHandler;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
@@ -33,6 +36,7 @@ import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import org.anstis.client.grid.model.IGridCell;
+import org.anstis.client.grid.widget.BaseGridWidget;
 import org.anstis.client.grid.widget.GridLayer;
 import org.anstis.client.grid.widget.context.GridCellRenderContext;
 
@@ -42,12 +46,15 @@ public abstract class GridCellDOMContainer<T, W extends Widget> {
     private static final NumberFormat FORMAT = NumberFormat.getFormat( "0.0000" );
 
     protected final GridLayer gridLayer;
+    protected final BaseGridWidget<?> gridWidget;
     protected final AbsolutePanel domElementContainer;
     protected final SimplePanel container = new SimplePanel();
 
     public GridCellDOMContainer( final GridLayer gridLayer,
+                                 final BaseGridWidget<?> gridWidget,
                                  final AbsolutePanel domElementContainer ) {
         this.gridLayer = gridLayer;
+        this.gridWidget = gridWidget;
         this.domElementContainer = domElementContainer;
 
         final Style style = container.getElement().getStyle();
@@ -116,6 +123,26 @@ public abstract class GridCellDOMContainer<T, W extends Widget> {
                 } );
             }
         }, MouseUpEvent.getType() );
+        container.addDomHandler( new ClickHandler() {
+            @Override
+            public void onClick( final ClickEvent event ) {
+                gridWidget.onNodeMouseClick( new NodeMouseClickEvent( event ) {
+
+                    @Override
+                    public int getX() {
+                        //Adjust the x-coordinate (relative to the DOM Element) to be relative to the GridCanvas.
+                        return super.getX() + container.getElement().getOffsetLeft();
+                    }
+
+                    @Override
+                    public int getY() {
+                        //Adjust the y-coordinate (relative to the DOM Element) to be relative to the GridCanvas.
+                        return super.getY() + container.getElement().getOffsetTop();
+                    }
+
+                } );
+            }
+        }, ClickEvent.getType() );
     }
 
     public abstract void initialise( final IGridCell<T> cell,

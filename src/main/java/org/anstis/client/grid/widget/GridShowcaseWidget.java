@@ -121,6 +121,9 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
 
         //Grid 1
         final MergableGridData grid1 = new MergableGridData();
+        final MergableGridWidget gridWidget1 = new MergableGridWidget( grid1,
+                                                                       this,
+                                                                       new MergableGridRenderer() );
         for ( int idx = 0; idx < 10; idx++ ) {
             final MergableGridColumn<String> column = new MergableGridColumn<String>( "G1-Col: " + idx,
                                                                                       100 ) {
@@ -155,6 +158,9 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
 
         //Grid 2
         final MergableGridData grid2 = new MergableGridData();
+        final MergableGridWidget gridWidget2 = new MergableGridWidget( grid2,
+                                                                       this,
+                                                                       new MergableGridRenderer() );
         for ( int idx = 0; idx < 5; idx++ ) {
             final MergableGridColumn<String> column = new MergableGridColumn<String>( "G2-Col: " + idx,
                                                                                       150 ) {
@@ -189,6 +195,9 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
 
         //Grid 3
         final MergableGridData grid3 = new MergableGridData();
+        final MergableGridWidget gridWidget3 = new MergableGridWidget( grid3,
+                                                                       this,
+                                                                       new MergableGridRenderer() );
         for ( int idx = 0; idx < 3; idx++ ) {
             final MergableGridColumn<String> column = new MergableGridColumn<String>( "G3-Col: " + idx,
                                                                                       100 ) {
@@ -226,6 +235,7 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
                                                                                      100 ) {
 
             private CheckBoxDOMContainerFactory factory = new CheckBoxDOMContainerFactory( gridLayer,
+                                                                                           gridWidget3,
                                                                                            domElementContainer );
 
             @Override
@@ -260,12 +270,13 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
                            new BaseGridCellValue<>( Math.random() < GridDataFactory.FILL_FACTOR ) );
         }
 
-        //Grid 4 - DOM Column - TextBox
+        //Grid 3 - DOM Column - TextBox
         final MergableGridColumn<String> column4 = new MergableGridColumn<String>( "G3-Col: 4",
                                                                                    100 ) {
 
             private GridCellRenderContext context;
             private CheckBoxDOMContainerFactory factory = new CheckBoxDOMContainerFactory( gridLayer,
+                                                                                           gridWidget3,
                                                                                            domElementContainer );
 
             @Override
@@ -318,6 +329,9 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
 
         //Grid 4
         final GridData grid4 = new GridData();
+        final GridWidget gridWidget4 = new GridWidget( grid4,
+                                                       this,
+                                                       new RedGridRenderer() );
         final GridColumn<String> column1 = new GridColumn<String>( "G4-Col: 1",
                                                                    100 ) {
 
@@ -351,6 +365,7 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
                                                                      100 ) {
 
             private CheckBoxDOMContainerFactory factory = new CheckBoxDOMContainerFactory( gridLayer,
+                                                                                           gridWidget4,
                                                                                            domElementContainer );
 
             @Override
@@ -403,23 +418,6 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
         grid1.getColumns().get( 9 ).setLink( grid2.getColumns().get( 0 ) );
         grid2.getColumns().get( 3 ).setLink( grid3.getColumns().get( 0 ) );
         grid3.getColumns().get( 0 ).setLink( grid1.getColumns().get( 0 ) );
-
-        //Widgets
-        final MergableGridWidget gridWidget1 = new MergableGridWidget( grid1,
-                                                                       this,
-                                                                       new MergableGridRenderer() );
-
-        final MergableGridWidget gridWidget2 = new MergableGridWidget( grid2,
-                                                                       this,
-                                                                       new MergableGridRenderer() );
-
-        final MergableGridWidget gridWidget3 = new MergableGridWidget( grid3,
-                                                                       this,
-                                                                       new MergableGridRenderer() );
-
-        final GridWidget gridWidget4 = new GridWidget( grid4,
-                                                       this,
-                                                       new RedGridRenderer() );
 
         //Add Widgets to the Layer
         gridWidget1.setLocation( new Point2D( -1300,
