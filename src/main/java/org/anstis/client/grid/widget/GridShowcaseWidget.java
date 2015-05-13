@@ -490,6 +490,7 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
             }
         } );
 
+        //Prevent DOMElements scrolling into view when they receive the focus
         domElementContainer.addDomHandler( new ScrollHandler() {
 
             @Override
