@@ -28,4 +28,8 @@ public interface IMergableGridRenderer extends IGridRenderer<MergableGridData> {
     Group renderMergedCellMixedValueHighlight( final double columnWidth,
                                                final double rowHeight );
 
+    boolean onGroupingToggle( final double cellX,
+                              final double cellY,
+                              final double columnWidth,
+                              final double rowHeight );
 }

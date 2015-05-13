@@ -187,6 +187,17 @@ public class MergableGridRenderer implements IMergableGridRenderer {
         return g;
     }
 
+    @Override
+    public boolean onGroupingToggle( double cellX,
+                                     double cellY,
+                                     double columnWidth,
+                                     double rowHeight ) {
+        return GroupingToggle.onHotSpot( cellX,
+                                         cellY,
+                                         columnWidth,
+                                         rowHeight );
+    }
+
     /**
      * Inner class implementation that supports merged and collapsed cells
      */

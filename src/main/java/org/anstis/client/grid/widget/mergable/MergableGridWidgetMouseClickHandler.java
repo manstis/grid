@@ -28,7 +28,6 @@ import org.anstis.client.grid.widget.BaseGridWidgetMouseClickHandler;
 import org.anstis.client.grid.widget.ISelectionManager;
 import org.anstis.client.grid.widget.animation.MergableGridWidgetCollapseRowsAnimation;
 import org.anstis.client.grid.widget.animation.MergableGridWidgetExpandRowsAnimation;
-import org.anstis.client.grid.widget.renderers.mergable.GroupingToggle;
 import org.anstis.client.grid.widget.renderers.mergable.IMergableGridRenderer;
 
 public class MergableGridWidgetMouseClickHandler extends BaseGridWidgetMouseClickHandler<MergableGridWidget> {
@@ -102,11 +101,10 @@ public class MergableGridWidgetMouseClickHandler extends BaseGridWidgetMouseClic
                                                                             columnIndex );
         final double cellX = x - offsetX;
         final double cellY = y - gridWidget.getModel().getRowOffset( rowIndex ) - renderer.getHeaderHeight();
-        final GroupingToggle gt = new GroupingToggle( gridColumn.getWidth(),
-                                                      gridRow.getHeight(),
-                                                      nextRowCell.isCollapsed() );
-        if ( !gt.onHotSpot( cellX,
-                            cellY ) ) {
+        if ( !gridWidget.onGroupingToggle( cellX,
+                                           cellY,
+                                           gridColumn.getWidth(),
+                                           gridRow.getHeight() ) ) {
             return;
         }
 

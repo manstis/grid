@@ -44,6 +44,16 @@ public class MergableGridWidget extends BaseGridWidget<MergableGridData> {
         addNodeMouseDoubleClickHandler( mouseDoubleClickHandler );
     }
 
+    public boolean onGroupingToggle( final double cellX,
+                                     final double cellY,
+                                     final double columnWidth,
+                                     final double rowHeight ) {
+        return ( (IMergableGridRenderer) renderer ).onGroupingToggle( cellX,
+                                                                      cellY,
+                                                                      columnWidth,
+                                                                      rowHeight );
+    }
+
     @Override
     public void onNodeMouseClick( final NodeMouseClickEvent event ) {
         mouseClickHandler.onNodeMouseClick( event );

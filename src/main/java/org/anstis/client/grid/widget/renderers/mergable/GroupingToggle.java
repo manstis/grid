@@ -38,9 +38,13 @@ public class GroupingToggle extends Group {
         add( r );
     }
 
-    public boolean onHotSpot( final double cellX,
-                              final double cellY ) {
-        if ( cellX - r.getX() > 0 && cellX - r.getX() < SIZE ) {
+    @SuppressWarnings("unused")
+    public static boolean onHotSpot( final double cellX,
+                                     final double cellY,
+                                     final double columnWidth,
+                                     final double rowHeight ) {
+        final double offsetX = columnWidth - SIZE - PADDING;
+        if ( cellX - offsetX > 0 && cellX - offsetX < SIZE ) {
             if ( cellY > PADDING && cellY < PADDING + SIZE ) {
                 return true;
             }
