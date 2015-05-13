@@ -24,13 +24,13 @@ public class GridHeaderRenderContext {
     private final int endColumnIndex;
     private final double width;
     private final Transform transform;
-    private final BaseGridWidget<?> widget;
+    private final BaseGridWidget<?, ?> widget;
 
     public GridHeaderRenderContext( final int startColumnIndex,
                                     final int endColumnIndex,
                                     final double width,
                                     final Transform transform,
-                                    final BaseGridWidget<?> widget ) {
+                                    final BaseGridWidget<?, ?> widget ) {
         this.startColumnIndex = startColumnIndex;
         this.endColumnIndex = endColumnIndex;
         this.width = width;
@@ -54,7 +54,7 @@ public class GridHeaderRenderContext {
         return transform;
     }
 
-    public BaseGridWidget<?> getWidget() {
+    public BaseGridWidget<?, ?> getWidget() {
         return widget;
     }
 

@@ -27,7 +27,7 @@ public class GridCellRenderContext {
     private final int rowIndex;
     private final int columnIndex;
     private final Transform transform;
-    private final BaseGridWidget<?> widget;
+    private final BaseGridWidget<?, ?> widget;
 
     public GridCellRenderContext( final double x,
                                   final double y,
@@ -36,7 +36,7 @@ public class GridCellRenderContext {
                                   final int rowIndex,
                                   final int columnIndex,
                                   final Transform transform,
-                                  final BaseGridWidget<?> widget ) {
+                                  final BaseGridWidget<?, ?> widget ) {
         this.x = x;
         this.y = y;
         this.width = width;
@@ -75,7 +75,7 @@ public class GridCellRenderContext {
         return transform;
     }
 
-    public BaseGridWidget<?> getWidget() {
+    public BaseGridWidget<?, ?> getWidget() {
         return widget;
     }
 

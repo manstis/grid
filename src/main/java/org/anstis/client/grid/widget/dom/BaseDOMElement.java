@@ -46,12 +46,12 @@ public abstract class BaseDOMElement<T, W extends Widget> {
     private static final NumberFormat FORMAT = NumberFormat.getFormat( "0.0000" );
 
     protected final GridLayer gridLayer;
-    protected final BaseGridWidget<?> gridWidget;
+    protected final BaseGridWidget<?, ?> gridWidget;
     protected final AbsolutePanel domElementContainer;
     protected final SimplePanel container = new SimplePanel();
 
     public BaseDOMElement( final GridLayer gridLayer,
-                           final BaseGridWidget<?> gridWidget,
+                           final BaseGridWidget<?, ?> gridWidget,
                            final AbsolutePanel domElementContainer ) {
         this.gridLayer = gridLayer;
         this.gridWidget = gridWidget;

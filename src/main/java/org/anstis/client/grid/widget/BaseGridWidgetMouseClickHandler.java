@@ -22,7 +22,7 @@ import org.anstis.client.grid.model.IGridColumn;
 import org.anstis.client.grid.util.GridCoordinateUtils;
 import org.anstis.client.grid.widget.renderers.IGridRenderer;
 
-public abstract class BaseGridWidgetMouseClickHandler<W extends BaseGridWidget<?>> implements NodeMouseClickHandler {
+public abstract class BaseGridWidgetMouseClickHandler<W extends BaseGridWidget<?, ?>> implements NodeMouseClickHandler {
 
     protected W gridWidget;
     protected ISelectionManager selectionManager;

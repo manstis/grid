@@ -120,7 +120,7 @@ public abstract class AbstractClippingGridRenderer implements IGridRenderer<Grid
         final int endRowIndex = context.getEndRowIndex();
         final double width = context.getWidth();
         final Transform transform = context.getTransform();
-        final BaseGridWidget<?> widget = context.getWidget();
+        final BaseGridWidget<?, ?> widget = context.getWidget();
 
         final Group g = new Group();
         final List<GridColumn<?>> columns = model.getColumns();

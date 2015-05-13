@@ -27,14 +27,14 @@ import org.anstis.client.grid.widget.context.GridCellRenderContext;
 public abstract class BaseDOMElementFactory<T, E extends BaseDOMElement> implements IDOMElementFactory<T, E> {
 
     private final GridLayer gridLayer;
-    private final BaseGridWidget<?> gridWidget;
+    private final BaseGridWidget<?, ?> gridWidget;
     private final AbsolutePanel domElementContainer;
     private final List<E> containers = new ArrayList<>();
 
     private int consumed = 0;
 
     public BaseDOMElementFactory( final GridLayer gridLayer,
-                                  final BaseGridWidget<?> gridWidget,
+                                  final BaseGridWidget<?, ?> gridWidget,
                                   final AbsolutePanel domElementContainer ) {
         this.gridLayer = gridLayer;
         this.gridWidget = gridWidget;

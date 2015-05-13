@@ -25,7 +25,7 @@ import org.anstis.client.grid.model.IGridRow;
 import org.anstis.client.grid.util.GridCoordinateUtils;
 import org.anstis.client.grid.widget.renderers.IGridRenderer;
 
-public abstract class BaseGridWidgetMouseDoubleClickHandler<W extends BaseGridWidget<?>> implements NodeMouseDoubleClickHandler {
+public abstract class BaseGridWidgetMouseDoubleClickHandler<W extends BaseGridWidget<?, ?>> implements NodeMouseDoubleClickHandler {
 
     protected W gridWidget;
     protected ISelectionManager selectionManager;

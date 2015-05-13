@@ -21,7 +21,7 @@ import org.anstis.client.grid.widget.BaseGridWidget;
 import org.anstis.client.grid.widget.ISelectionManager;
 import org.anstis.client.grid.widget.renderers.mergable.IMergableGridRenderer;
 
-public class MergableGridWidget extends BaseGridWidget<MergableGridData> {
+public class MergableGridWidget extends BaseGridWidget<MergableGridData, IMergableGridRenderer> {
 
     private final MergableGridWidgetMouseClickHandler mouseClickHandler;
     private final MergableGridWidgetMouseDoubleClickHandler mouseDoubleClickHandler;
@@ -48,10 +48,10 @@ public class MergableGridWidget extends BaseGridWidget<MergableGridData> {
                                      final double cellY,
                                      final double columnWidth,
                                      final double rowHeight ) {
-        return ( (IMergableGridRenderer) renderer ).onGroupingToggle( cellX,
-                                                                      cellY,
-                                                                      columnWidth,
-                                                                      rowHeight );
+        return renderer.onGroupingToggle( cellX,
+                                          cellY,
+                                          columnWidth,
+                                          rowHeight );
     }
 
     @Override

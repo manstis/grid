@@ -35,7 +35,7 @@ public class CheckBoxDOMElement extends BaseDOMElement<Boolean, CheckBox> {
     private GridCellRenderContext context;
 
     public CheckBoxDOMElement( final GridLayer gridLayer,
-                               final BaseGridWidget<?> gridWidget,
+                               final BaseGridWidget<?, ?> gridWidget,
                                final AbsolutePanel domElementContainer ) {
         super( gridLayer,
                gridWidget,
@@ -56,7 +56,7 @@ public class CheckBoxDOMElement extends BaseDOMElement<Boolean, CheckBox> {
             @Override
             public void onClick( final ClickEvent event ) {
                 if ( context != null ) {
-                    final BaseGridWidget<?> widget = context.getWidget();
+                    final BaseGridWidget<?, ?> widget = context.getWidget();
                     widget.getModel().setCell( context.getRowIndex(),
                                                context.getColumnIndex(),
                                                new BaseGridCellValue<>( cb.getValue() ) );

@@ -25,7 +25,7 @@ import org.anstis.client.grid.widget.context.GridCellRenderContext;
 public interface IDOMElementFactory<T, E> extends IHasResources {
 
     E newElement( final GridLayer gridLayer,
-                  final BaseGridWidget<?> gridWidget,
+                  final BaseGridWidget<?, ?> gridWidget,
                   final AbsolutePanel domElementContainer );
 
     void addCell( final IGridCell<T> cell,

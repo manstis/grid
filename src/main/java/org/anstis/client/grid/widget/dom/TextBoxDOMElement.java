@@ -33,7 +33,7 @@ public class TextBoxDOMElement extends BaseDOMElement<String, TextBox> {
     private GridCellRenderContext context;
 
     public TextBoxDOMElement( final GridLayer gridLayer,
-                              final BaseGridWidget<?> gridWidget,
+                              final BaseGridWidget<?, ?> gridWidget,
                               final AbsolutePanel domElementContainer ) {
         super( gridLayer,
                gridWidget,
@@ -60,7 +60,7 @@ public class TextBoxDOMElement extends BaseDOMElement<String, TextBox> {
             @Override
             public void onValueChange( final ValueChangeEvent event ) {
                 if ( context != null ) {
-                    final BaseGridWidget<?> widget = context.getWidget();
+                    final BaseGridWidget<?, ?> widget = context.getWidget();
                     widget.getModel().setCell( context.getRowIndex(),
                                                context.getColumnIndex(),
                                                new BaseGridCellValue<>( tb.getText() ) );

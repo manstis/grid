@@ -212,7 +212,7 @@ public class MergableGridRenderer implements IMergableGridRenderer {
             final int endRowIndex = context.getEndRowIndex();
             final double width = context.getWidth();
             final Transform transform = context.getTransform();
-            final BaseGridWidget<?> widget = context.getWidget();
+            final BaseGridWidget<?, ?> widget = context.getWidget();
 
             final Group g = new Group();
             final List<MergableGridColumn<?>> columns = model.getColumns();
@@ -486,7 +486,7 @@ public class MergableGridRenderer implements IMergableGridRenderer {
             final int endRowIndex = context.getEndRowIndex();
             final double width = context.getWidth();
             final Transform transform = context.getTransform();
-            final BaseGridWidget<?> widget = context.getWidget();
+            final BaseGridWidget<?, ?> widget = context.getWidget();
 
             final Group g = new Group();
             final List<MergableGridColumn<?>> columns = model.getColumns();

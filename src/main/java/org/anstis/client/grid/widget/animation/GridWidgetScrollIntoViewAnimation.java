@@ -35,19 +35,19 @@ public class GridWidgetScrollIntoViewAnimation extends TimedAnimation {
         }
     };
 
-    public GridWidgetScrollIntoViewAnimation( final BaseGridWidget<?> gridWidget ) {
+    public GridWidgetScrollIntoViewAnimation( final BaseGridWidget<?, ?> gridWidget ) {
         this( gridWidget,
               NULL_COMMAND,
               NULL_COMMAND );
     }
 
-    public GridWidgetScrollIntoViewAnimation( final BaseGridWidget<?> gridWidget,
+    public GridWidgetScrollIntoViewAnimation( final BaseGridWidget<?, ?> gridWidget,
                                               final Command onStartCommand ) {
         this( gridWidget, onStartCommand,
               NULL_COMMAND );
     }
 
-    public GridWidgetScrollIntoViewAnimation( final BaseGridWidget<?> gridWidget,
+    public GridWidgetScrollIntoViewAnimation( final BaseGridWidget<?, ?> gridWidget,
                                               final Command onStartCommand,
                                               final Command onCloseCommand ) {
         super( 500,

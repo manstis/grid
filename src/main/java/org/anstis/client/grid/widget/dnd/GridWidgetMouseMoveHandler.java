@@ -36,11 +36,11 @@ public class GridWidgetMouseMoveHandler implements NodeMouseMoveHandler {
 
     private final GridLayer layer;
     private final GridWidgetHandlersState state;
-    private final Map<IGridData<?, ?, ?>, BaseGridWidget<?>> selectables;
+    private final Map<IGridData<?, ?, ?>, BaseGridWidget<?, ?>> selectables;
 
     public GridWidgetMouseMoveHandler( final GridLayer layer,
                                        final GridWidgetHandlersState state,
-                                       final Map<IGridData<?, ?, ?>, BaseGridWidget<?>> selectables ) {
+                                       final Map<IGridData<?, ?, ?>, BaseGridWidget<?, ?>> selectables ) {
         this.layer = layer;
         this.state = state;
         this.selectables = selectables;
@@ -64,9 +64,9 @@ public class GridWidgetMouseMoveHandler implements NodeMouseMoveHandler {
                 state.setOperation( GridWidgetHandlersState.GridWidgetHandlersOperation.NONE );
                 state.setCursor( Style.Cursor.DEFAULT );
 
-                for ( Map.Entry<IGridData<?, ?, ?>, BaseGridWidget<?>> e : selectables.entrySet() ) {
+                for ( Map.Entry<IGridData<?, ?, ?>, BaseGridWidget<?, ?>> e : selectables.entrySet() ) {
                     final IGridData<?, ?, ?> grid = e.getKey();
-                    final BaseGridWidget<?> gridWidget = e.getValue();
+                    final BaseGridWidget<?, ?> gridWidget = e.getValue();
                     final IGridRenderer<?> renderer = gridWidget.getRenderer();
                     final Point2D ap = GridCoordinateUtils.mapToGridWidgetAbsolutePoint( gridWidget,
                                                                                          new Point2D( event.getX(),
@@ -119,7 +119,7 @@ public class GridWidgetMouseMoveHandler implements NodeMouseMoveHandler {
     }
 
     private void handleColumnResize( final NodeMouseMoveEvent event ) {
-        final BaseGridWidget<?> gridWidget = selectables.get( state.getGrid() );
+        final BaseGridWidget<?, ?> gridWidget = selectables.get( state.getGrid() );
         final Point2D ap = GridCoordinateUtils.mapToGridWidgetAbsolutePoint( gridWidget,
                                                                              new Point2D( event.getX(),
                                                                                           event.getY() ) );

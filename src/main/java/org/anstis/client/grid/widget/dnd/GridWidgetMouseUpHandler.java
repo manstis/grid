@@ -28,11 +28,11 @@ public class GridWidgetMouseUpHandler implements NodeMouseUpHandler {
 
     private final GridLayer layer;
     private final GridWidgetHandlersState state;
-    private final Map<IGridData<?, ?, ?>, BaseGridWidget<?>> selectables;
+    private final Map<IGridData<?, ?, ?>, BaseGridWidget<?, ?>> selectables;
 
     public GridWidgetMouseUpHandler( final GridLayer layer,
                                      final GridWidgetHandlersState state,
-                                     final Map<IGridData<?, ?, ?>, BaseGridWidget<?>> selectables ) {
+                                     final Map<IGridData<?, ?, ?>, BaseGridWidget<?, ?>> selectables ) {
         this.layer = layer;
         this.state = state;
         this.selectables = selectables;

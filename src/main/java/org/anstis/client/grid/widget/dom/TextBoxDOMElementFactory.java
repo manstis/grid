@@ -22,7 +22,7 @@ import org.anstis.client.grid.widget.GridLayer;
 public class TextBoxDOMElementFactory extends BaseDOMElementFactory<String, TextBoxDOMElement> {
 
     public TextBoxDOMElementFactory( final GridLayer gridLayer,
-                                     final BaseGridWidget<?> gridWidget,
+                                     final BaseGridWidget<?, ?> gridWidget,
                                      final AbsolutePanel domElementContainer ) {
         super( gridLayer,
                gridWidget,
@@ -31,7 +31,7 @@ public class TextBoxDOMElementFactory extends BaseDOMElementFactory<String, Text
 
     @Override
     public TextBoxDOMElement newElement( final GridLayer gridLayer,
-                                         final BaseGridWidget<?> gridWidget,
+                                         final BaseGridWidget<?, ?> gridWidget,
                                          final AbsolutePanel domElementContainer ) {
         return new TextBoxDOMElement( gridLayer,
                                       gridWidget,

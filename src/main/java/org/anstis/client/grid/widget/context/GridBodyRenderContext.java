@@ -28,7 +28,7 @@ public class GridBodyRenderContext {
     private final int startRowIndex;
     private final int endRowIndex;
     private final Transform transform;
-    private final BaseGridWidget<?> widget;
+    private final BaseGridWidget<?, ?> widget;
 
     public GridBodyRenderContext( final double x,
                                   final double y,
@@ -38,7 +38,7 @@ public class GridBodyRenderContext {
                                   final int startRowIndex,
                                   final int endRowIndex,
                                   final Transform transform,
-                                  final BaseGridWidget<?> widget ) {
+                                  final BaseGridWidget<?, ?> widget ) {
         this.x = x;
         this.y = y;
         this.width = width;
@@ -82,7 +82,7 @@ public class GridBodyRenderContext {
         return transform;
     }
 
-    public BaseGridWidget<?> getWidget() {
+    public BaseGridWidget<?, ?> getWidget() {
         return widget;
     }
 

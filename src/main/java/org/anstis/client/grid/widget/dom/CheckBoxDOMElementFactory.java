@@ -22,7 +22,7 @@ import org.anstis.client.grid.widget.GridLayer;
 public class CheckBoxDOMElementFactory extends BaseDOMElementFactory<Boolean, CheckBoxDOMElement> {
 
     public CheckBoxDOMElementFactory( final GridLayer gridLayer,
-                                      final BaseGridWidget<?> gridWidget,
+                                      final BaseGridWidget<?, ?> gridWidget,
                                       final AbsolutePanel domElementContainer ) {
         super( gridLayer,
                gridWidget,
@@ -31,7 +31,7 @@ public class CheckBoxDOMElementFactory extends BaseDOMElementFactory<Boolean, Ch
 
     @Override
     public CheckBoxDOMElement newElement( final GridLayer gridLayer,
-                                          final BaseGridWidget<?> gridWidget,
+                                          final BaseGridWidget<?, ?> gridWidget,
                                           final AbsolutePanel domElementContainer ) {
         return new CheckBoxDOMElement( gridLayer,
                                        gridWidget,

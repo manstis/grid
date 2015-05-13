@@ -29,18 +29,18 @@ import org.anstis.client.grid.widget.context.GridBodyRenderContext;
 import org.anstis.client.grid.widget.context.GridHeaderRenderContext;
 import org.anstis.client.grid.widget.renderers.IGridRenderer;
 
-public abstract class BaseGridWidget<M extends IGridData<?, ?, ?>> extends Group implements NodeMouseClickHandler {
+public abstract class BaseGridWidget<M extends IGridData<?, ?, ?>, R extends IGridRenderer<M>> extends Group implements NodeMouseClickHandler {
 
     private boolean isSelected = false;
     private Group selection = null;
 
     protected M model;
     protected ISelectionManager selectionManager;
-    protected IGridRenderer<M> renderer;
+    protected R renderer;
 
     public BaseGridWidget( final M model,
                            final ISelectionManager selectionManager,
-                           final IGridRenderer<M> renderer ) {
+                           final R renderer ) {
         this.model = model;
         this.selectionManager = selectionManager;
         this.renderer = renderer;
@@ -54,7 +54,7 @@ public abstract class BaseGridWidget<M extends IGridData<?, ?, ?>> extends Group
         return this.renderer;
     }
 
-    public void setRenderer( final IGridRenderer<M> renderer ) {
+    public void setRenderer( final R renderer ) {
         this.renderer = renderer;
     }
 

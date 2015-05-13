@@ -31,11 +31,11 @@ public class GridWidgetMouseDownHandler implements NodeMouseDownHandler {
 
     private final GridLayer layer;
     private final GridWidgetHandlersState state;
-    private final Map<IGridData<?, ?, ?>, BaseGridWidget<?>> selectables;
+    private final Map<IGridData<?, ?, ?>, BaseGridWidget<?, ?>> selectables;
 
     public GridWidgetMouseDownHandler( final GridLayer layer,
                                        final GridWidgetHandlersState state,
-                                       final Map<IGridData<?, ?, ?>, BaseGridWidget<?>> selectables ) {
+                                       final Map<IGridData<?, ?, ?>, BaseGridWidget<?, ?>> selectables ) {
         this.layer = layer;
         this.state = state;
         this.selectables = selectables;
@@ -47,7 +47,7 @@ public class GridWidgetMouseDownHandler implements NodeMouseDownHandler {
             return;
         }
 
-        final BaseGridWidget<?> gridWidget = selectables.get( state.getGrid() );
+        final BaseGridWidget<?, ?> gridWidget = selectables.get( state.getGrid() );
         final Point2D ap = GridCoordinateUtils.mapToGridWidgetAbsolutePoint( gridWidget,
                                                                              new Point2D( event.getX(),
                                                                                           event.getY() ) );
@@ -69,7 +69,7 @@ public class GridWidgetMouseDownHandler implements NodeMouseDownHandler {
 
     private void showColumnHighlight( final IGridData grid,
                                       final IGridColumn gridColumn ) {
-        final BaseGridWidget<?> gridWidget = selectables.get( grid );
+        final BaseGridWidget<?, ?> gridWidget = selectables.get( grid );
         final double highlightOffsetX = grid.getColumnOffset( gridColumn );
 
         final Rectangle bounds = layer.getVisibleBounds();
