@@ -15,13 +15,17 @@
  */
 package org.anstis.client.grid.widget.renderers.mergable;
 
+import com.ait.lienzo.client.core.shape.Group;
 import org.anstis.client.grid.model.mergable.MergableGridData;
 import org.anstis.client.grid.widget.renderers.IGridRenderer;
 
 public interface IMergableGridRenderer extends IGridRenderer<MergableGridData> {
 
-    GroupingToggle renderGroupedCellToggle( final double containerWidth,
-                                            final double containerHeight,
-                                            final boolean isGrouped );
+    Group renderGroupedCellToggle( final double containerWidth,
+                                   final double containerHeight,
+                                   final boolean isGrouped );
+
+    Group renderMergedCellMixedValueHighlight( final double columnWidth,
+                                               final double rowHeight );
 
 }

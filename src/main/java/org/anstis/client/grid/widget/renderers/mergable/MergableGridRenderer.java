@@ -168,12 +168,23 @@ public class MergableGridRenderer implements IMergableGridRenderer {
     }
 
     @Override
-    public GroupingToggle renderGroupedCellToggle( final double containerWidth,
-                                                   final double containerHeight,
-                                                   final boolean isCollapsed ) {
+    public Group renderGroupedCellToggle( final double containerWidth,
+                                          final double containerHeight,
+                                          final boolean isCollapsed ) {
         return new GroupingToggle( containerWidth,
                                    containerHeight,
                                    isCollapsed );
+    }
+
+    @Override
+    public Group renderMergedCellMixedValueHighlight( final double columnWidth,
+                                                      final double rowHeight ) {
+        final Group g = new Group();
+        final Rectangle multiValueHighlight = new Rectangle( columnWidth,
+                                                             rowHeight );
+        multiValueHighlight.setFillColor( ColorName.GOLDENROD );
+        g.add( multiValueHighlight );
+        return g;
     }
 
     /**
@@ -267,10 +278,23 @@ public class MergableGridRenderer implements IMergableGridRenderer {
                     final MergableGridRow row = model.getRow( rowIndex );
                     final MergableGridCell cell = model.getCell( rowIndex,
                                                                  columnIndex );
-                    final double rowHeight = row.getHeight();
 
                     //Only show content for rows that are not collapsed
                     if ( !row.isCollapsed() ) {
+
+                        //Add highlight for merged cells with different values
+                        final boolean isCollapsedCellMixedValue = isCollapsedCellMixedValue( model,
+                                                                                             rowIndex,
+                                                                                             columnIndex );
+
+                        if ( isCollapsedCellMixedValue ) {
+                            final Group mixedValueGroup = renderMergedCellMixedValueHighlight( columnWidth,
+                                                                                               row.getHeight() );
+                            mixedValueGroup.setX( x )
+                                    .setY( y )
+                                    .setListening( false );
+                            g.add( mixedValueGroup );
+                        }
 
                         //Only show content if there's a Cell behind it!
                         if ( cell != null ) {
@@ -280,9 +304,9 @@ public class MergableGridRenderer implements IMergableGridRenderer {
                                 final MergableGridCell nextRowCell = model.getCell( rowIndex + 1,
                                                                                     columnIndex );
                                 if ( nextRowCell != null ) {
-                                    final GroupingToggle gt = renderGroupedCellToggle( columnWidth,
-                                                                                       row.getHeight(),
-                                                                                       nextRowCell.isCollapsed() );
+                                    final Group gt = renderGroupedCellToggle( columnWidth,
+                                                                              row.getHeight(),
+                                                                              nextRowCell.isCollapsed() );
                                     gt.setX( x ).setY( y );
                                     g.add( gt );
                                 }
@@ -346,6 +370,7 @@ public class MergableGridRenderer implements IMergableGridRenderer {
                                 rowIndex = _rowIndex + _cell.getMergedCellCount() - 1;
                             }
                         }
+
                     }
                 }
                 x = x + columnWidth;
@@ -392,6 +417,45 @@ public class MergableGridRenderer implements IMergableGridRenderer {
             if ( !cell.getValue().equals( nc.getValue() ) ) {
                 return true;
             }
+            return false;
+        }
+
+        private boolean isCollapsedCellMixedValue( final MergableGridData model,
+                                                   final int rowIndex,
+                                                   final int columnIndex ) {
+            int _rowIndex = rowIndex;
+            MergableGridCell currentCell = model.getCell( _rowIndex,
+                                                          columnIndex );
+            if ( currentCell != null ) {
+                while ( _rowIndex > 0 && currentCell.getMergedCellCount() == 0 ) {
+                    _rowIndex--;
+                    currentCell = model.getCell( _rowIndex,
+                                                 columnIndex );
+                }
+            }
+
+            _rowIndex++;
+            if ( _rowIndex > model.getRowCount() - 1 ) {
+                return false;
+            }
+            while ( model.getRow( _rowIndex ).isCollapsed() ) {
+                final MergableGridCell nextCell = model.getCell( _rowIndex,
+                                                                 columnIndex );
+                if ( currentCell == null ) {
+                    if ( nextCell != null ) {
+                        return true;
+                    }
+                } else {
+                    if ( nextCell == null ) {
+                        return true;
+                    }
+                    if ( !currentCell.getValue().getValue().equals( nextCell.getValue().getValue() ) ) {
+                        return true;
+                    }
+                }
+                _rowIndex++;
+            }
+
             return false;
         }
 

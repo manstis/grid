@@ -18,7 +18,6 @@ package org.anstis.client.grid.widget;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.ait.lienzo.client.core.event.NodeMouseMoveEvent;
 import com.ait.lienzo.client.core.mediator.MousePanMediator;
 import com.ait.lienzo.client.core.shape.Group;
 import com.ait.lienzo.client.core.shape.Text;
@@ -115,14 +114,7 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
         gridPanel.getViewport().setTransform( transform );
 
         //Lienzo stuff - Add mouse pan support
-        final MousePanMediator mediator1 = new MousePanMediator() {
-            @Override
-            protected void onMouseMove( NodeMouseMoveEvent event ) {
-                super.onMouseMove( event );
-                final Transform t = gridLayer.getViewport().getTransform();
-                GWT.log( "Pan transform: (" + t.getTranslateX() + ", " + t.getTranslateY() + ")" );
-            }
-        };
+        final MousePanMediator mediator1 = new MousePanMediator();
         gridPanel.getViewport().getMediators().push( mediator1 );
 
         //Wire-up widgets
