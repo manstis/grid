@@ -18,6 +18,7 @@ package org.anstis.client.grid.widget;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.ait.lienzo.client.core.event.NodeMouseMoveEvent;
 import com.ait.lienzo.client.core.mediator.MousePanMediator;
 import com.ait.lienzo.client.core.shape.Group;
 import com.ait.lienzo.client.core.shape.Text;
@@ -31,6 +32,8 @@ import com.google.gwt.core.client.Callback;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
+import com.google.gwt.event.dom.client.ScrollEvent;
+import com.google.gwt.event.dom.client.ScrollHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -112,7 +115,14 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
         gridPanel.getViewport().setTransform( transform );
 
         //Lienzo stuff - Add mouse pan support
-        final MousePanMediator mediator1 = new MousePanMediator();
+        final MousePanMediator mediator1 = new MousePanMediator() {
+            @Override
+            protected void onMouseMove( NodeMouseMoveEvent event ) {
+                super.onMouseMove( event );
+                final Transform t = gridLayer.getViewport().getTransform();
+                GWT.log( "Pan transform: (" + t.getTranslateX() + ", " + t.getTranslateY() + ")" );
+            }
+        };
         gridPanel.getViewport().getMediators().push( mediator1 );
 
         //Wire-up widgets
@@ -479,6 +489,15 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
                 gridLayer.draw();
             }
         } );
+
+        domElementContainer.addDomHandler( new ScrollHandler() {
+
+            @Override
+            public void onScroll( ScrollEvent scrollEvent ) {
+                domElementContainer.getElement().setScrollTop( 0 );
+                domElementContainer.getElement().setScrollLeft( 0 );
+            }
+        }, ScrollEvent.getType() );
     }
 
     @Override
