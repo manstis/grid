@@ -22,9 +22,9 @@ import org.anstis.client.grid.widget.BaseGridWidget;
 
 public class GridCoordinateUtils {
 
-    public static Point2D mapToGridWidgetAbsolutePoint( final BaseGridWidget grid,
+    public static Point2D mapToGridWidgetAbsolutePoint( final BaseGridWidget gridWidget,
                                                         final Point2D point ) {
-        final Viewport viewport = grid.getViewport();
+        final Viewport viewport = gridWidget.getViewport();
         Transform transform = viewport.getTransform();
         if ( transform == null ) {
             viewport.setTransform( transform = new Transform() );
@@ -35,7 +35,7 @@ public class GridCoordinateUtils {
                                        point.getY() );
         transform.transform( p,
                              p );
-        return p.add( grid.getLocation().mul( -1.0 ) );
+        return p.add( gridWidget.getLocation().mul( -1.0 ) );
     }
 
 }

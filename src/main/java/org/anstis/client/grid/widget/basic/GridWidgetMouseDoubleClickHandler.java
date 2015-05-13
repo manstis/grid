@@ -26,10 +26,10 @@ import org.anstis.client.grid.widget.renderers.IGridRenderer;
 
 public class GridWidgetMouseDoubleClickHandler extends BaseGridWidgetMouseDoubleClickHandler<GridWidget> {
 
-    public GridWidgetMouseDoubleClickHandler( final GridWidget grid,
+    public GridWidgetMouseDoubleClickHandler( final GridWidget gridWidget,
                                               final ISelectionManager selectionManager,
                                               final IGridRenderer<GridData> renderer ) {
-        super( grid,
+        super( gridWidget,
                selectionManager,
                renderer );
     }
@@ -37,9 +37,9 @@ public class GridWidgetMouseDoubleClickHandler extends BaseGridWidgetMouseDouble
     @Override
     protected void doEdit( final int rowIndex,
                            final int columnIndex ) {
-        final GridCell cell = grid.getModel().getCell( rowIndex,
-                                                       columnIndex );
-        final GridColumn column = grid.getModel().getColumns().get( columnIndex );
+        final GridCell cell = gridWidget.getModel().getCell( rowIndex,
+                                                             columnIndex );
+        final GridColumn column = gridWidget.getModel().getColumns().get( columnIndex );
         column.edit( cell == null ? null : cell.getValue(),
                      new Callback<IGridCellValue<?>, IGridCellValue<?>>() {
 
@@ -50,10 +50,10 @@ public class GridWidgetMouseDoubleClickHandler extends BaseGridWidgetMouseDouble
 
                          @Override
                          public void onSuccess( final IGridCellValue<?> value ) {
-                             grid.getModel().setCell( rowIndex,
-                                                      columnIndex,
-                                                      value );
-                             grid.getLayer().draw();
+                             gridWidget.getModel().setCell( rowIndex,
+                                                            columnIndex,
+                                                            value );
+                             gridWidget.getLayer().draw();
                          }
                      } );
     }

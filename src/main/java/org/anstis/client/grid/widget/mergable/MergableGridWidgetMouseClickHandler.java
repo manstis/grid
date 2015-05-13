@@ -33,10 +33,10 @@ import org.anstis.client.grid.widget.renderers.mergable.IMergableGridRenderer;
 
 public class MergableGridWidgetMouseClickHandler extends BaseGridWidgetMouseClickHandler<MergableGridWidget> {
 
-    public MergableGridWidgetMouseClickHandler( final MergableGridWidget grid,
+    public MergableGridWidgetMouseClickHandler( final MergableGridWidget gridWidget,
                                                 final ISelectionManager selectionManager,
                                                 final IMergableGridRenderer renderer ) {
-        super( grid,
+        super( gridWidget,
                selectionManager,
                renderer );
     }
@@ -44,15 +44,15 @@ public class MergableGridWidgetMouseClickHandler extends BaseGridWidgetMouseClic
     @Override
     protected void handleBodyCellClick( final NodeMouseClickEvent event ) {
         //Convert Canvas co-ordinate to Grid co-ordinate
-        final Point2D ap = GridCoordinateUtils.mapToGridWidgetAbsolutePoint( grid,
+        final Point2D ap = GridCoordinateUtils.mapToGridWidgetAbsolutePoint( gridWidget,
                                                                              new Point2D( event.getX(),
                                                                                           event.getY() ) );
         final double x = ap.getX();
         final double y = ap.getY();
-        if ( x < 0 || x > grid.getWidth() ) {
+        if ( x < 0 || x > gridWidget.getWidth() ) {
             return;
         }
-        if ( y < renderer.getHeaderHeight() || y > grid.getHeight() ) {
+        if ( y < renderer.getHeaderHeight() || y > gridWidget.getHeight() ) {
             return;
         }
 
@@ -60,18 +60,18 @@ public class MergableGridWidgetMouseClickHandler extends BaseGridWidgetMouseClic
         IGridRow<?> row;
         int rowIndex = 0;
         double offsetY = y - renderer.getHeaderHeight();
-        while ( ( row = grid.getModel().getRow( rowIndex ) ).getHeight() < offsetY ) {
+        while ( ( row = gridWidget.getModel().getRow( rowIndex ) ).getHeight() < offsetY ) {
             offsetY = offsetY - row.getHeight();
             rowIndex++;
         }
-        if ( rowIndex < 0 || rowIndex > grid.getModel().getRowCount() - 1 ) {
+        if ( rowIndex < 0 || rowIndex > gridWidget.getModel().getRowCount() - 1 ) {
             return;
         }
 
         //Get column index
         int columnIndex = -1;
         double offsetX = 0;
-        final List<MergableGridColumn<?>> columns = grid.getModel().getColumns();
+        final List<MergableGridColumn<?>> columns = gridWidget.getModel().getColumns();
         for ( int idx = 0; idx < columns.size(); idx++ ) {
             final MergableGridColumn gridColumn = columns.get( idx );
             final double width = gridColumn.getWidth();
@@ -86,8 +86,8 @@ public class MergableGridWidgetMouseClickHandler extends BaseGridWidgetMouseClic
         }
 
         //Check if the cell can be Grouped
-        final MergableGridCell cell = grid.getModel().getCell( rowIndex,
-                                                               columnIndex );
+        final MergableGridCell cell = gridWidget.getModel().getCell( rowIndex,
+                                                                     columnIndex );
         if ( cell == null ) {
             return;
         }
@@ -96,12 +96,12 @@ public class MergableGridWidgetMouseClickHandler extends BaseGridWidgetMouseClic
         }
 
         //Check if the Grouping control has been clicked
-        final MergableGridRow gridRow = grid.getModel().getRow( rowIndex );
+        final MergableGridRow gridRow = gridWidget.getModel().getRow( rowIndex );
         final MergableGridColumn gridColumn = columns.get( columnIndex );
-        final MergableGridCell nextRowCell = grid.getModel().getCell( rowIndex + 1,
-                                                                      columnIndex );
+        final MergableGridCell nextRowCell = gridWidget.getModel().getCell( rowIndex + 1,
+                                                                            columnIndex );
         final double cellX = x - offsetX;
-        final double cellY = y - grid.getModel().getRowOffset( rowIndex ) - renderer.getHeaderHeight();
+        final double cellY = y - gridWidget.getModel().getRowOffset( rowIndex ) - renderer.getHeaderHeight();
         final GroupingToggle gt = new GroupingToggle( gridColumn.getWidth(),
                                                       gridRow.getHeight(),
                                                       nextRowCell.isCollapsed() );
@@ -125,7 +125,7 @@ public class MergableGridWidgetMouseClickHandler extends BaseGridWidgetMouseClic
     protected void collapseRows( final int rowIndex,
                                  final int rowCount,
                                  final int columnIndex ) {
-        final MergableGridWidgetCollapseRowsAnimation a = new MergableGridWidgetCollapseRowsAnimation( grid,
+        final MergableGridWidgetCollapseRowsAnimation a = new MergableGridWidgetCollapseRowsAnimation( gridWidget,
                                                                                                        rowIndex,
                                                                                                        rowCount,
                                                                                                        columnIndex );
@@ -135,7 +135,7 @@ public class MergableGridWidgetMouseClickHandler extends BaseGridWidgetMouseClic
     protected void expandRows( final int rowIndex,
                                final int rowCount,
                                final int columnIndex ) {
-        final MergableGridWidgetExpandRowsAnimation a = new MergableGridWidgetExpandRowsAnimation( grid,
+        final MergableGridWidgetExpandRowsAnimation a = new MergableGridWidgetExpandRowsAnimation( gridWidget,
                                                                                                    rowIndex,
                                                                                                    rowCount,
                                                                                                    columnIndex );

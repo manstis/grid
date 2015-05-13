@@ -27,14 +27,14 @@ import org.anstis.client.grid.widget.renderers.IGridRenderer;
 
 public abstract class BaseGridWidgetMouseDoubleClickHandler<W extends BaseGridWidget<?>> implements NodeMouseDoubleClickHandler {
 
-    protected W grid;
+    protected W gridWidget;
     protected ISelectionManager selectionManager;
     protected IGridRenderer<?> renderer;
 
-    public BaseGridWidgetMouseDoubleClickHandler( final W grid,
+    public BaseGridWidgetMouseDoubleClickHandler( final W gridWidget,
                                                   final ISelectionManager selectionManager,
                                                   final IGridRenderer<?> renderer ) {
-        this.grid = grid;
+        this.gridWidget = gridWidget;
         this.selectionManager = selectionManager;
         this.renderer = renderer;
     }
@@ -51,15 +51,15 @@ public abstract class BaseGridWidgetMouseDoubleClickHandler<W extends BaseGridWi
 
     protected void handleBodyCellDoubleClick( final NodeMouseDoubleClickEvent event ) {
         //Convert Canvas co-ordinate to Grid co-ordinate
-        final Point2D ap = GridCoordinateUtils.mapToGridWidgetAbsolutePoint( grid,
+        final Point2D ap = GridCoordinateUtils.mapToGridWidgetAbsolutePoint( gridWidget,
                                                                              new Point2D( event.getX(),
                                                                                           event.getY() ) );
         final double x = ap.getX();
         final double y = ap.getY();
-        if ( x < 0 || x > grid.getWidth() ) {
+        if ( x < 0 || x > gridWidget.getWidth() ) {
             return;
         }
-        if ( y < renderer.getHeaderHeight() || y > grid.getHeight() ) {
+        if ( y < renderer.getHeaderHeight() || y > gridWidget.getHeight() ) {
             return;
         }
 
@@ -67,18 +67,18 @@ public abstract class BaseGridWidgetMouseDoubleClickHandler<W extends BaseGridWi
         IGridRow<?> row;
         int rowIndex = 0;
         double offsetY = y - renderer.getHeaderHeight();
-        while ( ( row = grid.getModel().getRow( rowIndex ) ).getHeight() < offsetY ) {
+        while ( ( row = gridWidget.getModel().getRow( rowIndex ) ).getHeight() < offsetY ) {
             offsetY = offsetY - row.getHeight();
             rowIndex++;
         }
-        if ( rowIndex < 0 || rowIndex > grid.getModel().getRowCount() - 1 ) {
+        if ( rowIndex < 0 || rowIndex > gridWidget.getModel().getRowCount() - 1 ) {
             return;
         }
 
         //Get column index
         int columnIndex = -1;
         double offsetX = 0;
-        final List<? extends IGridColumn<?, ?>> columns = grid.getModel().getColumns();
+        final List<? extends IGridColumn<?, ?>> columns = gridWidget.getModel().getColumns();
         for ( int idx = 0; idx < columns.size(); idx++ ) {
             final IGridColumn<?, ?> gridColumn = columns.get( idx );
             final double width = gridColumn.getWidth();

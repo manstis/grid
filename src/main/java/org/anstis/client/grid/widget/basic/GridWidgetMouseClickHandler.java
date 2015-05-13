@@ -22,10 +22,10 @@ import org.anstis.client.grid.widget.renderers.IGridRenderer;
 
 public class GridWidgetMouseClickHandler extends BaseGridWidgetMouseClickHandler<GridWidget> {
 
-    public GridWidgetMouseClickHandler( final GridWidget grid,
+    public GridWidgetMouseClickHandler( final GridWidget gridWidget,
                                         final ISelectionManager selectionManager,
                                         final IGridRenderer<GridData> renderer ) {
-        super( grid,
+        super( gridWidget,
                selectionManager,
                renderer );
     }

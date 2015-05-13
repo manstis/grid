@@ -25,10 +25,10 @@ import org.anstis.client.grid.widget.renderers.mergable.IMergableGridRenderer;
 
 public class MergableGridWidgetMouseDoubleClickHandler extends BaseGridWidgetMouseDoubleClickHandler<MergableGridWidget> {
 
-    public MergableGridWidgetMouseDoubleClickHandler( final MergableGridWidget grid,
+    public MergableGridWidgetMouseDoubleClickHandler( final MergableGridWidget gridWidget,
                                                       final ISelectionManager selectionManager,
                                                       final IMergableGridRenderer renderer ) {
-        super( grid,
+        super( gridWidget,
                selectionManager,
                renderer );
     }
@@ -36,9 +36,9 @@ public class MergableGridWidgetMouseDoubleClickHandler extends BaseGridWidgetMou
     @Override
     protected void doEdit( final int rowIndex,
                            final int columnIndex ) {
-        final MergableGridCell cell = grid.getModel().getCell( rowIndex,
-                                                               columnIndex );
-        final MergableGridColumn column = grid.getModel().getColumns().get( columnIndex );
+        final MergableGridCell cell = gridWidget.getModel().getCell( rowIndex,
+                                                                     columnIndex );
+        final MergableGridColumn column = gridWidget.getModel().getColumns().get( columnIndex );
         column.edit( cell == null ? null : cell.getValue(),
                      new Callback<IGridCellValue<?>, IGridCellValue<?>>() {
 
@@ -49,10 +49,10 @@ public class MergableGridWidgetMouseDoubleClickHandler extends BaseGridWidgetMou
 
                          @Override
                          public void onSuccess( final IGridCellValue<?> value ) {
-                             grid.getModel().setCell( rowIndex,
-                                                      columnIndex,
-                                                      value );
-                             grid.getLayer().draw();
+                             gridWidget.getModel().setCell( rowIndex,
+                                                            columnIndex,
+                                                            value );
+                             gridWidget.getLayer().draw();
                          }
                      } );
     }

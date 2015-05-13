@@ -24,33 +24,33 @@ import org.anstis.client.grid.widget.renderers.IGridRenderer;
 
 public abstract class BaseGridWidgetMouseClickHandler<W extends BaseGridWidget<?>> implements NodeMouseClickHandler {
 
-    protected W grid;
+    protected W gridWidget;
     protected ISelectionManager selectionManager;
     protected IGridRenderer<?> renderer;
 
-    public BaseGridWidgetMouseClickHandler( final W grid,
+    public BaseGridWidgetMouseClickHandler( final W gridWidget,
                                             final ISelectionManager selectionManager,
                                             final IGridRenderer<?> renderer ) {
-        this.grid = grid;
+        this.gridWidget = gridWidget;
         this.selectionManager = selectionManager;
         this.renderer = renderer;
     }
 
     @Override
     public void onNodeMouseClick( final NodeMouseClickEvent event ) {
-        selectionManager.select( grid.getModel() );
+        selectionManager.select( gridWidget.getModel() );
         handleHeaderCellClick( event );
         handleBodyCellClick( event );
     }
 
     protected void handleHeaderCellClick( final NodeMouseClickEvent event ) {
         //Convert Canvas co-ordinate to Grid co-ordinate
-        final Point2D ap = GridCoordinateUtils.mapToGridWidgetAbsolutePoint( grid,
+        final Point2D ap = GridCoordinateUtils.mapToGridWidgetAbsolutePoint( gridWidget,
                                                                              new Point2D( event.getX(),
                                                                                           event.getY() ) );
         final double x = ap.getX();
         final double y = ap.getY();
-        if ( x < 0 || x > grid.getWidth() ) {
+        if ( x < 0 || x > gridWidget.getWidth() ) {
             return;
         }
         if ( y < 0 || y > renderer.getHeaderHeight() ) {
@@ -60,7 +60,7 @@ public abstract class BaseGridWidgetMouseClickHandler<W extends BaseGridWidget<?
         //Get column index
         double offsetX = 0;
         IGridColumn<?, ?> column = null;
-        for ( IGridColumn<?, ?> gridColumn : grid.getModel().getColumns() ) {
+        for ( IGridColumn<?, ?> gridColumn : gridWidget.getModel().getColumns() ) {
             if ( x > offsetX && x < offsetX + gridColumn.getWidth() ) {
                 column = gridColumn;
                 break;
