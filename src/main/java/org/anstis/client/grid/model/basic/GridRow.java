@@ -30,4 +30,8 @@ public class GridRow extends BaseGridRow<GridCell<?>> {
         }
     }
 
+    void deleteCell( final int columnIndex ) {
+        cells.remove( columnIndex );
+    }
+
 }

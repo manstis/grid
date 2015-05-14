@@ -93,6 +93,10 @@ public class MergableGridRow extends BaseGridRow<MergableGridCell<?>> implements
         }
     }
 
+    void deleteCell( final int columnIndex ) {
+        cells.remove( columnIndex );
+    }
+
     void setHasMergedCells( final boolean hasMergedCells ) {
         this.hasMergedCells = hasMergedCells;
     }

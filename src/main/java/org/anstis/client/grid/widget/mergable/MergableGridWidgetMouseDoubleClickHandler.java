@@ -19,11 +19,13 @@ import com.google.gwt.core.client.Callback;
 import org.anstis.client.grid.model.IGridCellValue;
 import org.anstis.client.grid.model.mergable.MergableGridCell;
 import org.anstis.client.grid.model.mergable.MergableGridColumn;
+import org.anstis.client.grid.model.mergable.MergableGridData;
 import org.anstis.client.grid.widget.BaseGridWidgetMouseDoubleClickHandler;
 import org.anstis.client.grid.widget.ISelectionManager;
+import org.anstis.client.grid.widget.context.GridCellRenderContext;
 import org.anstis.client.grid.widget.renderers.mergable.IMergableGridRenderer;
 
-public class MergableGridWidgetMouseDoubleClickHandler extends BaseGridWidgetMouseDoubleClickHandler<MergableGridWidget> {
+public class MergableGridWidgetMouseDoubleClickHandler extends BaseGridWidgetMouseDoubleClickHandler<MergableGridWidget, MergableGridData> {
 
     public MergableGridWidgetMouseDoubleClickHandler( final MergableGridWidget gridWidget,
                                                       final ISelectionManager selectionManager,
@@ -34,12 +36,72 @@ public class MergableGridWidgetMouseDoubleClickHandler extends BaseGridWidgetMou
     }
 
     @Override
-    protected void doEdit( final int rowIndex,
-                           final int columnIndex ) {
+    protected double getRowOffset( final int rowIndex,
+                                   final int columnIndex,
+                                   final MergableGridData model ) {
+        final MergableGridCell<?> cell = model.getCell( rowIndex,
+                                                        columnIndex );
+        if ( cell == null ) {
+            return model.getRowOffset( rowIndex );
+        }
+        if ( cell.getMergedCellCount() == 1 ) {
+            return model.getRowOffset( rowIndex );
+        } else if ( cell.getMergedCellCount() > 1 ) {
+            return model.getRowOffset( rowIndex );
+        } else {
+            int _rowIndex = rowIndex;
+            MergableGridCell<?> _cell = cell;
+            while ( _cell.getMergedCellCount() == 0 ) {
+                _rowIndex--;
+                _cell = model.getCell( _rowIndex,
+                                       columnIndex );
+            }
+            return model.getRowOffset( _rowIndex );
+        }
+    }
+
+    @Override
+    protected double getCellHeight( final int rowIndex,
+                                    final int columnIndex,
+                                    final MergableGridData model ) {
+        final MergableGridCell<?> cell = model.getCell( rowIndex,
+                                                        columnIndex );
+        if ( cell == null ) {
+            return model.getRow( rowIndex ).getHeight();
+        }
+        if ( cell.getMergedCellCount() == 1 ) {
+            return model.getRow( rowIndex ).getHeight();
+        } else if ( cell.getMergedCellCount() > 1 ) {
+            double height = 0;
+            for ( int i = rowIndex; i < rowIndex + cell.getMergedCellCount(); i++ ) {
+                height = height + model.getRow( i ).getHeight();
+            }
+            return height;
+        } else {
+            int _rowIndex = rowIndex;
+            MergableGridCell<?> _cell = cell;
+            while ( _cell.getMergedCellCount() == 0 ) {
+                _rowIndex--;
+                _cell = model.getCell( _rowIndex,
+                                       columnIndex );
+            }
+            double height = 0;
+            for ( int i = _rowIndex; i < _rowIndex + _cell.getMergedCellCount(); i++ ) {
+                height = height + model.getRow( i ).getHeight();
+            }
+            return height;
+        }
+    }
+
+    @Override
+    protected void doEdit( final GridCellRenderContext context ) {
+        final int rowIndex = context.getRowIndex();
+        final int columnIndex = context.getColumnIndex();
         final MergableGridCell cell = gridWidget.getModel().getCell( rowIndex,
                                                                      columnIndex );
         final MergableGridColumn column = gridWidget.getModel().getColumns().get( columnIndex );
-        column.edit( cell == null ? null : cell.getValue(),
+        column.edit( cell,
+                     context,
                      new Callback<IGridCellValue<?>, IGridCellValue<?>>() {
 
                          @Override

@@ -18,6 +18,8 @@ package org.anstis.client.grid.widget;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.ait.lienzo.client.core.event.NodeMouseClickEvent;
+import com.ait.lienzo.client.core.event.NodeMouseClickHandler;
 import com.ait.lienzo.client.core.mediator.MousePanMediator;
 import com.ait.lienzo.client.core.shape.Group;
 import com.ait.lienzo.client.core.shape.Text;
@@ -55,6 +57,7 @@ import org.anstis.client.grid.util.GridDataFactory;
 import org.anstis.client.grid.widget.basic.GridWidget;
 import org.anstis.client.grid.widget.context.GridCellRenderContext;
 import org.anstis.client.grid.widget.dom.CheckBoxDOMElementFactory;
+import org.anstis.client.grid.widget.dom.TextBoxDOMElement;
 import org.anstis.client.grid.widget.dom.TextBoxDOMElementFactory;
 import org.anstis.client.grid.widget.edit.EditorPopup;
 import org.anstis.client.grid.widget.mergable.MergableGridWidget;
@@ -121,14 +124,21 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
         gridPanel.add( gridLayer );
         domElementContainer.add( gridPanel );
 
+        gridLayer.addNodeMouseClickHandler( new NodeMouseClickHandler() {
+            @Override
+            public void onNodeMouseClick( NodeMouseClickEvent nodeMouseClickEvent ) {
+                gridPanel.setFocus( true );
+            }
+        } );
+
         //Grid 1
         final MergableGridData grid1 = new MergableGridData();
         final MergableGridWidget gridWidget1 = new MergableGridWidget( grid1,
                                                                        this,
                                                                        new MergableGridRenderer() );
         for ( int idx = 0; idx < 10; idx++ ) {
-            final MergableGridColumn<String> column = new MergableGridColumn<String>( "G1-Col: " + idx,
-                                                                                      100 ) {
+            final MergableGridColumn<String> grid1Column = new MergableGridColumn<String>( "G1-Col: " + idx,
+                                                                                           100 ) {
                 @Override
                 public void renderCell( final Group g,
                                         final MergableGridCell<String> cell,
@@ -146,14 +156,15 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
                 }
 
                 @Override
-                public void edit( final IGridCellValue<String> value,
+                public void edit( final MergableGridCell<String> cell,
+                                  final GridCellRenderContext context,
                                   final Callback<IGridCellValue<String>, IGridCellValue<String>> callback ) {
-                    editor.edit( value,
+                    editor.edit( cell == null ? null : cell.getValue(),
                                  callback );
                 }
 
             };
-            grid1.addColumn( column );
+            grid1.addColumn( grid1Column );
         }
         GridDataFactory.populate( grid1,
                                   GRID1_ROWS );
@@ -164,8 +175,8 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
                                                                        this,
                                                                        new MergableGridRenderer() );
         for ( int idx = 0; idx < 5; idx++ ) {
-            final MergableGridColumn<String> column = new MergableGridColumn<String>( "G2-Col: " + idx,
-                                                                                      150 ) {
+            final MergableGridColumn<String> grid2Column = new MergableGridColumn<String>( "G2-Col: " + idx,
+                                                                                           150 ) {
                 @Override
                 public void renderCell( final Group g,
                                         final MergableGridCell<String> cell,
@@ -183,14 +194,15 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
                 }
 
                 @Override
-                public void edit( final IGridCellValue<String> value,
+                public void edit( final MergableGridCell<String> cell,
+                                  final GridCellRenderContext context,
                                   final Callback<IGridCellValue<String>, IGridCellValue<String>> callback ) {
-                    editor.edit( value,
+                    editor.edit( cell == null ? null : cell.getValue(),
                                  callback );
                 }
 
             };
-            grid2.addColumn( column );
+            grid2.addColumn( grid2Column );
         }
         GridDataFactory.populate( grid2,
                                   GRID2_ROWS );
@@ -200,9 +212,9 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
         final MergableGridWidget gridWidget3 = new MergableGridWidget( grid3,
                                                                        this,
                                                                        new MergableGridRenderer() );
-        for ( int idx = 0; idx < 3; idx++ ) {
-            final MergableGridColumn<String> column = new MergableGridColumn<String>( "G3-Col: " + idx,
-                                                                                      100 ) {
+        for ( int idx = 0; idx < 2; idx++ ) {
+            final MergableGridColumn<String> grid3Column = new MergableGridColumn<String>( "G3-Col: " + idx,
+                                                                                           100 ) {
                 @Override
                 public void renderCell( final Group g,
                                         final MergableGridCell<String> cell,
@@ -220,21 +232,74 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
                 }
 
                 @Override
-                public void edit( final IGridCellValue<String> value,
+                public void edit( final MergableGridCell<String> cell,
+                                  final GridCellRenderContext context,
                                   final Callback<IGridCellValue<String>, IGridCellValue<String>> callback ) {
-                    editor.edit( value,
+                    editor.edit( cell == null ? null : cell.getValue(),
                                  callback );
                 }
 
             };
-            grid3.addColumn( column );
+            grid3.addColumn( grid3Column );
         }
+
+        //Grid 3 - DOM Column - TextBox (Lazy show)
+        final MergableGridColumn<String> grid3Column2 = new MergableGridColumn<String>( "G3-Col: 2",
+                                                                                        100 ) {
+
+            private TextBoxDOMElementFactory factory = new TextBoxDOMElementFactory( gridLayer,
+                                                                                     gridWidget3,
+                                                                                     domElementContainer );
+
+            @Override
+            public void renderCell( final Group g,
+                                    final MergableGridCell<String> cell,
+                                    final GridCellRenderContext context ) {
+                final Text t = new Text( cell.getValue().getValue() )
+                        .setFillColor( ColorName.GREY )
+                        .setFontSize( 12 )
+                        .setFontFamily( "serif" )
+                        .setListening( false )
+                        .setTextBaseLine( TextBaseLine.MIDDLE )
+                        .setTextAlign( TextAlign.CENTER )
+                        .setX( context.getWidth() / 2 )
+                        .setY( context.getHeight() / 2 );
+                g.add( t );
+            }
+
+            @Override
+            public void edit( final MergableGridCell<String> cell,
+                              final GridCellRenderContext context,
+                              final Callback<IGridCellValue<String>, IGridCellValue<String>> callback ) {
+                final TextBoxDOMElement e = factory.addCell( cell,
+                                                             context );
+                e.getWidget().setFocus( true );
+            }
+
+            @Override
+            public void initialiseResources() {
+                factory.initialiseResources();
+            }
+
+            @Override
+            public void destroyResources() {
+                factory.destroyResources();
+            }
+
+            @Override
+            public void freeResources() {
+                factory.freeResources();
+            }
+
+        };
+        grid3.addColumn( grid3Column2 );
+
         GridDataFactory.populate( grid3,
                                   GRID3_ROWS );
 
         //Grid 3 - DOM Column - CheckBox
-        final MergableGridColumn<Boolean> column3 = new MergableGridColumn<Boolean>( "G3-Col: 3",
-                                                                                     100 ) {
+        final MergableGridColumn<Boolean> grid3Column3 = new MergableGridColumn<Boolean>( "G3-Col: 3",
+                                                                                          100 ) {
 
             private CheckBoxDOMElementFactory factory = new CheckBoxDOMElementFactory( gridLayer,
                                                                                        gridWidget3,
@@ -264,7 +329,7 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
             }
 
         };
-        grid3.addColumn( column3 );
+        grid3.addColumn( grid3Column3 );
         for ( int rowIndex = 0; rowIndex < GRID4_ROWS; rowIndex++ ) {
             grid3.setCell( rowIndex,
                            3,
@@ -272,8 +337,8 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
         }
 
         //Grid 3 - DOM Column - TextBox
-        final MergableGridColumn<String> column4 = new MergableGridColumn<String>( "G3-Col: 4",
-                                                                                   100 ) {
+        final MergableGridColumn<String> grid3Column4 = new MergableGridColumn<String>( "G3-Col: 4",
+                                                                                        100 ) {
 
             private TextBoxDOMElementFactory factory = new TextBoxDOMElementFactory( gridLayer,
                                                                                      gridWidget3,
@@ -303,7 +368,7 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
             }
 
         };
-        grid3.addColumn( column4 );
+        grid3.addColumn( grid3Column4 );
         for ( int rowIndex = 0; rowIndex < GRID4_ROWS; rowIndex++ ) {
             if ( Math.random() < GridDataFactory.FILL_FACTOR ) {
                 grid3.setCell( rowIndex,
@@ -317,8 +382,10 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
         final GridWidget gridWidget4 = new GridWidget( grid4,
                                                        this,
                                                        new RedGridRenderer() );
-        final GridColumn<String> column1 = new GridColumn<String>( "G4-Col: 1",
-                                                                   100 ) {
+
+        //Grid 4 - DOM Column - TextBox
+        final GridColumn<String> grid4Column1 = new GridColumn<String>( "G4-Col: 1",
+                                                                        100 ) {
 
             @Override
             public void renderCell( final Group g,
@@ -337,17 +404,19 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
             }
 
             @Override
-            public void edit( final IGridCellValue<String> value,
+            public void edit( final GridCell<String> cell,
+                              final GridCellRenderContext context,
                               final Callback<IGridCellValue<String>, IGridCellValue<String>> callback ) {
-                editor.edit( value,
+                editor.edit( cell == null ? null : cell.getValue(),
                              callback );
             }
 
         };
-        grid4.addColumn( column1 );
+        grid4.addColumn( grid4Column1 );
 
-        final GridColumn<Boolean> column2 = new GridColumn<Boolean>( "G4-Col: 2",
-                                                                     100 ) {
+        //Grid 4 - DOM Column - CheckBox
+        final GridColumn<Boolean> grid4Column2 = new GridColumn<Boolean>( "G4-Col: 2",
+                                                                          100 ) {
 
             private CheckBoxDOMElementFactory factory = new CheckBoxDOMElementFactory( gridLayer,
                                                                                        gridWidget4,
@@ -377,7 +446,7 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
             }
 
         };
-        grid4.addColumn( column2 );
+        grid4.addColumn( grid4Column2 );
 
         for ( int rowIndex = 0; rowIndex < GRID4_ROWS; rowIndex++ ) {
             final GridRow row = new GridRow();

@@ -55,4 +55,7 @@ public interface IGridData<R extends IGridRow<V>, C extends IGridColumn<R, V>, V
                   final int columnIndex,
                   final IGridCellValue<?> value );
 
+    void deleteCell( final int rowIndex,
+                     final int columnIndex );
+
 }

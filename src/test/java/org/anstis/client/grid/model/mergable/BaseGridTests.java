@@ -106,7 +106,8 @@ public abstract class BaseGridTests {
         }
 
         @Override
-        public void edit( final IGridCellValue<T> value,
+        public void edit( final MergableGridCell<T> cell,
+                          final GridCellRenderContext context,
                           final Callback<IGridCellValue<T>, IGridCellValue<T>> callback ) {
             //Do nothing
         }

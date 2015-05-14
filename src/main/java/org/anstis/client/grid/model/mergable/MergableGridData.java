@@ -173,6 +173,82 @@ public class MergableGridData extends BaseGridData<MergableGridRow, MergableGrid
     }
 
     @Override
+    public void deleteCell( final int rowIndex,
+                            final int columnIndex ) {
+        if ( rowIndex < 0 || rowIndex > rows.size() - 1 ) {
+            return;
+        }
+        if ( columnIndex < 0 || columnIndex > columns.size() - 1 ) {
+            return;
+        }
+
+        final int _columnIndex = columns.get( columnIndex ).getIndex();
+
+        //If we're not merged just set the value of a single cell
+        if ( !isMerged ) {
+            rows.get( rowIndex ).deleteCell( _columnIndex );
+            return;
+        }
+
+        //Find cell's current value
+        int minRowIndex = rowIndex;
+        int maxRowIndex = rowIndex + 1;
+        final MergableGridRow currentRow = getRow( rowIndex );
+        final MergableGridCell currentRowCell = currentRow.getCells().get( _columnIndex );
+
+        //Find minimum row with a cell containing the same value as that being updated
+        boolean foundTopSplitMarker = currentRowCell == null ? false : currentRowCell.getMergedCellCount() > 0;
+        while ( minRowIndex > 0 ) {
+            final MergableGridRow previousRow = rows.get( minRowIndex - 1 );
+            final MergableGridCell previousRowCell = previousRow.getCells().get( _columnIndex );
+            if ( previousRowCell == null ) {
+                break;
+            }
+            if ( previousRowCell.isCollapsed() && foundTopSplitMarker ) {
+                break;
+            }
+            if ( !previousRowCell.equals( currentRowCell ) ) {
+                break;
+            }
+            if ( previousRowCell.getMergedCellCount() > 0 ) {
+                foundTopSplitMarker = true;
+            }
+            minRowIndex--;
+        }
+
+        //Find maximum row with a cell containing the same value as that being updated
+        boolean foundBottomSplitMarker = false;
+        while ( maxRowIndex < rows.size() ) {
+            final MergableGridRow nextRow = rows.get( maxRowIndex );
+            final MergableGridCell nextRowCell = nextRow.getCells().get( _columnIndex );
+            if ( nextRowCell == null ) {
+                break;
+            }
+            if ( nextRowCell.isCollapsed() && foundBottomSplitMarker ) {
+                maxRowIndex--;
+                break;
+            }
+            if ( !nextRowCell.equals( currentRowCell ) ) {
+                break;
+            }
+            if ( nextRowCell.getMergedCellCount() > 0 ) {
+                foundBottomSplitMarker = true;
+            }
+            maxRowIndex++;
+        }
+
+        //Update all rows' value
+        for ( int i = minRowIndex; i < maxRowIndex; i++ ) {
+            final MergableGridRow row = rows.get( i );
+            row.expand();
+            row.deleteCell( _columnIndex );
+        }
+
+        updateMergeMetaData( rowIndex,
+                             _columnIndex );
+    }
+
+    @Override
     public void collapseCell( final int rowIndex,
                               final int columnIndex ) {
         //Data needs to be merged to collapse cells

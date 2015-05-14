@@ -16,6 +16,8 @@
 package org.anstis.client.grid.widget.dom;
 
 import com.google.gwt.dom.client.Style;
+import com.google.gwt.event.dom.client.BlurEvent;
+import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.ui.AbsolutePanel;
@@ -61,9 +63,35 @@ public class TextBoxDOMElement extends BaseDOMElement<String, TextBox> {
             public void onValueChange( final ValueChangeEvent event ) {
                 if ( context != null ) {
                     final BaseGridWidget<?, ?> widget = context.getWidget();
-                    widget.getModel().setCell( context.getRowIndex(),
-                                               context.getColumnIndex(),
-                                               new BaseGridCellValue<>( tb.getText() ) );
+                    final String text = tb.getText();
+                    if ( text.trim().isEmpty() ) {
+                        widget.getModel().deleteCell( context.getRowIndex(),
+                                                      context.getColumnIndex() );
+
+                    } else {
+                        widget.getModel().setCell( context.getRowIndex(),
+                                                   context.getColumnIndex(),
+                                                   new BaseGridCellValue<>( tb.getText() ) );
+                    }
+                    widget.getLayer().draw();
+                }
+            }
+        } );
+        tb.addBlurHandler( new BlurHandler() {
+            @Override
+            public void onBlur( final BlurEvent event ) {
+                if ( context != null ) {
+                    final BaseGridWidget<?, ?> widget = context.getWidget();
+                    final String text = tb.getText();
+                    if ( text.trim().isEmpty() ) {
+                        widget.getModel().deleteCell( context.getRowIndex(),
+                                                      context.getColumnIndex() );
+
+                    } else {
+                        widget.getModel().setCell( context.getRowIndex(),
+                                                   context.getColumnIndex(),
+                                                   new BaseGridCellValue<>( tb.getText() ) );
+                    }
                     widget.getLayer().draw();
                 }
             }
@@ -74,7 +102,7 @@ public class TextBoxDOMElement extends BaseDOMElement<String, TextBox> {
     public void initialise( final IGridCell<String> cell,
                             final GridCellRenderContext context ) {
         this.context = context;
-        tb.setText( cell.getValue().getValue() );
+        tb.setText( cell == null ? "" : cell.getValue().getValue() );
         final Style style = tb.getElement().getStyle();
         style.setMarginTop( ( context.getHeight() - HEIGHT ) / 2,
                             Style.Unit.PX );

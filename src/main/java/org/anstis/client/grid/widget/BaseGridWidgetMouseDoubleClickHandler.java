@@ -21,11 +21,13 @@ import com.ait.lienzo.client.core.event.NodeMouseDoubleClickEvent;
 import com.ait.lienzo.client.core.event.NodeMouseDoubleClickHandler;
 import com.ait.lienzo.client.core.types.Point2D;
 import org.anstis.client.grid.model.IGridColumn;
+import org.anstis.client.grid.model.IGridData;
 import org.anstis.client.grid.model.IGridRow;
 import org.anstis.client.grid.util.GridCoordinateUtils;
+import org.anstis.client.grid.widget.context.GridCellRenderContext;
 import org.anstis.client.grid.widget.renderers.IGridRenderer;
 
-public abstract class BaseGridWidgetMouseDoubleClickHandler<W extends BaseGridWidget<?, ?>> implements NodeMouseDoubleClickHandler {
+public abstract class BaseGridWidgetMouseDoubleClickHandler<W extends BaseGridWidget<D, ?>, D extends IGridData<?, ?, ?>> implements NodeMouseDoubleClickHandler {
 
     protected W gridWidget;
     protected ISelectionManager selectionManager;
@@ -63,22 +65,24 @@ public abstract class BaseGridWidgetMouseDoubleClickHandler<W extends BaseGridWi
             return;
         }
 
+        final D model = gridWidget.getModel();
+
         //Get row index
         IGridRow<?> row;
         int rowIndex = 0;
         double offsetY = y - renderer.getHeaderHeight();
-        while ( ( row = gridWidget.getModel().getRow( rowIndex ) ).getHeight() < offsetY ) {
+        while ( ( row = model.getRow( rowIndex ) ).getHeight() < offsetY ) {
             offsetY = offsetY - row.getHeight();
             rowIndex++;
         }
-        if ( rowIndex < 0 || rowIndex > gridWidget.getModel().getRowCount() - 1 ) {
+        if ( rowIndex < 0 || rowIndex > model.getRowCount() - 1 ) {
             return;
         }
 
         //Get column index
         int columnIndex = -1;
         double offsetX = 0;
-        final List<? extends IGridColumn<?, ?>> columns = gridWidget.getModel().getColumns();
+        final List<? extends IGridColumn<?, ?>> columns = model.getColumns();
         for ( int idx = 0; idx < columns.size(); idx++ ) {
             final IGridColumn<?, ?> gridColumn = columns.get( idx );
             final double width = gridColumn.getWidth();
@@ -92,11 +96,34 @@ public abstract class BaseGridWidgetMouseDoubleClickHandler<W extends BaseGridWi
             return;
         }
 
-        doEdit( rowIndex,
-                columnIndex );
+        final double cellX = gridWidget.getX() + offsetX;
+        final double cellY = gridWidget.getY() + renderer.getHeaderHeight() + getRowOffset( rowIndex,
+                                                                                            columnIndex,
+                                                                                            model );
+        final double cellHeight = getCellHeight( rowIndex,
+                                                 columnIndex,
+                                                 model );
+
+        final GridCellRenderContext context = new GridCellRenderContext( cellX,
+                                                                         cellY,
+                                                                         columns.get( columnIndex ).getWidth(),
+                                                                         cellHeight,
+                                                                         rowIndex,
+                                                                         columnIndex,
+                                                                         gridWidget.getViewport().getTransform(),
+                                                                         gridWidget );
+
+        doEdit( context );
     }
 
-    protected abstract void doEdit( final int rowIndex,
-                                    final int columnIndex );
+    protected abstract double getRowOffset( final int rowIndex,
+                                            final int columnIndex,
+                                            final D model );
+
+    protected abstract double getCellHeight( final int rowIndex,
+                                             final int columnIndex,
+                                             final D model );
+
+    protected abstract void doEdit( final GridCellRenderContext context );
 
 }

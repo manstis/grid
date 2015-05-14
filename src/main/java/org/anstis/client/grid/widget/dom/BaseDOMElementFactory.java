@@ -42,7 +42,7 @@ public abstract class BaseDOMElementFactory<T, E extends BaseDOMElement> impleme
     }
 
     @Override
-    public void addCell( final IGridCell<T> cell,
+    public E addCell( final IGridCell<T> cell,
                          final GridCellRenderContext context ) {
         E container;
         if ( consumed + 1 > containers.size() ) {
@@ -57,6 +57,7 @@ public abstract class BaseDOMElementFactory<T, E extends BaseDOMElement> impleme
         container.attach();
         container.initialise( cell,
                               context );
+        return container;
     }
 
     @Override

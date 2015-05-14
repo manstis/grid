@@ -212,7 +212,8 @@ public class GridIndexingTests {
         }
 
         @Override
-        public void edit( final IGridCellValue<T> value,
+        public void edit( final GridCell<T> cell,
+                          final GridCellRenderContext context,
                           final Callback<IGridCellValue<T>, IGridCellValue<T>> callback ) {
             //Do nothing
         }

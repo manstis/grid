@@ -28,9 +28,20 @@ public class GridData extends BaseGridData<GridRow, GridColumn<?>, GridCell<?>> 
             return;
         }
         final GridRow row = rows.get( rowIndex );
-        final int _columnIndex = columns.get(columnIndex).getIndex();
+        final int _columnIndex = columns.get( columnIndex ).getIndex();
         row.setCell( _columnIndex,
                      value );
+    }
+
+    @Override
+    public void deleteCell( final int rowIndex,
+                            final int columnIndex ) {
+        if ( rowIndex < 0 || rowIndex > rows.size() - 1 ) {
+            return;
+        }
+        final GridRow row = rows.get( rowIndex );
+        final int _columnIndex = columns.get( columnIndex ).getIndex();
+        row.deleteCell( _columnIndex );
     }
 
 }

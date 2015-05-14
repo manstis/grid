@@ -70,7 +70,7 @@ public class CheckBoxDOMElement extends BaseDOMElement<Boolean, CheckBox> {
     public void initialise( final IGridCell<Boolean> cell,
                             final GridCellRenderContext context ) {
         this.context = context;
-        cb.setValue( cell.getValue().getValue() );
+        cb.setValue( cell == null ? false : cell.getValue().getValue() );
         final Style style = cb.getElement().getStyle();
         style.setLeft( ( context.getWidth() - SIZE ) / 2,
                        Style.Unit.PX );

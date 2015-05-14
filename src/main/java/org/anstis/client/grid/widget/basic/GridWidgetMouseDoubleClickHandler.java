@@ -22,9 +22,10 @@ import org.anstis.client.grid.model.basic.GridColumn;
 import org.anstis.client.grid.model.basic.GridData;
 import org.anstis.client.grid.widget.BaseGridWidgetMouseDoubleClickHandler;
 import org.anstis.client.grid.widget.ISelectionManager;
+import org.anstis.client.grid.widget.context.GridCellRenderContext;
 import org.anstis.client.grid.widget.renderers.IGridRenderer;
 
-public class GridWidgetMouseDoubleClickHandler extends BaseGridWidgetMouseDoubleClickHandler<GridWidget> {
+public class GridWidgetMouseDoubleClickHandler extends BaseGridWidgetMouseDoubleClickHandler<GridWidget, GridData> {
 
     public GridWidgetMouseDoubleClickHandler( final GridWidget gridWidget,
                                               final ISelectionManager selectionManager,
@@ -35,12 +36,30 @@ public class GridWidgetMouseDoubleClickHandler extends BaseGridWidgetMouseDouble
     }
 
     @Override
-    protected void doEdit( final int rowIndex,
-                           final int columnIndex ) {
+    @SuppressWarnings("unused")
+    protected double getRowOffset( final int rowIndex,
+                                   final int columnIndex,
+                                   final GridData model ) {
+        return model.getRowOffset( rowIndex );
+    }
+
+    @Override
+    @SuppressWarnings("unused")
+    protected double getCellHeight( final int rowIndex,
+                                    final int columnIndex,
+                                    final GridData model ) {
+        return model.getRow( rowIndex ).getHeight();
+    }
+
+    @Override
+    protected void doEdit( final GridCellRenderContext context ) {
+        final int rowIndex = context.getRowIndex();
+        final int columnIndex = context.getColumnIndex();
         final GridCell cell = gridWidget.getModel().getCell( rowIndex,
                                                              columnIndex );
         final GridColumn column = gridWidget.getModel().getColumns().get( columnIndex );
-        column.edit( cell == null ? null : cell.getValue(),
+        column.edit( cell,
+                     context,
                      new Callback<IGridCellValue<?>, IGridCellValue<?>>() {
 
                          @Override
