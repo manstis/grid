@@ -53,20 +53,29 @@ public abstract class BaseGridTests {
             for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
                 final MergableGridCell cell = data.getCell( rowIndex,
                                                             columnIndex );
-                assertEquals( "Cell[" + columnIndex + ", " + rowIndex + "] actual isMerged() differs to expected.",
-                              expectedCellStates[ rowIndex ][ columnIndex ].isMerged,
-                              cell.isMerged() );
-                assertEquals( "Cell[" + columnIndex + ", " + rowIndex + "] actual getMergedCellCount() differs to expected.",
-                              expectedCellStates[ rowIndex ][ columnIndex ].mergedCellCount,
-                              cell.getMergedCellCount() );
-                assertEquals( "Cell[" + columnIndex + ", " + rowIndex + "] actual getValue() differs to expected.",
-                              expectedCellStates[ rowIndex ][ columnIndex ].value,
-                              cell.getValue().getValue() );
+                if ( cell == null ) {
+                    assertNull( "Cell[" + columnIndex + ", " + rowIndex + "] was expected to be null.",
+                                expectedCellStates[ rowIndex ][ columnIndex ].value );
+                } else {
+                    assertEquals( "Cell[" + columnIndex + ", " + rowIndex + "] actual isMerged() differs to expected.",
+                                  expectedCellStates[ rowIndex ][ columnIndex ].isMerged,
+                                  cell.isMerged() );
+                    assertEquals( "Cell[" + columnIndex + ", " + rowIndex + "] actual getMergedCellCount() differs to expected.",
+                                  expectedCellStates[ rowIndex ][ columnIndex ].mergedCellCount,
+                                  cell.getMergedCellCount() );
+                    assertEquals( "Cell[" + columnIndex + ", " + rowIndex + "] actual getValue() differs to expected.",
+                                  expectedCellStates[ rowIndex ][ columnIndex ].value,
+                                  cell.getValue().getValue() );
+                }
             }
         }
     }
 
     public static class Expected {
+
+        public static Expected build( final Object value ) {
+            return new Expected( value );
+        }
 
         public static Expected build( final boolean isMerged,
                                       final int mergedCellCount,
@@ -76,7 +85,7 @@ public abstract class BaseGridTests {
                                  value );
         }
 
-        private final boolean isMerged;
+        private boolean isMerged;
         private int mergedCellCount;
         private Object value;
 
@@ -85,6 +94,10 @@ public abstract class BaseGridTests {
                           final Object value ) {
             this.isMerged = isMerged;
             this.mergedCellCount = mergedCellCount;
+            this.value = value;
+        }
+
+        private Expected( final Object value ) {
             this.value = value;
         }
 
