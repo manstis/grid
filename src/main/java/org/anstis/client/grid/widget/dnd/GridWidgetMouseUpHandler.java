@@ -40,13 +40,21 @@ public class GridWidgetMouseUpHandler implements NodeMouseUpHandler {
 
     @Override
     public void onNodeMouseUp( final NodeMouseUpEvent event ) {
+        switch ( state.getOperation() ) {
+            case NONE:
+            case COLUMN_MOVE_PENDING:
+            case COLUMN_RESIZE_PENDING:
+            case COLUMN_RESIZE:
+                break;
+            case COLUMN_MOVE:
+                layer.remove( state.getEventColumnHighlight() );
+                layer.draw();
+        }
         state.setGrid( null );
         state.setGridColumn( null );
         state.setOperation( GridWidgetHandlersState.GridWidgetHandlersOperation.NONE );
         state.setCursor( Style.Cursor.DEFAULT );
         layer.getViewport().getElement().getStyle().setCursor( state.getCursor() );
-        layer.remove( state.getEventColumnHighlight() );
-        layer.draw();
     }
 
 }

@@ -86,6 +86,9 @@ public abstract class BaseDOMElement<T, W extends Widget> {
         container.addDomHandler( new MouseMoveHandler() {
             @Override
             public void onMouseMove( final MouseMoveEvent event ) {
+                //The DOM Element changes the Cursor, so set to the state determined by the MouseEvent Handlers on GridLayer
+                style.setCursor( gridLayer.getGridWidgetHandlersState().getCursor() );
+
                 gridLayer.onNodeMouseMove( new NodeMouseMoveEvent( event ) {
 
                     @Override
@@ -160,9 +163,6 @@ public abstract class BaseDOMElement<T, W extends Widget> {
         final double height = context.getHeight();
 
         final Style style = container.getElement().getStyle();
-
-        //The DOM Element changes the Cursor, so set to the state determined by the MouseEvent Handlers on GridLayer
-        style.setCursor( gridLayer.getGridWidgetHandlersState().getCursor() );
 
         //Reposition and transform the DOM Element
         style.setLeft( ( context.getX() * transform.getScaleX() ) + transform.getTranslateX(),

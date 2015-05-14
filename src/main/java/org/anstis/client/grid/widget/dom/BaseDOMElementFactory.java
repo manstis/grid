@@ -43,7 +43,7 @@ public abstract class BaseDOMElementFactory<T, E extends BaseDOMElement> impleme
 
     @Override
     public E addCell( final IGridCell<T> cell,
-                         final GridCellRenderContext context ) {
+                      final GridCellRenderContext context ) {
         E container;
         if ( consumed + 1 > containers.size() ) {
             container = newElement( gridLayer,
