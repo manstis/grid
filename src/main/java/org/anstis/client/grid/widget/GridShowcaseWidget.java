@@ -29,7 +29,6 @@ import com.ait.lienzo.client.widget.LienzoPanel;
 import com.ait.lienzo.shared.core.types.ColorName;
 import com.ait.lienzo.shared.core.types.TextAlign;
 import com.ait.lienzo.shared.core.types.TextBaseLine;
-import com.google.gwt.core.client.Callback;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
@@ -43,6 +42,7 @@ import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import org.anstis.client.grid.model.BaseGridCellValue;
+import org.anstis.client.grid.model.ICallback;
 import org.anstis.client.grid.model.IGridCellValue;
 import org.anstis.client.grid.model.IGridColumn;
 import org.anstis.client.grid.model.IGridData;
@@ -160,7 +160,7 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
                 @Override
                 public void edit( final MergableGridCell<String> cell,
                                   final GridCellRenderContext context,
-                                  final Callback<IGridCellValue<String>, IGridCellValue<String>> callback ) {
+                                  final ICallback<IGridCellValue<String>> callback ) {
                     editor.edit( cell == null ? null : cell.getValue(),
                                  callback );
                 }
@@ -198,7 +198,7 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
                 @Override
                 public void edit( final MergableGridCell<String> cell,
                                   final GridCellRenderContext context,
-                                  final Callback<IGridCellValue<String>, IGridCellValue<String>> callback ) {
+                                  final ICallback<IGridCellValue<String>> callback ) {
                     editor.edit( cell == null ? null : cell.getValue(),
                                  callback );
                 }
@@ -236,7 +236,7 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
                 @Override
                 public void edit( final MergableGridCell<String> cell,
                                   final GridCellRenderContext context,
-                                  final Callback<IGridCellValue<String>, IGridCellValue<String>> callback ) {
+                                  final ICallback<IGridCellValue<String>> callback ) {
                     editor.edit( cell == null ? null : cell.getValue(),
                                  callback );
                 }
@@ -251,7 +251,6 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
         final MergableGridColumn<String> grid3Column2 = new MergableGridColumn<String>( "G3-Col: 2",
                                                                                         100 ) {
 
-            private TextBoxDOMElement e;
             private TextBoxSingletonDOMElementFactory factory = new TextBoxSingletonDOMElementFactory( gridLayer,
                                                                                                        gridWidget3,
                                                                                                        domElementContainer );
@@ -275,11 +274,16 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
             @Override
             public void edit( final MergableGridCell<String> cell,
                               final GridCellRenderContext context,
-                              final Callback<IGridCellValue<String>, IGridCellValue<String>> callback ) {
-                e = factory.getDomElementForCell( cell,
-                                                  context );
-                e.attach();
-                e.getWidget().setFocus( true );
+                              final ICallback<IGridCellValue<String>> callback ) {
+                factory.getDomElementForCell( cell,
+                                              context,
+                                              new ICallback<TextBoxDOMElement>() {
+                                                  @Override
+                                                  public void callback( final TextBoxDOMElement e ) {
+                                                      e.attach();
+                                                      e.getWidget().setFocus( true );
+                                                  }
+                                              } );
             }
 
             @Override
@@ -317,9 +321,14 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
             public void renderCell( final Group g,
                                     final MergableGridCell<Boolean> cell,
                                     final GridCellRenderContext context ) {
-                final CheckBoxDOMElement e = factory.getDomElementForCell( cell,
-                                                                           context );
-                e.attach();
+                factory.getDomElementForCell( cell,
+                                              context,
+                                              new ICallback<CheckBoxDOMElement>() {
+                                                  @Override
+                                                  public void callback( final CheckBoxDOMElement e ) {
+                                                      e.attach();
+                                                  }
+                                              } );
             }
 
             @Override
@@ -357,9 +366,14 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
             public void renderCell( final Group g,
                                     final MergableGridCell<String> cell,
                                     final GridCellRenderContext context ) {
-                final TextBoxDOMElement e = factory.getDomElementForCell( cell,
-                                                                          context );
-                e.attach();
+                factory.getDomElementForCell( cell,
+                                              context,
+                                              new ICallback<TextBoxDOMElement>() {
+                                                  @Override
+                                                  public void callback( final TextBoxDOMElement e ) {
+                                                      e.attach();
+                                                  }
+                                              } );
             }
 
             @Override
@@ -416,7 +430,7 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
             @Override
             public void edit( final GridCell<String> cell,
                               final GridCellRenderContext context,
-                              final Callback<IGridCellValue<String>, IGridCellValue<String>> callback ) {
+                              final ICallback<IGridCellValue<String>> callback ) {
                 editor.edit( cell == null ? null : cell.getValue(),
                              callback );
             }
@@ -436,9 +450,14 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
             public void renderCell( final Group g,
                                     final GridCell<Boolean> cell,
                                     final GridCellRenderContext context ) {
-                final CheckBoxDOMElement e = factory.getDomElementForCell( cell,
-                                                                           context );
-                e.attach();
+                factory.getDomElementForCell( cell,
+                                              context,
+                                              new ICallback<CheckBoxDOMElement>() {
+                                                  @Override
+                                                  public void callback( final CheckBoxDOMElement e ) {
+                                                      e.attach();
+                                                  }
+                                              } );
             }
 
             @Override

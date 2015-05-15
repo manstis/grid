@@ -15,7 +15,9 @@
  */
 package org.anstis.client.grid.widget.dom;
 
+import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.AbsolutePanel;
+import org.anstis.client.grid.model.ICallback;
 import org.anstis.client.grid.model.IGridCell;
 import org.anstis.client.grid.widget.BaseGridWidget;
 import org.anstis.client.grid.widget.GridLayer;
@@ -24,7 +26,6 @@ import org.anstis.client.grid.widget.context.GridCellRenderContext;
 public class TextBoxSingletonDOMElementFactory extends BaseSingletonDOMElementFactory<String, TextBoxDOMElement> {
 
     private TextBoxDOMElement e;
-    private boolean isEdit = false;
 
     public TextBoxSingletonDOMElementFactory( final GridLayer gridLayer,
                                               final BaseGridWidget<?, ?> gridWidget,
@@ -46,36 +47,33 @@ public class TextBoxSingletonDOMElementFactory extends BaseSingletonDOMElementFa
     }
 
     @Override
-    public TextBoxDOMElement getDomElementForCell( final IGridCell<String> cell,
-                                                   final GridCellRenderContext context ) {
-        if ( isEdit ) {
-            e.flush();
-        }
-        isEdit = true;
-        container.initialise( cell,
-                              context );
-        return container;
+    public void getDomElementForCell( final IGridCell<String> cell,
+                                      final GridCellRenderContext context,
+                                      final ICallback<TextBoxDOMElement> callback ) {
+        e.flush( new Command() {
+            @Override
+            public void execute() {
+                container.initialise( cell,
+                                      context );
+                callback.callback( container );
+            }
+        } );
     }
 
     @Override
     public void initialiseResources() {
-        if ( isEdit ) {
-            destroyResources();
-        }
+        destroyResources();
     }
 
     @Override
     public void destroyResources() {
-        isEdit = false;
         e.getWidget().setFocus( false );
         container.detach();
     }
 
     @Override
     public void freeUnusedResources() {
-        if ( isEdit ) {
-            destroyResources();
-        }
+        destroyResources();
     }
 
 }

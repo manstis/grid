@@ -16,8 +16,8 @@
 package org.anstis.client.grid.model.basic;
 
 import com.ait.lienzo.client.core.shape.Group;
-import com.google.gwt.core.client.Callback;
 import org.anstis.client.grid.model.BaseGridColumn;
+import org.anstis.client.grid.model.ICallback;
 import org.anstis.client.grid.model.IGridCellValue;
 import org.anstis.client.grid.widget.context.GridCellRenderContext;
 
@@ -49,7 +49,7 @@ public abstract class GridColumn<T> extends BaseGridColumn<GridRow, GridCell<?>>
 
     public void edit( final GridCell<T> cell,
                       final GridCellRenderContext context,
-                      final Callback<IGridCellValue<T>, IGridCellValue<T>> callback ) {
+                      final ICallback<IGridCellValue<T>> callback ) {
         //Do nothing by default
     }
 

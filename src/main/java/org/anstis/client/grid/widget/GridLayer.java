@@ -64,6 +64,13 @@ public class GridLayer extends Layer implements ISelectionManager,
     private final GridWidgetMouseUpHandler mouseUpHandler;
     private final GridWidgetHandlersState state = new GridWidgetHandlersState();
 
+    private static final Command NOP_COMMAND = new Command() {
+        @Override
+        public void execute() {
+            //Do nothing
+        }
+    };
+
     public GridLayer() {
         bounds = new Rectangle( 0, 0 )
                 .setVisible( false );
@@ -105,6 +112,10 @@ public class GridLayer extends Layer implements ISelectionManager,
 
     @Override
     public void draw() {
+        draw( NOP_COMMAND );
+    }
+
+    public void draw( final Command command ) {
         if ( !isRedrawScheduled ) {
             isRedrawScheduled = true;
             Scheduler.get().scheduleFinally( new Command() {
@@ -118,6 +129,7 @@ public class GridLayer extends Layer implements ISelectionManager,
                     updateConnectors();
                     GridLayer.super.draw();
                     isRedrawScheduled = false;
+                    command.execute();
                 }
 
                 private void updateBounds() {

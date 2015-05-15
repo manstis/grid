@@ -20,6 +20,7 @@ import com.google.gwt.event.dom.client.BlurEvent;
 import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import org.anstis.client.grid.model.BaseGridCellValue;
 import org.anstis.client.grid.model.IGridCell;
@@ -32,6 +33,13 @@ public class CheckBoxDOMElement extends BaseDOMElement<Boolean, CheckBox> {
 
     //Hack to centre CheckBox
     private static final int SIZE = 20;
+
+    private static final Command NOP_COMMAND = new Command() {
+        @Override
+        public void execute() {
+            //Do nothing
+        }
+    };
 
     private final CheckBox cb = new CheckBox();
     private GridCellRenderContext context;
@@ -59,7 +67,7 @@ public class CheckBoxDOMElement extends BaseDOMElement<Boolean, CheckBox> {
         cb.addClickHandler( new ClickHandler() {
             @Override
             public void onClick( final ClickEvent event ) {
-                flush();
+                flush( NOP_COMMAND );
             }
         } );
         cb.addBlurHandler( new BlurHandler() {
@@ -91,13 +99,15 @@ public class CheckBoxDOMElement extends BaseDOMElement<Boolean, CheckBox> {
     }
 
     @Override
-    public void flush() {
+    public void flush( final Command command ) {
         if ( context != null ) {
             final BaseGridWidget<?, ?> widget = context.getWidget();
             widget.getModel().setCell( context.getRowIndex(),
                                        context.getColumnIndex(),
                                        new BaseGridCellValue<>( cb.getValue() ) );
-            widget.getLayer().draw();
+            ( (GridLayer) widget.getLayer() ).draw( command );
+        } else {
+            command.execute();
         }
     }
 

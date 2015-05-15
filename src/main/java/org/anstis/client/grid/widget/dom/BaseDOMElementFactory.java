@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gwt.user.client.ui.AbsolutePanel;
+import org.anstis.client.grid.model.ICallback;
 import org.anstis.client.grid.model.IGridCell;
 import org.anstis.client.grid.widget.BaseGridWidget;
 import org.anstis.client.grid.widget.GridLayer;
@@ -42,8 +43,9 @@ public abstract class BaseDOMElementFactory<T, E extends BaseDOMElement> impleme
     }
 
     @Override
-    public E getDomElementForCell( final IGridCell<T> cell,
-                                   final GridCellRenderContext context ) {
+    public void getDomElementForCell( final IGridCell<T> cell,
+                                      final GridCellRenderContext context,
+                                      final ICallback<E> callback ) {
         E container;
         if ( consumed + 1 > containers.size() ) {
             container = createDomElement( gridLayer,
@@ -56,7 +58,7 @@ public abstract class BaseDOMElementFactory<T, E extends BaseDOMElement> impleme
         consumed++;
         container.initialise( cell,
                               context );
-        return container;
+        callback.callback( container );
     }
 
     @Override

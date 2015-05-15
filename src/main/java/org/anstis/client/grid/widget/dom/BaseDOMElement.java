@@ -32,6 +32,7 @@ import com.google.gwt.event.dom.client.MouseMoveHandler;
 import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.google.gwt.event.dom.client.MouseUpHandler;
 import com.google.gwt.i18n.client.NumberFormat;
+import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -156,7 +157,7 @@ public abstract class BaseDOMElement<T, W extends Widget> {
 
     public abstract W getWidget();
 
-    public abstract void flush();
+    public abstract void flush( final Command command );
 
     protected SimplePanel getContainer() {
         return container;

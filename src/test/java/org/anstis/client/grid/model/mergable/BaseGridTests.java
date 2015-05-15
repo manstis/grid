@@ -16,7 +16,7 @@
 package org.anstis.client.grid.model.mergable;
 
 import com.ait.lienzo.client.core.shape.Group;
-import com.google.gwt.core.client.Callback;
+import org.anstis.client.grid.model.ICallback;
 import org.anstis.client.grid.model.IGridCellValue;
 import org.anstis.client.grid.widget.context.GridCellRenderContext;
 
@@ -121,7 +121,7 @@ public abstract class BaseGridTests {
         @Override
         public void edit( final MergableGridCell<T> cell,
                           final GridCellRenderContext context,
-                          final Callback<IGridCellValue<T>, IGridCellValue<T>> callback ) {
+                          final ICallback<IGridCellValue<T>> callback ) {
             //Do nothing
         }
 

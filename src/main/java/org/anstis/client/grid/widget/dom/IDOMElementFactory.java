@@ -16,6 +16,7 @@
 package org.anstis.client.grid.widget.dom;
 
 import com.google.gwt.user.client.ui.AbsolutePanel;
+import org.anstis.client.grid.model.ICallback;
 import org.anstis.client.grid.model.IGridCell;
 import org.anstis.client.grid.model.IHasResources;
 import org.anstis.client.grid.widget.BaseGridWidget;
@@ -28,7 +29,8 @@ public interface IDOMElementFactory<T, E> extends IHasResources {
                         final BaseGridWidget<?, ?> gridWidget,
                         final AbsolutePanel domElementContainer );
 
-    E getDomElementForCell( final IGridCell<T> cell,
-                            final GridCellRenderContext context );
+    void getDomElementForCell( final IGridCell<T> cell,
+                               final GridCellRenderContext context,
+                               final ICallback<E> callback );
 
 }

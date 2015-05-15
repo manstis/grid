@@ -15,7 +15,7 @@
  */
 package org.anstis.client.grid.widget.basic;
 
-import com.google.gwt.core.client.Callback;
+import org.anstis.client.grid.model.ICallback;
 import org.anstis.client.grid.model.IGridCellValue;
 import org.anstis.client.grid.model.basic.GridCell;
 import org.anstis.client.grid.model.basic.GridColumn;
@@ -60,15 +60,10 @@ public class GridWidgetMouseDoubleClickHandler extends BaseGridWidgetMouseDouble
         final GridColumn column = gridWidget.getModel().getColumns().get( columnIndex );
         column.edit( cell,
                      context,
-                     new Callback<IGridCellValue<?>, IGridCellValue<?>>() {
+                     new ICallback<IGridCellValue<?>>() {
 
                          @Override
-                         public void onFailure( final IGridCellValue<?> value ) {
-                             //Do nothing
-                         }
-
-                         @Override
-                         public void onSuccess( final IGridCellValue<?> value ) {
+                         public void callback( final IGridCellValue<?> value ) {
                              gridWidget.getModel().setCell( rowIndex,
                                                             columnIndex,
                                                             value );

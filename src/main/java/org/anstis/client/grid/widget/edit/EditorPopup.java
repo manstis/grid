@@ -15,13 +15,13 @@
  */
 package org.anstis.client.grid.widget.edit;
 
-import com.google.gwt.core.client.Callback;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyDownHandler;
 import org.anstis.client.grid.model.BaseGridCellValue;
+import org.anstis.client.grid.model.ICallback;
 import org.anstis.client.grid.model.IGridCellValue;
 import org.gwtbootstrap3.client.shared.event.ModalShownEvent;
 import org.gwtbootstrap3.client.shared.event.ModalShownHandler;
@@ -38,7 +38,7 @@ public class EditorPopup extends Modal {
     private final TextBox textBox = new TextBox();
 
     private IGridCellValue<String> value;
-    private Callback<IGridCellValue<String>, IGridCellValue<String>> callback = null;
+    private ICallback<IGridCellValue<String>> callback = null;
 
     public EditorPopup() {
         setTitle( "Edit" );
@@ -89,7 +89,7 @@ public class EditorPopup extends Modal {
     }
 
     public void edit( final IGridCellValue<String> value,
-                      final Callback<IGridCellValue<String>, IGridCellValue<String>> callback ) {
+                      final ICallback<IGridCellValue<String>> callback ) {
         this.value = value;
         this.callback = callback;
         textBox.setText( value == null ? "" : value.getValue() );
@@ -97,15 +97,12 @@ public class EditorPopup extends Modal {
     }
 
     private void cancel() {
-        if ( callback != null ) {
-            callback.onFailure( value );
-        }
         hide();
     }
 
     private void commit() {
         if ( callback != null ) {
-            callback.onSuccess( new BaseGridCellValue<>( textBox.getText() ) );
+            callback.callback( new BaseGridCellValue<>( textBox.getText() ) );
         }
         hide();
     }
