@@ -35,6 +35,7 @@ public class CheckBoxDOMElementFactory extends BaseDOMElementFactory<Boolean, Ch
                                           final AbsolutePanel domElementContainer ) {
         return new CheckBoxDOMElement( gridLayer,
                                        gridWidget,
+                                       this,
                                        domElementContainer );
     }
 }

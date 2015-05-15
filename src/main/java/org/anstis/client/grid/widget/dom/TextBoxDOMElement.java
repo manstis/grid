@@ -36,9 +36,11 @@ public class TextBoxDOMElement extends BaseDOMElement<String, TextBox> {
 
     public TextBoxDOMElement( final GridLayer gridLayer,
                               final BaseGridWidget<?, ?> gridWidget,
+                              final IDOMElementFactory<String, ?> factory,
                               final AbsolutePanel domElementContainer ) {
         super( gridLayer,
                gridWidget,
+               factory,
                domElementContainer );
         final Style style = tb.getElement().getStyle();
         style.setWidth( 100,
@@ -81,18 +83,7 @@ public class TextBoxDOMElement extends BaseDOMElement<String, TextBox> {
             @Override
             public void onBlur( final BlurEvent event ) {
                 if ( context != null ) {
-                    final BaseGridWidget<?, ?> widget = context.getWidget();
-                    final String text = tb.getText();
-                    if ( text.trim().isEmpty() ) {
-                        widget.getModel().deleteCell( context.getRowIndex(),
-                                                      context.getColumnIndex() );
-
-                    } else {
-                        widget.getModel().setCell( context.getRowIndex(),
-                                                   context.getColumnIndex(),
-                                                   new BaseGridCellValue<>( tb.getText() ) );
-                    }
-                    widget.getLayer().draw();
+                    factory.freeResources();
                 }
             }
         } );

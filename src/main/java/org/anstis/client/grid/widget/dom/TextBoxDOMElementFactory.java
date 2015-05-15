@@ -35,6 +35,7 @@ public class TextBoxDOMElementFactory extends BaseDOMElementFactory<String, Text
                                          final AbsolutePanel domElementContainer ) {
         return new TextBoxDOMElement( gridLayer,
                                       gridWidget,
+                                      this,
                                       domElementContainer );
     }
 }

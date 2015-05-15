@@ -56,9 +56,11 @@ import org.anstis.client.grid.model.mergable.MergableGridData;
 import org.anstis.client.grid.util.GridDataFactory;
 import org.anstis.client.grid.widget.basic.GridWidget;
 import org.anstis.client.grid.widget.context.GridCellRenderContext;
+import org.anstis.client.grid.widget.dom.CheckBoxDOMElement;
 import org.anstis.client.grid.widget.dom.CheckBoxDOMElementFactory;
 import org.anstis.client.grid.widget.dom.TextBoxDOMElement;
 import org.anstis.client.grid.widget.dom.TextBoxDOMElementFactory;
+import org.anstis.client.grid.widget.dom.TextBoxInlineDOMElementFactory;
 import org.anstis.client.grid.widget.edit.EditorPopup;
 import org.anstis.client.grid.widget.mergable.MergableGridWidget;
 import org.anstis.client.grid.widget.renderers.IGridRenderer;
@@ -242,14 +244,17 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
             };
             grid3.addColumn( grid3Column );
         }
+        GridDataFactory.populate( grid3,
+                                  GRID3_ROWS );
 
         //Grid 3 - DOM Column - TextBox (Lazy show)
         final MergableGridColumn<String> grid3Column2 = new MergableGridColumn<String>( "G3-Col: 2",
                                                                                         100 ) {
 
-            private TextBoxDOMElementFactory factory = new TextBoxDOMElementFactory( gridLayer,
-                                                                                     gridWidget3,
-                                                                                     domElementContainer );
+            private TextBoxDOMElement e;
+            private TextBoxInlineDOMElementFactory factory = new TextBoxInlineDOMElementFactory( gridLayer,
+                                                                                                 gridWidget3,
+                                                                                                 domElementContainer );
 
             @Override
             public void renderCell( final Group g,
@@ -271,8 +276,9 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
             public void edit( final MergableGridCell<String> cell,
                               final GridCellRenderContext context,
                               final Callback<IGridCellValue<String>, IGridCellValue<String>> callback ) {
-                final TextBoxDOMElement e = factory.addCell( cell,
-                                                             context );
+                e = factory.getCell( cell,
+                                     context );
+                e.attach();
                 e.getWidget().setFocus( true );
             }
 
@@ -293,9 +299,11 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
 
         };
         grid3.addColumn( grid3Column2 );
-
-        GridDataFactory.populate( grid3,
-                                  GRID3_ROWS );
+        for ( int rowIndex = 0; rowIndex < GRID4_ROWS; rowIndex++ ) {
+            grid3.setCell( rowIndex,
+                           2,
+                           new BaseGridCellValue<>( "(" + 2 + ", " + rowIndex + ")" ) );
+        }
 
         //Grid 3 - DOM Column - CheckBox
         final MergableGridColumn<Boolean> grid3Column3 = new MergableGridColumn<Boolean>( "G3-Col: 3",
@@ -309,8 +317,9 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
             public void renderCell( final Group g,
                                     final MergableGridCell<Boolean> cell,
                                     final GridCellRenderContext context ) {
-                factory.addCell( cell,
-                                 context );
+                final CheckBoxDOMElement e = factory.getCell( cell,
+                                                              context );
+                e.attach();
             }
 
             @Override
@@ -348,8 +357,9 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
             public void renderCell( final Group g,
                                     final MergableGridCell<String> cell,
                                     final GridCellRenderContext context ) {
-                factory.addCell( cell,
-                                 context );
+                final TextBoxDOMElement e = factory.getCell( cell,
+                                                             context );
+                e.attach();
             }
 
             @Override
@@ -426,8 +436,9 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
             public void renderCell( final Group g,
                                     final GridCell<Boolean> cell,
                                     final GridCellRenderContext context ) {
-                factory.addCell( cell,
-                                 context );
+                final CheckBoxDOMElement e = factory.getCell( cell,
+                                                              context );
+                e.attach();
             }
 
             @Override

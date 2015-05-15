@@ -28,7 +28,7 @@ public interface IDOMElementFactory<T, E> extends IHasResources {
                   final BaseGridWidget<?, ?> gridWidget,
                   final AbsolutePanel domElementContainer );
 
-    E addCell( final IGridCell<T> cell,
+    E getCell( final IGridCell<T> cell,
                final GridCellRenderContext context );
 
 }

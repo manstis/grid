@@ -36,9 +36,11 @@ public class CheckBoxDOMElement extends BaseDOMElement<Boolean, CheckBox> {
 
     public CheckBoxDOMElement( final GridLayer gridLayer,
                                final BaseGridWidget<?, ?> gridWidget,
+                               final IDOMElementFactory<Boolean, ?> factory,
                                final AbsolutePanel domElementContainer ) {
         super( gridLayer,
                gridWidget,
+               factory,
                domElementContainer );
         final Style style = cb.getElement().getStyle();
         style.setMarginTop( 0,

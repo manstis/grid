@@ -26,10 +26,10 @@ import org.anstis.client.grid.widget.context.GridCellRenderContext;
 
 public abstract class BaseDOMElementFactory<T, E extends BaseDOMElement> implements IDOMElementFactory<T, E> {
 
-    private final GridLayer gridLayer;
-    private final BaseGridWidget<?, ?> gridWidget;
-    private final AbsolutePanel domElementContainer;
-    private final List<E> containers = new ArrayList<>();
+    protected final GridLayer gridLayer;
+    protected final BaseGridWidget<?, ?> gridWidget;
+    protected final AbsolutePanel domElementContainer;
+    protected final List<E> containers = new ArrayList<>();
 
     private int consumed = 0;
 
@@ -42,7 +42,7 @@ public abstract class BaseDOMElementFactory<T, E extends BaseDOMElement> impleme
     }
 
     @Override
-    public E addCell( final IGridCell<T> cell,
+    public E getCell( final IGridCell<T> cell,
                       final GridCellRenderContext context ) {
         E container;
         if ( consumed + 1 > containers.size() ) {
@@ -54,7 +54,6 @@ public abstract class BaseDOMElementFactory<T, E extends BaseDOMElement> impleme
             container = containers.get( consumed );
         }
         consumed++;
-        container.attach();
         container.initialise( cell,
                               context );
         return container;

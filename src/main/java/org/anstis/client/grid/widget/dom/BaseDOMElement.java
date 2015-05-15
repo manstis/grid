@@ -47,14 +47,17 @@ public abstract class BaseDOMElement<T, W extends Widget> {
 
     protected final GridLayer gridLayer;
     protected final BaseGridWidget<?, ?> gridWidget;
+    protected final IDOMElementFactory<T, ?> factory;
     protected final AbsolutePanel domElementContainer;
     protected final SimplePanel container = new SimplePanel();
 
     public BaseDOMElement( final GridLayer gridLayer,
                            final BaseGridWidget<?, ?> gridWidget,
+                           final IDOMElementFactory<T, ?> factory,
                            final AbsolutePanel domElementContainer ) {
         this.gridLayer = gridLayer;
         this.gridWidget = gridWidget;
+        this.factory = factory;
         this.domElementContainer = domElementContainer;
 
         final Style style = container.getElement().getStyle();
@@ -202,6 +205,10 @@ public abstract class BaseDOMElement<T, W extends Widget> {
                 return;
             }
         }
+        //When an Element is detached it's Position configuration is cleared, so reset it
+        final Style style = container.getElement().getStyle();
+        style.setPosition( Style.Position.ABSOLUTE );
+
         domElementContainer.add( container );
     }
 
