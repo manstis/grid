@@ -21,6 +21,6 @@ public interface IHasResources {
 
     void destroyResources();
 
-    void freeResources();
+    void freeUnusedResources();
 
 }

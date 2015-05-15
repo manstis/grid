@@ -60,7 +60,7 @@ import org.anstis.client.grid.widget.dom.CheckBoxDOMElement;
 import org.anstis.client.grid.widget.dom.CheckBoxDOMElementFactory;
 import org.anstis.client.grid.widget.dom.TextBoxDOMElement;
 import org.anstis.client.grid.widget.dom.TextBoxDOMElementFactory;
-import org.anstis.client.grid.widget.dom.TextBoxInlineDOMElementFactory;
+import org.anstis.client.grid.widget.dom.TextBoxSingletonDOMElementFactory;
 import org.anstis.client.grid.widget.edit.EditorPopup;
 import org.anstis.client.grid.widget.mergable.MergableGridWidget;
 import org.anstis.client.grid.widget.renderers.IGridRenderer;
@@ -252,9 +252,9 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
                                                                                         100 ) {
 
             private TextBoxDOMElement e;
-            private TextBoxInlineDOMElementFactory factory = new TextBoxInlineDOMElementFactory( gridLayer,
-                                                                                                 gridWidget3,
-                                                                                                 domElementContainer );
+            private TextBoxSingletonDOMElementFactory factory = new TextBoxSingletonDOMElementFactory( gridLayer,
+                                                                                                       gridWidget3,
+                                                                                                       domElementContainer );
 
             @Override
             public void renderCell( final Group g,
@@ -276,8 +276,8 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
             public void edit( final MergableGridCell<String> cell,
                               final GridCellRenderContext context,
                               final Callback<IGridCellValue<String>, IGridCellValue<String>> callback ) {
-                e = factory.getCell( cell,
-                                     context );
+                e = factory.getDomElementForCell( cell,
+                                                  context );
                 e.attach();
                 e.getWidget().setFocus( true );
             }
@@ -293,8 +293,8 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
             }
 
             @Override
-            public void freeResources() {
-                factory.freeResources();
+            public void freeUnusedResources() {
+                factory.freeUnusedResources();
             }
 
         };
@@ -317,8 +317,8 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
             public void renderCell( final Group g,
                                     final MergableGridCell<Boolean> cell,
                                     final GridCellRenderContext context ) {
-                final CheckBoxDOMElement e = factory.getCell( cell,
-                                                              context );
+                final CheckBoxDOMElement e = factory.getDomElementForCell( cell,
+                                                                           context );
                 e.attach();
             }
 
@@ -333,8 +333,8 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
             }
 
             @Override
-            public void freeResources() {
-                factory.freeResources();
+            public void freeUnusedResources() {
+                factory.freeUnusedResources();
             }
 
         };
@@ -357,8 +357,8 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
             public void renderCell( final Group g,
                                     final MergableGridCell<String> cell,
                                     final GridCellRenderContext context ) {
-                final TextBoxDOMElement e = factory.getCell( cell,
-                                                             context );
+                final TextBoxDOMElement e = factory.getDomElementForCell( cell,
+                                                                          context );
                 e.attach();
             }
 
@@ -373,8 +373,8 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
             }
 
             @Override
-            public void freeResources() {
-                factory.freeResources();
+            public void freeUnusedResources() {
+                factory.freeUnusedResources();
             }
 
         };
@@ -436,8 +436,8 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
             public void renderCell( final Group g,
                                     final GridCell<Boolean> cell,
                                     final GridCellRenderContext context ) {
-                final CheckBoxDOMElement e = factory.getCell( cell,
-                                                              context );
+                final CheckBoxDOMElement e = factory.getDomElementForCell( cell,
+                                                                           context );
                 e.attach();
             }
 
@@ -452,8 +452,8 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
             }
 
             @Override
-            public void freeResources() {
-                factory.freeResources();
+            public void freeUnusedResources() {
+                factory.freeUnusedResources();
             }
 
         };

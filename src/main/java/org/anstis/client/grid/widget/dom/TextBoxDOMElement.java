@@ -63,27 +63,14 @@ public class TextBoxDOMElement extends BaseDOMElement<String, TextBox> {
         tb.addValueChangeHandler( new ValueChangeHandler<String>() {
             @Override
             public void onValueChange( final ValueChangeEvent event ) {
-                if ( context != null ) {
-                    final BaseGridWidget<?, ?> widget = context.getWidget();
-                    final String text = tb.getText();
-                    if ( text.trim().isEmpty() ) {
-                        widget.getModel().deleteCell( context.getRowIndex(),
-                                                      context.getColumnIndex() );
-
-                    } else {
-                        widget.getModel().setCell( context.getRowIndex(),
-                                                   context.getColumnIndex(),
-                                                   new BaseGridCellValue<>( tb.getText() ) );
-                    }
-                    widget.getLayer().draw();
-                }
+                flush();
             }
         } );
         tb.addBlurHandler( new BlurHandler() {
             @Override
             public void onBlur( final BlurEvent event ) {
                 if ( context != null ) {
-                    factory.freeResources();
+                    factory.freeUnusedResources();
                 }
             }
         } );
@@ -103,6 +90,24 @@ public class TextBoxDOMElement extends BaseDOMElement<String, TextBox> {
     @Override
     public TextBox getWidget() {
         return tb;
+    }
+
+    @Override
+    public void flush() {
+        if ( context != null ) {
+            final BaseGridWidget<?, ?> widget = context.getWidget();
+            final String text = tb.getText();
+            if ( text.trim().isEmpty() ) {
+                widget.getModel().deleteCell( context.getRowIndex(),
+                                              context.getColumnIndex() );
+
+            } else {
+                widget.getModel().setCell( context.getRowIndex(),
+                                           context.getColumnIndex(),
+                                           new BaseGridCellValue<>( tb.getText() ) );
+            }
+            widget.getLayer().draw();
+        }
     }
 
 }

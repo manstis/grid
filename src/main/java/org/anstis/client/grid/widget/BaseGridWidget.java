@@ -202,7 +202,7 @@ public abstract class BaseGridWidget<M extends IGridData<?, ?, ?>, R extends IGr
                 for ( int i = 0; i < columns.size(); i++ ) {
                     final IGridColumn<?, ?> column = columns.get( i );
                     if ( i >= minCol && i <= maxCol ) {
-                        column.freeResources();
+                        column.freeUnusedResources();
                     }
                 }
 

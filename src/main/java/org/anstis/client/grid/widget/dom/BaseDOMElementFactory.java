@@ -42,13 +42,13 @@ public abstract class BaseDOMElementFactory<T, E extends BaseDOMElement> impleme
     }
 
     @Override
-    public E getCell( final IGridCell<T> cell,
-                      final GridCellRenderContext context ) {
+    public E getDomElementForCell( final IGridCell<T> cell,
+                                   final GridCellRenderContext context ) {
         E container;
         if ( consumed + 1 > containers.size() ) {
-            container = newElement( gridLayer,
-                                    gridWidget,
-                                    domElementContainer );
+            container = createDomElement( gridLayer,
+                                          gridWidget,
+                                          domElementContainer );
             containers.add( container );
         } else {
             container = containers.get( consumed );
@@ -74,7 +74,7 @@ public abstract class BaseDOMElementFactory<T, E extends BaseDOMElement> impleme
     }
 
     @Override
-    public void freeResources() {
+    public void freeUnusedResources() {
         final List<E> freed = new ArrayList<>();
         for ( int i = consumed; i < containers.size(); i++ ) {
             final E container = containers.get( i );

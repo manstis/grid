@@ -19,22 +19,22 @@ import com.google.gwt.user.client.ui.AbsolutePanel;
 import org.anstis.client.grid.widget.BaseGridWidget;
 import org.anstis.client.grid.widget.GridLayer;
 
-public abstract class BaseInlineDOMElementFactory<T, E extends BaseDOMElement> implements IDOMElementFactory<T, E> {
+public abstract class BaseSingletonDOMElementFactory<T, E extends BaseDOMElement> implements IDOMElementFactory<T, E> {
 
     protected final GridLayer gridLayer;
     protected final BaseGridWidget<?, ?> gridWidget;
     protected final AbsolutePanel domElementContainer;
     protected final E container;
 
-    public BaseInlineDOMElementFactory( final GridLayer gridLayer,
-                                        final BaseGridWidget<?, ?> gridWidget,
-                                        final AbsolutePanel domElementContainer ) {
+    public BaseSingletonDOMElementFactory( final GridLayer gridLayer,
+                                           final BaseGridWidget<?, ?> gridWidget,
+                                           final AbsolutePanel domElementContainer ) {
         this.gridLayer = gridLayer;
         this.gridWidget = gridWidget;
         this.domElementContainer = domElementContainer;
-        this.container = newElement( gridLayer,
-                                     gridWidget,
-                                     domElementContainer );
+        this.container = createDomElement( gridLayer,
+                                           gridWidget,
+                                           domElementContainer );
     }
 
 }

@@ -156,6 +156,8 @@ public abstract class BaseDOMElement<T, W extends Widget> {
 
     public abstract W getWidget();
 
+    public abstract void flush();
+
     protected SimplePanel getContainer() {
         return container;
     }

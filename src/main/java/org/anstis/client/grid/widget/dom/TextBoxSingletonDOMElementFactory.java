@@ -21,39 +21,40 @@ import org.anstis.client.grid.widget.BaseGridWidget;
 import org.anstis.client.grid.widget.GridLayer;
 import org.anstis.client.grid.widget.context.GridCellRenderContext;
 
-public class TextBoxInlineDOMElementFactory extends BaseInlineDOMElementFactory<String, TextBoxDOMElement> {
+public class TextBoxSingletonDOMElementFactory extends BaseSingletonDOMElementFactory<String, TextBoxDOMElement> {
 
     private TextBoxDOMElement e;
     private boolean isEdit = false;
 
-    public TextBoxInlineDOMElementFactory( final GridLayer gridLayer,
-                                           final BaseGridWidget<?, ?> gridWidget,
-                                           final AbsolutePanel domElementContainer ) {
+    public TextBoxSingletonDOMElementFactory( final GridLayer gridLayer,
+                                              final BaseGridWidget<?, ?> gridWidget,
+                                              final AbsolutePanel domElementContainer ) {
         super( gridLayer,
                gridWidget,
                domElementContainer );
     }
 
     @Override
-    public TextBoxDOMElement getCell( final IGridCell<String> cell,
-                                      final GridCellRenderContext context ) {
+    public TextBoxDOMElement createDomElement( final GridLayer gridLayer,
+                                               final BaseGridWidget<?, ?> gridWidget,
+                                               final AbsolutePanel domElementContainer ) {
+        e = new TextBoxDOMElement( gridLayer,
+                                   gridWidget,
+                                   this,
+                                   domElementContainer );
+        return e;
+    }
+
+    @Override
+    public TextBoxDOMElement getDomElementForCell( final IGridCell<String> cell,
+                                                   final GridCellRenderContext context ) {
+        if ( isEdit ) {
+            e.flush();
+        }
         isEdit = true;
         container.initialise( cell,
                               context );
         return container;
-    }
-
-    @Override
-    public TextBoxDOMElement newElement( final GridLayer gridLayer,
-                                         final BaseGridWidget<?, ?> gridWidget,
-                                         final AbsolutePanel domElementContainer ) {
-        if ( e == null ) {
-            e = new TextBoxDOMElement( gridLayer,
-                                       gridWidget,
-                                       this,
-                                       domElementContainer );
-        }
-        return e;
     }
 
     @Override
@@ -71,7 +72,7 @@ public class TextBoxInlineDOMElementFactory extends BaseInlineDOMElementFactory<
     }
 
     @Override
-    public void freeResources() {
+    public void freeUnusedResources() {
         if ( isEdit ) {
             destroyResources();
         }

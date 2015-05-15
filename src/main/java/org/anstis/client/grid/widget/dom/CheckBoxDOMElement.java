@@ -16,6 +16,8 @@
 package org.anstis.client.grid.widget.dom;
 
 import com.google.gwt.dom.client.Style;
+import com.google.gwt.event.dom.client.BlurEvent;
+import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.AbsolutePanel;
@@ -57,12 +59,14 @@ public class CheckBoxDOMElement extends BaseDOMElement<Boolean, CheckBox> {
         cb.addClickHandler( new ClickHandler() {
             @Override
             public void onClick( final ClickEvent event ) {
+                flush();
+            }
+        } );
+        cb.addBlurHandler( new BlurHandler() {
+            @Override
+            public void onBlur( final BlurEvent event ) {
                 if ( context != null ) {
-                    final BaseGridWidget<?, ?> widget = context.getWidget();
-                    widget.getModel().setCell( context.getRowIndex(),
-                                               context.getColumnIndex(),
-                                               new BaseGridCellValue<>( cb.getValue() ) );
-                    widget.getLayer().draw();
+                    factory.freeUnusedResources();
                 }
             }
         } );
@@ -84,6 +88,17 @@ public class CheckBoxDOMElement extends BaseDOMElement<Boolean, CheckBox> {
     @Override
     public CheckBox getWidget() {
         return cb;
+    }
+
+    @Override
+    public void flush() {
+        if ( context != null ) {
+            final BaseGridWidget<?, ?> widget = context.getWidget();
+            widget.getModel().setCell( context.getRowIndex(),
+                                       context.getColumnIndex(),
+                                       new BaseGridCellValue<>( cb.getValue() ) );
+            widget.getLayer().draw();
+        }
     }
 
 }

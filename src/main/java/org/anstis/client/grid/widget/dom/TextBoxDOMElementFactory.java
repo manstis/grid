@@ -30,9 +30,9 @@ public class TextBoxDOMElementFactory extends BaseDOMElementFactory<String, Text
     }
 
     @Override
-    public TextBoxDOMElement newElement( final GridLayer gridLayer,
-                                         final BaseGridWidget<?, ?> gridWidget,
-                                         final AbsolutePanel domElementContainer ) {
+    public TextBoxDOMElement createDomElement( final GridLayer gridLayer,
+                                               final BaseGridWidget<?, ?> gridWidget,
+                                               final AbsolutePanel domElementContainer ) {
         return new TextBoxDOMElement( gridLayer,
                                       gridWidget,
                                       this,

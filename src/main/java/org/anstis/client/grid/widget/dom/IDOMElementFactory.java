@@ -24,11 +24,11 @@ import org.anstis.client.grid.widget.context.GridCellRenderContext;
 
 public interface IDOMElementFactory<T, E> extends IHasResources {
 
-    E newElement( final GridLayer gridLayer,
-                  final BaseGridWidget<?, ?> gridWidget,
-                  final AbsolutePanel domElementContainer );
+    E createDomElement( final GridLayer gridLayer,
+                        final BaseGridWidget<?, ?> gridWidget,
+                        final AbsolutePanel domElementContainer );
 
-    E getCell( final IGridCell<T> cell,
-               final GridCellRenderContext context );
+    E getDomElementForCell( final IGridCell<T> cell,
+                            final GridCellRenderContext context );
 
 }

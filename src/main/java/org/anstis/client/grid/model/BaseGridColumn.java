@@ -103,7 +103,7 @@ public abstract class BaseGridColumn<R extends IGridRow<V>, V extends IGridCell<
     }
 
     @Override
-    public void freeResources() {
+    public void freeUnusedResources() {
         //Do nothing by default
     }
 

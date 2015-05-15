@@ -30,9 +30,9 @@ public class CheckBoxDOMElementFactory extends BaseDOMElementFactory<Boolean, Ch
     }
 
     @Override
-    public CheckBoxDOMElement newElement( final GridLayer gridLayer,
-                                          final BaseGridWidget<?, ?> gridWidget,
-                                          final AbsolutePanel domElementContainer ) {
+    public CheckBoxDOMElement createDomElement( final GridLayer gridLayer,
+                                                final BaseGridWidget<?, ?> gridWidget,
+                                                final AbsolutePanel domElementContainer ) {
         return new CheckBoxDOMElement( gridLayer,
                                        gridWidget,
                                        this,
