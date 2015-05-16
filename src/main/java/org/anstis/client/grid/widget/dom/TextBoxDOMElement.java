@@ -33,13 +33,6 @@ public class TextBoxDOMElement extends BaseDOMElement<String, TextBox> {
 
     private static final int HEIGHT = 16;
 
-    private static final Command NOP_COMMAND = new Command() {
-        @Override
-        public void execute() {
-            //Do nothing
-        }
-    };
-
     private final TextBox tb = new TextBox();
     private GridCellRenderContext context;
 
@@ -72,7 +65,7 @@ public class TextBoxDOMElement extends BaseDOMElement<String, TextBox> {
         tb.addValueChangeHandler( new ValueChangeHandler<String>() {
             @Override
             public void onValueChange( final ValueChangeEvent event ) {
-                flush( NOP_COMMAND );
+                flush();
             }
         } );
         tb.addBlurHandler( new BlurHandler() {
@@ -104,18 +97,23 @@ public class TextBoxDOMElement extends BaseDOMElement<String, TextBox> {
     @Override
     public void flush( final Command command ) {
         if ( context != null ) {
+            final int rowIndex = context.getRowIndex();
+            final int columnIndex = context.getColumnIndex();
             final BaseGridWidget<?, ?> widget = context.getWidget();
+            context = null;
+
             final String text = tb.getText();
             if ( text.trim().isEmpty() ) {
-                widget.getModel().deleteCell( context.getRowIndex(),
-                                              context.getColumnIndex() );
+                widget.getModel().deleteCell( rowIndex,
+                                              columnIndex );
 
             } else {
-                widget.getModel().setCell( context.getRowIndex(),
-                                           context.getColumnIndex(),
-                                           new BaseGridCellValue<>( tb.getText() ) );
+                widget.getModel().setCell( rowIndex,
+                                           columnIndex,
+                                           new BaseGridCellValue<>( text ) );
             }
             ( (GridLayer) widget.getLayer() ).draw( command );
+
         } else {
             command.execute();
         }

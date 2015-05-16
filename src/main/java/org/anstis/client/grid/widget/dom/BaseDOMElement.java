@@ -46,6 +46,13 @@ public abstract class BaseDOMElement<T, W extends Widget> {
     private static final double EPSILON = 0.0000001;
     private static final NumberFormat FORMAT = NumberFormat.getFormat( "0.0000" );
 
+    private static final Command NOP_COMMAND = new Command() {
+        @Override
+        public void execute() {
+            //Do nothing
+        }
+    };
+
     protected final GridLayer gridLayer;
     protected final BaseGridWidget<?, ?> gridWidget;
     protected final IDOMElementFactory<T, ?> factory;
@@ -156,6 +163,10 @@ public abstract class BaseDOMElement<T, W extends Widget> {
                                         final GridCellRenderContext context );
 
     public abstract W getWidget();
+
+    public void flush() {
+        flush( NOP_COMMAND );
+    }
 
     public abstract void flush( final Command command );
 

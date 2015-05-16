@@ -60,20 +60,4 @@ public class TextBoxSingletonDOMElementFactory extends BaseSingletonDOMElementFa
         } );
     }
 
-    @Override
-    public void initialiseResources() {
-        destroyResources();
-    }
-
-    @Override
-    public void destroyResources() {
-        e.getWidget().setFocus( false );
-        container.detach();
-    }
-
-    @Override
-    public void freeUnusedResources() {
-        destroyResources();
-    }
-
 }

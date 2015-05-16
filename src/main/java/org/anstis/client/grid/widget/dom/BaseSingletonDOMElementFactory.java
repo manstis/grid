@@ -37,4 +37,20 @@ public abstract class BaseSingletonDOMElementFactory<T, E extends BaseDOMElement
                                            domElementContainer );
     }
 
+    @Override
+    public void initialiseResources() {
+        destroyResources();
+    }
+
+    @Override
+    public void destroyResources() {
+        container.flush();
+        container.detach();
+    }
+
+    @Override
+    public void freeUnusedResources() {
+        destroyResources();
+    }
+
 }

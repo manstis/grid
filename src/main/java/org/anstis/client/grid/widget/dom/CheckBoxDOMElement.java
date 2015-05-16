@@ -34,13 +34,6 @@ public class CheckBoxDOMElement extends BaseDOMElement<Boolean, CheckBox> {
     //Hack to centre CheckBox
     private static final int SIZE = 20;
 
-    private static final Command NOP_COMMAND = new Command() {
-        @Override
-        public void execute() {
-            //Do nothing
-        }
-    };
-
     private final CheckBox cb = new CheckBox();
     private GridCellRenderContext context;
 
@@ -67,7 +60,7 @@ public class CheckBoxDOMElement extends BaseDOMElement<Boolean, CheckBox> {
         cb.addClickHandler( new ClickHandler() {
             @Override
             public void onClick( final ClickEvent event ) {
-                flush( NOP_COMMAND );
+                flush();
             }
         } );
         cb.addBlurHandler( new BlurHandler() {
@@ -101,11 +94,16 @@ public class CheckBoxDOMElement extends BaseDOMElement<Boolean, CheckBox> {
     @Override
     public void flush( final Command command ) {
         if ( context != null ) {
+            final int rowIndex = context.getRowIndex();
+            final int columnIndex = context.getColumnIndex();
             final BaseGridWidget<?, ?> widget = context.getWidget();
-            widget.getModel().setCell( context.getRowIndex(),
-                                       context.getColumnIndex(),
+            context = null;
+
+            widget.getModel().setCell( rowIndex,
+                                       columnIndex,
                                        new BaseGridCellValue<>( cb.getValue() ) );
             ( (GridLayer) widget.getLayer() ).draw( command );
+
         } else {
             command.execute();
         }
