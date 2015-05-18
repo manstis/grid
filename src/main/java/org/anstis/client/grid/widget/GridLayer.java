@@ -52,7 +52,6 @@ public class GridLayer extends Layer implements ISelectionManager,
                                                 NodeMouseMoveHandler,
                                                 NodeMouseUpHandler {
 
-    private IGridData<?, ?, ?> selected = null;
     private Map<IGridData<?, ?, ?>, BaseGridWidget<?, ?>> selectables = new HashMap<>();
     private Map<GridWidgetConnector, Arrow> connectors = new HashMap<>();
 
@@ -299,14 +298,10 @@ public class GridLayer extends Layer implements ISelectionManager,
 
     @Override
     public void select( final IGridData<?, ?, ?> selectable ) {
-        if ( selectable.equals( selected ) ) {
-            return;
-        }
         for ( Map.Entry<IGridData<?, ?, ?>, BaseGridWidget<?, ?>> e : selectables.entrySet() ) {
             e.getValue().deselect();
         }
         if ( selectables.containsKey( selectable ) ) {
-            selected = selectable;
             selectables.get( selectable ).select();
         }
         draw();
