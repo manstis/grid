@@ -20,6 +20,9 @@ import java.util.Stack;
 import org.anstis.client.grid.model.BaseGridRow;
 import org.anstis.client.grid.model.IGridCellValue;
 
+/**
+ * Implementation of a IGridRow in which cells can be merged.
+ */
 public class MergableGridRow extends BaseGridRow<MergableGridCell<?>> implements IMergableGridRow<MergableGridCell<?>> {
 
     private boolean hasMergedCells = false;
@@ -83,6 +86,7 @@ public class MergableGridRow extends BaseGridRow<MergableGridCell<?>> implements
         return heights.peek();
     }
 
+    //This is not part of the IGridCell interface as we don't want to expose this for general use
     void setCell( final int columnIndex,
                   final IGridCellValue value ) {
         if ( !cells.containsKey( columnIndex ) ) {
@@ -93,10 +97,12 @@ public class MergableGridRow extends BaseGridRow<MergableGridCell<?>> implements
         }
     }
 
+    //This is not part of the IGridCell interface as we don't want to expose this for general use
     void deleteCell( final int columnIndex ) {
         cells.remove( columnIndex );
     }
 
+    //This is not part of the IGridCell interface as we don't want to expose this for general use
     void setHasMergedCells( final boolean hasMergedCells ) {
         this.hasMergedCells = hasMergedCells;
     }

@@ -18,6 +18,10 @@ package org.anstis.client.grid.model.mergable;
 import org.anstis.client.grid.model.BaseGridCell;
 import org.anstis.client.grid.model.IGridCellValue;
 
+/**
+ * Implementation of IGridCell representing a cell that can be merged.
+ * @param <T> The Type of value presented by this cell
+ */
 public class MergableGridCell<T> extends BaseGridCell<T> implements IMergableGridCell<T> {
 
     private int mergedCellCount = 1;
@@ -58,10 +62,12 @@ public class MergableGridCell<T> extends BaseGridCell<T> implements IMergableGri
         collapseLevel = 0;
     }
 
+    //This is not part of the IGridCell interface as we don't want to expose this for general use
     void setValue( final IGridCellValue<T> value ) {
         this.value = value;
     }
 
+    //This is not part of the IGridCell interface as we don't want to expose this for general use
     void setMergedCellCount( final int mergedCellCount ) {
         this.mergedCellCount = mergedCellCount;
     }

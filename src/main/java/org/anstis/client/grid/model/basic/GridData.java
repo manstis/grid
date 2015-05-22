@@ -18,6 +18,9 @@ package org.anstis.client.grid.model.basic;
 import org.anstis.client.grid.model.BaseGridData;
 import org.anstis.client.grid.model.IGridCellValue;
 
+/**
+ * Implementation of IGridData that cannot contain merged cells.
+ */
 public class GridData extends BaseGridData<GridRow, GridColumn<?>, GridCell<?>> {
 
     @Override

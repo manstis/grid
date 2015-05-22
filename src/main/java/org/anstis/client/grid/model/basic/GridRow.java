@@ -18,8 +18,12 @@ package org.anstis.client.grid.model.basic;
 import org.anstis.client.grid.model.BaseGridRow;
 import org.anstis.client.grid.model.IGridCellValue;
 
+/**
+ * Implementation of a IGridRow in which cells cannot be merged.
+ */
 public class GridRow extends BaseGridRow<GridCell<?>> {
 
+    //This is not part of the IGridCell interface as we don't want to expose this for general use
     void setCell( final int columnIndex,
                   final IGridCellValue value ) {
         if ( !cells.containsKey( columnIndex ) ) {
@@ -30,6 +34,7 @@ public class GridRow extends BaseGridRow<GridCell<?>> {
         }
     }
 
+    //This is not part of the IGridCell interface as we don't want to expose this for general use
     void deleteCell( final int columnIndex ) {
         cells.remove( columnIndex );
     }

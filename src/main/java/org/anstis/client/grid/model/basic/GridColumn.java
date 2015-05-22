@@ -21,6 +21,10 @@ import org.anstis.client.grid.model.ICallback;
 import org.anstis.client.grid.model.IGridCellValue;
 import org.anstis.client.grid.widget.context.GridCellRenderContext;
 
+/**
+ * Base implementation of a IGridColumn for a grid that cannot contain merged cells.
+ * @param <T> The Type of value presented by this column
+ */
 public abstract class GridColumn<T> extends BaseGridColumn<GridRow, GridCell<?>> {
 
     public GridColumn( final String title,

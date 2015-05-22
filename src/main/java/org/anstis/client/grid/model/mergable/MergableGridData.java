@@ -18,6 +18,9 @@ package org.anstis.client.grid.model.mergable;
 import org.anstis.client.grid.model.BaseGridData;
 import org.anstis.client.grid.model.IGridCellValue;
 
+/**
+ * Implementation of IGridData that can contain merged cells.
+ */
 public class MergableGridData extends BaseGridData<MergableGridRow, MergableGridColumn<?>, MergableGridCell<?>> implements IMergableGridData {
 
     private boolean isMerged = true;

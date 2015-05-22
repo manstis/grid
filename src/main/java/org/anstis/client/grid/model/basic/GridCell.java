@@ -18,12 +18,17 @@ package org.anstis.client.grid.model.basic;
 import org.anstis.client.grid.model.BaseGridCell;
 import org.anstis.client.grid.model.IGridCellValue;
 
+/**
+ * Implementation of IGridCell representing a cell that cannot be merged.
+ * @param <T> The Type of value presented by this cell
+ */
 public class GridCell<T> extends BaseGridCell<T> {
 
     public GridCell( final IGridCellValue<T> value ) {
         super( value );
     }
 
+    //This is not part of the IGridCell interface as we don't want to expose this for general use
     void setValue( final IGridCellValue<T> value ) {
         this.value = value;
     }
