@@ -19,6 +19,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Base implementation of a grid row to avoid boiler-plate for more specific implementations.
+ * @param <V> The generic type of cells in the row
+ */
 public abstract class BaseGridRow<V extends IGridCell<?>> implements IGridRow<V> {
 
     protected double height = 20.0;

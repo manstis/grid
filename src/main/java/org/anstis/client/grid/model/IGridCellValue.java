@@ -15,10 +15,18 @@
  */
 package org.anstis.client.grid.model;
 
+/**
+ * A holder for the value of a cell.
+ * @param <T> The Type of the value
+ */
 public interface IGridCellValue<T> {
 
+    /**
+     * Get the value of the cell. It should be noted there is intentionally no "setter" as
+     * mutation of the value may require further mutation to other data within the grid. Therefore mutation
+     * of cell values is via the IGridData interface to ensure the integrity of all data within the grid.
+     * @return
+     */
     T getValue();
-
-    void setValue(final T value);
 
 }

@@ -15,6 +15,10 @@
  */
 package org.anstis.client.grid.model;
 
+/**
+ * Base implementation of a grid cell to avoid boiler-plate for more specific implementations.
+ * @param <T> The Type of value
+ */
 public abstract class BaseGridCell<T> implements IGridCell<T> {
 
     protected IGridCellValue<T> value;

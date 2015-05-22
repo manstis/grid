@@ -29,12 +29,12 @@ public class GridMergingTests extends BaseGridTests {
                                                                              100 );
         final MergableGridColumn<String> gc2 = new MockMergableGridColumn<>( "col2",
                                                                              100 );
-        data.addColumn( gc1 );
-        data.addColumn( gc2 );
+        data.appendColumn( gc1 );
+        data.appendColumn( gc2 );
 
-        data.addRow( new MergableGridRow() );
-        data.addRow( new MergableGridRow() );
-        data.addRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
 
         for ( int rowIndex = 0; rowIndex < data.getRowCount(); rowIndex++ ) {
             for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
@@ -63,12 +63,12 @@ public class GridMergingTests extends BaseGridTests {
                                                                              100 );
         final MergableGridColumn<String> gc2 = new MockMergableGridColumn<>( "col2",
                                                                              100 );
-        data.addColumn( gc1 );
-        data.addColumn( gc2 );
+        data.appendColumn( gc1 );
+        data.appendColumn( gc2 );
 
-        data.addRow( new MergableGridRow() );
-        data.addRow( new MergableGridRow() );
-        data.addRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
 
         for ( int rowIndex = 0; rowIndex < data.getRowCount(); rowIndex++ ) {
             for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
@@ -95,12 +95,12 @@ public class GridMergingTests extends BaseGridTests {
                                                                              100 );
         final MergableGridColumn<String> gc2 = new MockMergableGridColumn<>( "col2",
                                                                              100 );
-        data.addColumn( gc1 );
-        data.addColumn( gc2 );
+        data.appendColumn( gc1 );
+        data.appendColumn( gc2 );
 
-        data.addRow( new MergableGridRow() );
-        data.addRow( new MergableGridRow() );
-        data.addRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
 
         for ( int rowIndex = 0; rowIndex < data.getRowCount(); rowIndex++ ) {
             for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
@@ -131,12 +131,12 @@ public class GridMergingTests extends BaseGridTests {
                                                                              100 );
         final MergableGridColumn<String> gc2 = new MockMergableGridColumn<>( "col2",
                                                                              100 );
-        data.addColumn( gc1 );
-        data.addColumn( gc2 );
+        data.appendColumn( gc1 );
+        data.appendColumn( gc2 );
 
-        data.addRow( new MergableGridRow() );
-        data.addRow( new MergableGridRow() );
-        data.addRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
 
         for ( int rowIndex = 0; rowIndex < data.getRowCount(); rowIndex++ ) {
             for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
@@ -167,12 +167,12 @@ public class GridMergingTests extends BaseGridTests {
                                                                              100 );
         final MergableGridColumn<String> gc2 = new MockMergableGridColumn<>( "col2",
                                                                              100 );
-        data.addColumn( gc1 );
-        data.addColumn( gc2 );
+        data.appendColumn( gc1 );
+        data.appendColumn( gc2 );
 
-        data.addRow( new MergableGridRow() );
-        data.addRow( new MergableGridRow() );
-        data.addRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
 
         for ( int rowIndex = 0; rowIndex < data.getRowCount(); rowIndex++ ) {
             for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
@@ -206,12 +206,12 @@ public class GridMergingTests extends BaseGridTests {
                                                                              100 );
         final MergableGridColumn<String> gc2 = new MockMergableGridColumn<>( "col2",
                                                                              100 );
-        data.addColumn( gc1 );
-        data.addColumn( gc2 );
+        data.appendColumn( gc1 );
+        data.appendColumn( gc2 );
 
-        data.addRow( new MergableGridRow() );
-        data.addRow( new MergableGridRow() );
-        data.addRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
 
         for ( int rowIndex = 0; rowIndex < data.getRowCount(); rowIndex++ ) {
             for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
@@ -242,12 +242,12 @@ public class GridMergingTests extends BaseGridTests {
                                                                              100 );
         final MergableGridColumn<String> gc2 = new MockMergableGridColumn<>( "col2",
                                                                              100 );
-        data.addColumn( gc1 );
-        data.addColumn( gc2 );
+        data.appendColumn( gc1 );
+        data.appendColumn( gc2 );
 
-        data.addRow( new MergableGridRow() );
-        data.addRow( new MergableGridRow() );
-        data.addRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
 
         for ( int rowIndex = 0; rowIndex < data.getRowCount(); rowIndex++ ) {
             for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
@@ -278,12 +278,12 @@ public class GridMergingTests extends BaseGridTests {
                                                                              100 );
         final MergableGridColumn<String> gc2 = new MockMergableGridColumn<>( "col2",
                                                                              100 );
-        data.addColumn( gc1 );
-        data.addColumn( gc2 );
+        data.appendColumn( gc1 );
+        data.appendColumn( gc2 );
 
-        data.addRow( new MergableGridRow() );
-        data.addRow( new MergableGridRow() );
-        data.addRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
 
         for ( int rowIndex = 0; rowIndex < data.getRowCount(); rowIndex++ ) {
             for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
@@ -318,12 +318,12 @@ public class GridMergingTests extends BaseGridTests {
                                                                              100 );
         final MergableGridColumn<String> gc2 = new MockMergableGridColumn<>( "col2",
                                                                              100 );
-        data.addColumn( gc1 );
-        data.addColumn( gc2 );
+        data.appendColumn( gc1 );
+        data.appendColumn( gc2 );
 
-        data.addRow( new MergableGridRow() );
-        data.addRow( new MergableGridRow() );
-        data.addRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
 
         for ( int rowIndex = 0; rowIndex < data.getRowCount(); rowIndex++ ) {
             for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
@@ -362,12 +362,12 @@ public class GridMergingTests extends BaseGridTests {
                                                                              100 );
         final MergableGridColumn<String> gc2 = new MockMergableGridColumn<>( "col2",
                                                                              100 );
-        data.addColumn( gc1 );
-        data.addColumn( gc2 );
+        data.appendColumn( gc1 );
+        data.appendColumn( gc2 );
 
-        data.addRow( new MergableGridRow() );
-        data.addRow( new MergableGridRow() );
-        data.addRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
 
         for ( int rowIndex = 0; rowIndex < data.getRowCount(); rowIndex++ ) {
             for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
@@ -412,12 +412,12 @@ public class GridMergingTests extends BaseGridTests {
                                                                              100 );
         final MergableGridColumn<String> gc2 = new MockMergableGridColumn<>( "col2",
                                                                              100 );
-        data.addColumn( gc1 );
-        data.addColumn( gc2 );
+        data.appendColumn( gc1 );
+        data.appendColumn( gc2 );
 
-        data.addRow( new MergableGridRow() );
-        data.addRow( new MergableGridRow() );
-        data.addRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
 
         for ( int rowIndex = 0; rowIndex < data.getRowCount(); rowIndex++ ) {
             for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
@@ -466,12 +466,12 @@ public class GridMergingTests extends BaseGridTests {
                                                                              100 );
         final MergableGridColumn<String> gc2 = new MockMergableGridColumn<>( "col2",
                                                                              100 );
-        data.addColumn( gc1 );
-        data.addColumn( gc2 );
+        data.appendColumn( gc1 );
+        data.appendColumn( gc2 );
 
-        data.addRow( new MergableGridRow() );
-        data.addRow( new MergableGridRow() );
-        data.addRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
 
         for ( int rowIndex = 0; rowIndex < data.getRowCount(); rowIndex++ ) {
             for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
@@ -542,12 +542,12 @@ public class GridMergingTests extends BaseGridTests {
                                                                              100 );
         final MergableGridColumn<String> gc2 = new MockMergableGridColumn<>( "col2",
                                                                              100 );
-        data.addColumn( gc1 );
-        data.addColumn( gc2 );
+        data.appendColumn( gc1 );
+        data.appendColumn( gc2 );
 
-        data.addRow( new MergableGridRow() );
-        data.addRow( new MergableGridRow() );
-        data.addRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
 
         for ( int rowIndex = 0; rowIndex < data.getRowCount(); rowIndex++ ) {
             for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
@@ -606,14 +606,14 @@ public class GridMergingTests extends BaseGridTests {
                                                                              100 );
         final MergableGridColumn<String> gc2 = new MockMergableGridColumn<>( "col2",
                                                                              100 );
-        data.addColumn( gc1 );
-        data.addColumn( gc2 );
+        data.appendColumn( gc1 );
+        data.appendColumn( gc2 );
 
-        data.addRow( new MergableGridRow() );
-        data.addRow( new MergableGridRow() );
-        data.addRow( new MergableGridRow() );
-        data.addRow( new MergableGridRow() );
-        data.addRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
 
         for ( int rowIndex = 0; rowIndex < data.getRowCount(); rowIndex++ ) {
             for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
@@ -678,14 +678,14 @@ public class GridMergingTests extends BaseGridTests {
                                                                              100 );
         final MergableGridColumn<String> gc2 = new MockMergableGridColumn<>( "col2",
                                                                              100 );
-        data.addColumn( gc1 );
-        data.addColumn( gc2 );
+        data.appendColumn( gc1 );
+        data.appendColumn( gc2 );
 
-        data.addRow( new MergableGridRow() );
-        data.addRow( new MergableGridRow() );
-        data.addRow( new MergableGridRow() );
-        data.addRow( new MergableGridRow() );
-        data.addRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
 
         for ( int rowIndex = 0; rowIndex < data.getRowCount(); rowIndex++ ) {
             for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
@@ -748,12 +748,12 @@ public class GridMergingTests extends BaseGridTests {
         final MergableGridData data = new MergableGridData();
         final MergableGridColumn<String> gc1 = new MockMergableGridColumn<>( "col1",
                                                                              100 );
-        data.addColumn( gc1 );
+        data.appendColumn( gc1 );
 
-        data.addRow( new MergableGridRow() );
-        data.addRow( new MergableGridRow() );
-        data.addRow( new MergableGridRow() );
-        data.addRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
 
         for ( int rowIndex = 0; rowIndex < data.getRowCount(); rowIndex++ ) {
             for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
@@ -779,12 +779,12 @@ public class GridMergingTests extends BaseGridTests {
         final MergableGridData data = new MergableGridData();
         final MergableGridColumn<String> gc1 = new MockMergableGridColumn<>( "col1",
                                                                              100 );
-        data.addColumn( gc1 );
+        data.appendColumn( gc1 );
 
-        data.addRow( new MergableGridRow() );
-        data.addRow( new MergableGridRow() );
-        data.addRow( new MergableGridRow() );
-        data.addRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
 
         for ( int rowIndex = 0; rowIndex < data.getRowCount(); rowIndex++ ) {
             for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
@@ -810,13 +810,13 @@ public class GridMergingTests extends BaseGridTests {
         final MergableGridData data = new MergableGridData();
         final MergableGridColumn<String> gc1 = new MockMergableGridColumn<>( "col1",
                                                                              100 );
-        data.addColumn( gc1 );
+        data.appendColumn( gc1 );
 
-        data.addRow( new MergableGridRow() );
-        data.addRow( new MergableGridRow() );
-        data.addRow( new MergableGridRow() );
-        data.addRow( new MergableGridRow() );
-        data.addRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
 
         for ( int rowIndex = 0; rowIndex < data.getRowCount(); rowIndex++ ) {
             for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
@@ -870,12 +870,12 @@ public class GridMergingTests extends BaseGridTests {
         final MergableGridData data = new MergableGridData();
         final MergableGridColumn<Boolean> gc1 = new MockMergableGridColumn<>( "col1",
                                                                               100 );
-        data.addColumn( gc1 );
+        data.appendColumn( gc1 );
 
-        data.addRow( new MergableGridRow() );
-        data.addRow( new MergableGridRow() );
-        data.addRow( new MergableGridRow() );
-        data.addRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
 
         for ( int rowIndex = 0; rowIndex < data.getRowCount(); rowIndex++ ) {
             for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
@@ -901,12 +901,12 @@ public class GridMergingTests extends BaseGridTests {
         final MergableGridData data = new MergableGridData();
         final MergableGridColumn<Boolean> gc1 = new MockMergableGridColumn<>( "col1",
                                                                               100 );
-        data.addColumn( gc1 );
+        data.appendColumn( gc1 );
 
-        data.addRow( new MergableGridRow() );
-        data.addRow( new MergableGridRow() );
-        data.addRow( new MergableGridRow() );
-        data.addRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
 
         for ( int rowIndex = 0; rowIndex < data.getRowCount(); rowIndex++ ) {
             for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
@@ -932,13 +932,13 @@ public class GridMergingTests extends BaseGridTests {
         final MergableGridData data = new MergableGridData();
         final MergableGridColumn<Boolean> gc1 = new MockMergableGridColumn<>( "col1",
                                                                               100 );
-        data.addColumn( gc1 );
+        data.appendColumn( gc1 );
 
-        data.addRow( new MergableGridRow() );
-        data.addRow( new MergableGridRow() );
-        data.addRow( new MergableGridRow() );
-        data.addRow( new MergableGridRow() );
-        data.addRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
 
         for ( int rowIndex = 0; rowIndex < data.getRowCount(); rowIndex++ ) {
             for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
@@ -994,12 +994,12 @@ public class GridMergingTests extends BaseGridTests {
                                                                              100 );
         final MergableGridColumn<String> gc2 = new MockMergableGridColumn<>( "col2",
                                                                              100 );
-        data.addColumn( gc1 );
-        data.addColumn( gc2 );
+        data.appendColumn( gc1 );
+        data.appendColumn( gc2 );
 
-        data.addRow( new MergableGridRow() );
-        data.addRow( new MergableGridRow() );
-        data.addRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
 
         for ( int rowIndex = 0; rowIndex < data.getRowCount(); rowIndex++ ) {
             for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {
@@ -1043,12 +1043,12 @@ public class GridMergingTests extends BaseGridTests {
                                                                              100 );
         final MergableGridColumn<String> gc2 = new MockMergableGridColumn<>( "col2",
                                                                              100 );
-        data.addColumn( gc1 );
-        data.addColumn( gc2 );
+        data.appendColumn( gc1 );
+        data.appendColumn( gc2 );
 
-        data.addRow( new MergableGridRow() );
-        data.addRow( new MergableGridRow() );
-        data.addRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
+        data.appendRow( new MergableGridRow() );
 
         for ( int rowIndex = 0; rowIndex < data.getRowCount(); rowIndex++ ) {
             for ( int columnIndex = 0; columnIndex < data.getColumns().size(); columnIndex++ ) {

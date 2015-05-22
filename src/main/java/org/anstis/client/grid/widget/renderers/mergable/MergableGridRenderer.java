@@ -336,8 +336,8 @@ public class MergableGridRenderer implements IMergableGridRenderer {
                                                                                                      columnIndex,
                                                                                                      transform,
                                                                                                      widget );
-                                final Group hc = column.renderRow( row,
-                                                                   cellContext );
+                                final Group hc = column.renderCell( row,
+                                                                    cellContext );
                                 hc.setX( x )
                                         .setY( y )
                                         .setListening( false );
@@ -370,8 +370,8 @@ public class MergableGridRenderer implements IMergableGridRenderer {
                                                                                                      transform,
                                                                                                      widget );
 
-                                final Group hc = column.renderRow( row,
-                                                                   cellContext );
+                                final Group hc = column.renderCell( row,
+                                                                    cellContext );
                                 hc.setX( x )
                                         .setY( _y )
                                         .setListening( false );
@@ -538,8 +538,8 @@ public class MergableGridRenderer implements IMergableGridRenderer {
                                                                                          columnIndex,
                                                                                          transform,
                                                                                          widget );
-                    final Group hc = column.renderRow( row,
-                                                       cellContext );
+                    final Group hc = column.renderCell( row,
+                                                        cellContext );
                     if ( hc != null ) {
                         hc.setX( x )
                                 .setY( y )

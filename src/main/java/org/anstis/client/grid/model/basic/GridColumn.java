@@ -30,8 +30,8 @@ public abstract class GridColumn<T> extends BaseGridColumn<GridRow, GridCell<?>>
     }
 
     @Override
-    public Group renderRow( final GridRow row,
-                            final GridCellRenderContext context ) {
+    public Group renderCell( final GridRow row,
+                             final GridCellRenderContext context ) {
         final GridCell cell = row.getCells().get( getIndex() );
         if ( cell == null ) {
             return null;

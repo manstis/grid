@@ -17,44 +17,127 @@ package org.anstis.client.grid.model;
 
 import java.util.List;
 
+/**
+ * An interface defining a generic grid of data.
+ * @param <R> The generic type of rows within the grid
+ * @param <C> The generic type of columns within the grid
+ * @param <V> The generic type of cells within the grid
+ */
 public interface IGridData<R extends IGridRow<V>, C extends IGridColumn<R, V>, V extends IGridCell<?>> {
 
+    /**
+     * Get the columns associated with the grid.
+     * @return
+     */
     List<C> getColumns();
 
-    void addColumn( final C column );
+    /**
+     * Append a column to the end of the grid. End being considered the far most right.
+     * @param column
+     */
+    void appendColumn( final C column );
 
-    void addColumn( final int index,
-                    final C column );
+    /**
+     * Insert a column to the grid at the specified index.
+     * @param index
+     * @param column
+     */
+    void insertColumn( final int index,
+                       final C column );
 
+    /**
+     * Remove a column from the grid.
+     * @param column
+     */
     void removeColumn( final C column );
 
+    /**
+     * Move a column to a new index within the grid
+     * @param index
+     * @param column
+     */
     void moveColumnTo( final int index,
                        final C column );
 
+    /**
+     * Get the x-coordinate of the column relative to the grid. i.e. 0 <= offset <= gridWidth.
+     * @param gridColumn
+     * @return
+     */
     double getColumnOffset( final C gridColumn );
 
+    /**
+     * Get the x-coordinate of the column relative to the grid. i.e. 0 <= offset <= gridWidth.
+     * @param columnIndex
+     * @return
+     */
     double getColumnOffset( final int columnIndex );
 
+    /**
+     * Get the y-coordinate of the row relative to the grid. i.e. 0 <= offset <= gridHeight.
+     * @param gridRow
+     * @return
+     */
     double getRowOffset( final R gridRow );
 
+    /**
+     * Get the y-coordinate of the row relative to the grid. i.e. 0 <= offset <= gridHeight.
+     * @param rowIndex
+     * @return
+     */
     double getRowOffset( final int rowIndex );
 
-    void addRow( final R row );
+    /**
+     * Append a row to the end of the grid.
+     * @param row
+     */
+    void appendRow( final R row );
 
-    void addRow( final int rowIndex,
-                 final R row );
+    /**
+     * Insert a row to the grid at the specified index.
+     * @param rowIndex
+     * @param row
+     */
+    void insertRow( final int rowIndex,
+                    final R row );
 
+    /**
+     * Get a row at the specified index.
+     * @param rowIndex
+     * @return
+     */
     R getRow( final int rowIndex );
 
+    /**
+     * Get the total number of rows in the grid.
+     * @return
+     */
     int getRowCount();
 
+    /**
+     * Get a cell at the specified physical coordinate.
+     * @param rowIndex
+     * @param columnIndex
+     * @return
+     */
     V getCell( final int rowIndex,
                final int columnIndex );
 
+    /**
+     * Set a cell at the specified physical coordinate.
+     * @param rowIndex
+     * @param columnIndex
+     * @param value
+     */
     void setCell( final int rowIndex,
                   final int columnIndex,
                   final IGridCellValue<?> value );
 
+    /**
+     * Delete a cell at the specified physical coordinate.
+     * @param rowIndex
+     * @param columnIndex
+     */
     void deleteCell( final int rowIndex,
                      final int columnIndex );
 

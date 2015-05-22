@@ -34,8 +34,8 @@ public class GridIndexingTests {
                                                              100 );
         final GridColumn<String> gc2 = new MockGridColumn<>( "col2",
                                                              100 );
-        grid.addColumn( gc1 );
-        grid.addColumn( gc2 );
+        grid.appendColumn( gc1 );
+        grid.appendColumn( gc2 );
 
         final List<GridColumn<?>> columns = grid.getColumns();
 
@@ -60,10 +60,10 @@ public class GridIndexingTests {
                                                              100 );
         final GridColumn<String> gc3 = new MockGridColumn<>( "col3",
                                                              100 );
-        grid.addColumn( gc1 );
-        grid.addColumn( gc2 );
-        grid.addColumn( 1,
-                        gc3 );
+        grid.appendColumn( gc1 );
+        grid.appendColumn( gc2 );
+        grid.insertColumn( 1,
+                           gc3 );
 
         final List<GridColumn<?>> columns = grid.getColumns();
 
@@ -92,9 +92,9 @@ public class GridIndexingTests {
                                                              100 );
         final GridColumn<String> gc3 = new MockGridColumn<>( "col3",
                                                              100 );
-        grid.addColumn( gc1 );
-        grid.addColumn( gc2 );
-        grid.addColumn( gc3 );
+        grid.appendColumn( gc1 );
+        grid.appendColumn( gc2 );
+        grid.appendColumn( gc3 );
 
         grid.removeColumn( gc2 );
 
@@ -125,10 +125,10 @@ public class GridIndexingTests {
                                                              100 );
         final GridColumn<String> gc4 = new MockGridColumn<>( "col4",
                                                              100 );
-        grid.addColumn( gc1 );
-        grid.addColumn( gc2 );
-        grid.addColumn( gc3 );
-        grid.addColumn( gc4 );
+        grid.appendColumn( gc1 );
+        grid.appendColumn( gc2 );
+        grid.appendColumn( gc3 );
+        grid.appendColumn( gc4 );
 
         grid.moveColumnTo( 1,
                            gc4 );
@@ -166,10 +166,10 @@ public class GridIndexingTests {
                                                              100 );
         final GridColumn<String> gc4 = new MockGridColumn<>( "col4",
                                                              100 );
-        grid.addColumn( gc1 );
-        grid.addColumn( gc2 );
-        grid.addColumn( gc3 );
-        grid.addColumn( gc4 );
+        grid.appendColumn( gc1 );
+        grid.appendColumn( gc2 );
+        grid.appendColumn( gc3 );
+        grid.appendColumn( gc4 );
 
         grid.moveColumnTo( 3,
                            gc1 );

@@ -30,8 +30,8 @@ public abstract class MergableGridColumn<T> extends BaseGridColumn<MergableGridR
     }
 
     @Override
-    public Group renderRow( final MergableGridRow row,
-                            final GridCellRenderContext context ) {
+    public Group renderCell( final MergableGridRow row,
+                             final GridCellRenderContext context ) {
         final MergableGridCell cell = row.getCells().get( getIndex() );
         if ( cell == null ) {
             return null;

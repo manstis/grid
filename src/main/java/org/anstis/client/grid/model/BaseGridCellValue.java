@@ -15,6 +15,10 @@
  */
 package org.anstis.client.grid.model;
 
+/**
+* Base implementation of a grid cell value holder to avoid boiler-plate for more specific implementations.
+ * @param <T> The Type of the value
+ */
 public class BaseGridCellValue<T> implements IGridCellValue<T> {
 
     protected T value;
@@ -26,11 +30,6 @@ public class BaseGridCellValue<T> implements IGridCellValue<T> {
     @Override
     public T getValue() {
         return value;
-    }
-
-    @Override
-    public void setValue( final T value ) {
-        this.value = value;
     }
 
     @Override

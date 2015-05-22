@@ -21,6 +21,11 @@ import com.ait.lienzo.shared.core.types.ColorName;
 import com.ait.lienzo.shared.core.types.TextAlign;
 import com.ait.lienzo.shared.core.types.TextBaseLine;
 
+/**
+ * Base implementation of a grid column to avoid boiler-plate for more specific implementations.
+ * @param <R> The generic type of the Rows handled by the column
+ * @param <V> The generic type of the Cells handled by the column
+ */
 public abstract class BaseGridColumn<R extends IGridRow<V>, V extends IGridCell<?>> implements IGridColumn<R, V> {
 
     private String title;

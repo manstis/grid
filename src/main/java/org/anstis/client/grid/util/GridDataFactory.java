@@ -31,7 +31,7 @@ public class GridDataFactory {
         for ( int rowIndex = 0; rowIndex < rowCount; rowIndex++ ) {
             final GridRow row = new GridRow();
             row.setHeight( getRowHeight() );
-            grid.addRow( row );
+            grid.appendRow( row );
             for ( int columnIndex = 0; columnIndex < columnCount; columnIndex++ ) {
                 if ( Math.random() < FILL_FACTOR ) {
                     grid.setCell( rowIndex,
@@ -47,7 +47,7 @@ public class GridDataFactory {
         final int columnCount = grid.getColumns().size();
         for ( int rowIndex = 0; rowIndex < rowCount; rowIndex++ ) {
             final MergableGridRow row = new MergableGridRow( getRowHeight() );
-            grid.addRow( row );
+            grid.appendRow( row );
             for ( int columnIndex = 0; columnIndex < columnCount; columnIndex++ ) {
                 if ( Math.random() < FILL_FACTOR ) {
                     grid.setCell( rowIndex,

@@ -166,7 +166,7 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
                 }
 
             };
-            grid1.addColumn( grid1Column );
+            grid1.appendColumn( grid1Column );
         }
         GridDataFactory.populate( grid1,
                                   GRID1_ROWS );
@@ -204,7 +204,7 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
                 }
 
             };
-            grid2.addColumn( grid2Column );
+            grid2.appendColumn( grid2Column );
         }
         GridDataFactory.populate( grid2,
                                   GRID2_ROWS );
@@ -242,7 +242,7 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
                 }
 
             };
-            grid3.addColumn( grid3Column );
+            grid3.appendColumn( grid3Column );
         }
         GridDataFactory.populate( grid3,
                                   GRID3_ROWS );
@@ -302,7 +302,7 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
             }
 
         };
-        grid3.addColumn( grid3Column2 );
+        grid3.appendColumn( grid3Column2 );
         for ( int rowIndex = 0; rowIndex < GRID4_ROWS; rowIndex++ ) {
             grid3.setCell( rowIndex,
                            2,
@@ -347,7 +347,7 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
             }
 
         };
-        grid3.addColumn( grid3Column3 );
+        grid3.appendColumn( grid3Column3 );
         for ( int rowIndex = 0; rowIndex < GRID4_ROWS; rowIndex++ ) {
             grid3.setCell( rowIndex,
                            3,
@@ -392,7 +392,7 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
             }
 
         };
-        grid3.addColumn( grid3Column4 );
+        grid3.appendColumn( grid3Column4 );
         for ( int rowIndex = 0; rowIndex < GRID4_ROWS; rowIndex++ ) {
             if ( Math.random() < GridDataFactory.FILL_FACTOR ) {
                 grid3.setCell( rowIndex,
@@ -436,7 +436,7 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
             }
 
         };
-        grid4.addColumn( grid4Column1 );
+        grid4.appendColumn( grid4Column1 );
 
         //Grid 4 - DOM Column - CheckBox
         final GridColumn<Boolean> grid4Column2 = new GridColumn<Boolean>( "G4-Col: 2",
@@ -476,11 +476,11 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
             }
 
         };
-        grid4.addColumn( grid4Column2 );
+        grid4.appendColumn( grid4Column2 );
 
         for ( int rowIndex = 0; rowIndex < GRID4_ROWS; rowIndex++ ) {
             final GridRow row = new GridRow();
-            grid4.addRow( row );
+            grid4.appendRow( row );
             for ( int columnIndex = 0; columnIndex < grid4.getColumns().size(); columnIndex++ ) {
                 switch ( columnIndex ) {
                     case 0:

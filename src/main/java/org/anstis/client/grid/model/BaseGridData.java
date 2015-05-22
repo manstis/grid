@@ -19,6 +19,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Base implementation of a grid to avoid boiler-plate for more specific implementations.
+ * @param <R> The generic type of rows within the grid
+ * @param <C> The generic type of columns within the grid
+ * @param <V> The generic type of cells within the grid
+ */
 public abstract class BaseGridData<R extends IGridRow<V>, C extends IGridColumn<R, V>, V extends IGridCell<?>> implements IGridData<R, C, V> {
 
     protected List<R> rows = new ArrayList<>();
@@ -30,14 +36,14 @@ public abstract class BaseGridData<R extends IGridRow<V>, C extends IGridColumn<
     }
 
     @Override
-    public void addColumn( final C column ) {
+    public void appendColumn( final C column ) {
         column.setIndex( columns.size() );
         columns.add( column );
     }
 
     @Override
-    public void addColumn( final int index,
-                           final C column ) {
+    public void insertColumn( final int index,
+                              final C column ) {
         column.setIndex( columns.size() );
         columns.add( index,
                      column );
@@ -97,13 +103,13 @@ public abstract class BaseGridData<R extends IGridRow<V>, C extends IGridColumn<
     }
 
     @Override
-    public void addRow( final R row ) {
+    public void appendRow( final R row ) {
         this.rows.add( row );
     }
 
     @Override
-    public void addRow( final int rowIndex,
-                        final R row ) {
+    public void insertRow( final int rowIndex,
+                           final R row ) {
         this.rows.add( rowIndex,
                        row );
     }

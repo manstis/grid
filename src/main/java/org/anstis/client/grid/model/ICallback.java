@@ -15,8 +15,16 @@
  */
 package org.anstis.client.grid.model;
 
+/**
+ * Interface defining a callback that receives a value
+ * @param <T> The Type of value passed to the callback
+ */
 public interface ICallback<T> {
 
+    /**
+     * Invoke the callback with a value
+     * @param value
+     */
     void callback( final T value );
 
 }

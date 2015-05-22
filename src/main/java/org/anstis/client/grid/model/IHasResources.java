@@ -15,12 +15,31 @@
  */
 package org.anstis.client.grid.model;
 
+/**
+ * Interface declaring the need for additional resources. This interface is used during the grid rendering phase.
+ * Columns may need additional resources to render their content. For example the DOM element overlays need to
+ * initialise a DOM element and be able to release these when the column is no longer rendered.
+ */
 public interface IHasResources {
 
+    /**
+     * Initialise additional resources. This is invoked at the
+     * start of the render phase if a column is visible.
+     */
     void initialiseResources();
 
+    /**
+     * Destroy all additional resources created during initialisation. This is
+     * invoked at the end of the render phase if the column is not visible.
+     */
     void destroyResources();
 
+    /**
+     * Destroy additional resources that are not required. This is invoked at the
+     * end of the render phase on columns that are partially visible. Some of the
+     * resources acquired in initialisation may not have been used for rendering
+     * and can be released.
+     */
     void freeUnusedResources();
 
 }
