@@ -89,12 +89,14 @@ public class GridWidgetMouseMoveHandler implements NodeMouseMoveHandler {
                         for ( IGridColumn gc : grid.getColumns() ) {
                             //Check for column moving
                             final double columnWidth = gc.getWidth();
-                            if ( ax > offsetX && ax < offsetX + columnWidth ) {
-                                state.setGrid( grid );
-                                state.setGridColumn( gc );
-                                state.setOperation( GridWidgetHandlersState.GridWidgetHandlersOperation.COLUMN_MOVE_PENDING );
-                                state.setCursor( Style.Cursor.MOVE );
-                                break;
+                            if ( gc.isMoveable() ) {
+                                if ( ax > offsetX && ax < offsetX + columnWidth ) {
+                                    state.setGrid( grid );
+                                    state.setGridColumn( gc );
+                                    state.setOperation( GridWidgetHandlersState.GridWidgetHandlersOperation.COLUMN_MOVE_PENDING );
+                                    state.setCursor( Style.Cursor.MOVE );
+                                    break;
+                                }
                             }
                             offsetX = offsetX + columnWidth;
                         }
@@ -104,13 +106,16 @@ public class GridWidgetMouseMoveHandler implements NodeMouseMoveHandler {
                         for ( IGridColumn gc : grid.getColumns() ) {
                             //Check for column resizing
                             final double columnWidth = gc.getWidth();
-                            if ( ax > columnWidth + offsetX - COLUMN_RESIZE_HANDLE_SENSITIVITY && ax < columnWidth + offsetX + COLUMN_RESIZE_HANDLE_SENSITIVITY ) {
-                                state.setGrid( grid );
-                                state.setGridColumn( gc );
-                                state.setOperation( GridWidgetHandlersState.GridWidgetHandlersOperation.COLUMN_RESIZE_PENDING );
-                                state.setCursor( Style.Cursor.COL_RESIZE );
-                                break;
+                            if ( gc.isResizable() ) {
+                                if ( ax > columnWidth + offsetX - COLUMN_RESIZE_HANDLE_SENSITIVITY && ax < columnWidth + offsetX + COLUMN_RESIZE_HANDLE_SENSITIVITY ) {
+                                    state.setGrid( grid );
+                                    state.setGridColumn( gc );
+                                    state.setOperation( GridWidgetHandlersState.GridWidgetHandlersOperation.COLUMN_RESIZE_PENDING );
+                                    state.setCursor( Style.Cursor.COL_RESIZE );
+                                    break;
+                                }
                             }
+
                             offsetX = offsetX + columnWidth;
                         }
                     }

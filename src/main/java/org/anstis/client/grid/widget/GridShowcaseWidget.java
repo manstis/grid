@@ -218,6 +218,8 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
                                                                        this,
                                                                        new MergableGridRenderer() );
         for ( int idx = 0; idx < 2; idx++ ) {
+            final boolean isResizeable = idx != 1;
+            final boolean isMoveable = idx != 1;
             final MergableGridColumn<String> grid3Column = new MergableGridColumn<String>( "G3-Col: " + idx,
                                                                                            100 ) {
                 @Override
@@ -242,6 +244,16 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
                                   final ICallback<IGridCellValue<String>> callback ) {
                     editor.edit( cell == null ? null : cell.getValue(),
                                  callback );
+                }
+
+                @Override
+                public boolean isResizable() {
+                    return isResizeable;
+                }
+
+                @Override
+                public boolean isMoveable() {
+                    return isMoveable;
                 }
 
             };

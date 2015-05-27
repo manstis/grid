@@ -91,4 +91,16 @@ public interface IGridColumn<R extends IGridRow<V>, V extends IGridCell<?>> exte
     Group renderCell( final R row,
                       final GridCellRenderContext context );
 
+    /**
+     * Flag indicating whether a column can be re-sized.
+     * @return true if the column can be re-sized.
+     */
+    boolean isResizable();
+
+    /**
+     * Flag indicating whether a column can be moved.
+     * @return true if the column can be moved.
+     */
+    boolean isMoveable();
+
 }

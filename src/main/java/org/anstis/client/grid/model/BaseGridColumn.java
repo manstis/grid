@@ -113,6 +113,16 @@ public abstract class BaseGridColumn<R extends IGridRow<V>, V extends IGridCell<
     }
 
     @Override
+    public boolean isResizable() {
+        return true;
+    }
+
+    @Override
+    public boolean isMoveable() {
+        return true;
+    }
+
+    @Override
     public boolean equals( Object o ) {
         if ( this == o ) {
             return true;
