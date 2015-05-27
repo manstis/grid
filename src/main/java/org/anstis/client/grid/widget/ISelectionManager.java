@@ -22,6 +22,6 @@ public interface ISelectionManager {
 
     void select( final IGridData<?, ?, ?> selectable );
 
-    void scrollIntoView( final IGridColumn<?, ?> link );
+    void selectLinkedColumn( final IGridColumn<?, ?> link );
 
 }

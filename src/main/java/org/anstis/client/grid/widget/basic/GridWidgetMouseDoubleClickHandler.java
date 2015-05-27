@@ -55,7 +55,7 @@ public class GridWidgetMouseDoubleClickHandler extends BaseGridWidgetMouseDouble
     }
 
     @Override
-    protected void doEdit( final GridCellRenderContext context ) {
+    protected void onDoubleClick( final GridCellRenderContext context ) {
         final int rowIndex = context.getRowIndex();
         final int columnIndex = context.getColumnIndex();
         final GridCell cell = gridWidget.getModel().getCell( rowIndex,

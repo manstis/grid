@@ -72,6 +72,9 @@ import org.gwtbootstrap3.client.ui.CheckBox;
 import org.gwtbootstrap3.client.ui.ListBox;
 import org.gwtbootstrap3.extras.slider.client.ui.Slider;
 
+/**
+ * Showcase/hack-fest for GridWidgets.
+ */
 public class GridShowcaseWidget extends Composite implements ISelectionManager {
 
     public static final int VP_WIDTH = 1200;
@@ -598,8 +601,8 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
     }
 
     @Override
-    public void scrollIntoView( final IGridColumn<?, ?> link ) {
-        gridLayer.scrollIntoView( link );
+    public void selectLinkedColumn( final IGridColumn<?, ?> link ) {
+        gridLayer.selectLinkedColumn( link );
     }
 
 }

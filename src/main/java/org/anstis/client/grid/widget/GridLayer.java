@@ -47,6 +47,12 @@ import org.anstis.client.grid.widget.dnd.GridWidgetMouseDownHandler;
 import org.anstis.client.grid.widget.dnd.GridWidgetMouseMoveHandler;
 import org.anstis.client.grid.widget.dnd.GridWidgetMouseUpHandler;
 
+/**
+ * A specialised Layer that supports pass-through of MouseEvents from DOMElements to GridWidgets.
+ * It also guarantees that Layer.draw() will only be invoked once per browser-loop; by scheduling
+ * the actual draw() to GWT's Schedule scheduleFinally(). Furthermore this implementation handles
+ * drawing connectors between "linked" grids and acts as a ISelection manager.
+ */
 public class GridLayer extends Layer implements ISelectionManager,
                                                 NodeMouseDownHandler,
                                                 NodeMouseMoveHandler,
@@ -109,11 +115,18 @@ public class GridLayer extends Layer implements ISelectionManager,
         return this.state;
     }
 
+    /**
+     * Schedule a draw with out additional command.
+     */
     @Override
     public void draw() {
         draw( NOP_COMMAND );
     }
 
+    /**
+     * Schedule a draw with a command to be executed once the draw() has completed.
+     * @param command
+     */
     public void draw( final Command command ) {
         if ( !isRedrawScheduled ) {
             isRedrawScheduled = true;
@@ -168,6 +181,12 @@ public class GridLayer extends Layer implements ISelectionManager,
         }
     }
 
+    /**
+     * Add a child to this Layer. If the child is a GridWidget then also add
+     * a Connector between the Grid Widget and any "linked" GridWidgets.
+     * @param child
+     * @return
+     */
     @Override
     public Layer add( final IPrimitive<?> child ) {
         addSelectable( child );
@@ -247,6 +266,12 @@ public class GridLayer extends Layer implements ISelectionManager,
         return gridWidget;
     }
 
+    /**
+     * Add a child and other children to this Layer. If the child or any children is a GridWidget
+     * then also add a Connector between the Grid Widget and any "linked" GridWidgets.
+     * @param child
+     * @return
+     */
     @Override
     public Layer add( final IPrimitive<?> child,
                       final IPrimitive<?>... children ) {
@@ -256,6 +281,13 @@ public class GridLayer extends Layer implements ISelectionManager,
                           children );
     }
 
+    /**
+     * Remove a child from this Layer. if the child is a GridWidget also remove
+     * any Connectors that have been added between the GridWidget being removed
+     * and any of GridWidgets.
+     * @param child
+     * @return
+     */
     @Override
     public Layer remove( final IPrimitive<?> child ) {
         removeSelectable( child );
@@ -308,7 +340,7 @@ public class GridLayer extends Layer implements ISelectionManager,
     }
 
     @Override
-    public void scrollIntoView( final IGridColumn<?, ?> link ) {
+    public void selectLinkedColumn( final IGridColumn<?, ?> link ) {
         final BaseGridWidget<?, ?> gridWidget = getLinkedGrid( link );
         if ( gridWidget == null ) {
             return;

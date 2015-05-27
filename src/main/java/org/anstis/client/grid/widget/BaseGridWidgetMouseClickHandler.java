@@ -22,6 +22,11 @@ import org.anstis.client.grid.model.IGridColumn;
 import org.anstis.client.grid.util.GridCoordinateUtils;
 import org.anstis.client.grid.widget.renderers.IGridRenderer;
 
+/**
+ * Base MouseClickHandler to handle clicks to either the GridWidgets Header or Body. This implementation
+ * supports clicking on a "linked" column in the Header and delegating a response to the ISelectionManager.
+ * @param <W> The GridWidget to which this MouseClickHandler is attached.
+ */
 public abstract class BaseGridWidgetMouseClickHandler<W extends BaseGridWidget<?, ?>> implements NodeMouseClickHandler {
 
     protected W gridWidget;
@@ -43,6 +48,11 @@ public abstract class BaseGridWidgetMouseClickHandler<W extends BaseGridWidget<?
         handleBodyCellClick( event );
     }
 
+    /**
+     * Check if a MouseClickEvent happened on a "linked" column. If it does then
+     * delegate a response to ISelectionManager.
+     * @param event
+     */
     protected void handleHeaderCellClick( final NodeMouseClickEvent event ) {
         //Convert Canvas co-ordinate to Grid co-ordinate
         final Point2D ap = GridCoordinateUtils.mapToGridWidgetAbsolutePoint( gridWidget,
@@ -74,10 +84,14 @@ public abstract class BaseGridWidgetMouseClickHandler<W extends BaseGridWidget<?
         //If linked scroll it into view
         if ( column.isLinked() ) {
             final IGridColumn<?, ?> link = column.getLink();
-            selectionManager.scrollIntoView( link );
+            selectionManager.selectLinkedColumn( link );
         }
     }
 
+    /**
+     * Does nothing by default, but allows sub-classes to provide their own behaviour.
+     * @param event
+     */
     protected void handleBodyCellClick( final NodeMouseClickEvent event ) {
         //Do nothing by default
     }

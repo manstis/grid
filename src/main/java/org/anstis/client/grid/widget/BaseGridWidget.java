@@ -30,6 +30,11 @@ import org.anstis.client.grid.widget.context.GridBodyRenderContext;
 import org.anstis.client.grid.widget.context.GridHeaderRenderContext;
 import org.anstis.client.grid.widget.renderers.IGridRenderer;
 
+/**
+ * The base of all GridWidgets.
+ * @param <M> The Model backing the GridWidget.
+ * @param <R> The Renderer to be used to render the GridWidget.
+ */
 public abstract class BaseGridWidget<M extends IGridData<?, ?, ?>, R extends IGridRenderer<M>> extends Group implements NodeMouseClickHandler {
 
     private boolean isSelected = false;
@@ -54,18 +59,34 @@ public abstract class BaseGridWidget<M extends IGridData<?, ?, ?>, R extends IGr
         } );
     }
 
+    /**
+     * Get the Model backing the Widget.
+     * @return
+     */
     public M getModel() {
         return model;
     }
 
+    /**
+     * Get the Renderer used to render the Widget.
+     * @return
+     */
     public IGridRenderer<M> getRenderer() {
         return this.renderer;
     }
 
+    /**
+     * Set the Rendered used to render the Widget.
+     * @param renderer
+     */
     public void setRenderer( final R renderer ) {
         this.renderer = renderer;
     }
 
+    /**
+     * Get the width of the whole Widget.
+     * @return
+     */
     public double getWidth() {
         double width = 0;
         for ( IGridColumn<?, ?> column : model.getColumns() ) {
@@ -74,6 +95,7 @@ public abstract class BaseGridWidget<M extends IGridData<?, ?, ?>, R extends IGr
         return width;
     }
 
+    //Get the width of the Widget between two column indexes.
     private double getWidth( final int startColumnIndex,
                              final int endColumnIndex ) {
         double width = 0;
@@ -85,18 +107,29 @@ public abstract class BaseGridWidget<M extends IGridData<?, ?, ?>, R extends IGr
         return width;
     }
 
+    /**
+     * Get the height of the whole Widget, including Header and Body.
+     * @return
+     */
     public double getHeight() {
         double height = renderer.getHeaderHeight();
         height = height + model.getRowOffset( model.getRowCount() );
         return height;
     }
 
+    /**
+     * Select the Widget; i.e. it has been clicked on, so show some visual indicator that it has been selected.
+     */
     public void select() {
         isSelected = true;
         assertSelectionWidget();
         add( selection );
     }
 
+    /**
+     * Deselect the Widget; i.e. another GridWidget has been clicked on, so hide
+     * any visual indicator that this Widget was selected.
+     */
     public void deselect() {
         isSelected = false;
         assertSelectionWidget();
@@ -108,6 +141,16 @@ public abstract class BaseGridWidget<M extends IGridData<?, ?, ?>, R extends IGr
                                                   getHeight() );
     }
 
+    /**
+     * Intercept the normal Lienzo draw mechanism to calculate and hence draw only the visible
+     * columns and rows for the Grid; being those within the bounds of the GridLayer. At the
+     * start of this draw method all visible columns are given an opportunity to initialise
+     * any resources they require (e.g. DOMElements). At the end of this method all visible
+     * columns are given an opportunity to release any unused resources (e.g. DOMElements).
+     * If a column is not visible it is given an opportunity to destroy all resources.
+     * @param context
+     * @param alpha
+     */
     @Override
     protected void drawWithoutTransforms( Context2D context,
                                           double alpha ) {
@@ -160,8 +203,8 @@ public abstract class BaseGridWidget<M extends IGridData<?, ?, ?>, R extends IGr
         //Draw header if required
         if ( minCol >= 0 && maxCol >= 0 ) {
             if ( vpY - getY() < renderer.getHeaderHeight() && getY() < vpY + vpHeight ) {
-                makeGridHeaderWidget( minCol,
-                                      maxCol );
+                renderGridHeaderWidget( minCol,
+                                        maxCol );
             }
         } else {
             for ( int i = 0; i < columns.size(); i++ ) {
@@ -201,10 +244,10 @@ public abstract class BaseGridWidget<M extends IGridData<?, ?, ?>, R extends IGr
                     }
                 }
 
-                makeGridBodyWidget( minCol,
-                                    maxCol,
-                                    minRow,
-                                    maxRow );
+                renderGridBodyWidget( minCol,
+                                      maxCol,
+                                      minRow,
+                                      maxRow );
 
                 //Signal columns to free any unused resources
                 for ( int i = 0; i < columns.size(); i++ ) {
@@ -232,8 +275,13 @@ public abstract class BaseGridWidget<M extends IGridData<?, ?, ?>, R extends IGr
                                      alpha );
     }
 
-    protected void makeGridHeaderWidget( final int startColumnIndex,
-                                         final int endColumnIndex ) {
+    /**
+     * Render the Widget's Header and append to this Group.
+     * @param startColumnIndex The index of the first visible column.
+     * @param endColumnIndex The index of the last visible column.
+     */
+    protected void renderGridHeaderWidget( final int startColumnIndex,
+                                           final int endColumnIndex ) {
         final Viewport viewport = BaseGridWidget.this.getViewport();
         final GridHeaderRenderContext context = new GridHeaderRenderContext( startColumnIndex,
                                                                              endColumnIndex,
@@ -247,10 +295,17 @@ public abstract class BaseGridWidget<M extends IGridData<?, ?, ?>, R extends IGr
         add( g );
     }
 
-    protected void makeGridBodyWidget( final int startColumnIndex,
-                                       final int endColumnIndex,
-                                       final int startRowIndex,
-                                       final int endRowIndex ) {
+    /**
+     * Render the Widget's Header and append to this Group.
+     * @param startColumnIndex The index of the first visible column.
+     * @param endColumnIndex The index of the last visible column.
+     * @param startRowIndex The index of the first visible row.
+     * @param endRowIndex The index of the last visible row.
+     */
+    protected void renderGridBodyWidget( final int startColumnIndex,
+                                         final int endColumnIndex,
+                                         final int startRowIndex,
+                                         final int endRowIndex ) {
         final Viewport viewport = BaseGridWidget.this.getViewport();
         final GridBodyRenderContext context = new GridBodyRenderContext( getX(),
                                                                          getY(),

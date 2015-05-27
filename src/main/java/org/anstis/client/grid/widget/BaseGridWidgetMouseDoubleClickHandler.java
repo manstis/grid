@@ -27,7 +27,14 @@ import org.anstis.client.grid.util.GridCoordinateUtils;
 import org.anstis.client.grid.widget.context.GridCellRenderContext;
 import org.anstis.client.grid.widget.renderers.IGridRenderer;
 
-public abstract class BaseGridWidgetMouseDoubleClickHandler<W extends BaseGridWidget<D, ?>, D extends IGridData<?, ?, ?>> implements NodeMouseDoubleClickHandler {
+/**
+ * Base MousedoubleClickHandler to handle double-clicks to either the GridWidgets Header or Body. This
+ * implementation supports double-clicking on a cell in the Body and delegating a response to the
+ * sub-classes {code}onDoubleClick(){code} method.
+ * @param <W> The GridWidget to which this MouseClickHandler is attached.
+ * @param <M> The GridWidget's underlying Model
+ */
+public abstract class BaseGridWidgetMouseDoubleClickHandler<W extends BaseGridWidget<M, ?>, M extends IGridData<?, ?, ?>> implements NodeMouseDoubleClickHandler {
 
     protected W gridWidget;
     protected ISelectionManager selectionManager;
@@ -47,10 +54,20 @@ public abstract class BaseGridWidgetMouseDoubleClickHandler<W extends BaseGridWi
         handleBodyCellDoubleClick( event );
     }
 
+    /**
+     * Does nothing by default, but allows sub-classes to provide their own behaviour.
+     * @param event
+     */
     protected void handleHeaderCellDoubleClick( final NodeMouseDoubleClickEvent event ) {
         //Do nothing by default
     }
 
+    /**
+     * Check if a MouseDoubleClickEvent happened within a cell and delegate a response
+     * to sub-classes {code}doeEdit(){code} method, passing a context object that can
+     * be used to determine the cell that was double-clicked.
+     * @param event
+     */
     protected void handleBodyCellDoubleClick( final NodeMouseDoubleClickEvent event ) {
         //Convert Canvas co-ordinate to Grid co-ordinate
         final Point2D ap = GridCoordinateUtils.mapToGridWidgetAbsolutePoint( gridWidget,
@@ -65,7 +82,7 @@ public abstract class BaseGridWidgetMouseDoubleClickHandler<W extends BaseGridWi
             return;
         }
 
-        final D model = gridWidget.getModel();
+        final M model = gridWidget.getModel();
 
         //Get row index
         IGridRow<?> row;
@@ -113,17 +130,38 @@ public abstract class BaseGridWidgetMouseDoubleClickHandler<W extends BaseGridWi
                                                                          gridWidget.getViewport().getTransform(),
                                                                          gridWidget );
 
-        doEdit( context );
+        onDoubleClick( context );
     }
 
+    /**
+     * Get the y-coordinate of the row relative to the grid. i.e. 0 <= offset <= gridHeight.
+     * This may be different to the underlying model's {code}getRowOffset(){code} for merged cells.
+     * @param rowIndex The index of the row on which the MouseDoubleClickEvent occurred.
+     * @param columnIndex The index of the column in which the MouseDoubleClickEvent occurred.
+     * @param model The GridWidget's underlying Model
+     * @return
+     */
     protected abstract double getRowOffset( final int rowIndex,
                                             final int columnIndex,
-                                            final D model );
+                                            final M model );
 
+    /**
+     * Get the height of a cell. This may be different to the row's height for merged cells.
+     * @param rowIndex The index of the row on which the MouseDoubleClickEvent occurred.
+     * @param columnIndex The index of the column in which the MouseDoubleClickEvent occurred.
+     * @param model The GridWidget's underlying Model
+     * @return
+     */
     protected abstract double getCellHeight( final int rowIndex,
                                              final int columnIndex,
-                                             final D model );
+                                             final M model );
 
-    protected abstract void doEdit( final GridCellRenderContext context );
+    /**
+     * Signal a MouseDoubleClickEvent has occurred on a cell in the Body.
+     * Information regarding the cell, cell's dimensions etc are provided
+     * in the render context.
+     * @param context
+     */
+    protected abstract void onDoubleClick( final GridCellRenderContext context );
 
 }

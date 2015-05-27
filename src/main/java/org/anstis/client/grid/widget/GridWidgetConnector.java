@@ -17,12 +17,21 @@ package org.anstis.client.grid.widget;
 
 import org.anstis.client.grid.model.IGridColumn;
 
+/**
+ * Meta-data for a Connector between two "linked" GridWidgets.
+ */
 public class GridWidgetConnector {
 
     private IGridColumn<?, ?> sourceColumn;
     private IGridColumn<?, ?> targetColumn;
     private Direction direction;
 
+    /**
+     * Really simply direction indicator; to ensure Connectors
+     * connect to the left or right sides of a GridWidget when
+     * the GridWidget is re-sized in response to columns being
+     * re-sized.
+     */
     public enum Direction {
         EAST_WEST,
         WEST_EAST
@@ -36,14 +45,26 @@ public class GridWidgetConnector {
         this.direction = direction;
     }
 
+    /**
+     * Get the source Column from which the Connector originates.
+     * @return
+     */
     public IGridColumn<?, ?> getSourceColumn() {
         return sourceColumn;
     }
 
+    /**
+     * Get the target Column to which the Connector terminates.
+     * @return
+     */
     public IGridColumn<?, ?> getTargetColumn() {
         return targetColumn;
     }
 
+    /**
+     * Get the direction of the Connector.
+     * @return
+     */
     public Direction getDirection() {
         return direction;
     }

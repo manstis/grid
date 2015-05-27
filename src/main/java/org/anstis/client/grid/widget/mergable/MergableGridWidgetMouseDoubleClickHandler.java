@@ -97,7 +97,7 @@ public class MergableGridWidgetMouseDoubleClickHandler extends BaseGridWidgetMou
     }
 
     @Override
-    protected void doEdit( final GridCellRenderContext context ) {
+    protected void onDoubleClick( final GridCellRenderContext context ) {
         final int rowIndex = context.getRowIndex();
         final int columnIndex = context.getColumnIndex();
         final MergableGridCell cell = gridWidget.getModel().getCell( rowIndex,
