@@ -143,7 +143,7 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
                                                                        new MergableGridRenderer() );
         for ( int idx = 0; idx < 10; idx++ ) {
             final int grid1ColumnGroupSuffix = ( idx < 5 ? 0 : 1 );
-            final Double minimumColumnWidth = ( idx == 1 ? 100.0 : 150.0 );
+            final Double minimumColumnWidth = ( idx == 1 ? 75.0 : 100.0 );
             final Double maximumColumnWidth = ( idx == 1 ? 200.0 : null );
             final MergableGridColumn<String> grid1Column = new MergableGridColumn<String>( "G1-G" + grid1ColumnGroupSuffix + "-C" + idx,
                                                                                            minimumColumnWidth ) {
