@@ -28,6 +28,8 @@ import com.ait.lienzo.shared.core.types.TextBaseLine;
  */
 public abstract class BaseGridColumn<R extends IGridRow<V>, V extends IGridCell<?>> implements IGridColumn<R, V> {
 
+    private static final String DEFAULT_GROUP_IDENTIFIER = "";
+
     private String title;
     private int width;
     private IGridColumn<R, V> link;
@@ -120,6 +122,11 @@ public abstract class BaseGridColumn<R extends IGridRow<V>, V extends IGridCell<
     @Override
     public boolean isMoveable() {
         return true;
+    }
+
+    @Override
+    public String getColumnGroup() {
+        return DEFAULT_GROUP_IDENTIFIER;
     }
 
     @Override

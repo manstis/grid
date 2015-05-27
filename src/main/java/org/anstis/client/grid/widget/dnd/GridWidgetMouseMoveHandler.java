@@ -158,15 +158,17 @@ public class GridWidgetMouseMoveHandler implements NodeMouseMoveHandler {
         for ( int index = 0; index < columns.size(); index++ ) {
             final IGridColumn gc = columns.get( index );
             final double columnWidth = gc.getWidth();
-            final double columnMovedWidth = gridColumn.getWidth();
-            final double minColX = Math.max( offsetX, offsetX + ( columnWidth - columnMovedWidth ) / 2 );
-            final double maxColX = Math.min( offsetX + columnWidth, offsetX + ( columnWidth + columnMovedWidth ) / 2 );
-            if ( ax > minColX && ax < maxColX ) {
-                grid.moveColumnTo( index,
-                                   gridColumn );
-                state.getEventColumnHighlight().setX( gridWidget.getX() + gridWidget.getModel().getColumnOffset( gridColumn ) );
-                layer.draw();
-                break;
+            if ( gridColumn.getColumnGroup().equals( gc.getColumnGroup() ) ) {
+                final double columnMovedWidth = gridColumn.getWidth();
+                final double minColX = Math.max( offsetX, offsetX + ( columnWidth - columnMovedWidth ) / 2 );
+                final double maxColX = Math.min( offsetX + columnWidth, offsetX + ( columnWidth + columnMovedWidth ) / 2 );
+                if ( ax > minColX && ax < maxColX ) {
+                    grid.moveColumnTo( index,
+                                       gridColumn );
+                    state.getEventColumnHighlight().setX( gridWidget.getX() + gridWidget.getModel().getColumnOffset( gridColumn ) );
+                    layer.draw();
+                    break;
+                }
             }
             offsetX = offsetX + columnWidth;
         }

@@ -142,7 +142,8 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
                                                                        this,
                                                                        new MergableGridRenderer() );
         for ( int idx = 0; idx < 10; idx++ ) {
-            final MergableGridColumn<String> grid1Column = new MergableGridColumn<String>( "G1-Col: " + idx,
+            final int grid1ColumnGroupSuffix = ( idx < 5 ? 0 : 1 );
+            final MergableGridColumn<String> grid1Column = new MergableGridColumn<String>( "G1-G" + grid1ColumnGroupSuffix + "-C" + idx,
                                                                                            100 ) {
                 @Override
                 public void renderCell( final Group g,
@@ -168,6 +169,11 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
                                  callback );
                 }
 
+                @Override
+                public String getColumnGroup() {
+                    return "grid1ColumnGroup" + grid1ColumnGroupSuffix;
+                }
+
             };
             grid1.appendColumn( grid1Column );
         }
@@ -180,7 +186,7 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
                                                                        this,
                                                                        new MergableGridRenderer() );
         for ( int idx = 0; idx < 5; idx++ ) {
-            final MergableGridColumn<String> grid2Column = new MergableGridColumn<String>( "G2-Col: " + idx,
+            final MergableGridColumn<String> grid2Column = new MergableGridColumn<String>( "G2-G0-C" + idx,
                                                                                            150 ) {
                 @Override
                 public void renderCell( final Group g,
@@ -220,7 +226,7 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
         for ( int idx = 0; idx < 2; idx++ ) {
             final boolean isResizeable = idx != 1;
             final boolean isMoveable = idx != 1;
-            final MergableGridColumn<String> grid3Column = new MergableGridColumn<String>( "G3-Col: " + idx,
+            final MergableGridColumn<String> grid3Column = new MergableGridColumn<String>( "G3-G0-C" + idx,
                                                                                            100 ) {
                 @Override
                 public void renderCell( final Group g,
@@ -263,7 +269,8 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
                                   GRID3_ROWS );
 
         //Grid 3 - DOM Column - TextBox (Lazy show)
-        final MergableGridColumn<String> grid3Column2 = new MergableGridColumn<String>( "G3-Col: 2",
+        final String grid3ColumnGroup1 = "grid3ColumnGroup1";
+        final MergableGridColumn<String> grid3Column2 = new MergableGridColumn<String>( "G3-G1-C2",
                                                                                         100 ) {
 
             private TextBoxSingletonDOMElementFactory factory = new TextBoxSingletonDOMElementFactory( gridLayer,
@@ -316,6 +323,11 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
                 factory.freeUnusedResources();
             }
 
+            @Override
+            public String getColumnGroup() {
+                return grid3ColumnGroup1;
+            }
+
         };
         grid3.appendColumn( grid3Column2 );
         for ( int rowIndex = 0; rowIndex < GRID4_ROWS; rowIndex++ ) {
@@ -325,7 +337,7 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
         }
 
         //Grid 3 - DOM Column - CheckBox
-        final MergableGridColumn<Boolean> grid3Column3 = new MergableGridColumn<Boolean>( "G3-Col: 3",
+        final MergableGridColumn<Boolean> grid3Column3 = new MergableGridColumn<Boolean>( "G3-G1-C3",
                                                                                           100 ) {
 
             private CheckBoxDOMElementFactory factory = new CheckBoxDOMElementFactory( gridLayer,
@@ -361,6 +373,11 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
                 factory.freeUnusedResources();
             }
 
+            @Override
+            public String getColumnGroup() {
+                return grid3ColumnGroup1;
+            }
+
         };
         grid3.appendColumn( grid3Column3 );
         for ( int rowIndex = 0; rowIndex < GRID4_ROWS; rowIndex++ ) {
@@ -370,7 +387,7 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
         }
 
         //Grid 3 - DOM Column - TextBox
-        final MergableGridColumn<String> grid3Column4 = new MergableGridColumn<String>( "G3-Col: 4",
+        final MergableGridColumn<String> grid3Column4 = new MergableGridColumn<String>( "G3-G1-C4",
                                                                                         100 ) {
 
             private TextBoxDOMElementFactory factory = new TextBoxDOMElementFactory( gridLayer,
@@ -406,6 +423,11 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
                 factory.freeUnusedResources();
             }
 
+            @Override
+            public String getColumnGroup() {
+                return grid3ColumnGroup1;
+            }
+
         };
         grid3.appendColumn( grid3Column4 );
         for ( int rowIndex = 0; rowIndex < GRID4_ROWS; rowIndex++ ) {
@@ -423,7 +445,7 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
                                                        new RedGridRenderer() );
 
         //Grid 4 - DOM Column - TextBox
-        final GridColumn<String> grid4Column1 = new GridColumn<String>( "G4-Col: 1",
+        final GridColumn<String> grid4Column1 = new GridColumn<String>( "G4-G0-C0",
                                                                         100 ) {
 
             @Override
@@ -454,7 +476,7 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
         grid4.appendColumn( grid4Column1 );
 
         //Grid 4 - DOM Column - CheckBox
-        final GridColumn<Boolean> grid4Column2 = new GridColumn<Boolean>( "G4-Col: 2",
+        final GridColumn<Boolean> grid4Column2 = new GridColumn<Boolean>( "G4-G0-C1",
                                                                           100 ) {
 
             private CheckBoxDOMElementFactory factory = new CheckBoxDOMElementFactory( gridLayer,

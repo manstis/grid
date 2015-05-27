@@ -103,4 +103,10 @@ public interface IGridColumn<R extends IGridRow<V>, V extends IGridCell<?>> exte
      */
     boolean isMoveable();
 
+    /**
+     * An identifier for a group of Columns. Columns in one group cannot be moved to another group.
+     * @return The group identifier. It should not be null.
+     */
+    String getColumnGroup();
+
 }
