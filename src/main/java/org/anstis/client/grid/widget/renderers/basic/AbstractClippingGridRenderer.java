@@ -75,7 +75,7 @@ public abstract class AbstractClippingGridRenderer implements IGridRenderer<Grid
         double x = 0;
         for ( int i = startColumnIndex; i <= endColumnIndex; i++ ) {
             final GridColumn column = columns.get( i );
-            final int w = column.getWidth();
+            final double w = column.getWidth();
             if ( column.isLinked() ) {
                 final Rectangle lr = getHeaderLinkBackground()
                         .setWidth( w )
@@ -102,7 +102,7 @@ public abstract class AbstractClippingGridRenderer implements IGridRenderer<Grid
         for ( int i = startColumnIndex; i <= endColumnIndex; i++ ) {
             final GridColumn column = columns.get( i );
             final Group hc = column.renderHeader();
-            final int w = column.getWidth();
+            final double w = column.getWidth();
             hc.setX( x + w / 2 )
                     .setY( getHeaderHeight() / 2 )
                     .setListening( false );

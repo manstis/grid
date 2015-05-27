@@ -106,7 +106,7 @@ public abstract class BaseGridTests {
     static class MockMergableGridColumn<T> extends MergableGridColumn<T> {
 
         MockMergableGridColumn( final String title,
-                                final int width ) {
+                                final double width ) {
             super( title,
                    width );
         }

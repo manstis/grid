@@ -28,7 +28,7 @@ import org.anstis.client.grid.widget.context.GridCellRenderContext;
 public abstract class MergableGridColumn<T> extends BaseGridColumn<MergableGridRow, MergableGridCell<?>> {
 
     public MergableGridColumn( final String title,
-                               final int width ) {
+                               final double width ) {
         super( title,
                width );
     }

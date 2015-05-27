@@ -28,7 +28,7 @@ import org.anstis.client.grid.widget.context.GridCellRenderContext;
 public abstract class GridColumn<T> extends BaseGridColumn<GridRow, GridCell<?>> {
 
     public GridColumn( final String title,
-                       final int width ) {
+                       final double width ) {
         super( title,
                width );
     }

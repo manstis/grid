@@ -35,13 +35,13 @@ public interface IGridColumn<R extends IGridRow<V>, V extends IGridCell<?>> exte
      * Get the column's width
      * @return
      */
-    int getWidth();
+    double getWidth();
 
     /**
      * Set the columns width
      * @param width
      */
-    void setWidth( final int width );
+    void setWidth( final double width );
 
     /**
      * Flag indicating this column is linked to another
@@ -108,5 +108,17 @@ public interface IGridColumn<R extends IGridRow<V>, V extends IGridCell<?>> exte
      * @return The group identifier. It should not be null.
      */
     String getColumnGroup();
+
+    /**
+     * Get the minimum width to which the column can be re-sized
+     * @return null if no minimum
+     */
+    Double getMinimumColumnWidth();
+
+    /**
+     * Get the maximum width to which the column can be re-sized
+     * @return null if no maximum
+     */
+    Double getMaximumColumnWidth();
 
 }

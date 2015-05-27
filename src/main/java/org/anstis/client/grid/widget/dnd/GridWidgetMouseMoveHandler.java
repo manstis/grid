@@ -30,12 +30,13 @@ import org.anstis.client.grid.widget.BaseGridWidget;
 import org.anstis.client.grid.widget.GridLayer;
 import org.anstis.client.grid.widget.renderers.IGridRenderer;
 
-import static org.anstis.client.grid.widget.dnd.GridWidgetHandlersSettings.*;
-
 /**
  * MouseMoveHandler to handle to detect potential drag operations and handle the drag itself; if required.
  */
 public class GridWidgetMouseMoveHandler implements NodeMouseMoveHandler {
+
+    // How close the mouse pointer needs to be to the column separator to initiate a resize operation.
+    private static final int COLUMN_RESIZE_HANDLE_SENSITIVITY = 5;
 
     private final GridLayer layer;
     private final GridWidgetHandlersState state;
@@ -129,16 +130,26 @@ public class GridWidgetMouseMoveHandler implements NodeMouseMoveHandler {
     }
 
     private void handleColumnResize( final NodeMouseMoveEvent event ) {
+        final IGridColumn gridColumn = state.getGridColumn();
         final BaseGridWidget<?, ?> gridWidget = selectables.get( state.getGrid() );
         final Point2D ap = GridCoordinateUtils.mapToGridWidgetAbsolutePoint( gridWidget,
                                                                              new Point2D( event.getX(),
                                                                                           event.getY() ) );
         final double deltaX = ap.getX() - state.getEventInitialX();
+        final Double columnMinimumWidth = gridColumn.getMinimumColumnWidth();
+        final Double columnMaxiumumWidth = gridColumn.getMaximumColumnWidth();
         double columnNewWidth = state.getEventInitialColumnWidth() + deltaX;
-        if ( columnNewWidth < COLUMN_MIN_WIDTH ) {
-            columnNewWidth = COLUMN_MIN_WIDTH;
+        if ( columnMinimumWidth != null ) {
+            if ( columnNewWidth < columnMinimumWidth ) {
+                columnNewWidth = columnMinimumWidth;
+            }
         }
-        state.getGridColumn().setWidth( (int) ( columnNewWidth ) );
+        if ( columnMaxiumumWidth != null ) {
+            if ( columnNewWidth > columnMaxiumumWidth ) {
+                columnNewWidth = columnMaxiumumWidth;
+            }
+        }
+        gridColumn.setWidth( columnNewWidth );
         layer.draw();
         return;
     }

@@ -199,7 +199,7 @@ public class GridIndexingTests {
     static class MockGridColumn<T> extends GridColumn<T> {
 
         MockGridColumn( final String title,
-                        final int width ) {
+                        final double width ) {
             super( title,
                    width );
         }

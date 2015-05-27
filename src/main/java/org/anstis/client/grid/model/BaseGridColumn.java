@@ -28,15 +28,19 @@ import com.ait.lienzo.shared.core.types.TextBaseLine;
  */
 public abstract class BaseGridColumn<R extends IGridRow<V>, V extends IGridCell<?>> implements IGridColumn<R, V> {
 
+    //Default group for columns
     private static final String DEFAULT_GROUP_IDENTIFIER = "";
 
+    //Default minimum width of a column.
+    private static final double COLUMN_MIN_WIDTH = 100;
+
     private String title;
-    private int width;
+    private double width;
     private IGridColumn<R, V> link;
     private int index = -1;
 
     public BaseGridColumn( final String title,
-                           final int width ) {
+                           final double width ) {
         this.title = title;
         this.width = width;
     }
@@ -47,12 +51,12 @@ public abstract class BaseGridColumn<R extends IGridRow<V>, V extends IGridCell<
     }
 
     @Override
-    public int getWidth() {
+    public double getWidth() {
         return width;
     }
 
     @Override
-    public void setWidth( final int width ) {
+    public void setWidth( final double width ) {
         this.width = width;
     }
 
@@ -127,6 +131,16 @@ public abstract class BaseGridColumn<R extends IGridRow<V>, V extends IGridCell<
     @Override
     public String getColumnGroup() {
         return DEFAULT_GROUP_IDENTIFIER;
+    }
+
+    @Override
+    public Double getMinimumColumnWidth() {
+        return COLUMN_MIN_WIDTH;
+    }
+
+    @Override
+    public Double getMaximumColumnWidth() {
+        return null;
     }
 
     @Override
