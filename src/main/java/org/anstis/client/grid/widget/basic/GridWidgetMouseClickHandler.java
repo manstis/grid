@@ -20,6 +20,9 @@ import org.anstis.client.grid.widget.BaseGridWidgetMouseClickHandler;
 import org.anstis.client.grid.widget.ISelectionManager;
 import org.anstis.client.grid.widget.renderers.IGridRenderer;
 
+/**
+ * MouseClickHandler for a Grid containing non-merged cells
+ */
 public class GridWidgetMouseClickHandler extends BaseGridWidgetMouseClickHandler<GridWidget> {
 
     public GridWidgetMouseClickHandler( final GridWidget gridWidget,

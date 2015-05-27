@@ -15,9 +15,15 @@
  */
 package org.anstis.client.grid.widget.dnd;
 
+/**
+ * Generic settings.
+ */
 public class GridWidgetHandlersSettings {
 
+    // How close the mouse pointer needs to be to the column separator to initiate a resize operation.
     public static final int COLUMN_RESIZE_HANDLE_SENSITIVITY = 5;
+
+    // The minimum width of a column.
     public static final double COLUMN_MIN_WIDTH = 100;
 
 }

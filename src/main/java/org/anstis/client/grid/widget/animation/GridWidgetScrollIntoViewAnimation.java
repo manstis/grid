@@ -26,6 +26,10 @@ import com.ait.lienzo.client.core.types.Transform;
 import com.google.gwt.user.client.Command;
 import org.anstis.client.grid.widget.BaseGridWidget;
 
+/**
+ * An animation to reposition the ViewPort so the given GridWidget is centred
+ * horizontally and GridWidget header aligned with the top of the ViewPort.
+ */
 public class GridWidgetScrollIntoViewAnimation extends TimedAnimation {
 
     private static final Command NULL_COMMAND = new Command() {

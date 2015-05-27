@@ -26,6 +26,10 @@ import com.ait.lienzo.client.core.animation.TimedAnimation;
 import org.anstis.client.grid.model.mergable.MergableGridRow;
 import org.anstis.client.grid.widget.mergable.MergableGridWidget;
 
+/**
+ * An animation to expand collapsed rows in a merged block. The cells in
+ * the merged block are set to expanded when the animation starts.
+ */
 public class MergableGridWidgetExpandRowsAnimation extends TimedAnimation {
 
     public MergableGridWidgetExpandRowsAnimation( final MergableGridWidget gridWidget,
@@ -41,10 +45,13 @@ public class MergableGridWidgetExpandRowsAnimation extends TimedAnimation {
                    @Override
                    public void onStart( final IAnimation iAnimation,
                                         final IAnimationHandle iAnimationHandle ) {
+                       //Store the rows' target heights
                        for ( int i = 0; i < rowCount; i++ ) {
                            final MergableGridRow row = gridWidget.getModel().getRow( rowIndex + i );
                            heights.add( row.peekHeight() );
                        }
+
+                       //Mark cells as expanded
                        gridWidget.getModel().expandCell( rowIndex,
                                                          columnIndex );
                    }
@@ -52,6 +59,7 @@ public class MergableGridWidgetExpandRowsAnimation extends TimedAnimation {
                    @Override
                    public void onFrame( final IAnimation iAnimation,
                                         final IAnimationHandle iAnimationHandle ) {
+                       //Set the rows' height from zero to their starting height
                        final double pct = assertPct( iAnimation.getPercent() );
                        for ( int i = 1; i < rowCount; i++ ) {
                            final MergableGridRow row = gridWidget.getModel().getRow( rowIndex + i );

@@ -19,6 +19,9 @@ import com.ait.lienzo.client.core.shape.Group;
 import com.ait.lienzo.client.core.shape.Rectangle;
 import com.ait.lienzo.shared.core.types.ColorName;
 
+/**
+ * The Group representing a column during the drag operation of the column being moved.
+ */
 public class GridWidgetColumnProxy extends Group {
 
     private Rectangle r = new Rectangle( 0, 0 )

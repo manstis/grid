@@ -24,6 +24,9 @@ import org.anstis.client.grid.model.IGridData;
 import org.anstis.client.grid.widget.BaseGridWidget;
 import org.anstis.client.grid.widget.GridLayer;
 
+/**
+ * MouseUpHandler to handle completion of drag operations and release resources.
+ */
 public class GridWidgetMouseUpHandler implements NodeMouseUpHandler {
 
     private final GridLayer layer;
@@ -47,9 +50,12 @@ public class GridWidgetMouseUpHandler implements NodeMouseUpHandler {
             case COLUMN_RESIZE:
                 break;
             case COLUMN_MOVE:
+                //Clean-up the GridWidgetColumnProxy
                 layer.remove( state.getEventColumnHighlight() );
                 layer.draw();
         }
+
+        //Reset state
         state.setGrid( null );
         state.setGridColumn( null );
         state.setOperation( GridWidgetHandlersState.GridWidgetHandlersOperation.NONE );

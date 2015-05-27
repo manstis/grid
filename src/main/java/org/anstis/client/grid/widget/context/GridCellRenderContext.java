@@ -18,6 +18,9 @@ package org.anstis.client.grid.widget.context;
 import com.ait.lienzo.client.core.types.Transform;
 import org.anstis.client.grid.widget.BaseGridWidget;
 
+/**
+ * The context of a Grid's cell during the rendering phase.
+ */
 public class GridCellRenderContext {
 
     private final double x;
@@ -47,34 +50,66 @@ public class GridCellRenderContext {
         this.widget = widget;
     }
 
+    /**
+     * The cell's canvas x-coordinate; not transformed.
+     * @return
+     */
     public double getX() {
         return x;
     }
 
+    /**
+     * The cell's canvas y-coordinate; not transformed.
+     * @return
+     */
     public double getY() {
         return y;
     }
 
+    /**
+     * The width of the cell.
+     * @return
+     */
     public double getWidth() {
         return width;
     }
 
+    /**
+     * The height of the cell.
+     * @return
+     */
     public double getHeight() {
         return height;
     }
 
+    /**
+     * The index of the row this cell represents.
+     * @return
+     */
     public int getRowIndex() {
         return rowIndex;
     }
 
+    /**
+     * The index of the column this cell represents.
+     * @return
+     */
     public int getColumnIndex() {
         return columnIndex;
     }
 
+    /**
+     * The ViewPort transformation.
+     * @return
+     */
     public Transform getTransform() {
         return transform;
     }
 
+    /**
+     * The Grid Widget itself.
+     * @return
+     */
     public BaseGridWidget<?, ?> getWidget() {
         return widget;
     }

@@ -23,6 +23,10 @@ import com.ait.lienzo.client.core.animation.TimedAnimation;
 import org.anstis.client.grid.model.mergable.MergableGridRow;
 import org.anstis.client.grid.widget.mergable.MergableGridWidget;
 
+/**
+ * An animation to collapse rows in a merged block. The cells in
+ * the merged block are set to collapsed when the animation starts.
+ */
 public class MergableGridWidgetCollapseRowsAnimation extends TimedAnimation {
 
     public MergableGridWidgetCollapseRowsAnimation( final MergableGridWidget gridWidget,
@@ -37,6 +41,7 @@ public class MergableGridWidgetCollapseRowsAnimation extends TimedAnimation {
                    @Override
                    public void onStart( final IAnimation iAnimation,
                                         final IAnimationHandle iAnimationHandle ) {
+                       //Mark cells as collapsed
                        gridWidget.getModel().collapseCell( rowIndex,
                                                            columnIndex );
                    }
@@ -44,6 +49,7 @@ public class MergableGridWidgetCollapseRowsAnimation extends TimedAnimation {
                    @Override
                    public void onFrame( final IAnimation iAnimation,
                                         final IAnimationHandle iAnimationHandle ) {
+                       //Set the rows' height to their starting height down to zero
                        final double pct = assertPct( iAnimation.getPercent() );
                        for ( int i = 1; i < rowCount; i++ ) {
                            final MergableGridRow row = gridWidget.getModel().getRow( rowIndex + i );

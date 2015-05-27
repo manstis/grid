@@ -17,18 +17,48 @@ package org.anstis.client.grid.model.mergable;
 
 import org.anstis.client.grid.model.IGridCell;
 
+/**
+ * Extension to a regular non-merged grid to support merged cells.
+ * @param <T> The Type of value
+ */
 public interface IMergableGridCell<T> extends IGridCell<T> {
 
+    /**
+     * Whether the cell in a merged state
+     * @return true if merged
+     */
     boolean isMerged();
 
+    /**
+     * Return the number of cells merged into this cell. For cells that are at the top
+     * of a merged block this should be the number of merged cells, including this cell.
+     * For cells that are not the top of a merged block but are contained in a merged
+     * block this should return zero. For non-merged cells this should return one.
+     * @return The number of cells merged into this cell, or zero if part of a merged block or one if not merged.
+     */
     int getMergedCellCount();
 
+    /**
+     * Whether the cell is collapsed. For cells that are at the top of a collapsed
+     * block this should return false. For cells that are not the top of a collapsed block
+     * but are contained in a collapsed block this should return false.
+     * @return true is collapsed.
+     */
     boolean isCollapsed();
 
+    /**
+     * Collapse the cell.
+     */
     void collapse();
 
+    /**
+     * Expand the cell.
+     */
     void expand();
 
+    /**
+     * Reset the cell to a non-merged, non-collapsed state.
+     */
     void reset();
 
 }

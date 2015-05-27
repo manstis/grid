@@ -27,6 +27,9 @@ import org.anstis.client.grid.util.GridCoordinateUtils;
 import org.anstis.client.grid.widget.BaseGridWidget;
 import org.anstis.client.grid.widget.GridLayer;
 
+/**
+ * MouseDownHandler to handle the commencement of drag operations.
+ */
 public class GridWidgetMouseDownHandler implements NodeMouseDownHandler {
 
     private final GridLayer layer;
@@ -43,20 +46,25 @@ public class GridWidgetMouseDownHandler implements NodeMouseDownHandler {
 
     @Override
     public void onNodeMouseDown( final NodeMouseDownEvent event ) {
+        //The Grid that the pointer is currently over is set by the MouseMoveHandler
         if ( state.getGrid() == null || state.getGridColumn() == null ) {
             return;
         }
 
+        //Get the GridWidget for the grid.
         final BaseGridWidget<?, ?> gridWidget = selectables.get( state.getGrid() );
         final Point2D ap = GridCoordinateUtils.mapToGridWidgetAbsolutePoint( gridWidget,
                                                                              new Point2D( event.getX(),
                                                                                           event.getY() ) );
+
+        //Move from one of the pending operations to the actual operation, as appropriate.
         switch ( state.getOperation() ) {
             case COLUMN_RESIZE_PENDING:
                 state.setEventInitialX( ap.getX() );
                 state.setEventInitialColumnWidth( state.getGridColumn().getWidth() );
                 state.setOperation( GridWidgetHandlersState.GridWidgetHandlersOperation.COLUMN_RESIZE );
                 break;
+
             case COLUMN_MOVE_PENDING:
                 showColumnHighlight( state.getGrid(),
                                      state.getGridColumn() );

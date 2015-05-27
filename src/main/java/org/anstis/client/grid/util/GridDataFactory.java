@@ -21,10 +21,19 @@ import org.anstis.client.grid.model.basic.GridRow;
 import org.anstis.client.grid.model.mergable.MergableGridData;
 import org.anstis.client.grid.model.mergable.MergableGridRow;
 
+/**
+ * Utility class to fill the example grids in this Showcase demo
+ */
 public class GridDataFactory {
 
     public static double FILL_FACTOR = 0.75;
 
+    /**
+     * Populate a non-merged grid. Columns should already have been appended.
+     * @param grid The grid to populate
+     * @param rowCount The number of required rows
+     */
+    @SuppressWarnings("unused")
     public static void populate( final GridData grid,
                                  final int rowCount ) {
         final int columnCount = grid.getColumns().size();
@@ -42,6 +51,11 @@ public class GridDataFactory {
         }
     }
 
+    /**
+     * Populate a merged grid. Columns should already have been appended.
+     * @param grid The grid to populate
+     * @param rowCount The number of required rows
+     */
     public static void populate( final MergableGridData grid,
                                  final int rowCount ) {
         final int columnCount = grid.getColumns().size();
@@ -58,6 +72,7 @@ public class GridDataFactory {
         }
     }
 
+    //Pick one of three random row heights
     private static double getRowHeight() {
         final int r = (int) Math.round( Math.random() * 3 );
         switch ( r ) {

@@ -20,16 +20,38 @@ import org.anstis.client.grid.model.IGridRow;
 
 public interface IMergableGridRow<V extends IGridCell<?>> extends IGridRow<V> {
 
+    /**
+     * Whether the row contains merged cells
+     * @return true if merged
+     */
     boolean isMerged();
 
+    /**
+     * Whether the row contains collapsed cells
+     * @return true if collapsed
+     */
     boolean isCollapsed();
 
+    /**
+     * Collapse all cells on the row.
+     */
     void collapse();
 
+    /**
+     * Expand all cells on the row.
+     */
     void expand();
 
+    /**
+     * Reset all cells on the row to a non-merged, non-collapsed state.
+     */
     void reset();
 
+    /**
+     * Collapsed rows have zero height. This returns the height of the row before it was collapsed.
+     * This is currently used primarily during the "expand/collapse row(s)" animations.
+     * @return The height of the row before it was collapsed.
+     */
     double peekHeight();
 
 }

@@ -19,13 +19,33 @@ import org.anstis.client.grid.model.IGridData;
 
 public interface IMergableGridData extends IGridData<MergableGridRow, MergableGridColumn<?>, MergableGridCell<?>> {
 
+    /**
+     * Whether the data in a merged state.
+     * @return true if merged.
+     */
     boolean isMerged();
 
-    void setMerged(final boolean isMerged);
+    /**
+     * Set whether the data is in merged state.
+     * @param isMerged
+     */
+    void setMerged( final boolean isMerged );
 
+    /**
+     * Collapse a cell and corresponding rows. The cell being collapsed has all other merged
+     * cells below it collapsed into the single cell. The cell itself remains not collapsed.
+     * @param rowIndex
+     * @param columnIndex
+     */
     void collapseCell( final int rowIndex,
                        final int columnIndex );
 
+    /**
+     * Expand a cell and corresponding rows. The cell being collapsed has all other merged cells
+     * below it expanded. Expanding collapsed cells should not expand nested collapsed cells.
+     * @param rowIndex
+     * @param columnIndex
+     */
     void expandCell( final int rowIndex,
                      final int columnIndex );
 

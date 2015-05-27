@@ -18,6 +18,9 @@ package org.anstis.client.grid.widget.context;
 import com.ait.lienzo.client.core.types.Transform;
 import org.anstis.client.grid.widget.BaseGridWidget;
 
+/**
+ * The context of a Grid's body during the rendering phase.
+ */
 public class GridBodyRenderContext {
 
     private final double x;
@@ -50,38 +53,76 @@ public class GridBodyRenderContext {
         this.widget = widget;
     }
 
+    /**
+     * The canvas x-coordinate of the Grid; not transformed.
+     * @return
+     */
     public double getX() {
         return x;
     }
 
+    /**
+     * The canvas y-coordinate of the Grid; not transformed
+     * @return
+     */
     public double getY() {
         return y;
     }
 
+    /**
+     * The width of the Grid widget being rendered. This need not be the same as the Grid's width.
+     * The rendering phase only draws columns that are partially visible and hence the width here
+     * could be that between the extent of visible columns.
+     * @return
+     */
     public double getWidth() {
         return width;
     }
 
+    /**
+     * The index of the first column being rendered.
+     * @return
+     */
     public int getStartColumnIndex() {
         return startColumnIndex;
     }
 
+    /**
+     * The index of the last column being rendered.
+     * @return
+     */
     public int getEndColumnIndex() {
         return endColumnIndex;
     }
 
+    /**
+     * The index of the first row being rendered.
+     * @return
+     */
     public int getStartRowIndex() {
         return startRowIndex;
     }
 
+    /**
+     * The index of the last row being rendered.
+     * @return
+     */
     public int getEndRowIndex() {
         return endRowIndex;
     }
 
+    /**
+     * The ViewPort transformation.
+     * @return
+     */
     public Transform getTransform() {
         return transform;
     }
 
+    /**
+     * The Grid Widget itself.
+     * @return
+     */
     public BaseGridWidget<?, ?> getWidget() {
         return widget;
     }

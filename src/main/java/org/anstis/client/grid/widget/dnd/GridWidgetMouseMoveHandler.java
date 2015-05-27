@@ -32,6 +32,9 @@ import org.anstis.client.grid.widget.renderers.IGridRenderer;
 
 import static org.anstis.client.grid.widget.dnd.GridWidgetHandlersSettings.*;
 
+/**
+ * MouseMoveHandler to handle to detect potential drag operations and handle the drag itself; if required.
+ */
 public class GridWidgetMouseMoveHandler implements NodeMouseMoveHandler {
 
     private final GridLayer layer;
@@ -53,10 +56,12 @@ public class GridWidgetMouseMoveHandler implements NodeMouseMoveHandler {
                 //If we're currently resizing a column we don't need to find a column
                 handleColumnResize( event );
                 break;
+
             case COLUMN_MOVE:
                 //If we're currently moving a column we don't need to find a column
                 handleColumnMove( event );
                 break;
+
             default:
                 //Otherwise try to find a Grid and GridColumn
                 state.setGrid( null );

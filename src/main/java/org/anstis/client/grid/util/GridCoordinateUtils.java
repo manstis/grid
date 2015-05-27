@@ -20,8 +20,18 @@ import com.ait.lienzo.client.core.types.Point2D;
 import com.ait.lienzo.client.core.types.Transform;
 import org.anstis.client.grid.widget.BaseGridWidget;
 
+/**
+ * Utilities class
+ */
 public class GridCoordinateUtils {
 
+    /**
+     * Convert a Canvas/DOM-relative coordinate to one within a GridWidget, taking
+     * the current transformation (translation and scale) into consideration.
+     * @param gridWidget The GridWidget to which we need to find the relative coordinate
+     * @param point The Canvas/DOM MouseEvent coordinate
+     * @return A coordinate relative to the GridWidget (in un-transformed coordinate space)
+     */
     public static Point2D mapToGridWidgetAbsolutePoint( final BaseGridWidget gridWidget,
                                                         final Point2D point ) {
         final Viewport viewport = gridWidget.getViewport();
