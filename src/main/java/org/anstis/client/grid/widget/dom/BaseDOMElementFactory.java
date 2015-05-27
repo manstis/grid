@@ -25,6 +25,14 @@ import org.anstis.client.grid.widget.BaseGridWidget;
 import org.anstis.client.grid.widget.GridLayer;
 import org.anstis.client.grid.widget.context.GridCellRenderContext;
 
+/**
+ * Base Factory for multi-instance DOMElements, i.e. there can be more than one "on screen" at any given time.
+ * This implementation keeps track of a List of DOMElements used during a render phase. DOMElements are re-used
+ * for subsequent render phases, freeing unused DOMElements at the end of the render phase. When a column
+ * is not rendered all DOMElements are destroyed.
+ * @param <T> The data-type of the cell
+ * @param <E> The DOMElement type that this Factory generates.
+ */
 public abstract class BaseDOMElementFactory<T, E extends BaseDOMElement> implements IDOMElementFactory<T, E> {
 
     protected final GridLayer gridLayer;
@@ -43,22 +51,22 @@ public abstract class BaseDOMElementFactory<T, E extends BaseDOMElement> impleme
     }
 
     @Override
-    public void getDomElementForCell( final IGridCell<T> cell,
+    public void initialiseDomElement( final IGridCell<T> cell,
                                       final GridCellRenderContext context,
                                       final ICallback<E> callback ) {
-        E container;
+        E domElement;
         if ( consumed + 1 > containers.size() ) {
-            container = createDomElement( gridLayer,
+            domElement = createDomElement( gridLayer,
                                           gridWidget,
                                           domElementContainer );
-            containers.add( container );
+            containers.add( domElement );
         } else {
-            container = containers.get( consumed );
+            domElement = containers.get( consumed );
         }
         consumed++;
-        container.initialise( cell,
+        domElement.initialise( cell,
                               context );
-        callback.callback( container );
+        callback.callback( domElement );
     }
 
     @Override

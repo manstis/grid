@@ -20,18 +20,48 @@ import org.anstis.client.grid.model.IGridData;
 import org.anstis.client.grid.widget.context.GridBodyRenderContext;
 import org.anstis.client.grid.widget.context.GridHeaderRenderContext;
 
+/**
+ * Definition of a render for the pluggable rendering mechanism.
+ * @param <M> The data model for the GridWidget data being rendered.
+ */
 public interface IGridRenderer<M extends IGridData<?, ?, ?>> {
 
+    /**
+     * Get a display name for the renderer
+     * @return
+     */
     String getName();
 
+    /**
+     * Get the height of the header built by this renderer.
+     * @return
+     */
     double getHeaderHeight();
 
+    /**
+     * Render a "selector" when a grid has been selected, i.e. clicked.
+     * @param width The width of the GridWidget.
+     * @param height The height of the GridWidget including header and body.
+     * @return
+     */
     Group renderSelector( final double width,
                           final double height );
 
+    /**
+     * Render the header for the Grid.
+     * @param model The data model for the GridWidget.
+     * @param context The context of the render phase.
+     * @return A Group containing all Shapes representing the Header.
+     */
     Group renderHeader( final M model,
                         final GridHeaderRenderContext context );
 
+    /**
+     * Render the body for the Grid.
+     * @param model The data model for the GridWidget.
+     * @param context The context of the render phase.
+     * @return A Group containing all Shapes representing the Body.
+     */
     Group renderBody( final M model,
                       final GridBodyRenderContext context );
 

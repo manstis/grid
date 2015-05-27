@@ -23,6 +23,9 @@ import org.anstis.client.grid.widget.BaseGridWidget;
 import org.anstis.client.grid.widget.GridLayer;
 import org.anstis.client.grid.widget.context.GridCellRenderContext;
 
+/**
+ * A DOMElement Factory for single-instance TextBoxes.
+ */
 public class TextBoxSingletonDOMElementFactory extends BaseSingletonDOMElementFactory<String, TextBoxDOMElement> {
 
     private TextBoxDOMElement e;
@@ -46,8 +49,16 @@ public class TextBoxSingletonDOMElementFactory extends BaseSingletonDOMElementFa
         return e;
     }
 
+    /**
+     * Flush the existing TextBoxDOMElement content to the GridWidget when the DOMElement
+     * is initialised. Initialisation occurs when the Grid is rendered; e.g. moved. This
+     * causes the "in cell" editing to complete.
+     * @param cell The cell requiring the DOMElement.
+     * @param context The render context of the cell.
+     * @param callback A callback that is invoked after the cell has been initialised.
+     */
     @Override
-    public void getDomElementForCell( final IGridCell<String> cell,
+    public void initialiseDomElement( final IGridCell<String> cell,
                                       final GridCellRenderContext context,
                                       final ICallback<TextBoxDOMElement> callback ) {
         e.flush( new Command() {

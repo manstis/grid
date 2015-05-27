@@ -19,6 +19,14 @@ import com.google.gwt.user.client.ui.AbsolutePanel;
 import org.anstis.client.grid.widget.BaseGridWidget;
 import org.anstis.client.grid.widget.GridLayer;
 
+/**
+ * Base Factory for single-instance DOMElements, i.e. there can only be one instance "on screen" at any given time,
+ * for example to handle "in cell" editing; when a DOMElement is required to "edit" the cell but not when the cell
+ * is rendered ordinarily. This implementation keeps a single DOMElement that is detached from the GWT container
+ * when not needed.
+ * @param <T> The data-type of the cell
+ * @param <E> The DOMElement type that this Factory generates.
+ */
 public abstract class BaseSingletonDOMElementFactory<T, E extends BaseDOMElement> implements IDOMElementFactory<T, E> {
 
     protected final GridLayer gridLayer;

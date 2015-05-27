@@ -19,17 +19,41 @@ import com.ait.lienzo.client.core.shape.Group;
 import org.anstis.client.grid.model.mergable.MergableGridData;
 import org.anstis.client.grid.widget.renderers.IGridRenderer;
 
+/**
+ * Extensions to the normal Renderer to support mergable data.
+ */
 public interface IMergableGridRenderer extends IGridRenderer<MergableGridData> {
 
-    Group renderGroupedCellToggle( final double containerWidth,
-                                   final double containerHeight,
+    /**
+     * Render to a Group a widget representing a merged cells' collapsed/expanded state.
+     * @param cellWidth Width of the containing cell.
+     * @param cellHeight Height of the containing cell.
+     * @param isGrouped true is the cell is collapsed.
+     * @return
+     */
+    Group renderGroupedCellToggle( final double cellWidth,
+                                   final double cellHeight,
                                    final boolean isGrouped );
 
-    Group renderMergedCellMixedValueHighlight( final double columnWidth,
-                                               final double rowHeight );
+    /**
+     * Render to a Group a widget representing merged cells containing different values.
+     * @param cellWidth Width of the containing cell.
+     * @param cellHeight Height of the containing cell.
+     * @return
+     */
+    Group renderMergedCellMixedValueHighlight( final double cellWidth,
+                                               final double cellHeight );
 
+    /**
+     * Check whether a cell-relative coordinate is "on" the hot-spot to toggle the collapsed/expanded state.
+     * @param cellX The MouseEvent relative to the cell's x-coordinate.
+     * @param cellY The MouseEvent relative to the cell's y-coordinate.
+     * @param cellWidth Width of the containing cell.
+     * @param cellHeight Height of the containing cell.
+     * @return true if the cell coordinate is on the hot-spot.
+     */
     boolean onGroupingToggle( final double cellX,
                               final double cellY,
-                              final double columnWidth,
-                              final double rowHeight );
+                              final double cellWidth,
+                              final double cellHeight );
 }

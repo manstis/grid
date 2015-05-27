@@ -41,6 +41,13 @@ import org.anstis.client.grid.widget.BaseGridWidget;
 import org.anstis.client.grid.widget.GridLayer;
 import org.anstis.client.grid.widget.context.GridCellRenderContext;
 
+/**
+ * The base of all DOMElements, providing common services such as Browser event propagation. MouseEvents do not bubble
+ * from an absolutely positioned DIV to other DOM elements; such as the Canvas. This class therefore emulates event
+ * propagation by passing MouseEvents to canvas Layer and Grid Widget.
+ * @param <T> The data-type represented by the DOMElement.
+ * @param <W> The GWT Widget representing the DOMElement.
+ */
 public abstract class BaseDOMElement<T, W extends Widget> {
 
     private static final double EPSILON = 0.0000001;
@@ -159,21 +166,45 @@ public abstract class BaseDOMElement<T, W extends Widget> {
         }, ClickEvent.getType() );
     }
 
+    /**
+     * Initialise the DOMElement for the given cell and render context.
+     * @param cell The cell requiring a DOMElement.
+     * @param context The render context for the cell.
+     */
     protected abstract void initialise( final IGridCell<T> cell,
                                         final GridCellRenderContext context );
 
+    /**
+     * Get a GWT Widget for the DOMElement.
+     * @return
+     */
     public abstract W getWidget();
 
+    /**
+     * Flush the state of the GWT Widget to the underlying GridWidget.
+     */
     public void flush() {
         flush( NOP_COMMAND );
     }
 
+    /**
+     * Flush the state of the GWT Widget to the underlying GridWidget and execute the given command on completion.
+     * @param command
+     */
     public abstract void flush( final Command command );
 
+    /**
+     * Get the container for the GWT Widget.
+     * @return
+     */
     protected SimplePanel getContainer() {
         return container;
     }
 
+    /**
+     * Transform the DOMElement based on the render context, such as scale and position.
+     * @param context
+     */
     protected void transform( final GridCellRenderContext context ) {
         final Transform transform = context.getTransform();
         final double width = context.getWidth();
@@ -208,10 +239,14 @@ public abstract class BaseDOMElement<T, W extends Widget> {
                            translate + " " + scale );
     }
 
+    //Convenience method to check if a double is "almost" one.
     private boolean isOne( final double value ) {
         return value >= 1.0 - EPSILON && value <= 1.0 + EPSILON;
     }
 
+    /**
+     * Attach the DOMElement to the GWT container, if not already attached.
+     */
     public void attach() {
         final Iterator<Widget> itr = domElementContainer.iterator();
         while ( itr.hasNext() ) {
@@ -226,6 +261,9 @@ public abstract class BaseDOMElement<T, W extends Widget> {
         domElementContainer.add( container );
     }
 
+    /**
+     * Detach the DOMElement from the GWT container, if already attached.
+     */
     public void detach() {
         final Iterator<Widget> itr = domElementContainer.iterator();
         while ( itr.hasNext() ) {

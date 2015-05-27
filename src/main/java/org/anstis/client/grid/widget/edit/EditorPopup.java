@@ -33,6 +33,9 @@ import org.gwtbootstrap3.client.ui.TextBox;
 import org.gwtbootstrap3.client.ui.constants.ButtonType;
 import org.gwtbootstrap3.client.ui.constants.IconType;
 
+/**
+ * A simple popup to demonstrate "out of cell" editing for Strings.
+ */
 public class EditorPopup extends Modal {
 
     private final TextBox textBox = new TextBox();
@@ -88,6 +91,11 @@ public class EditorPopup extends Modal {
         } );
     }
 
+    /**
+     * Show the popup
+     * @param value The value to show in the editor.
+     * @param callback Callback to invoke when the popup is "OK'ed".
+     */
     public void edit( final IGridCellValue<String> value,
                       final ICallback<IGridCellValue<String>> callback ) {
         this.value = value;

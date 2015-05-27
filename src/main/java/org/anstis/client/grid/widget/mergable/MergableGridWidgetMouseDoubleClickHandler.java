@@ -25,6 +25,9 @@ import org.anstis.client.grid.widget.ISelectionManager;
 import org.anstis.client.grid.widget.context.GridCellRenderContext;
 import org.anstis.client.grid.widget.renderers.mergable.IMergableGridRenderer;
 
+/**
+ * MouseDoubleClickHandler for a Grid containing mergable cells.
+ */
 public class MergableGridWidgetMouseDoubleClickHandler extends BaseGridWidgetMouseDoubleClickHandler<MergableGridWidget, MergableGridData> {
 
     public MergableGridWidgetMouseDoubleClickHandler( final MergableGridWidget gridWidget,

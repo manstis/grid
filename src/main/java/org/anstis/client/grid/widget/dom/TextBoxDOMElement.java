@@ -29,6 +29,9 @@ import org.anstis.client.grid.widget.GridLayer;
 import org.anstis.client.grid.widget.context.GridCellRenderContext;
 import org.gwtbootstrap3.client.ui.TextBox;
 
+/**
+ * A DOMElement for TextBoxes.
+ */
 public class TextBoxDOMElement extends BaseDOMElement<String, TextBox> {
 
     private static final int HEIGHT = 16;

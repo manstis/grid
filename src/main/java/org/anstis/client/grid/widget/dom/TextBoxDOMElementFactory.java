@@ -19,6 +19,9 @@ import com.google.gwt.user.client.ui.AbsolutePanel;
 import org.anstis.client.grid.widget.BaseGridWidget;
 import org.anstis.client.grid.widget.GridLayer;
 
+/**
+ * A DOMElement Factory for multi-instance TextBoxes.
+ */
 public class TextBoxDOMElementFactory extends BaseDOMElementFactory<String, TextBoxDOMElement> {
 
     public TextBoxDOMElementFactory( final GridLayer gridLayer,

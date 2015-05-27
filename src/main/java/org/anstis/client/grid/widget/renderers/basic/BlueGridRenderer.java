@@ -20,6 +20,9 @@ import com.ait.lienzo.client.core.shape.Rectangle;
 import com.ait.lienzo.client.core.types.Shadow;
 import com.ait.lienzo.shared.core.types.ColorName;
 
+/**
+ * A renderer that draws a predominantly blue GridWidget.
+ */
 public class BlueGridRenderer extends AbstractClippingGridRenderer {
 
     private static final int HEADER_HEIGHT = 30;
@@ -44,7 +47,7 @@ public class BlueGridRenderer extends AbstractClippingGridRenderer {
     }
 
     @Override
-    public Rectangle getHeader() {
+    public Rectangle getHeaderBackground() {
         final Rectangle header = new Rectangle( 0, 0 )
                 .setFillColor( ColorName.CYAN )
                 .setStrokeColor( ColorName.DARKBLUE )
@@ -62,7 +65,7 @@ public class BlueGridRenderer extends AbstractClippingGridRenderer {
     }
 
     @Override
-    public Rectangle getHeaderLink() {
+    public Rectangle getHeaderLinkBackground() {
         final Rectangle link = new Rectangle( 0, 0 )
                 .setFillColor( ColorName.BROWN )
                 .setStrokeColor( ColorName.SLATEGRAY )
@@ -71,7 +74,7 @@ public class BlueGridRenderer extends AbstractClippingGridRenderer {
     }
 
     @Override
-    public Rectangle getBody() {
+    public Rectangle getBodyBackground() {
         final Rectangle body = new Rectangle( 0, 0 )
                 .setFillColor( ColorName.LIGHTCYAN )
                 .setStrokeColor( ColorName.SLATEGRAY )

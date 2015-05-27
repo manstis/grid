@@ -33,6 +33,10 @@ import org.anstis.client.grid.widget.context.GridBodyRenderContext;
 import org.anstis.client.grid.widget.context.GridCellRenderContext;
 import org.anstis.client.grid.widget.context.GridHeaderRenderContext;
 
+/**
+ * A renderer that only renders the visible columns and rows of merged data. This implementation
+ * can render the data either in a merged state or non-merged state.
+ */
 public class MergableGridRenderer implements IMergableGridRenderer {
 
     private static final int HEADER_HEIGHT = 34;
@@ -151,7 +155,7 @@ public class MergableGridRenderer implements IMergableGridRenderer {
         }
     }
 
-    protected Rectangle getBody() {
+    protected Rectangle getBodyBackground() {
         final Rectangle body = new Rectangle( 0, 0 )
                 .setFillColor( ColorName.LIGHTYELLOW )
                 .setStrokeColor( ColorName.SLATEGRAY )
@@ -168,20 +172,20 @@ public class MergableGridRenderer implements IMergableGridRenderer {
     }
 
     @Override
-    public Group renderGroupedCellToggle( final double containerWidth,
-                                          final double containerHeight,
+    public Group renderGroupedCellToggle( final double cellWidth,
+                                          final double cellHeight,
                                           final boolean isCollapsed ) {
-        return new GroupingToggle( containerWidth,
-                                   containerHeight,
+        return new GroupingToggle( cellWidth,
+                                   cellHeight,
                                    isCollapsed );
     }
 
     @Override
-    public Group renderMergedCellMixedValueHighlight( final double columnWidth,
-                                                      final double rowHeight ) {
+    public Group renderMergedCellMixedValueHighlight( final double cellWidth,
+                                                      final double cellHeight ) {
         final Group g = new Group();
-        final Rectangle multiValueHighlight = new Rectangle( columnWidth,
-                                                             rowHeight );
+        final Rectangle multiValueHighlight = new Rectangle( cellWidth,
+                                                             cellHeight );
         multiValueHighlight.setFillColor( ColorName.GOLDENROD );
         g.add( multiValueHighlight );
         return g;
@@ -190,12 +194,12 @@ public class MergableGridRenderer implements IMergableGridRenderer {
     @Override
     public boolean onGroupingToggle( double cellX,
                                      double cellY,
-                                     double columnWidth,
-                                     double rowHeight ) {
+                                     double cellWidth,
+                                     double cellHeight ) {
         return GroupingToggle.onHotSpot( cellX,
                                          cellY,
-                                         columnWidth,
-                                         rowHeight );
+                                         cellWidth,
+                                         cellHeight );
     }
 
     /**
@@ -225,7 +229,7 @@ public class MergableGridRenderer implements IMergableGridRenderer {
 
             final double maxY = rowOffsets.get( endRowIndex - startRowIndex ) - rowOffsets.get( 0 ) + model.getRow( endRowIndex ).getHeight();
             final double maxX = model.getColumnOffset( endColumnIndex ) - model.getColumnOffset( startColumnIndex ) + columns.get( endColumnIndex ).getWidth();
-            final Rectangle body = getBody().setWidth( width ).setHeight( maxY );
+            final Rectangle body = getBodyBackground().setWidth( width ).setHeight( maxY );
             g.add( body );
 
             //Grid lines - Verticals - easy!
@@ -500,7 +504,7 @@ public class MergableGridRenderer implements IMergableGridRenderer {
 
             final double maxY = rowOffsets.get( endRowIndex - startRowIndex ) - rowOffsets.get( 0 ) + model.getRow( endRowIndex ).getHeight();
             final double maxX = model.getColumnOffset( endColumnIndex ) - model.getColumnOffset( startColumnIndex ) + columns.get( endColumnIndex ).getWidth();
-            final Rectangle body = getBody().setWidth( width ).setHeight( maxY );
+            final Rectangle body = getBodyBackground().setWidth( width ).setHeight( maxY );
             g.add( body );
 
             //Grid lines

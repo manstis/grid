@@ -19,6 +19,9 @@ import com.google.gwt.user.client.ui.AbsolutePanel;
 import org.anstis.client.grid.widget.BaseGridWidget;
 import org.anstis.client.grid.widget.GridLayer;
 
+/**
+ * A DOMElement Factory for multi-instance CheckBoxes.
+ */
 public class CheckBoxDOMElementFactory extends BaseDOMElementFactory<Boolean, CheckBoxDOMElement> {
 
     public CheckBoxDOMElementFactory( final GridLayer gridLayer,

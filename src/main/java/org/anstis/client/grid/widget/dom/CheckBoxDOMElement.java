@@ -29,6 +29,9 @@ import org.anstis.client.grid.widget.GridLayer;
 import org.anstis.client.grid.widget.context.GridCellRenderContext;
 import org.gwtbootstrap3.client.ui.CheckBox;
 
+/**
+ * A DOMElement for CheckBoxes.
+ */
 public class CheckBoxDOMElement extends BaseDOMElement<Boolean, CheckBox> {
 
     //Hack to centre CheckBox

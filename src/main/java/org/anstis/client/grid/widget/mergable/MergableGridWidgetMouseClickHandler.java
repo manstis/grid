@@ -30,6 +30,10 @@ import org.anstis.client.grid.widget.animation.MergableGridWidgetCollapseRowsAni
 import org.anstis.client.grid.widget.animation.MergableGridWidgetExpandRowsAnimation;
 import org.anstis.client.grid.widget.renderers.mergable.IMergableGridRenderer;
 
+/**
+ * MouseClickHandler for a Grid containing merged cells. Merge cells have an additional "widget" that
+ * can be clicked to collapse or expand the merged cells. This class handles clicks on this "widget".
+ */
 public class MergableGridWidgetMouseClickHandler extends BaseGridWidgetMouseClickHandler<MergableGridWidget> {
 
     public MergableGridWidgetMouseClickHandler( final MergableGridWidget gridWidget,

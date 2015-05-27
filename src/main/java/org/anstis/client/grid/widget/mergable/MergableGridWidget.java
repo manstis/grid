@@ -21,6 +21,9 @@ import org.anstis.client.grid.widget.BaseGridWidget;
 import org.anstis.client.grid.widget.ISelectionManager;
 import org.anstis.client.grid.widget.renderers.mergable.IMergableGridRenderer;
 
+/**
+ * A Grid that contains mergable cells
+ */
 public class MergableGridWidget extends BaseGridWidget<MergableGridData, IMergableGridRenderer> {
 
     private final MergableGridWidgetMouseClickHandler mouseClickHandler;

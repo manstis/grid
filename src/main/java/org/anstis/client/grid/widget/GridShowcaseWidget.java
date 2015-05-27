@@ -275,7 +275,7 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
             public void edit( final MergableGridCell<String> cell,
                               final GridCellRenderContext context,
                               final ICallback<IGridCellValue<String>> callback ) {
-                factory.getDomElementForCell( cell,
+                factory.initialiseDomElement( cell,
                                               context,
                                               new ICallback<TextBoxDOMElement>() {
                                                   @Override
@@ -321,7 +321,7 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
             public void renderCell( final Group g,
                                     final MergableGridCell<Boolean> cell,
                                     final GridCellRenderContext context ) {
-                factory.getDomElementForCell( cell,
+                factory.initialiseDomElement( cell,
                                               context,
                                               new ICallback<CheckBoxDOMElement>() {
                                                   @Override
@@ -366,7 +366,7 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
             public void renderCell( final Group g,
                                     final MergableGridCell<String> cell,
                                     final GridCellRenderContext context ) {
-                factory.getDomElementForCell( cell,
+                factory.initialiseDomElement( cell,
                                               context,
                                               new ICallback<TextBoxDOMElement>() {
                                                   @Override
@@ -450,7 +450,7 @@ public class GridShowcaseWidget extends Composite implements ISelectionManager {
             public void renderCell( final Group g,
                                     final GridCell<Boolean> cell,
                                     final GridCellRenderContext context ) {
-                factory.getDomElementForCell( cell,
+                factory.initialiseDomElement( cell,
                                               context,
                                               new ICallback<CheckBoxDOMElement>() {
                                                   @Override

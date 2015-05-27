@@ -31,6 +31,9 @@ import org.anstis.client.grid.widget.context.GridCellRenderContext;
 import org.anstis.client.grid.widget.context.GridHeaderRenderContext;
 import org.anstis.client.grid.widget.renderers.IGridRenderer;
 
+/**
+ * A base renderer that only renders the visible columns and rows of non-merged data.
+ */
 public abstract class AbstractClippingGridRenderer implements IGridRenderer<GridData> {
 
     @Override
@@ -45,6 +48,11 @@ public abstract class AbstractClippingGridRenderer implements IGridRenderer<Grid
         return g;
     }
 
+    /**
+     * Delegate construction of the "selector" to sub-classes. All implementations
+     * are to provide a Rectangle surrounding the whole GridWidget.
+     * @return
+     */
     public abstract Rectangle getSelector();
 
     @Override
@@ -55,7 +63,7 @@ public abstract class AbstractClippingGridRenderer implements IGridRenderer<Grid
         final double width = context.getWidth();
 
         final Group g = new Group();
-        final Rectangle header = getHeader()
+        final Rectangle header = getHeaderBackground()
                 .setWidth( width )
                 .setHeight( getHeaderHeight() )
                 .setListening( false );
@@ -69,7 +77,7 @@ public abstract class AbstractClippingGridRenderer implements IGridRenderer<Grid
             final GridColumn column = columns.get( i );
             final int w = column.getWidth();
             if ( column.isLinked() ) {
-                final Rectangle lr = getHeaderLink()
+                final Rectangle lr = getHeaderLinkBackground()
                         .setWidth( w )
                         .setHeight( getHeaderHeight() )
                         .setX( x );
@@ -105,11 +113,23 @@ public abstract class AbstractClippingGridRenderer implements IGridRenderer<Grid
         return g;
     }
 
-    public abstract Rectangle getHeader();
+    /**
+     * Delegate the Header's background Rectangle to sub-classes.
+     * @return
+     */
+    public abstract Rectangle getHeaderBackground();
 
+    /**
+     * Delegate the Header's grid lines to sub-classes.
+     * @return
+     */
     public abstract MultiPath getHeaderGridLine();
 
-    public abstract Rectangle getHeaderLink();
+    /**
+     * Delegate the Header's background Rectangle, used for "linked" columns to sub-classes.
+     * @return
+     */
+    public abstract Rectangle getHeaderLinkBackground();
 
     @Override
     public Group renderBody( final GridData model,
@@ -134,7 +154,7 @@ public abstract class AbstractClippingGridRenderer implements IGridRenderer<Grid
 
         final double maxY = rowOffsets.get( endRowIndex - startRowIndex ) - rowOffsets.get( 0 ) + model.getRow( endRowIndex ).getHeight();
         final double maxX = model.getColumnOffset( endColumnIndex ) - model.getColumnOffset( startColumnIndex ) + columns.get( endColumnIndex ).getWidth();
-        final Rectangle body = getBody().setWidth( width ).setHeight( maxY );
+        final Rectangle body = getBodyBackground().setWidth( width ).setHeight( maxY );
         g.add( body );
 
         //Grid lines
@@ -187,8 +207,16 @@ public abstract class AbstractClippingGridRenderer implements IGridRenderer<Grid
         return g;
     }
 
-    public abstract Rectangle getBody();
+    /**
+     * Delegate the Body's background Rectangle to sub-classes.
+     * @return
+     */
+    public abstract Rectangle getBodyBackground();
 
+    /**
+     * Delegate the Body's grid lines to sub-classes.
+     * @return
+     */
     public abstract MultiPath getBodyGridLine();
 
 }
